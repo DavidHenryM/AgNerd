@@ -1,0 +1,36 @@
+import * as TypeGraphQL from "type-graphql";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "@prisma/client";
+import { DecimalJSScalar } from "../scalars";
+import { Graze } from "../models/Graze";
+import { LivestockUnit } from "../models/LivestockUnit";
+import { MobCount } from "../resolvers/outputs/MobCount";
+
+@TypeGraphQL.ObjectType("Mob", {
+  isAbstract: true
+})
+export class Mob {
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  id!: string;
+
+  members?: LivestockUnit[];
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  comment!: string;
+
+  @TypeGraphQL.Field(_type => [String], {
+    nullable: false
+  })
+  grazeIds!: string[];
+
+  graze?: Graze[];
+
+  @TypeGraphQL.Field(_type => MobCount, {
+    nullable: true
+  })
+  _count?: MobCount | null;
+}

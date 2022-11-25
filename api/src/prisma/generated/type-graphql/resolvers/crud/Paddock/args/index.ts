@@ -1,0 +1,12 @@
+export { AggregatePaddockArgs } from "./AggregatePaddockArgs";
+export { CreateManyPaddockArgs } from "./CreateManyPaddockArgs";
+export { CreateOnePaddockArgs } from "./CreateOnePaddockArgs";
+export { DeleteManyPaddockArgs } from "./DeleteManyPaddockArgs";
+export { DeleteOnePaddockArgs } from "./DeleteOnePaddockArgs";
+export { FindFirstPaddockArgs } from "./FindFirstPaddockArgs";
+export { FindManyPaddockArgs } from "./FindManyPaddockArgs";
+export { FindUniquePaddockArgs } from "./FindUniquePaddockArgs";
+export { GroupByPaddockArgs } from "./GroupByPaddockArgs";
+export { UpdateManyPaddockArgs } from "./UpdateManyPaddockArgs";
+export { UpdateOnePaddockArgs } from "./UpdateOnePaddockArgs";
+export { UpsertOnePaddockArgs } from "./UpsertOnePaddockArgs";

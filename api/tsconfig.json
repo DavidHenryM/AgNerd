@@ -1,20 +1,12 @@
 {
   "compilerOptions": {
-    // "rootDirs": ["src"],
-    "paths":{
-      "@generated/*": ["..dist/prisma/generated/*"]
-    },
-    "outDir": "dist",
-    "lib": ["es2020"],
-    "target": "es2020",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "target": "ES2018",
+    "module": "commonjs",
+    "lib": ["es2018"],
+    "strict": true,
+    "outDir": "./dist",
     "esModuleInterop": true,
-    "types": ["node"],
     "experimentalDecorators": true,
-    "baseUrl": "./src",
-    "allowJs": true
-  },
-  "include": ["./src/**/*"],
-  "exclude": ["./dist/**/*.js", "./node_modules/**/*"]
+    "emitDecoratorMetadata": true
+  }
 }

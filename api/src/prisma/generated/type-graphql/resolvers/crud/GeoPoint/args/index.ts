@@ -1,0 +1,12 @@
+export { AggregateGeoPointArgs } from "./AggregateGeoPointArgs";
+export { CreateManyGeoPointArgs } from "./CreateManyGeoPointArgs";
+export { CreateOneGeoPointArgs } from "./CreateOneGeoPointArgs";
+export { DeleteManyGeoPointArgs } from "./DeleteManyGeoPointArgs";
+export { DeleteOneGeoPointArgs } from "./DeleteOneGeoPointArgs";
+export { FindFirstGeoPointArgs } from "./FindFirstGeoPointArgs";
+export { FindManyGeoPointArgs } from "./FindManyGeoPointArgs";
+export { FindUniqueGeoPointArgs } from "./FindUniqueGeoPointArgs";
+export { GroupByGeoPointArgs } from "./GroupByGeoPointArgs";
+export { UpdateManyGeoPointArgs } from "./UpdateManyGeoPointArgs";
+export { UpdateOneGeoPointArgs } from "./UpdateOneGeoPointArgs";
+export { UpsertOneGeoPointArgs } from "./UpsertOneGeoPointArgs";

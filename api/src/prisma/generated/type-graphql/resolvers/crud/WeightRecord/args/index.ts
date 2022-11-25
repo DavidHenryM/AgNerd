@@ -1,0 +1,12 @@
+export { AggregateWeightRecordArgs } from "./AggregateWeightRecordArgs";
+export { CreateManyWeightRecordArgs } from "./CreateManyWeightRecordArgs";
+export { CreateOneWeightRecordArgs } from "./CreateOneWeightRecordArgs";
+export { DeleteManyWeightRecordArgs } from "./DeleteManyWeightRecordArgs";
+export { DeleteOneWeightRecordArgs } from "./DeleteOneWeightRecordArgs";
+export { FindFirstWeightRecordArgs } from "./FindFirstWeightRecordArgs";
+export { FindManyWeightRecordArgs } from "./FindManyWeightRecordArgs";
+export { FindUniqueWeightRecordArgs } from "./FindUniqueWeightRecordArgs";
+export { GroupByWeightRecordArgs } from "./GroupByWeightRecordArgs";
+export { UpdateManyWeightRecordArgs } from "./UpdateManyWeightRecordArgs";
+export { UpdateOneWeightRecordArgs } from "./UpdateOneWeightRecordArgs";
+export { UpsertOneWeightRecordArgs } from "./UpsertOneWeightRecordArgs";

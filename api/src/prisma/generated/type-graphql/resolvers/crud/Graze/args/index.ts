@@ -1,0 +1,12 @@
+export { AggregateGrazeArgs } from "./AggregateGrazeArgs";
+export { CreateManyGrazeArgs } from "./CreateManyGrazeArgs";
+export { CreateOneGrazeArgs } from "./CreateOneGrazeArgs";
+export { DeleteManyGrazeArgs } from "./DeleteManyGrazeArgs";
+export { DeleteOneGrazeArgs } from "./DeleteOneGrazeArgs";
+export { FindFirstGrazeArgs } from "./FindFirstGrazeArgs";
+export { FindManyGrazeArgs } from "./FindManyGrazeArgs";
+export { FindUniqueGrazeArgs } from "./FindUniqueGrazeArgs";
+export { GroupByGrazeArgs } from "./GroupByGrazeArgs";
+export { UpdateManyGrazeArgs } from "./UpdateManyGrazeArgs";
+export { UpdateOneGrazeArgs } from "./UpdateOneGrazeArgs";
+export { UpsertOneGrazeArgs } from "./UpsertOneGrazeArgs";

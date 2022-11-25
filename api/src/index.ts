@@ -1,17 +1,30 @@
-import { ApolloServer } from 'apollo-server';
-import { buildSchema } from 'type-graphql';
-import { resolvers } from "../dist/prisma/generated/type-graphql/index";
-// import { IResolvers } from 'graphql-tools';
+import "reflect-metadata";
+import { buildSchema } from "type-graphql";
+import { ApolloServer } from "apollo-server";
+import path from "path";
+import { PrismaClient } from "@prisma/client";
 
-const schema = await buildSchema({
-  resolvers: resolvers
-});
+import { resolvers } from "./prisma/generated/type-graphql";
 
-console.log(schema);
-const port = process.env.PORT || 9090;
+interface Context {
+  prisma: PrismaClient;
+}
 
-const server = new ApolloServer({ 
-  schema});
+async function main() {
+  const schema = await buildSchema({
+    resolvers,
+    emitSchemaFile: path.resolve(__dirname, "./generated-schema.graphql"),
+    validate: false,
+  });
 
-server.listen({ port }, () => console.log(`Server runs at: http://localhost:${port}`));
+  const prisma = new PrismaClient();
+  await prisma.$connect();
 
+  const server = new ApolloServer({
+    schema,
+    context: (): Context => ({ prisma }),
+  });
+  const { port } = await server.listen(4000);
+  console.log(`GraphQL is listening on ${port}!`);
+}
+main().catch(console.error);
