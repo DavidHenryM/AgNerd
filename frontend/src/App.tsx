@@ -2,22 +2,26 @@ import './App.css';
 import { useQuery, gql } from '@apollo/client';
 import { GeoPoint } from '../../api/src/prisma/generated/type-graphql/index'
 import { MapContainer, TileLayer, Marker, Popup, Polygon } from 'react-leaflet'
-import { type LatLngExpression } from 'leaflet';
-import { ChakraProvider } from '@chakra-ui/react'
+import { Draggable, type LatLngExpression } from 'leaflet';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import "leaflet/dist/leaflet.css"
-import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css'
-import "leaflet-defaulticon-compatibility";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-// import * as api from '../../api/src/prisma/generated/type-graphql/index'
 
+const theme = extendTheme({
+  brand: {
+    900: '#1a365d',
+    800: '#153e75',
+    700: '#2a69ac',
+  }
+})
 
 function QueryRest() {
- const [data, setData] = useState<any[]>([]);
- const [loading, setLoading] = useState(true);
- const [error, setError] = useState(null);
+  const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
- const gursaID = '75208823';
+  const gursaID = '75208823';
 
   useEffect(() => {
     async function fetchData() {
@@ -74,7 +78,7 @@ function DisplayPaddocks() {
 
 export default function App() {
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <div>
         <h1>
           Ag Nerd
@@ -85,7 +89,7 @@ export default function App() {
         <br />
         
         <div>
-          <MapContainer center={[-36.555417, 148.829788]} zoom={13} scrollWheelZoom={false}>
+          <MapContainer center={[-36.555417, 148.829788]} zoom={13} scrollWheelZoom={true}>
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
