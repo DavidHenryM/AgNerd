@@ -25,17 +25,19 @@ model Graze {
   startDatetime DateTime
   endDateTime   DateTime?
   paddock       Paddock   @relation(fields: [paddockId], references: [id])
-  paddockId     String    @unique
+  paddockId     String    @unique @db.ObjectId
   mobIds        String[]  @db.ObjectId
   mob           Mob[]     @relation(fields: [mobIds], references: [id])
+  dseDaysPerHectare Float?
 }
 
 model Breed {
   id       String        @id @default(auto()) @map("_id") @db.ObjectId
   name     String
   class    StockClass
-  members  LivestockUnit? @relation(fields: [memberId], references: [id])
-  memberId String?       @unique
+  members  LivestockUnit? @relation(fields: [livestockUnitId], references: [id])
+  livestockUnitId String @unique @db.ObjectId
+
 }
 
 model Mob {
@@ -49,6 +51,8 @@ model Mob {
 model LivestockUnit {
   id              String         @id @default(auto()) @map("_id") @db.ObjectId
   nlisid          String?
+  visualid        VisualId?
+  class           StockClass
   breed           Breed?
   name            String?
   comment         String?
@@ -58,17 +62,114 @@ model LivestockUnit {
   parentId        String?        @unique @db.ObjectId
   sire            LivestockUnit? @relation("PARENT", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   dam             LivestockUnit? @relation("PARENT")
-  mob             Mob            @relation(fields: [livestockUnitId], references: [id])
-  livestockUnitId String         @unique
+  mob             Mob            @relation(fields: [mobId], references: [id])
+  mobId           String  @db.ObjectId
+  pregnancy       Pregnancy[] @relation(fields: [pregnancyId], references: [id])
+  pregnancyId     String[]  @db.ObjectId
   weights         WeightRecord[]
+  treatments      ChemicalTreatment[]
+  drySheepEquivalent  Int @default(1)
 }
 
+model VisualId {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  livestockUnit   LivestockUnit   @relation(fields: [livestockUnitId], references: [id])
+  livestockUnitId String @unique @db.ObjectId
+  colour  VisualIdColour?
+  number  Int?
+}
+
+model Pregnancy {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  earliestPossibleConception DateTime?
+  latestPossibleConception  DateTime?
+  conception  DateTime?
+  dueDate     DateTime?
+  earliestPossibleBirth DateTime?
+  latestPossibleBirth DateTime?
+  parentId       String[]        @unique @db.ObjectId
+  parents        LivestockUnit[] @relation(fields: [parentId], references: [id])
+  pregnancySireId String @db.ObjectId
+  pregnancyTest  PregnancyTest[]
+}
+
+model PregnancyTest {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  testDate  DateTime
+  testType  PregnancyTestType
+  resultDate DateTime
+  result PregnancyTestResult
+  pregnancyId String @unique @db.ObjectId
+  pregnancy Pregnancy @relation(fields:[pregnancyId], references: [id])
+}
+
+enum PregnancyTestResult {
+  PREGNANT
+  NOT_PREGNANT
+  INCONCLUSIVE
+}
+
+enum PregnancyTestType {
+  MANUAL_RECTAL_PALPATATION
+  ULTRASOUND
+  BIOPRYN
+}
+
+model ChemicalTreatment {
+  id  String         @id @default(auto()) @map("_id") @db.ObjectId
+  liveStockUnit             LivestockUnit            @relation(fields: [livestockUnitId], references: [id])
+  livestockUnitId String @unique @db.ObjectId
+  treatmentDate DateTime
+  applicationMethod ApplicationMethod
+  product ChemicalProduct?
+  volume_ml Int
+  witholdingPeriodDays  Int @default(0)
+}
+
+model ChemicalProduct {
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  treatment     ChemicalTreatment            @relation(fields: [chemicalTreatmentId], references: [id])
+  chemicalTreatmentId String @unique @db.ObjectId 
+  manufacturer  String
+  product_name  String
+  serial_number String @unique
+  volume_ml Int
+}
+
+enum ApplicationMethod {
+  ORAL
+  TRANSDERMAL
+  SUB_CUT_INJECTION
+  INTRAVENUS_INJECTION
+
+}
+
+enum VisualIdColour {
+  WHITE
+  ORANGE
+  LIGHT_GREEN
+  PURPLE
+  YELLOW
+  RED
+  SKY_BLUE
+  BLACK
+}
 
 model Paddock {
   id      String     @id @default(auto()) @map("_id") @db.ObjectId
   name String
   polygon GeoPoint[]
+  areaHa Float
   graze   Graze[]
+  livestockUnitPosition   LivestockUnitPosition @relation(fields: [livestockUnitPositionId], references: [id])
+  livestockUnitPositionId String  @unique @db.ObjectId
+}
+
+model LivestockUnitPosition {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  date      DateTime
+  location  GeoPoint?
+  paddock   Paddock?
 }
 
 model GeoPoint {
@@ -76,16 +177,36 @@ model GeoPoint {
   latitude  Float
   longitude Float
   paddock   Paddock @relation(fields: [paddockId], references: [id])
-  paddockId String  @unique
+  paddockId String  @unique @db.ObjectId
+  livestockUnitPosition   LivestockUnitPosition @relation(fields: [livestockUnitPositionId], references: [id])
+  livestockUnitPositionId String  @unique @db.ObjectId
 }
+
 
 model WeightRecord {
   id              String        @id @default(auto()) @map("_id") @db.ObjectId
   weight          Float
   dateMeasured    DateTime      @default(now())
   method          WeighMethod   @default(SCALES)
-  livestockunitId String
-  livestockUnit   LivestockUnit @relation(fields: [livestockunitId], references: [id])
+  livestockUnit   LivestockUnit @relation(fields: [livestockUnitId], references: [id])
+  livestockUnitId String @unique @db.ObjectId
+}
+
+model LoraDevice {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  name            String?
+  deviceId        String
+  deviceEui       String
+  appEui          String
+  appKey          String
+  manufacturer    String?
+  partNumber      String?
+  activationMethod  LoraActivationMethod @default(OTAA)
+}
+
+enum LoraActivationMethod {
+  OTAA
+  ABP
 }
 
 enum StockClass {
@@ -94,6 +215,7 @@ enum StockClass {
   GOAT
   CAMEL
   ALPACA
+  LLAMA
   CHICKEN
   DUCK
   TURKEY
