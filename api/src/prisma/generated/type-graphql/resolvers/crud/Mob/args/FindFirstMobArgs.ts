@@ -35,5 +35,5 @@ export class FindFirstMobArgs {
   @TypeGraphQL.Field(_type => [MobScalarFieldEnum], {
     nullable: true
   })
-  distinct?: Array<"id" | "comment" | "grazeIds"> | undefined;
+  distinct?: Array<"id" | "name" | "comment" | "grazeIds"> | undefined;
 }

@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { DateTimeFilter } from "../inputs/DateTimeFilter";
 import { DateTimeNullableFilter } from "../inputs/DateTimeNullableFilter";
+import { FloatNullableFilter } from "../inputs/FloatNullableFilter";
 import { MobListRelationFilter } from "../inputs/MobListRelationFilter";
 import { PaddockRelationFilter } from "../inputs/PaddockRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
@@ -62,4 +63,9 @@ export class GrazeWhereInput {
     nullable: true
   })
   mob?: MobListRelationFilter | undefined;
+
+  @TypeGraphQL.Field(_type => FloatNullableFilter, {
+    nullable: true
+  })
+  dseDaysPerHectare?: FloatNullableFilter | undefined;
 }

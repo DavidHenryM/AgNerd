@@ -5,6 +5,10 @@ import { DecimalJSScalar } from "../../scalars";
 import { BoolFieldUpdateOperationsInput } from "../inputs/BoolFieldUpdateOperationsInput";
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
 import { EnumSexFieldUpdateOperationsInput } from "../inputs/EnumSexFieldUpdateOperationsInput";
+import { EnumStockClassFieldUpdateOperationsInput } from "../inputs/EnumStockClassFieldUpdateOperationsInput";
+import { FloatFieldUpdateOperationsInput } from "../inputs/FloatFieldUpdateOperationsInput";
+import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperationsInput";
+import { LivestockUnitUpdatepregnancyIdInput } from "../inputs/LivestockUnitUpdatepregnancyIdInput";
 import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("LivestockUnitUpdateManyMutationInput", {
@@ -15,6 +19,11 @@ export class LivestockUnitUpdateManyMutationInput {
     nullable: true
   })
   nlisid?: NullableStringFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(_type => EnumStockClassFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  class?: EnumStockClassFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => NullableStringFieldUpdateOperationsInput, {
     nullable: true
@@ -40,4 +49,19 @@ export class LivestockUnitUpdateManyMutationInput {
     nullable: true
   })
   desexed?: BoolFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(_type => LivestockUnitUpdatepregnancyIdInput, {
+    nullable: true
+  })
+  pregnancyId?: LivestockUnitUpdatepregnancyIdInput | undefined;
+
+  @TypeGraphQL.Field(_type => IntFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  drySheepEquivalent?: IntFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(_type => FloatFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  purchasePrice?: FloatFieldUpdateOperationsInput | undefined;
 }

@@ -21,5 +21,5 @@ export class BreedCreateWithoutMembersInput {
   @TypeGraphQL.Field(_type => StockClass, {
     nullable: false
   })
-  class!: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "CHICKEN" | "DUCK" | "TURKEY";
+  class!: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY";
 }

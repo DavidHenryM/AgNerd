@@ -33,6 +33,11 @@ export class GeoPointOrderByWithAggregationInput {
   })
   paddockId?: "asc" | "desc" | undefined;
 
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  livestockUnitPositionId?: "asc" | "desc" | undefined;
+
   @TypeGraphQL.Field(_type => GeoPointCountOrderByAggregateInput, {
     nullable: true
   })

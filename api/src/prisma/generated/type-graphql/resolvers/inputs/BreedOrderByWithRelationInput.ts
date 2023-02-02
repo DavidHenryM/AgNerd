@@ -32,5 +32,5 @@ export class BreedOrderByWithRelationInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  memberId?: "asc" | "desc" | undefined;
+  livestockUnitId?: "asc" | "desc" | undefined;
 }

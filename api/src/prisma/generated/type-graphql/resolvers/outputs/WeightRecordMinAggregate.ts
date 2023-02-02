@@ -31,5 +31,5 @@ export class WeightRecordMinAggregate {
   @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  livestockunitId!: string | null;
+  livestockUnitId!: string | null;
 }

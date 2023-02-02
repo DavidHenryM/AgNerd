@@ -39,4 +39,9 @@ export class GrazeCreateInput {
     nullable: true
   })
   mob?: MobCreateNestedManyWithoutGrazeInput | undefined;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+    nullable: true
+  })
+  dseDaysPerHectare?: number | undefined;
 }

@@ -22,12 +22,12 @@ export class Breed {
   @TypeGraphQL.Field(_type => StockClass, {
     nullable: false
   })
-  class!: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "CHICKEN" | "DUCK" | "TURKEY";
+  class!: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY";
 
   members?: LivestockUnit | null;
 
   @TypeGraphQL.Field(_type => String, {
-    nullable: true
+    nullable: false
   })
-  memberId?: string | null;
+  livestockUnitId!: string;
 }

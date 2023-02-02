@@ -16,4 +16,14 @@ export class PaddockCreateManyInput {
     nullable: false
   })
   name!: string;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+    nullable: false
+  })
+  areaHa!: number;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  livestockUnitPositionId!: string;
 }

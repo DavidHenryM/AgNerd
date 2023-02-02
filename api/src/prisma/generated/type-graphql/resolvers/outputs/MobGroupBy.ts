@@ -16,9 +16,14 @@ export class MobGroupBy {
   id!: string;
 
   @TypeGraphQL.Field(_type => String, {
-    nullable: false
+    nullable: true
   })
-  comment!: string;
+  name!: string | null;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  comment!: string | null;
 
   @TypeGraphQL.Field(_type => [String], {
     nullable: true

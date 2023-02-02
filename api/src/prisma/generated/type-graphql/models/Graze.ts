@@ -39,6 +39,11 @@ export class Graze {
 
   mob?: Mob[];
 
+  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+    nullable: true
+  })
+  dseDaysPerHectare?: number | null;
+
   @TypeGraphQL.Field(_type => GrazeCount, {
     nullable: true
   })

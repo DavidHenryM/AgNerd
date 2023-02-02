@@ -14,15 +14,20 @@ export class MobCreateWithoutGrazeInput {
   })
   id?: string | undefined;
 
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  name?: string | undefined;
+
   @TypeGraphQL.Field(_type => LivestockUnitCreateNestedManyWithoutMobInput, {
     nullable: true
   })
   members?: LivestockUnitCreateNestedManyWithoutMobInput | undefined;
 
   @TypeGraphQL.Field(_type => String, {
-    nullable: false
+    nullable: true
   })
-  comment!: string;
+  comment?: string | undefined;
 
   @TypeGraphQL.Field(_type => MobCreategrazeIdsInput, {
     nullable: true

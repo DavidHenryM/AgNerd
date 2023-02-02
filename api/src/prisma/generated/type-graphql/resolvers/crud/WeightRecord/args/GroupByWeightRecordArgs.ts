@@ -20,7 +20,7 @@ export class GroupByWeightRecordArgs {
   @TypeGraphQL.Field(_type => [WeightRecordScalarFieldEnum], {
     nullable: false
   })
-  by!: Array<"id" | "weight" | "dateMeasured" | "method" | "livestockunitId">;
+  by!: Array<"id" | "weight" | "dateMeasured" | "method" | "livestockUnitId">;
 
   @TypeGraphQL.Field(_type => WeightRecordScalarWhereWithAggregatesInput, {
     nullable: true

@@ -49,5 +49,5 @@ export class WeightRecordScalarWhereInput {
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
-  livestockunitId?: StringFilter | undefined;
+  livestockUnitId?: StringFilter | undefined;
 }

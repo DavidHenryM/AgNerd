@@ -2,9 +2,11 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
+import { LivestockUnitAvgOrderByAggregateInput } from "../inputs/LivestockUnitAvgOrderByAggregateInput";
 import { LivestockUnitCountOrderByAggregateInput } from "../inputs/LivestockUnitCountOrderByAggregateInput";
 import { LivestockUnitMaxOrderByAggregateInput } from "../inputs/LivestockUnitMaxOrderByAggregateInput";
 import { LivestockUnitMinOrderByAggregateInput } from "../inputs/LivestockUnitMinOrderByAggregateInput";
+import { LivestockUnitSumOrderByAggregateInput } from "../inputs/LivestockUnitSumOrderByAggregateInput";
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("LivestockUnitOrderByWithAggregationInput", {
@@ -20,6 +22,11 @@ export class LivestockUnitOrderByWithAggregationInput {
     nullable: true
   })
   nlisid?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  class?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
@@ -54,12 +61,32 @@ export class LivestockUnitOrderByWithAggregationInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  livestockUnitId?: "asc" | "desc" | undefined;
+  mobId?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  pregnancyId?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  drySheepEquivalent?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  purchasePrice?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => LivestockUnitCountOrderByAggregateInput, {
     nullable: true
   })
   _count?: LivestockUnitCountOrderByAggregateInput | undefined;
+
+  @TypeGraphQL.Field(_type => LivestockUnitAvgOrderByAggregateInput, {
+    nullable: true
+  })
+  _avg?: LivestockUnitAvgOrderByAggregateInput | undefined;
 
   @TypeGraphQL.Field(_type => LivestockUnitMaxOrderByAggregateInput, {
     nullable: true
@@ -70,4 +97,9 @@ export class LivestockUnitOrderByWithAggregationInput {
     nullable: true
   })
   _min?: LivestockUnitMinOrderByAggregateInput | undefined;
+
+  @TypeGraphQL.Field(_type => LivestockUnitSumOrderByAggregateInput, {
+    nullable: true
+  })
+  _sum?: LivestockUnitSumOrderByAggregateInput | undefined;
 }

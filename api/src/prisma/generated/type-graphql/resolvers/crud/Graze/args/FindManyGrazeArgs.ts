@@ -35,5 +35,5 @@ export class FindManyGrazeArgs {
   @TypeGraphQL.Field(_type => [GrazeScalarFieldEnum], {
     nullable: true
   })
-  distinct?: Array<"id" | "startDatetime" | "endDateTime" | "paddockId" | "mobIds"> | undefined;
+  distinct?: Array<"id" | "startDatetime" | "endDateTime" | "paddockId" | "mobIds" | "dseDaysPerHectare"> | undefined;
 }

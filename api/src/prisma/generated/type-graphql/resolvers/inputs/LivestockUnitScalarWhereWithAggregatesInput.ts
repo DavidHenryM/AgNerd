@@ -5,6 +5,10 @@ import { DecimalJSScalar } from "../../scalars";
 import { BoolWithAggregatesFilter } from "../inputs/BoolWithAggregatesFilter";
 import { DateTimeWithAggregatesFilter } from "../inputs/DateTimeWithAggregatesFilter";
 import { EnumSexWithAggregatesFilter } from "../inputs/EnumSexWithAggregatesFilter";
+import { EnumStockClassWithAggregatesFilter } from "../inputs/EnumStockClassWithAggregatesFilter";
+import { FloatWithAggregatesFilter } from "../inputs/FloatWithAggregatesFilter";
+import { IntWithAggregatesFilter } from "../inputs/IntWithAggregatesFilter";
+import { StringNullableListFilter } from "../inputs/StringNullableListFilter";
 import { StringNullableWithAggregatesFilter } from "../inputs/StringNullableWithAggregatesFilter";
 import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter";
 
@@ -36,6 +40,11 @@ export class LivestockUnitScalarWhereWithAggregatesInput {
     nullable: true
   })
   nlisid?: StringNullableWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field(_type => EnumStockClassWithAggregatesFilter, {
+    nullable: true
+  })
+  class?: EnumStockClassWithAggregatesFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringNullableWithAggregatesFilter, {
     nullable: true
@@ -70,5 +79,20 @@ export class LivestockUnitScalarWhereWithAggregatesInput {
   @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
     nullable: true
   })
-  livestockUnitId?: StringWithAggregatesFilter | undefined;
+  mobId?: StringWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringNullableListFilter, {
+    nullable: true
+  })
+  pregnancyId?: StringNullableListFilter | undefined;
+
+  @TypeGraphQL.Field(_type => IntWithAggregatesFilter, {
+    nullable: true
+  })
+  drySheepEquivalent?: IntWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field(_type => FloatWithAggregatesFilter, {
+    nullable: true
+  })
+  purchasePrice?: FloatWithAggregatesFilter | undefined;
 }

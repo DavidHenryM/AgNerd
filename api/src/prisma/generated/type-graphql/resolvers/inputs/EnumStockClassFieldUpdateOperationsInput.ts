@@ -11,5 +11,5 @@ export class EnumStockClassFieldUpdateOperationsInput {
   @TypeGraphQL.Field(_type => StockClass, {
     nullable: true
   })
-  set?: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "CHICKEN" | "DUCK" | "TURKEY" | undefined;
+  set?: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY" | undefined;
 }

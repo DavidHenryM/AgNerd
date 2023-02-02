@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { GeoPointOrderByRelationAggregateInput } from "../inputs/GeoPointOrderByRelationAggregateInput";
 import { GrazeOrderByRelationAggregateInput } from "../inputs/GrazeOrderByRelationAggregateInput";
+import { LivestockUnitPositionOrderByWithRelationInput } from "../inputs/LivestockUnitPositionOrderByWithRelationInput";
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("PaddockOrderByWithRelationInput", {
@@ -25,8 +26,23 @@ export class PaddockOrderByWithRelationInput {
   })
   polygon?: GeoPointOrderByRelationAggregateInput | undefined;
 
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  areaHa?: "asc" | "desc" | undefined;
+
   @TypeGraphQL.Field(_type => GrazeOrderByRelationAggregateInput, {
     nullable: true
   })
   graze?: GrazeOrderByRelationAggregateInput | undefined;
+
+  @TypeGraphQL.Field(_type => LivestockUnitPositionOrderByWithRelationInput, {
+    nullable: true
+  })
+  livestockUnitPosition?: LivestockUnitPositionOrderByWithRelationInput | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  livestockUnitPositionId?: "asc" | "desc" | undefined;
 }

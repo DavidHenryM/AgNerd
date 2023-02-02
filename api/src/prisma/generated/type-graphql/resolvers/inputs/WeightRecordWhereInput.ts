@@ -47,13 +47,13 @@ export class WeightRecordWhereInput {
   })
   method?: EnumWeighMethodFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
-  })
-  livestockunitId?: StringFilter | undefined;
-
   @TypeGraphQL.Field(_type => LivestockUnitRelationFilter, {
     nullable: true
   })
   livestockUnit?: LivestockUnitRelationFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true
+  })
+  livestockUnitId?: StringFilter | undefined;
 }

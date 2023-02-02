@@ -11,4 +11,9 @@ export class PaddockWhereUniqueInput {
     nullable: true
   })
   id?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  livestockUnitPositionId?: string | undefined;
 }

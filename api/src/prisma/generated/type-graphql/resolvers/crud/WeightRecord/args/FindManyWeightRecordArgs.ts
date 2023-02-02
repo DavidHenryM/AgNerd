@@ -35,5 +35,5 @@ export class FindManyWeightRecordArgs {
   @TypeGraphQL.Field(_type => [WeightRecordScalarFieldEnum], {
     nullable: true
   })
-  distinct?: Array<"id" | "weight" | "dateMeasured" | "method" | "livestockunitId"> | undefined;
+  distinct?: Array<"id" | "weight" | "dateMeasured" | "method" | "livestockUnitId"> | undefined;
 }

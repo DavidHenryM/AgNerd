@@ -27,4 +27,9 @@ export class GrazeCreateManyPaddockInput {
     nullable: true
   })
   mobIds?: GrazeCreatemobIdsInput | undefined;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+    nullable: true
+  })
+  dseDaysPerHectare?: number | undefined;
 }

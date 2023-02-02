@@ -20,7 +20,7 @@ export class GroupByGeoPointArgs {
   @TypeGraphQL.Field(_type => [GeoPointScalarFieldEnum], {
     nullable: false
   })
-  by!: Array<"id" | "latitude" | "longitude" | "paddockId">;
+  by!: Array<"id" | "latitude" | "longitude" | "paddockId" | "livestockUnitPositionId">;
 
   @TypeGraphQL.Field(_type => GeoPointScalarWhereWithAggregatesInput, {
     nullable: true

@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../scalars";
 import { GeoPoint } from "../models/GeoPoint";
 import { Graze } from "../models/Graze";
+import { LivestockUnitPosition } from "../models/LivestockUnitPosition";
 import { PaddockCount } from "../resolvers/outputs/PaddockCount";
 
 @TypeGraphQL.ObjectType("Paddock", {
@@ -22,7 +23,19 @@ export class Paddock {
 
   polygon?: GeoPoint[];
 
+  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+    nullable: false
+  })
+  areaHa!: number;
+
   graze?: Graze[];
+
+  livestockUnitPosition?: LivestockUnitPosition;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  livestockUnitPositionId!: string;
 
   @TypeGraphQL.Field(_type => PaddockCount, {
     nullable: true

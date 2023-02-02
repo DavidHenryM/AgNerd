@@ -31,5 +31,5 @@ export class WeightRecordMinOrderByAggregateInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  livestockunitId?: "asc" | "desc" | undefined;
+  livestockUnitId?: "asc" | "desc" | undefined;
 }

@@ -32,6 +32,11 @@ export class GeoPointGroupBy {
   })
   paddockId!: string;
 
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  livestockUnitPositionId!: string;
+
   @TypeGraphQL.Field(_type => GeoPointCountAggregate, {
     nullable: true
   })

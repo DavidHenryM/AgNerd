@@ -5,8 +5,12 @@ import { DecimalJSScalar } from "../../scalars";
 import { BoolFilter } from "../inputs/BoolFilter";
 import { DateTimeFilter } from "../inputs/DateTimeFilter";
 import { EnumSexFilter } from "../inputs/EnumSexFilter";
+import { EnumStockClassFilter } from "../inputs/EnumStockClassFilter";
+import { FloatFilter } from "../inputs/FloatFilter";
+import { IntFilter } from "../inputs/IntFilter";
 import { StringFilter } from "../inputs/StringFilter";
 import { StringNullableFilter } from "../inputs/StringNullableFilter";
+import { StringNullableListFilter } from "../inputs/StringNullableListFilter";
 
 @TypeGraphQL.InputType("LivestockUnitScalarWhereInput", {
   isAbstract: true
@@ -36,6 +40,11 @@ export class LivestockUnitScalarWhereInput {
     nullable: true
   })
   nlisid?: StringNullableFilter | undefined;
+
+  @TypeGraphQL.Field(_type => EnumStockClassFilter, {
+    nullable: true
+  })
+  class?: EnumStockClassFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringNullableFilter, {
     nullable: true
@@ -70,5 +79,20 @@ export class LivestockUnitScalarWhereInput {
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
-  livestockUnitId?: StringFilter | undefined;
+  mobId?: StringFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringNullableListFilter, {
+    nullable: true
+  })
+  pregnancyId?: StringNullableListFilter | undefined;
+
+  @TypeGraphQL.Field(_type => IntFilter, {
+    nullable: true
+  })
+  drySheepEquivalent?: IntFilter | undefined;
+
+  @TypeGraphQL.Field(_type => FloatFilter, {
+    nullable: true
+  })
+  purchasePrice?: FloatFilter | undefined;
 }

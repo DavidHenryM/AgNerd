@@ -36,7 +36,7 @@ export class WeightRecordGroupBy {
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  livestockunitId!: string;
+  livestockUnitId!: string;
 
   @TypeGraphQL.Field(_type => WeightRecordCountAggregate, {
     nullable: true

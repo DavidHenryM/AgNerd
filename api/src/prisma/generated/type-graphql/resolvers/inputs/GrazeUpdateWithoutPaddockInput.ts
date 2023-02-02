@@ -6,6 +6,7 @@ import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdat
 import { GrazeUpdatemobIdsInput } from "../inputs/GrazeUpdatemobIdsInput";
 import { MobUpdateManyWithoutGrazeNestedInput } from "../inputs/MobUpdateManyWithoutGrazeNestedInput";
 import { NullableDateTimeFieldUpdateOperationsInput } from "../inputs/NullableDateTimeFieldUpdateOperationsInput";
+import { NullableFloatFieldUpdateOperationsInput } from "../inputs/NullableFloatFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("GrazeUpdateWithoutPaddockInput", {
   isAbstract: true
@@ -30,4 +31,9 @@ export class GrazeUpdateWithoutPaddockInput {
     nullable: true
   })
   mob?: MobUpdateManyWithoutGrazeNestedInput | undefined;
+
+  @TypeGraphQL.Field(_type => NullableFloatFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  dseDaysPerHectare?: NullableFloatFieldUpdateOperationsInput | undefined;
 }

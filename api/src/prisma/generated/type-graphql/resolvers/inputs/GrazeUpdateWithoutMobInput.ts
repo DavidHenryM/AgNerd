@@ -5,6 +5,7 @@ import { DecimalJSScalar } from "../../scalars";
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
 import { GrazeUpdatemobIdsInput } from "../inputs/GrazeUpdatemobIdsInput";
 import { NullableDateTimeFieldUpdateOperationsInput } from "../inputs/NullableDateTimeFieldUpdateOperationsInput";
+import { NullableFloatFieldUpdateOperationsInput } from "../inputs/NullableFloatFieldUpdateOperationsInput";
 import { PaddockUpdateOneRequiredWithoutGrazeNestedInput } from "../inputs/PaddockUpdateOneRequiredWithoutGrazeNestedInput";
 
 @TypeGraphQL.InputType("GrazeUpdateWithoutMobInput", {
@@ -30,4 +31,9 @@ export class GrazeUpdateWithoutMobInput {
     nullable: true
   })
   mobIds?: GrazeUpdatemobIdsInput | undefined;
+
+  @TypeGraphQL.Field(_type => NullableFloatFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  dseDaysPerHectare?: NullableFloatFieldUpdateOperationsInput | undefined;
 }

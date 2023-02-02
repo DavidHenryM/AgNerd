@@ -20,7 +20,7 @@ export class GroupByLivestockUnitArgs {
   @TypeGraphQL.Field(_type => [LivestockUnitScalarFieldEnum], {
     nullable: false
   })
-  by!: Array<"id" | "nlisid" | "name" | "comment" | "sex" | "birthdate" | "desexed" | "parentId" | "livestockUnitId">;
+  by!: Array<"id" | "nlisid" | "class" | "name" | "comment" | "sex" | "birthdate" | "desexed" | "parentId" | "mobId" | "pregnancyId" | "drySheepEquivalent" | "purchasePrice">;
 
   @TypeGraphQL.Field(_type => LivestockUnitScalarWhereWithAggregatesInput, {
     nullable: true

@@ -29,10 +29,10 @@ export class WeightRecord {
   })
   method!: "SCALES" | "IMAGE_ANALYSIS" | "VISUAL_ESTIMATE" | "MOB_AVERAGE";
 
+  livestockUnit?: LivestockUnit;
+
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  livestockunitId!: string;
-
-  livestockUnit?: LivestockUnit;
+  livestockUnitId!: string;
 }

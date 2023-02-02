@@ -3,6 +3,7 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { StringNullableListFilter } from "../inputs/StringNullableListFilter";
+import { StringNullableWithAggregatesFilter } from "../inputs/StringNullableWithAggregatesFilter";
 import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter";
 
 @TypeGraphQL.InputType("MobScalarWhereWithAggregatesInput", {
@@ -29,10 +30,15 @@ export class MobScalarWhereWithAggregatesInput {
   })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
+  @TypeGraphQL.Field(_type => StringNullableWithAggregatesFilter, {
     nullable: true
   })
-  comment?: StringWithAggregatesFilter | undefined;
+  name?: StringNullableWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringNullableWithAggregatesFilter, {
+    nullable: true
+  })
+  comment?: StringNullableWithAggregatesFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringNullableListFilter, {
     nullable: true

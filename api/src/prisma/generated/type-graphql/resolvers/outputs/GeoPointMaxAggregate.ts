@@ -26,4 +26,9 @@ export class GeoPointMaxAggregate {
     nullable: true
   })
   paddockId!: string | null;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  livestockUnitPositionId!: string | null;
 }

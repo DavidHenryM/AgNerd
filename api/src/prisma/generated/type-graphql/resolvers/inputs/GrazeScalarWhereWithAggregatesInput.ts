@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { DateTimeNullableWithAggregatesFilter } from "../inputs/DateTimeNullableWithAggregatesFilter";
 import { DateTimeWithAggregatesFilter } from "../inputs/DateTimeWithAggregatesFilter";
+import { FloatNullableWithAggregatesFilter } from "../inputs/FloatNullableWithAggregatesFilter";
 import { StringNullableListFilter } from "../inputs/StringNullableListFilter";
 import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter";
 
@@ -50,4 +51,9 @@ export class GrazeScalarWhereWithAggregatesInput {
     nullable: true
   })
   mobIds?: StringNullableListFilter | undefined;
+
+  @TypeGraphQL.Field(_type => FloatNullableWithAggregatesFilter, {
+    nullable: true
+  })
+  dseDaysPerHectare?: FloatNullableWithAggregatesFilter | undefined;
 }

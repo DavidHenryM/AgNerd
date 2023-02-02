@@ -16,9 +16,4 @@ export class LivestockUnitWhereUniqueInput {
     nullable: true
   })
   parentId?: string | undefined;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  livestockUnitId?: string | undefined;
 }

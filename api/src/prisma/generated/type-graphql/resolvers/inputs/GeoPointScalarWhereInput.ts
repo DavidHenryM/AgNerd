@@ -43,4 +43,9 @@ export class GeoPointScalarWhereInput {
     nullable: true
   })
   paddockId?: StringFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true
+  })
+  livestockUnitPositionId?: StringFilter | undefined;
 }

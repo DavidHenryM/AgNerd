@@ -15,6 +15,11 @@ export class MobOrderByWithRelationInput {
   })
   id?: "asc" | "desc" | undefined;
 
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  name?: "asc" | "desc" | undefined;
+
   @TypeGraphQL.Field(_type => LivestockUnitOrderByRelationAggregateInput, {
     nullable: true
   })

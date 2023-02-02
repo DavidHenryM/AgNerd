@@ -21,10 +21,10 @@ export class BreedMaxAggregate {
   @TypeGraphQL.Field(_type => StockClass, {
     nullable: true
   })
-  class!: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "CHICKEN" | "DUCK" | "TURKEY" | null;
+  class!: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY" | null;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  memberId!: string | null;
+  livestockUnitId!: string | null;
 }

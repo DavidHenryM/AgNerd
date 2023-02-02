@@ -16,4 +16,9 @@ export class GeoPointWhereUniqueInput {
     nullable: true
   })
   paddockId?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  livestockUnitPositionId?: string | undefined;
 }

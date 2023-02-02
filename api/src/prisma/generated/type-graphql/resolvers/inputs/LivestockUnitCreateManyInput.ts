@@ -2,7 +2,9 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
+import { LivestockUnitCreatepregnancyIdInput } from "../inputs/LivestockUnitCreatepregnancyIdInput";
 import { Sex } from "../../enums/Sex";
+import { StockClass } from "../../enums/StockClass";
 
 @TypeGraphQL.InputType("LivestockUnitCreateManyInput", {
   isAbstract: true
@@ -17,6 +19,11 @@ export class LivestockUnitCreateManyInput {
     nullable: true
   })
   nlisid?: string | undefined;
+
+  @TypeGraphQL.Field(_type => StockClass, {
+    nullable: false
+  })
+  class!: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY";
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true
@@ -51,5 +58,20 @@ export class LivestockUnitCreateManyInput {
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  livestockUnitId!: string;
+  mobId!: string;
+
+  @TypeGraphQL.Field(_type => LivestockUnitCreatepregnancyIdInput, {
+    nullable: true
+  })
+  pregnancyId?: LivestockUnitCreatepregnancyIdInput | undefined;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: true
+  })
+  drySheepEquivalent?: number | undefined;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+    nullable: true
+  })
+  purchasePrice?: number | undefined;
 }

@@ -6,6 +6,7 @@ export enum StockClass {
   GOAT = "GOAT",
   CAMEL = "CAMEL",
   ALPACA = "ALPACA",
+  LLAMA = "LLAMA",
   CHICKEN = "CHICKEN",
   DUCK = "DUCK",
   TURKEY = "TURKEY"

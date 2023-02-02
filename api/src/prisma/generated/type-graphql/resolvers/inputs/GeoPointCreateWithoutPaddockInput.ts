@@ -2,6 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
+import { LivestockUnitPositionCreateNestedOneWithoutLocationInput } from "../inputs/LivestockUnitPositionCreateNestedOneWithoutLocationInput";
 
 @TypeGraphQL.InputType("GeoPointCreateWithoutPaddockInput", {
   isAbstract: true
@@ -21,4 +22,9 @@ export class GeoPointCreateWithoutPaddockInput {
     nullable: false
   })
   longitude!: number;
+
+  @TypeGraphQL.Field(_type => LivestockUnitPositionCreateNestedOneWithoutLocationInput, {
+    nullable: false
+  })
+  livestockUnitPosition!: LivestockUnitPositionCreateNestedOneWithoutLocationInput;
 }

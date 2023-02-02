@@ -32,4 +32,9 @@ export class GrazeCountOrderByAggregateInput {
     nullable: true
   })
   mobIds?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  dseDaysPerHectare?: "asc" | "desc" | undefined;
 }

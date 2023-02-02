@@ -15,5 +15,5 @@ export class BreedWhereUniqueInput {
   @TypeGraphQL.Field(_type => String, {
     nullable: true
   })
-  memberId?: string | undefined;
+  livestockUnitId?: string | undefined;
 }

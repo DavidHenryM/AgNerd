@@ -26,4 +26,9 @@ export class GrazeMaxAggregate {
     nullable: true
   })
   paddockId!: string | null;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+    nullable: true
+  })
+  dseDaysPerHectare!: number | null;
 }

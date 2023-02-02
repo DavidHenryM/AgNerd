@@ -3,6 +3,7 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { GeoPointCreateNestedManyWithoutPaddockInput } from "../inputs/GeoPointCreateNestedManyWithoutPaddockInput";
+import { LivestockUnitPositionCreateNestedOneWithoutPaddockInput } from "../inputs/LivestockUnitPositionCreateNestedOneWithoutPaddockInput";
 
 @TypeGraphQL.InputType("PaddockCreateWithoutGrazeInput", {
   isAbstract: true
@@ -22,4 +23,14 @@ export class PaddockCreateWithoutGrazeInput {
     nullable: true
   })
   polygon?: GeoPointCreateNestedManyWithoutPaddockInput | undefined;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+    nullable: false
+  })
+  areaHa!: number;
+
+  @TypeGraphQL.Field(_type => LivestockUnitPositionCreateNestedOneWithoutPaddockInput, {
+    nullable: false
+  })
+  livestockUnitPosition!: LivestockUnitPositionCreateNestedOneWithoutPaddockInput;
 }

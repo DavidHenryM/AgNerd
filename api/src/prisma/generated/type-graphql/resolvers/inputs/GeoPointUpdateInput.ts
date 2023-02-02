@@ -3,6 +3,7 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { FloatFieldUpdateOperationsInput } from "../inputs/FloatFieldUpdateOperationsInput";
+import { LivestockUnitPositionUpdateOneRequiredWithoutLocationNestedInput } from "../inputs/LivestockUnitPositionUpdateOneRequiredWithoutLocationNestedInput";
 import { PaddockUpdateOneRequiredWithoutPolygonNestedInput } from "../inputs/PaddockUpdateOneRequiredWithoutPolygonNestedInput";
 
 @TypeGraphQL.InputType("GeoPointUpdateInput", {
@@ -23,4 +24,9 @@ export class GeoPointUpdateInput {
     nullable: true
   })
   paddock?: PaddockUpdateOneRequiredWithoutPolygonNestedInput | undefined;
+
+  @TypeGraphQL.Field(_type => LivestockUnitPositionUpdateOneRequiredWithoutLocationNestedInput, {
+    nullable: true
+  })
+  livestockUnitPosition?: LivestockUnitPositionUpdateOneRequiredWithoutLocationNestedInput | undefined;
 }

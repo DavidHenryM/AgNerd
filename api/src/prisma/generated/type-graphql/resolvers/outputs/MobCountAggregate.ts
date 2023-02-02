@@ -15,6 +15,11 @@ export class MobCountAggregate {
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false
   })
+  name!: number;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: false
+  })
   comment!: number;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {

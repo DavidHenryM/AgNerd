@@ -4,12 +4,19 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { BoolFilter } from "../inputs/BoolFilter";
 import { BreedRelationFilter } from "../inputs/BreedRelationFilter";
+import { ChemicalTreatmentListRelationFilter } from "../inputs/ChemicalTreatmentListRelationFilter";
 import { DateTimeFilter } from "../inputs/DateTimeFilter";
 import { EnumSexFilter } from "../inputs/EnumSexFilter";
+import { EnumStockClassFilter } from "../inputs/EnumStockClassFilter";
+import { FloatFilter } from "../inputs/FloatFilter";
+import { IntFilter } from "../inputs/IntFilter";
 import { LivestockUnitRelationFilter } from "../inputs/LivestockUnitRelationFilter";
 import { MobRelationFilter } from "../inputs/MobRelationFilter";
+import { PregnancyListRelationFilter } from "../inputs/PregnancyListRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
 import { StringNullableFilter } from "../inputs/StringNullableFilter";
+import { StringNullableListFilter } from "../inputs/StringNullableListFilter";
+import { VisualIdRelationFilter } from "../inputs/VisualIdRelationFilter";
 import { WeightRecordListRelationFilter } from "../inputs/WeightRecordListRelationFilter";
 
 @TypeGraphQL.InputType("LivestockUnitWhereInput", {
@@ -40,6 +47,16 @@ export class LivestockUnitWhereInput {
     nullable: true
   })
   nlisid?: StringNullableFilter | undefined;
+
+  @TypeGraphQL.Field(_type => VisualIdRelationFilter, {
+    nullable: true
+  })
+  visualid?: VisualIdRelationFilter | undefined;
+
+  @TypeGraphQL.Field(_type => EnumStockClassFilter, {
+    nullable: true
+  })
+  class?: EnumStockClassFilter | undefined;
 
   @TypeGraphQL.Field(_type => BreedRelationFilter, {
     nullable: true
@@ -94,10 +111,35 @@ export class LivestockUnitWhereInput {
   @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
-  livestockUnitId?: StringFilter | undefined;
+  mobId?: StringFilter | undefined;
+
+  @TypeGraphQL.Field(_type => PregnancyListRelationFilter, {
+    nullable: true
+  })
+  pregnancy?: PregnancyListRelationFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringNullableListFilter, {
+    nullable: true
+  })
+  pregnancyId?: StringNullableListFilter | undefined;
 
   @TypeGraphQL.Field(_type => WeightRecordListRelationFilter, {
     nullable: true
   })
   weights?: WeightRecordListRelationFilter | undefined;
+
+  @TypeGraphQL.Field(_type => ChemicalTreatmentListRelationFilter, {
+    nullable: true
+  })
+  treatments?: ChemicalTreatmentListRelationFilter | undefined;
+
+  @TypeGraphQL.Field(_type => IntFilter, {
+    nullable: true
+  })
+  drySheepEquivalent?: IntFilter | undefined;
+
+  @TypeGraphQL.Field(_type => FloatFilter, {
+    nullable: true
+  })
+  purchasePrice?: FloatFilter | undefined;
 }

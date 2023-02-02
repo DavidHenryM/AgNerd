@@ -20,7 +20,7 @@ export class GroupByPaddockArgs {
   @TypeGraphQL.Field(_type => [PaddockScalarFieldEnum], {
     nullable: false
   })
-  by!: Array<"id" | "name">;
+  by!: Array<"id" | "name" | "areaHa" | "livestockUnitPositionId">;
 
   @TypeGraphQL.Field(_type => PaddockScalarWhereWithAggregatesInput, {
     nullable: true

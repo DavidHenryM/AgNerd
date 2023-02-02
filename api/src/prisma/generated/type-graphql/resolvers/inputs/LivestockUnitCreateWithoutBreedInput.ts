@@ -2,11 +2,16 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
+import { ChemicalTreatmentCreateNestedManyWithoutLiveStockUnitInput } from "../inputs/ChemicalTreatmentCreateNestedManyWithoutLiveStockUnitInput";
 import { LivestockUnitCreateNestedOneWithoutDamInput } from "../inputs/LivestockUnitCreateNestedOneWithoutDamInput";
 import { LivestockUnitCreateNestedOneWithoutSireInput } from "../inputs/LivestockUnitCreateNestedOneWithoutSireInput";
+import { LivestockUnitCreatepregnancyIdInput } from "../inputs/LivestockUnitCreatepregnancyIdInput";
 import { MobCreateNestedOneWithoutMembersInput } from "../inputs/MobCreateNestedOneWithoutMembersInput";
+import { PregnancyCreateNestedManyWithoutParentsInput } from "../inputs/PregnancyCreateNestedManyWithoutParentsInput";
+import { VisualIdCreateNestedOneWithoutLivestockUnitInput } from "../inputs/VisualIdCreateNestedOneWithoutLivestockUnitInput";
 import { WeightRecordCreateNestedManyWithoutLivestockUnitInput } from "../inputs/WeightRecordCreateNestedManyWithoutLivestockUnitInput";
 import { Sex } from "../../enums/Sex";
+import { StockClass } from "../../enums/StockClass";
 
 @TypeGraphQL.InputType("LivestockUnitCreateWithoutBreedInput", {
   isAbstract: true
@@ -21,6 +26,16 @@ export class LivestockUnitCreateWithoutBreedInput {
     nullable: true
   })
   nlisid?: string | undefined;
+
+  @TypeGraphQL.Field(_type => VisualIdCreateNestedOneWithoutLivestockUnitInput, {
+    nullable: true
+  })
+  visualid?: VisualIdCreateNestedOneWithoutLivestockUnitInput | undefined;
+
+  @TypeGraphQL.Field(_type => StockClass, {
+    nullable: false
+  })
+  class!: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY";
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true
@@ -62,8 +77,33 @@ export class LivestockUnitCreateWithoutBreedInput {
   })
   mob!: MobCreateNestedOneWithoutMembersInput;
 
+  @TypeGraphQL.Field(_type => PregnancyCreateNestedManyWithoutParentsInput, {
+    nullable: true
+  })
+  pregnancy?: PregnancyCreateNestedManyWithoutParentsInput | undefined;
+
+  @TypeGraphQL.Field(_type => LivestockUnitCreatepregnancyIdInput, {
+    nullable: true
+  })
+  pregnancyId?: LivestockUnitCreatepregnancyIdInput | undefined;
+
   @TypeGraphQL.Field(_type => WeightRecordCreateNestedManyWithoutLivestockUnitInput, {
     nullable: true
   })
   weights?: WeightRecordCreateNestedManyWithoutLivestockUnitInput | undefined;
+
+  @TypeGraphQL.Field(_type => ChemicalTreatmentCreateNestedManyWithoutLiveStockUnitInput, {
+    nullable: true
+  })
+  treatments?: ChemicalTreatmentCreateNestedManyWithoutLiveStockUnitInput | undefined;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: true
+  })
+  drySheepEquivalent?: number | undefined;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+    nullable: true
+  })
+  purchasePrice?: number | undefined;
 }

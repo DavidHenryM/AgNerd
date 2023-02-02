@@ -17,4 +17,14 @@ export class PaddockCountOrderByAggregateInput {
     nullable: true
   })
   name?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  areaHa?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  livestockUnitPositionId?: "asc" | "desc" | undefined;
 }

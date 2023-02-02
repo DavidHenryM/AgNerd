@@ -2,6 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../scalars";
+import { LivestockUnitPosition } from "../models/LivestockUnitPosition";
 import { Paddock } from "../models/Paddock";
 
 @TypeGraphQL.ObjectType("GeoPoint", {
@@ -29,4 +30,11 @@ export class GeoPoint {
     nullable: false
   })
   paddockId!: string;
+
+  livestockUnitPosition?: LivestockUnitPosition;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  livestockUnitPositionId!: string;
 }

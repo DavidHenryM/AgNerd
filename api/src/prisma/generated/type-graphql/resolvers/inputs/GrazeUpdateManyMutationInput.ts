@@ -5,6 +5,7 @@ import { DecimalJSScalar } from "../../scalars";
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
 import { GrazeUpdatemobIdsInput } from "../inputs/GrazeUpdatemobIdsInput";
 import { NullableDateTimeFieldUpdateOperationsInput } from "../inputs/NullableDateTimeFieldUpdateOperationsInput";
+import { NullableFloatFieldUpdateOperationsInput } from "../inputs/NullableFloatFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("GrazeUpdateManyMutationInput", {
   isAbstract: true
@@ -24,4 +25,9 @@ export class GrazeUpdateManyMutationInput {
     nullable: true
   })
   mobIds?: GrazeUpdatemobIdsInput | undefined;
+
+  @TypeGraphQL.Field(_type => NullableFloatFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  dseDaysPerHectare?: NullableFloatFieldUpdateOperationsInput | undefined;
 }

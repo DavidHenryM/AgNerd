@@ -29,13 +29,13 @@ export class WeightRecordOrderByWithRelationInput {
   })
   method?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
-  })
-  livestockunitId?: "asc" | "desc" | undefined;
-
   @TypeGraphQL.Field(_type => LivestockUnitOrderByWithRelationInput, {
     nullable: true
   })
   livestockUnit?: LivestockUnitOrderByWithRelationInput | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  livestockUnitId?: "asc" | "desc" | undefined;
 }

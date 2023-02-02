@@ -20,7 +20,7 @@ export class GroupByMobArgs {
   @TypeGraphQL.Field(_type => [MobScalarFieldEnum], {
     nullable: false
   })
-  by!: Array<"id" | "comment" | "grazeIds">;
+  by!: Array<"id" | "name" | "comment" | "grazeIds">;
 
   @TypeGraphQL.Field(_type => MobScalarWhereWithAggregatesInput, {
     nullable: true

@@ -5,7 +5,6 @@ import { DecimalJSScalar } from "../../scalars";
 import { EnumStockClassFilter } from "../inputs/EnumStockClassFilter";
 import { LivestockUnitRelationFilter } from "../inputs/LivestockUnitRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
-import { StringNullableFilter } from "../inputs/StringNullableFilter";
 
 @TypeGraphQL.InputType("BreedWhereInput", {
   isAbstract: true
@@ -46,8 +45,8 @@ export class BreedWhereInput {
   })
   members?: LivestockUnitRelationFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableFilter, {
+  @TypeGraphQL.Field(_type => StringFilter, {
     nullable: true
   })
-  memberId?: StringNullableFilter | undefined;
+  livestockUnitId?: StringFilter | undefined;
 }

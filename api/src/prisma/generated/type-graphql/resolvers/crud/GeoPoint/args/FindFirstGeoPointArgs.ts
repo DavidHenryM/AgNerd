@@ -35,5 +35,5 @@ export class FindFirstGeoPointArgs {
   @TypeGraphQL.Field(_type => [GeoPointScalarFieldEnum], {
     nullable: true
   })
-  distinct?: Array<"id" | "latitude" | "longitude" | "paddockId"> | undefined;
+  distinct?: Array<"id" | "latitude" | "longitude" | "paddockId" | "livestockUnitPositionId"> | undefined;
 }

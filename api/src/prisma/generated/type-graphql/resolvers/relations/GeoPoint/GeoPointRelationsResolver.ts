@@ -1,5 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
 import { GeoPoint } from "../../../models/GeoPoint";
+import { LivestockUnitPosition } from "../../../models/LivestockUnitPosition";
 import { Paddock } from "../../../models/Paddock";
 import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
@@ -14,5 +15,16 @@ export class GeoPointRelationsResolver {
         id: geoPoint.id,
       },
     }).paddock({});
+  }
+
+  @TypeGraphQL.FieldResolver(_type => LivestockUnitPosition, {
+    nullable: false
+  })
+  async livestockUnitPosition(@TypeGraphQL.Root() geoPoint: GeoPoint, @TypeGraphQL.Ctx() ctx: any): Promise<LivestockUnitPosition> {
+    return getPrismaFromContext(ctx).geoPoint.findUnique({
+      where: {
+        id: geoPoint.id,
+      },
+    }).livestockUnitPosition({});
   }
 }

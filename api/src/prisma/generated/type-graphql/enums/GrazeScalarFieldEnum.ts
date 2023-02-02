@@ -5,7 +5,8 @@ export enum GrazeScalarFieldEnum {
   startDatetime = "startDatetime",
   endDateTime = "endDateTime",
   paddockId = "paddockId",
-  mobIds = "mobIds"
+  mobIds = "mobIds",
+  dseDaysPerHectare = "dseDaysPerHectare"
 }
 TypeGraphQL.registerEnumType(GrazeScalarFieldEnum, {
   name: "GrazeScalarFieldEnum",

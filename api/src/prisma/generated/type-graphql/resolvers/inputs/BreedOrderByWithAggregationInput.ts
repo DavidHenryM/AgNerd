@@ -29,7 +29,7 @@ export class BreedOrderByWithAggregationInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  memberId?: "asc" | "desc" | undefined;
+  livestockUnitId?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => BreedCountOrderByAggregateInput, {
     nullable: true

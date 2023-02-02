@@ -20,7 +20,7 @@ export class GroupByGrazeArgs {
   @TypeGraphQL.Field(_type => [GrazeScalarFieldEnum], {
     nullable: false
   })
-  by!: Array<"id" | "startDatetime" | "endDateTime" | "paddockId" | "mobIds">;
+  by!: Array<"id" | "startDatetime" | "endDateTime" | "paddockId" | "mobIds" | "dseDaysPerHectare">;
 
   @TypeGraphQL.Field(_type => GrazeScalarWhereWithAggregatesInput, {
     nullable: true

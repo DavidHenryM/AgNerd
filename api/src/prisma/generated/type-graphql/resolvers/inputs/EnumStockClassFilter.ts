@@ -12,17 +12,17 @@ export class EnumStockClassFilter {
   @TypeGraphQL.Field(_type => StockClass, {
     nullable: true
   })
-  equals?: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "CHICKEN" | "DUCK" | "TURKEY" | undefined;
+  equals?: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY" | undefined;
 
   @TypeGraphQL.Field(_type => [StockClass], {
     nullable: true
   })
-  in?: Array<"CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "CHICKEN" | "DUCK" | "TURKEY"> | undefined;
+  in?: Array<"CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY"> | undefined;
 
   @TypeGraphQL.Field(_type => [StockClass], {
     nullable: true
   })
-  notIn?: Array<"CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "CHICKEN" | "DUCK" | "TURKEY"> | undefined;
+  notIn?: Array<"CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY"> | undefined;
 
   @TypeGraphQL.Field(_type => NestedEnumStockClassFilter, {
     nullable: true

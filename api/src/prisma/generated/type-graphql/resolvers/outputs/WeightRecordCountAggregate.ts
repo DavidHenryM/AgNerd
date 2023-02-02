@@ -30,7 +30,7 @@ export class WeightRecordCountAggregate {
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false
   })
-  livestockunitId!: number;
+  livestockUnitId!: number;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false

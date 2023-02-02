@@ -2,8 +2,10 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
+import { FloatFilter } from "../inputs/FloatFilter";
 import { GeoPointListRelationFilter } from "../inputs/GeoPointListRelationFilter";
 import { GrazeListRelationFilter } from "../inputs/GrazeListRelationFilter";
+import { LivestockUnitPositionRelationFilter } from "../inputs/LivestockUnitPositionRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
 
 @TypeGraphQL.InputType("PaddockWhereInput", {
@@ -40,8 +42,23 @@ export class PaddockWhereInput {
   })
   polygon?: GeoPointListRelationFilter | undefined;
 
+  @TypeGraphQL.Field(_type => FloatFilter, {
+    nullable: true
+  })
+  areaHa?: FloatFilter | undefined;
+
   @TypeGraphQL.Field(_type => GrazeListRelationFilter, {
     nullable: true
   })
   graze?: GrazeListRelationFilter | undefined;
+
+  @TypeGraphQL.Field(_type => LivestockUnitPositionRelationFilter, {
+    nullable: true
+  })
+  livestockUnitPosition?: LivestockUnitPositionRelationFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true
+  })
+  livestockUnitPositionId?: StringFilter | undefined;
 }

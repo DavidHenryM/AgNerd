@@ -5,6 +5,7 @@ import { DecimalJSScalar } from "../../scalars";
 import { GrazeListRelationFilter } from "../inputs/GrazeListRelationFilter";
 import { LivestockUnitListRelationFilter } from "../inputs/LivestockUnitListRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
+import { StringNullableFilter } from "../inputs/StringNullableFilter";
 import { StringNullableListFilter } from "../inputs/StringNullableListFilter";
 
 @TypeGraphQL.InputType("MobWhereInput", {
@@ -31,15 +32,20 @@ export class MobWhereInput {
   })
   id?: StringFilter | undefined;
 
+  @TypeGraphQL.Field(_type => StringNullableFilter, {
+    nullable: true
+  })
+  name?: StringNullableFilter | undefined;
+
   @TypeGraphQL.Field(_type => LivestockUnitListRelationFilter, {
     nullable: true
   })
   members?: LivestockUnitListRelationFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
+  @TypeGraphQL.Field(_type => StringNullableFilter, {
     nullable: true
   })
-  comment?: StringFilter | undefined;
+  comment?: StringNullableFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringNullableListFilter, {
     nullable: true

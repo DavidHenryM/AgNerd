@@ -35,5 +35,5 @@ export class FindManyBreedArgs {
   @TypeGraphQL.Field(_type => [BreedScalarFieldEnum], {
     nullable: true
   })
-  distinct?: Array<"id" | "name" | "class" | "memberId"> | undefined;
+  distinct?: Array<"id" | "name" | "class" | "livestockUnitId"> | undefined;
 }

@@ -5,7 +5,7 @@ export enum WeightRecordScalarFieldEnum {
   weight = "weight",
   dateMeasured = "dateMeasured",
   method = "method",
-  livestockunitId = "livestockunitId"
+  livestockUnitId = "livestockUnitId"
 }
 TypeGraphQL.registerEnumType(WeightRecordScalarFieldEnum, {
   name: "WeightRecordScalarFieldEnum",

@@ -4,21 +4,26 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { LivestockUnitUpdateManyWithoutMobNestedInput } from "../inputs/LivestockUnitUpdateManyWithoutMobNestedInput";
 import { MobUpdategrazeIdsInput } from "../inputs/MobUpdategrazeIdsInput";
-import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
+import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("MobUpdateWithoutGrazeInput", {
   isAbstract: true
 })
 export class MobUpdateWithoutGrazeInput {
+  @TypeGraphQL.Field(_type => NullableStringFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  name?: NullableStringFieldUpdateOperationsInput | undefined;
+
   @TypeGraphQL.Field(_type => LivestockUnitUpdateManyWithoutMobNestedInput, {
     nullable: true
   })
   members?: LivestockUnitUpdateManyWithoutMobNestedInput | undefined;
 
-  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
+  @TypeGraphQL.Field(_type => NullableStringFieldUpdateOperationsInput, {
     nullable: true
   })
-  comment?: StringFieldUpdateOperationsInput | undefined;
+  comment?: NullableStringFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => MobUpdategrazeIdsInput, {
     nullable: true

@@ -16,4 +16,14 @@ export class PaddockMaxAggregate {
     nullable: true
   })
   name!: string | null;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+    nullable: true
+  })
+  areaHa!: number | null;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  livestockUnitPositionId!: string | null;
 }

@@ -3,7 +3,10 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { BreedOrderByWithRelationInput } from "../inputs/BreedOrderByWithRelationInput";
+import { ChemicalTreatmentOrderByRelationAggregateInput } from "../inputs/ChemicalTreatmentOrderByRelationAggregateInput";
 import { MobOrderByWithRelationInput } from "../inputs/MobOrderByWithRelationInput";
+import { PregnancyOrderByRelationAggregateInput } from "../inputs/PregnancyOrderByRelationAggregateInput";
+import { VisualIdOrderByWithRelationInput } from "../inputs/VisualIdOrderByWithRelationInput";
 import { WeightRecordOrderByRelationAggregateInput } from "../inputs/WeightRecordOrderByRelationAggregateInput";
 import { SortOrder } from "../../enums/SortOrder";
 
@@ -20,6 +23,16 @@ export class LivestockUnitOrderByWithRelationInput {
     nullable: true
   })
   nlisid?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => VisualIdOrderByWithRelationInput, {
+    nullable: true
+  })
+  visualid?: VisualIdOrderByWithRelationInput | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  class?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => BreedOrderByWithRelationInput, {
     nullable: true
@@ -74,10 +87,35 @@ export class LivestockUnitOrderByWithRelationInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  livestockUnitId?: "asc" | "desc" | undefined;
+  mobId?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => PregnancyOrderByRelationAggregateInput, {
+    nullable: true
+  })
+  pregnancy?: PregnancyOrderByRelationAggregateInput | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  pregnancyId?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => WeightRecordOrderByRelationAggregateInput, {
     nullable: true
   })
   weights?: WeightRecordOrderByRelationAggregateInput | undefined;
+
+  @TypeGraphQL.Field(_type => ChemicalTreatmentOrderByRelationAggregateInput, {
+    nullable: true
+  })
+  treatments?: ChemicalTreatmentOrderByRelationAggregateInput | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  drySheepEquivalent?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  purchasePrice?: "asc" | "desc" | undefined;
 }

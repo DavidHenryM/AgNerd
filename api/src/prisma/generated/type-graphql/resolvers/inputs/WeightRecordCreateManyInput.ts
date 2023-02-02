@@ -31,5 +31,5 @@ export class WeightRecordCreateManyInput {
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  livestockunitId!: string;
+  livestockUnitId!: string;
 }

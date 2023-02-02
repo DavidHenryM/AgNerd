@@ -11,4 +11,9 @@ export class WeightRecordWhereUniqueInput {
     nullable: true
   })
   id?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  livestockUnitId?: string | undefined;
 }

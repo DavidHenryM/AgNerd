@@ -35,5 +35,5 @@ export class FindFirstPaddockArgs {
   @TypeGraphQL.Field(_type => [PaddockScalarFieldEnum], {
     nullable: true
   })
-  distinct?: Array<"id" | "name"> | undefined;
+  distinct?: Array<"id" | "name" | "areaHa" | "livestockUnitPositionId"> | undefined;
 }

@@ -3,6 +3,7 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { FloatFilter } from "../inputs/FloatFilter";
+import { LivestockUnitPositionRelationFilter } from "../inputs/LivestockUnitPositionRelationFilter";
 import { PaddockRelationFilter } from "../inputs/PaddockRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
 
@@ -49,4 +50,14 @@ export class GeoPointWhereInput {
     nullable: true
   })
   paddockId?: StringFilter | undefined;
+
+  @TypeGraphQL.Field(_type => LivestockUnitPositionRelationFilter, {
+    nullable: true
+  })
+  livestockUnitPosition?: LivestockUnitPositionRelationFilter | undefined;
+
+  @TypeGraphQL.Field(_type => StringFilter, {
+    nullable: true
+  })
+  livestockUnitPositionId?: StringFilter | undefined;
 }

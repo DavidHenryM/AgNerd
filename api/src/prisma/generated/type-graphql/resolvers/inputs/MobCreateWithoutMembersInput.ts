@@ -15,9 +15,14 @@ export class MobCreateWithoutMembersInput {
   id?: string | undefined;
 
   @TypeGraphQL.Field(_type => String, {
-    nullable: false
+    nullable: true
   })
-  comment!: string;
+  name?: string | undefined;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  comment?: string | undefined;
 
   @TypeGraphQL.Field(_type => MobCreategrazeIdsInput, {
     nullable: true

@@ -26,4 +26,9 @@ export class GeoPointCreateManyInput {
     nullable: false
   })
   paddockId!: string;
+
+  @TypeGraphQL.Field(_type => String, {
+    nullable: false
+  })
+  livestockUnitPositionId!: string;
 }

@@ -44,4 +44,9 @@ export class GrazeOrderByWithRelationInput {
     nullable: true
   })
   mob?: MobOrderByRelationAggregateInput | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  dseDaysPerHectare?: "asc" | "desc" | undefined;
 }

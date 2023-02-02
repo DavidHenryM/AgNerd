@@ -35,5 +35,5 @@ export class FindManyLivestockUnitArgs {
   @TypeGraphQL.Field(_type => [LivestockUnitScalarFieldEnum], {
     nullable: true
   })
-  distinct?: Array<"id" | "nlisid" | "name" | "comment" | "sex" | "birthdate" | "desexed" | "parentId" | "livestockUnitId"> | undefined;
+  distinct?: Array<"id" | "nlisid" | "class" | "name" | "comment" | "sex" | "birthdate" | "desexed" | "parentId" | "mobId" | "pregnancyId" | "drySheepEquivalent" | "purchasePrice"> | undefined;
 }

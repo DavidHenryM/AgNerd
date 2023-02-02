@@ -5,21 +5,26 @@ import { DecimalJSScalar } from "../../scalars";
 import { GrazeUpdateManyWithoutMobNestedInput } from "../inputs/GrazeUpdateManyWithoutMobNestedInput";
 import { LivestockUnitUpdateManyWithoutMobNestedInput } from "../inputs/LivestockUnitUpdateManyWithoutMobNestedInput";
 import { MobUpdategrazeIdsInput } from "../inputs/MobUpdategrazeIdsInput";
-import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
+import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("MobUpdateInput", {
   isAbstract: true
 })
 export class MobUpdateInput {
+  @TypeGraphQL.Field(_type => NullableStringFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  name?: NullableStringFieldUpdateOperationsInput | undefined;
+
   @TypeGraphQL.Field(_type => LivestockUnitUpdateManyWithoutMobNestedInput, {
     nullable: true
   })
   members?: LivestockUnitUpdateManyWithoutMobNestedInput | undefined;
 
-  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
+  @TypeGraphQL.Field(_type => NullableStringFieldUpdateOperationsInput, {
     nullable: true
   })
-  comment?: StringFieldUpdateOperationsInput | undefined;
+  comment?: NullableStringFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => MobUpdategrazeIdsInput, {
     nullable: true

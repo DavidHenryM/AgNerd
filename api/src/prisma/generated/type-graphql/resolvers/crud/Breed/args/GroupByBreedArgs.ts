@@ -20,7 +20,7 @@ export class GroupByBreedArgs {
   @TypeGraphQL.Field(_type => [BreedScalarFieldEnum], {
     nullable: false
   })
-  by!: Array<"id" | "name" | "class" | "memberId">;
+  by!: Array<"id" | "name" | "class" | "livestockUnitId">;
 
   @TypeGraphQL.Field(_type => BreedScalarWhereWithAggregatesInput, {
     nullable: true

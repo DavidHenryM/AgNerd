@@ -3,9 +3,13 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../scalars";
 import { Breed } from "../models/Breed";
+import { ChemicalTreatment } from "../models/ChemicalTreatment";
 import { Mob } from "../models/Mob";
+import { Pregnancy } from "../models/Pregnancy";
+import { VisualId } from "../models/VisualId";
 import { WeightRecord } from "../models/WeightRecord";
 import { Sex } from "../enums/Sex";
+import { StockClass } from "../enums/StockClass";
 import { LivestockUnitCount } from "../resolvers/outputs/LivestockUnitCount";
 
 @TypeGraphQL.ObjectType("LivestockUnit", {
@@ -21,6 +25,13 @@ export class LivestockUnit {
     nullable: true
   })
   nlisid?: string | null;
+
+  visualid?: VisualId | null;
+
+  @TypeGraphQL.Field(_type => StockClass, {
+    nullable: false
+  })
+  class!: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY";
 
   breed?: Breed | null;
 
@@ -63,9 +74,28 @@ export class LivestockUnit {
   @TypeGraphQL.Field(_type => String, {
     nullable: false
   })
-  livestockUnitId!: string;
+  mobId!: string;
+
+  pregnancy?: Pregnancy[];
+
+  @TypeGraphQL.Field(_type => [String], {
+    nullable: false
+  })
+  pregnancyId!: string[];
 
   weights?: WeightRecord[];
+
+  treatments?: ChemicalTreatment[];
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
+    nullable: false
+  })
+  drySheepEquivalent!: number;
+
+  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
+    nullable: false
+  })
+  purchasePrice!: number;
 
   @TypeGraphQL.Field(_type => LivestockUnitCount, {
     nullable: true

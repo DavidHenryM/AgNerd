@@ -15,12 +15,17 @@ export class Mob {
   })
   id!: string;
 
+  @TypeGraphQL.Field(_type => String, {
+    nullable: true
+  })
+  name?: string | null;
+
   members?: LivestockUnit[];
 
   @TypeGraphQL.Field(_type => String, {
-    nullable: false
+    nullable: true
   })
-  comment!: string;
+  comment?: string | null;
 
   @TypeGraphQL.Field(_type => [String], {
     nullable: false
