@@ -42,8 +42,9 @@ model Breed {
 
 model Mob {
   id       String          @id @default(auto()) @map("_id") @db.ObjectId
+  name     String?
   members  LivestockUnit[]
-  comment  String
+  comment  String?
   grazeIds String[]        @db.ObjectId
   graze    Graze[]         @relation(fields: [grazeIds], references: [id])
 }
