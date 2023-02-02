@@ -1,0 +1,12 @@
+export { AggregateVisualIdArgs } from "./AggregateVisualIdArgs";
+export { CreateManyVisualIdArgs } from "./CreateManyVisualIdArgs";
+export { CreateOneVisualIdArgs } from "./CreateOneVisualIdArgs";
+export { DeleteManyVisualIdArgs } from "./DeleteManyVisualIdArgs";
+export { DeleteOneVisualIdArgs } from "./DeleteOneVisualIdArgs";
+export { FindFirstVisualIdArgs } from "./FindFirstVisualIdArgs";
+export { FindManyVisualIdArgs } from "./FindManyVisualIdArgs";
+export { FindUniqueVisualIdArgs } from "./FindUniqueVisualIdArgs";
+export { GroupByVisualIdArgs } from "./GroupByVisualIdArgs";
+export { UpdateManyVisualIdArgs } from "./UpdateManyVisualIdArgs";
+export { UpdateOneVisualIdArgs } from "./UpdateOneVisualIdArgs";
+export { UpsertOneVisualIdArgs } from "./UpsertOneVisualIdArgs";

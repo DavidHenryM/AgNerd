@@ -1,0 +1,12 @@
+export { AggregatePregnancyTestArgs } from "./AggregatePregnancyTestArgs";
+export { CreateManyPregnancyTestArgs } from "./CreateManyPregnancyTestArgs";
+export { CreateOnePregnancyTestArgs } from "./CreateOnePregnancyTestArgs";
+export { DeleteManyPregnancyTestArgs } from "./DeleteManyPregnancyTestArgs";
+export { DeleteOnePregnancyTestArgs } from "./DeleteOnePregnancyTestArgs";
+export { FindFirstPregnancyTestArgs } from "./FindFirstPregnancyTestArgs";
+export { FindManyPregnancyTestArgs } from "./FindManyPregnancyTestArgs";
+export { FindUniquePregnancyTestArgs } from "./FindUniquePregnancyTestArgs";
+export { GroupByPregnancyTestArgs } from "./GroupByPregnancyTestArgs";
+export { UpdateManyPregnancyTestArgs } from "./UpdateManyPregnancyTestArgs";
+export { UpdateOnePregnancyTestArgs } from "./UpdateOnePregnancyTestArgs";
+export { UpsertOnePregnancyTestArgs } from "./UpsertOnePregnancyTestArgs";
