@@ -3,23 +3,26 @@
   "scripts": {
     "start": "ts-node --transpile-only ./src/index.ts",
     "generate": "prisma generate --schema ./src/prisma/schema.prisma",
+    "format": "prisma format --schema ./src/prisma/schema.prisma",
     "seed": "ts-node --transpile-only ./src/prisma/seed.ts"
-  },
-  "dependencies": {
-    "@prisma/client": "4.1",
-    "@types/graphql-fields": "^1.3.4",
-    "apollo-server": "^3.10.0",
-    "graphql": "^15.8.0",
-    "graphql-fields": "^2.0.3",
-    "graphql-scalars": "^1.17.0",
-    "reflect-metadata": "^0.1.13",
-    "type-graphql": "^1.1.1"
   },
   "devDependencies": {
     "@types/node": "^18.6.1",
-    "prisma": "4.1",
+    "prisma": "^4.15.0",
     "ts-node": "^10.9.1",
-    "typegraphql-prisma": "0.21.1",
+    "typegraphql-prisma": "^0.25.1",
     "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.15.0",
+    "@types/graphql-fields": "^1.3.5",
+    "apollo-server": "^3.12.0",
+    "class-validator": "^0.14.0",
+    "graphql": "^15.8.0",
+    "graphql-fields": "^2.0.3",
+    "graphql-scalars": "^1.22.1",
+    "reflect-metadata": "^0.1.13",
+    "tslib": "^2.5.2",
+    "type-graphql": "^1.1.1"
   }
 }

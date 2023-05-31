@@ -100,11 +100,9 @@ type AggregateUser {
 }
 
 type AggregateVisualId {
-  _avg: VisualIdAvgAggregate
   _count: VisualIdCountAggregate
   _max: VisualIdMaxAggregate
   _min: VisualIdMinAggregate
-  _sum: VisualIdSumAggregate
 }
 
 type AggregateWeightRecord {
@@ -142,7 +140,7 @@ input BoolWithAggregatesFilter {
 type Breed {
   class: StockClass!
   id: String!
-  livestockUnitId: String!
+  livestockUnitId: String
   members: LivestockUnit
   name: String!
 }
@@ -172,7 +170,7 @@ input BreedCreateInput {
 input BreedCreateManyInput {
   class: StockClass!
   id: String
-  livestockUnitId: String!
+  livestockUnitId: String
   name: String!
 }
 
@@ -199,7 +197,7 @@ type BreedGroupBy {
   _min: BreedMinAggregate
   class: StockClass!
   id: String!
-  livestockUnitId: String!
+  livestockUnitId: String
   name: String!
 }
 
@@ -267,7 +265,7 @@ input BreedScalarWhereWithAggregatesInput {
   OR: [BreedScalarWhereWithAggregatesInput!]
   class: EnumStockClassWithAggregatesFilter
   id: StringWithAggregatesFilter
-  livestockUnitId: StringWithAggregatesFilter
+  livestockUnitId: StringNullableWithAggregatesFilter
   name: StringWithAggregatesFilter
 }
 
@@ -308,7 +306,7 @@ input BreedWhereInput {
   OR: [BreedWhereInput!]
   class: EnumStockClassFilter
   id: StringFilter
-  livestockUnitId: StringFilter
+  livestockUnitId: StringNullableFilter
   members: LivestockUnitRelationFilter
   name: StringFilter
 }
@@ -1569,7 +1567,6 @@ input GrazeCreateInput {
   endDateTime: DateTime
   id: String
   mob: MobCreateNestedManyWithoutGrazeInput
-  mobIds: GrazeCreatemobIdsInput
   paddock: PaddockCreateNestedOneWithoutGrazeInput!
   startDatetime: DateTime!
 }
@@ -1622,7 +1619,6 @@ input GrazeCreateWithoutMobInput {
   dseDaysPerHectare: Float
   endDateTime: DateTime
   id: String
-  mobIds: GrazeCreatemobIdsInput
   paddock: PaddockCreateNestedOneWithoutGrazeInput!
   startDatetime: DateTime!
 }
@@ -1632,7 +1628,6 @@ input GrazeCreateWithoutPaddockInput {
   endDateTime: DateTime
   id: String
   mob: MobCreateNestedManyWithoutGrazeInput
-  mobIds: GrazeCreatemobIdsInput
   startDatetime: DateTime!
 }
 
@@ -1766,7 +1761,6 @@ input GrazeUpdateInput {
   dseDaysPerHectare: NullableFloatFieldUpdateOperationsInput
   endDateTime: NullableDateTimeFieldUpdateOperationsInput
   mob: MobUpdateManyWithoutGrazeNestedInput
-  mobIds: GrazeUpdatemobIdsInput
   paddock: PaddockUpdateOneRequiredWithoutGrazeNestedInput
   startDatetime: DateTimeFieldUpdateOperationsInput
 }
@@ -1774,7 +1768,6 @@ input GrazeUpdateInput {
 input GrazeUpdateManyMutationInput {
   dseDaysPerHectare: NullableFloatFieldUpdateOperationsInput
   endDateTime: NullableDateTimeFieldUpdateOperationsInput
-  mobIds: GrazeUpdatemobIdsInput
   startDatetime: DateTimeFieldUpdateOperationsInput
 }
 
@@ -1828,7 +1821,6 @@ input GrazeUpdateWithWhereUniqueWithoutPaddockInput {
 input GrazeUpdateWithoutMobInput {
   dseDaysPerHectare: NullableFloatFieldUpdateOperationsInput
   endDateTime: NullableDateTimeFieldUpdateOperationsInput
-  mobIds: GrazeUpdatemobIdsInput
   paddock: PaddockUpdateOneRequiredWithoutGrazeNestedInput
   startDatetime: DateTimeFieldUpdateOperationsInput
 }
@@ -1837,13 +1829,7 @@ input GrazeUpdateWithoutPaddockInput {
   dseDaysPerHectare: NullableFloatFieldUpdateOperationsInput
   endDateTime: NullableDateTimeFieldUpdateOperationsInput
   mob: MobUpdateManyWithoutGrazeNestedInput
-  mobIds: GrazeUpdatemobIdsInput
   startDatetime: DateTimeFieldUpdateOperationsInput
-}
-
-input GrazeUpdatemobIdsInput {
-  push: [String!]
-  set: [String!]
 }
 
 input GrazeUpsertWithWhereUniqueWithoutMobInput {
@@ -1896,35 +1882,6 @@ input IntFilter {
   notIn: [Int!]
 }
 
-input IntNullableFilter {
-  equals: Int
-  gt: Int
-  gte: Int
-  in: [Int!]
-  isSet: Boolean
-  lt: Int
-  lte: Int
-  not: NestedIntNullableFilter
-  notIn: [Int!]
-}
-
-input IntNullableWithAggregatesFilter {
-  _avg: NestedFloatNullableFilter
-  _count: NestedIntNullableFilter
-  _max: NestedIntNullableFilter
-  _min: NestedIntNullableFilter
-  _sum: NestedIntNullableFilter
-  equals: Int
-  gt: Int
-  gte: Int
-  in: [Int!]
-  isSet: Boolean
-  lt: Int
-  lte: Int
-  not: NestedIntNullableWithAggregatesFilter
-  notIn: [Int!]
-}
-
 input IntWithAggregatesFilter {
   _avg: NestedFloatFilter
   _count: NestedIntFilter
@@ -1958,6 +1915,7 @@ type LivestockUnit {
   parentId: String
   pregnancy(cursor: PregnancyWhereUniqueInput, distinct: [PregnancyScalarFieldEnum!], orderBy: [PregnancyOrderByWithRelationInput!], skip: Int, take: Int, where: PregnancyWhereInput): [Pregnancy!]!
   pregnancyId: [String!]!
+  purchaseDate: DateTime!
   purchasePrice: Float!
   sex: Sex!
   sire: LivestockUnit
@@ -1995,6 +1953,7 @@ type LivestockUnitCountAggregate {
   nlisid: Int!
   parentId: Int!
   pregnancyId: Int!
+  purchaseDate: Int!
   purchasePrice: Int!
   sex: Int!
 }
@@ -2011,6 +1970,7 @@ input LivestockUnitCountOrderByAggregateInput {
   nlisid: SortOrder
   parentId: SortOrder
   pregnancyId: SortOrder
+  purchaseDate: SortOrder
   purchasePrice: SortOrder
   sex: SortOrder
 }
@@ -2028,7 +1988,7 @@ input LivestockUnitCreateInput {
   name: String
   nlisid: String
   pregnancy: PregnancyCreateNestedManyWithoutParentsInput
-  pregnancyId: LivestockUnitCreatepregnancyIdInput
+  purchaseDate: DateTime!
   purchasePrice: Float
   sex: Sex!
   sire: LivestockUnitCreateNestedOneWithoutDamInput
@@ -2049,6 +2009,7 @@ input LivestockUnitCreateManyInput {
   nlisid: String
   parentId: String
   pregnancyId: LivestockUnitCreatepregnancyIdInput
+  purchaseDate: DateTime!
   purchasePrice: Float
   sex: Sex!
 }
@@ -2064,6 +2025,7 @@ input LivestockUnitCreateManyMobInput {
   nlisid: String
   parentId: String
   pregnancyId: LivestockUnitCreatepregnancyIdInput
+  purchaseDate: DateTime!
   purchasePrice: Float
   sex: Sex!
 }
@@ -2173,7 +2135,7 @@ input LivestockUnitCreateWithoutBreedInput {
   name: String
   nlisid: String
   pregnancy: PregnancyCreateNestedManyWithoutParentsInput
-  pregnancyId: LivestockUnitCreatepregnancyIdInput
+  purchaseDate: DateTime!
   purchasePrice: Float
   sex: Sex!
   sire: LivestockUnitCreateNestedOneWithoutDamInput
@@ -2194,7 +2156,7 @@ input LivestockUnitCreateWithoutDamInput {
   name: String
   nlisid: String
   pregnancy: PregnancyCreateNestedManyWithoutParentsInput
-  pregnancyId: LivestockUnitCreatepregnancyIdInput
+  purchaseDate: DateTime!
   purchasePrice: Float
   sex: Sex!
   sire: LivestockUnitCreateNestedOneWithoutDamInput
@@ -2215,7 +2177,7 @@ input LivestockUnitCreateWithoutMobInput {
   name: String
   nlisid: String
   pregnancy: PregnancyCreateNestedManyWithoutParentsInput
-  pregnancyId: LivestockUnitCreatepregnancyIdInput
+  purchaseDate: DateTime!
   purchasePrice: Float
   sex: Sex!
   sire: LivestockUnitCreateNestedOneWithoutDamInput
@@ -2236,7 +2198,7 @@ input LivestockUnitCreateWithoutPregnancyInput {
   mob: MobCreateNestedOneWithoutMembersInput!
   name: String
   nlisid: String
-  pregnancyId: LivestockUnitCreatepregnancyIdInput
+  purchaseDate: DateTime!
   purchasePrice: Float
   sex: Sex!
   sire: LivestockUnitCreateNestedOneWithoutDamInput
@@ -2258,7 +2220,7 @@ input LivestockUnitCreateWithoutSireInput {
   name: String
   nlisid: String
   pregnancy: PregnancyCreateNestedManyWithoutParentsInput
-  pregnancyId: LivestockUnitCreatepregnancyIdInput
+  purchaseDate: DateTime!
   purchasePrice: Float
   sex: Sex!
   treatments: ChemicalTreatmentCreateNestedManyWithoutLiveStockUnitInput
@@ -2279,7 +2241,7 @@ input LivestockUnitCreateWithoutTreatmentsInput {
   name: String
   nlisid: String
   pregnancy: PregnancyCreateNestedManyWithoutParentsInput
-  pregnancyId: LivestockUnitCreatepregnancyIdInput
+  purchaseDate: DateTime!
   purchasePrice: Float
   sex: Sex!
   sire: LivestockUnitCreateNestedOneWithoutDamInput
@@ -2300,7 +2262,7 @@ input LivestockUnitCreateWithoutVisualidInput {
   name: String
   nlisid: String
   pregnancy: PregnancyCreateNestedManyWithoutParentsInput
-  pregnancyId: LivestockUnitCreatepregnancyIdInput
+  purchaseDate: DateTime!
   purchasePrice: Float
   sex: Sex!
   sire: LivestockUnitCreateNestedOneWithoutDamInput
@@ -2321,7 +2283,7 @@ input LivestockUnitCreateWithoutWeightsInput {
   name: String
   nlisid: String
   pregnancy: PregnancyCreateNestedManyWithoutParentsInput
-  pregnancyId: LivestockUnitCreatepregnancyIdInput
+  purchaseDate: DateTime!
   purchasePrice: Float
   sex: Sex!
   sire: LivestockUnitCreateNestedOneWithoutDamInput
@@ -2350,6 +2312,7 @@ type LivestockUnitGroupBy {
   nlisid: String
   parentId: String
   pregnancyId: [String!]
+  purchaseDate: DateTime!
   purchasePrice: Float!
   sex: Sex!
 }
@@ -2371,6 +2334,7 @@ type LivestockUnitMaxAggregate {
   name: String
   nlisid: String
   parentId: String
+  purchaseDate: DateTime
   purchasePrice: Float
   sex: Sex
 }
@@ -2386,6 +2350,7 @@ input LivestockUnitMaxOrderByAggregateInput {
   name: SortOrder
   nlisid: SortOrder
   parentId: SortOrder
+  purchaseDate: SortOrder
   purchasePrice: SortOrder
   sex: SortOrder
 }
@@ -2401,6 +2366,7 @@ type LivestockUnitMinAggregate {
   name: String
   nlisid: String
   parentId: String
+  purchaseDate: DateTime
   purchasePrice: Float
   sex: Sex
 }
@@ -2416,6 +2382,7 @@ input LivestockUnitMinOrderByAggregateInput {
   name: SortOrder
   nlisid: SortOrder
   parentId: SortOrder
+  purchaseDate: SortOrder
   purchasePrice: SortOrder
   sex: SortOrder
 }
@@ -2441,6 +2408,7 @@ input LivestockUnitOrderByWithAggregationInput {
   nlisid: SortOrder
   parentId: SortOrder
   pregnancyId: SortOrder
+  purchaseDate: SortOrder
   purchasePrice: SortOrder
   sex: SortOrder
 }
@@ -2461,6 +2429,7 @@ input LivestockUnitOrderByWithRelationInput {
   parentId: SortOrder
   pregnancy: PregnancyOrderByRelationAggregateInput
   pregnancyId: SortOrder
+  purchaseDate: SortOrder
   purchasePrice: SortOrder
   sex: SortOrder
   sire: LivestockUnitOrderByWithRelationInput
@@ -2671,6 +2640,7 @@ enum LivestockUnitScalarFieldEnum {
   nlisid
   parentId
   pregnancyId
+  purchaseDate
   purchasePrice
   sex
 }
@@ -2690,6 +2660,7 @@ input LivestockUnitScalarWhereInput {
   nlisid: StringNullableFilter
   parentId: StringNullableFilter
   pregnancyId: StringNullableListFilter
+  purchaseDate: DateTimeFilter
   purchasePrice: FloatFilter
   sex: EnumSexFilter
 }
@@ -2709,6 +2680,7 @@ input LivestockUnitScalarWhereWithAggregatesInput {
   nlisid: StringNullableWithAggregatesFilter
   parentId: StringNullableWithAggregatesFilter
   pregnancyId: StringNullableListFilter
+  purchaseDate: DateTimeWithAggregatesFilter
   purchasePrice: FloatWithAggregatesFilter
   sex: EnumSexWithAggregatesFilter
 }
@@ -2735,7 +2707,7 @@ input LivestockUnitUpdateInput {
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
   pregnancy: PregnancyUpdateManyWithoutParentsNestedInput
-  pregnancyId: LivestockUnitUpdatepregnancyIdInput
+  purchaseDate: DateTimeFieldUpdateOperationsInput
   purchasePrice: FloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   sire: LivestockUnitUpdateOneWithoutDamNestedInput
@@ -2752,7 +2724,7 @@ input LivestockUnitUpdateManyMutationInput {
   drySheepEquivalent: IntFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
-  pregnancyId: LivestockUnitUpdatepregnancyIdInput
+  purchaseDate: DateTimeFieldUpdateOperationsInput
   purchasePrice: FloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
 }
@@ -2869,7 +2841,7 @@ input LivestockUnitUpdateWithoutBreedInput {
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
   pregnancy: PregnancyUpdateManyWithoutParentsNestedInput
-  pregnancyId: LivestockUnitUpdatepregnancyIdInput
+  purchaseDate: DateTimeFieldUpdateOperationsInput
   purchasePrice: FloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   sire: LivestockUnitUpdateOneWithoutDamNestedInput
@@ -2889,7 +2861,7 @@ input LivestockUnitUpdateWithoutDamInput {
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
   pregnancy: PregnancyUpdateManyWithoutParentsNestedInput
-  pregnancyId: LivestockUnitUpdatepregnancyIdInput
+  purchaseDate: DateTimeFieldUpdateOperationsInput
   purchasePrice: FloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   sire: LivestockUnitUpdateOneWithoutDamNestedInput
@@ -2909,7 +2881,7 @@ input LivestockUnitUpdateWithoutMobInput {
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
   pregnancy: PregnancyUpdateManyWithoutParentsNestedInput
-  pregnancyId: LivestockUnitUpdatepregnancyIdInput
+  purchaseDate: DateTimeFieldUpdateOperationsInput
   purchasePrice: FloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   sire: LivestockUnitUpdateOneWithoutDamNestedInput
@@ -2929,7 +2901,7 @@ input LivestockUnitUpdateWithoutPregnancyInput {
   mob: MobUpdateOneRequiredWithoutMembersNestedInput
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
-  pregnancyId: LivestockUnitUpdatepregnancyIdInput
+  purchaseDate: DateTimeFieldUpdateOperationsInput
   purchasePrice: FloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   sire: LivestockUnitUpdateOneWithoutDamNestedInput
@@ -2950,7 +2922,7 @@ input LivestockUnitUpdateWithoutSireInput {
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
   pregnancy: PregnancyUpdateManyWithoutParentsNestedInput
-  pregnancyId: LivestockUnitUpdatepregnancyIdInput
+  purchaseDate: DateTimeFieldUpdateOperationsInput
   purchasePrice: FloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   treatments: ChemicalTreatmentUpdateManyWithoutLiveStockUnitNestedInput
@@ -2970,7 +2942,7 @@ input LivestockUnitUpdateWithoutTreatmentsInput {
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
   pregnancy: PregnancyUpdateManyWithoutParentsNestedInput
-  pregnancyId: LivestockUnitUpdatepregnancyIdInput
+  purchaseDate: DateTimeFieldUpdateOperationsInput
   purchasePrice: FloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   sire: LivestockUnitUpdateOneWithoutDamNestedInput
@@ -2990,7 +2962,7 @@ input LivestockUnitUpdateWithoutVisualidInput {
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
   pregnancy: PregnancyUpdateManyWithoutParentsNestedInput
-  pregnancyId: LivestockUnitUpdatepregnancyIdInput
+  purchaseDate: DateTimeFieldUpdateOperationsInput
   purchasePrice: FloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   sire: LivestockUnitUpdateOneWithoutDamNestedInput
@@ -3010,17 +2982,12 @@ input LivestockUnitUpdateWithoutWeightsInput {
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
   pregnancy: PregnancyUpdateManyWithoutParentsNestedInput
-  pregnancyId: LivestockUnitUpdatepregnancyIdInput
+  purchaseDate: DateTimeFieldUpdateOperationsInput
   purchasePrice: FloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   sire: LivestockUnitUpdateOneWithoutDamNestedInput
   treatments: ChemicalTreatmentUpdateManyWithoutLiveStockUnitNestedInput
   visualid: VisualIdUpdateOneWithoutLivestockUnitNestedInput
-}
-
-input LivestockUnitUpdatepregnancyIdInput {
-  push: [String!]
-  set: [String!]
 }
 
 input LivestockUnitUpsertWithWhereUniqueWithoutMobInput {
@@ -3084,6 +3051,7 @@ input LivestockUnitWhereInput {
   parentId: StringNullableFilter
   pregnancy: PregnancyListRelationFilter
   pregnancyId: StringNullableListFilter
+  purchaseDate: DateTimeFilter
   purchasePrice: FloatFilter
   sex: EnumSexFilter
   sire: LivestockUnitRelationFilter
@@ -3354,7 +3322,6 @@ input MobCountOrderByAggregateInput {
 input MobCreateInput {
   comment: String
   graze: GrazeCreateNestedManyWithoutMobInput
-  grazeIds: MobCreategrazeIdsInput
   id: String
   members: LivestockUnitCreateNestedManyWithoutMobInput
   name: String
@@ -3391,7 +3358,6 @@ input MobCreateOrConnectWithoutMembersInput {
 
 input MobCreateWithoutGrazeInput {
   comment: String
-  grazeIds: MobCreategrazeIdsInput
   id: String
   members: LivestockUnitCreateNestedManyWithoutMobInput
   name: String
@@ -3400,7 +3366,6 @@ input MobCreateWithoutGrazeInput {
 input MobCreateWithoutMembersInput {
   comment: String
   graze: GrazeCreateNestedManyWithoutMobInput
-  grazeIds: MobCreategrazeIdsInput
   id: String
   name: String
 }
@@ -3507,14 +3472,12 @@ input MobScalarWhereWithAggregatesInput {
 input MobUpdateInput {
   comment: NullableStringFieldUpdateOperationsInput
   graze: GrazeUpdateManyWithoutMobNestedInput
-  grazeIds: MobUpdategrazeIdsInput
   members: LivestockUnitUpdateManyWithoutMobNestedInput
   name: NullableStringFieldUpdateOperationsInput
 }
 
 input MobUpdateManyMutationInput {
   comment: NullableStringFieldUpdateOperationsInput
-  grazeIds: MobUpdategrazeIdsInput
   name: NullableStringFieldUpdateOperationsInput
 }
 
@@ -3551,7 +3514,6 @@ input MobUpdateWithWhereUniqueWithoutGrazeInput {
 
 input MobUpdateWithoutGrazeInput {
   comment: NullableStringFieldUpdateOperationsInput
-  grazeIds: MobUpdategrazeIdsInput
   members: LivestockUnitUpdateManyWithoutMobNestedInput
   name: NullableStringFieldUpdateOperationsInput
 }
@@ -3559,13 +3521,7 @@ input MobUpdateWithoutGrazeInput {
 input MobUpdateWithoutMembersInput {
   comment: NullableStringFieldUpdateOperationsInput
   graze: GrazeUpdateManyWithoutMobNestedInput
-  grazeIds: MobUpdategrazeIdsInput
   name: NullableStringFieldUpdateOperationsInput
-}
-
-input MobUpdategrazeIdsInput {
-  push: [String!]
-  set: [String!]
 }
 
 input MobUpsertWithWhereUniqueWithoutGrazeInput {
@@ -3985,23 +3941,6 @@ input NestedIntNullableFilter {
   notIn: [Int!]
 }
 
-input NestedIntNullableWithAggregatesFilter {
-  _avg: NestedFloatNullableFilter
-  _count: NestedIntNullableFilter
-  _max: NestedIntNullableFilter
-  _min: NestedIntNullableFilter
-  _sum: NestedIntNullableFilter
-  equals: Int
-  gt: Int
-  gte: Int
-  in: [Int!]
-  isSet: Boolean
-  lt: Int
-  lte: Int
-  not: NestedIntNullableWithAggregatesFilter
-  notIn: [Int!]
-}
-
 input NestedIntWithAggregatesFilter {
   _avg: NestedFloatFilter
   _count: NestedIntFilter
@@ -4098,15 +4037,6 @@ input NullableFloatFieldUpdateOperationsInput {
   increment: Float
   multiply: Float
   set: Float
-  unset: Boolean
-}
-
-input NullableIntFieldUpdateOperationsInput {
-  decrement: Int
-  divide: Int
-  increment: Int
-  multiply: Int
-  set: Int
   unset: Boolean
 }
 
@@ -4465,7 +4395,6 @@ input PregnancyCreateInput {
   id: String
   latestPossibleBirth: DateTime
   latestPossibleConception: DateTime
-  parentId: PregnancyCreateparentIdInput
   parents: LivestockUnitCreateNestedManyWithoutPregnancyInput
   pregnancySireId: String!
   pregnancyTest: PregnancyTestCreateNestedManyWithoutPregnancyInput
@@ -4513,7 +4442,6 @@ input PregnancyCreateWithoutParentsInput {
   id: String
   latestPossibleBirth: DateTime
   latestPossibleConception: DateTime
-  parentId: PregnancyCreateparentIdInput
   pregnancySireId: String!
   pregnancyTest: PregnancyTestCreateNestedManyWithoutPregnancyInput
 }
@@ -4526,7 +4454,6 @@ input PregnancyCreateWithoutPregnancyTestInput {
   id: String
   latestPossibleBirth: DateTime
   latestPossibleConception: DateTime
-  parentId: PregnancyCreateparentIdInput
   parents: LivestockUnitCreateNestedManyWithoutPregnancyInput
   pregnancySireId: String!
 }
@@ -5002,7 +4929,6 @@ input PregnancyUpdateInput {
   earliestPossibleConception: NullableDateTimeFieldUpdateOperationsInput
   latestPossibleBirth: NullableDateTimeFieldUpdateOperationsInput
   latestPossibleConception: NullableDateTimeFieldUpdateOperationsInput
-  parentId: PregnancyUpdateparentIdInput
   parents: LivestockUnitUpdateManyWithoutPregnancyNestedInput
   pregnancySireId: StringFieldUpdateOperationsInput
   pregnancyTest: PregnancyTestUpdateManyWithoutPregnancyNestedInput
@@ -5015,7 +4941,6 @@ input PregnancyUpdateManyMutationInput {
   earliestPossibleConception: NullableDateTimeFieldUpdateOperationsInput
   latestPossibleBirth: NullableDateTimeFieldUpdateOperationsInput
   latestPossibleConception: NullableDateTimeFieldUpdateOperationsInput
-  parentId: PregnancyUpdateparentIdInput
   pregnancySireId: StringFieldUpdateOperationsInput
 }
 
@@ -5057,7 +4982,6 @@ input PregnancyUpdateWithoutParentsInput {
   earliestPossibleConception: NullableDateTimeFieldUpdateOperationsInput
   latestPossibleBirth: NullableDateTimeFieldUpdateOperationsInput
   latestPossibleConception: NullableDateTimeFieldUpdateOperationsInput
-  parentId: PregnancyUpdateparentIdInput
   pregnancySireId: StringFieldUpdateOperationsInput
   pregnancyTest: PregnancyTestUpdateManyWithoutPregnancyNestedInput
 }
@@ -5069,14 +4993,8 @@ input PregnancyUpdateWithoutPregnancyTestInput {
   earliestPossibleConception: NullableDateTimeFieldUpdateOperationsInput
   latestPossibleBirth: NullableDateTimeFieldUpdateOperationsInput
   latestPossibleConception: NullableDateTimeFieldUpdateOperationsInput
-  parentId: PregnancyUpdateparentIdInput
   parents: LivestockUnitUpdateManyWithoutPregnancyNestedInput
   pregnancySireId: StringFieldUpdateOperationsInput
-}
-
-input PregnancyUpdateparentIdInput {
-  push: [String!]
-  set: [String!]
 }
 
 input PregnancyUpsertWithWhereUniqueWithoutParentsInput {
@@ -5135,22 +5053,52 @@ type Query {
   chemicalTreatment(where: ChemicalTreatmentWhereUniqueInput!): ChemicalTreatment
   chemicalTreatments(cursor: ChemicalTreatmentWhereUniqueInput, distinct: [ChemicalTreatmentScalarFieldEnum!], orderBy: [ChemicalTreatmentOrderByWithRelationInput!], skip: Int, take: Int, where: ChemicalTreatmentWhereInput): [ChemicalTreatment!]!
   findFirstBreed(cursor: BreedWhereUniqueInput, distinct: [BreedScalarFieldEnum!], orderBy: [BreedOrderByWithRelationInput!], skip: Int, take: Int, where: BreedWhereInput): Breed
+  findFirstBreedOrThrow(cursor: BreedWhereUniqueInput, distinct: [BreedScalarFieldEnum!], orderBy: [BreedOrderByWithRelationInput!], skip: Int, take: Int, where: BreedWhereInput): Breed
   findFirstChemicalProduct(cursor: ChemicalProductWhereUniqueInput, distinct: [ChemicalProductScalarFieldEnum!], orderBy: [ChemicalProductOrderByWithRelationInput!], skip: Int, take: Int, where: ChemicalProductWhereInput): ChemicalProduct
+  findFirstChemicalProductOrThrow(cursor: ChemicalProductWhereUniqueInput, distinct: [ChemicalProductScalarFieldEnum!], orderBy: [ChemicalProductOrderByWithRelationInput!], skip: Int, take: Int, where: ChemicalProductWhereInput): ChemicalProduct
   findFirstChemicalTreatment(cursor: ChemicalTreatmentWhereUniqueInput, distinct: [ChemicalTreatmentScalarFieldEnum!], orderBy: [ChemicalTreatmentOrderByWithRelationInput!], skip: Int, take: Int, where: ChemicalTreatmentWhereInput): ChemicalTreatment
+  findFirstChemicalTreatmentOrThrow(cursor: ChemicalTreatmentWhereUniqueInput, distinct: [ChemicalTreatmentScalarFieldEnum!], orderBy: [ChemicalTreatmentOrderByWithRelationInput!], skip: Int, take: Int, where: ChemicalTreatmentWhereInput): ChemicalTreatment
   findFirstGeoPoint(cursor: GeoPointWhereUniqueInput, distinct: [GeoPointScalarFieldEnum!], orderBy: [GeoPointOrderByWithRelationInput!], skip: Int, take: Int, where: GeoPointWhereInput): GeoPoint
+  findFirstGeoPointOrThrow(cursor: GeoPointWhereUniqueInput, distinct: [GeoPointScalarFieldEnum!], orderBy: [GeoPointOrderByWithRelationInput!], skip: Int, take: Int, where: GeoPointWhereInput): GeoPoint
   findFirstGraze(cursor: GrazeWhereUniqueInput, distinct: [GrazeScalarFieldEnum!], orderBy: [GrazeOrderByWithRelationInput!], skip: Int, take: Int, where: GrazeWhereInput): Graze
+  findFirstGrazeOrThrow(cursor: GrazeWhereUniqueInput, distinct: [GrazeScalarFieldEnum!], orderBy: [GrazeOrderByWithRelationInput!], skip: Int, take: Int, where: GrazeWhereInput): Graze
   findFirstLivestockUnit(cursor: LivestockUnitWhereUniqueInput, distinct: [LivestockUnitScalarFieldEnum!], orderBy: [LivestockUnitOrderByWithRelationInput!], skip: Int, take: Int, where: LivestockUnitWhereInput): LivestockUnit
+  findFirstLivestockUnitOrThrow(cursor: LivestockUnitWhereUniqueInput, distinct: [LivestockUnitScalarFieldEnum!], orderBy: [LivestockUnitOrderByWithRelationInput!], skip: Int, take: Int, where: LivestockUnitWhereInput): LivestockUnit
   findFirstLivestockUnitPosition(cursor: LivestockUnitPositionWhereUniqueInput, distinct: [LivestockUnitPositionScalarFieldEnum!], orderBy: [LivestockUnitPositionOrderByWithRelationInput!], skip: Int, take: Int, where: LivestockUnitPositionWhereInput): LivestockUnitPosition
+  findFirstLivestockUnitPositionOrThrow(cursor: LivestockUnitPositionWhereUniqueInput, distinct: [LivestockUnitPositionScalarFieldEnum!], orderBy: [LivestockUnitPositionOrderByWithRelationInput!], skip: Int, take: Int, where: LivestockUnitPositionWhereInput): LivestockUnitPosition
   findFirstLoraDevice(cursor: LoraDeviceWhereUniqueInput, distinct: [LoraDeviceScalarFieldEnum!], orderBy: [LoraDeviceOrderByWithRelationInput!], skip: Int, take: Int, where: LoraDeviceWhereInput): LoraDevice
+  findFirstLoraDeviceOrThrow(cursor: LoraDeviceWhereUniqueInput, distinct: [LoraDeviceScalarFieldEnum!], orderBy: [LoraDeviceOrderByWithRelationInput!], skip: Int, take: Int, where: LoraDeviceWhereInput): LoraDevice
   findFirstMob(cursor: MobWhereUniqueInput, distinct: [MobScalarFieldEnum!], orderBy: [MobOrderByWithRelationInput!], skip: Int, take: Int, where: MobWhereInput): Mob
+  findFirstMobOrThrow(cursor: MobWhereUniqueInput, distinct: [MobScalarFieldEnum!], orderBy: [MobOrderByWithRelationInput!], skip: Int, take: Int, where: MobWhereInput): Mob
   findFirstPaddock(cursor: PaddockWhereUniqueInput, distinct: [PaddockScalarFieldEnum!], orderBy: [PaddockOrderByWithRelationInput!], skip: Int, take: Int, where: PaddockWhereInput): Paddock
+  findFirstPaddockOrThrow(cursor: PaddockWhereUniqueInput, distinct: [PaddockScalarFieldEnum!], orderBy: [PaddockOrderByWithRelationInput!], skip: Int, take: Int, where: PaddockWhereInput): Paddock
   findFirstPregnancy(cursor: PregnancyWhereUniqueInput, distinct: [PregnancyScalarFieldEnum!], orderBy: [PregnancyOrderByWithRelationInput!], skip: Int, take: Int, where: PregnancyWhereInput): Pregnancy
+  findFirstPregnancyOrThrow(cursor: PregnancyWhereUniqueInput, distinct: [PregnancyScalarFieldEnum!], orderBy: [PregnancyOrderByWithRelationInput!], skip: Int, take: Int, where: PregnancyWhereInput): Pregnancy
   findFirstPregnancyTest(cursor: PregnancyTestWhereUniqueInput, distinct: [PregnancyTestScalarFieldEnum!], orderBy: [PregnancyTestOrderByWithRelationInput!], skip: Int, take: Int, where: PregnancyTestWhereInput): PregnancyTest
+  findFirstPregnancyTestOrThrow(cursor: PregnancyTestWhereUniqueInput, distinct: [PregnancyTestScalarFieldEnum!], orderBy: [PregnancyTestOrderByWithRelationInput!], skip: Int, take: Int, where: PregnancyTestWhereInput): PregnancyTest
   findFirstUser(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): User
+  findFirstUserOrThrow(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): User
   findFirstVisualId(cursor: VisualIdWhereUniqueInput, distinct: [VisualIdScalarFieldEnum!], orderBy: [VisualIdOrderByWithRelationInput!], skip: Int, take: Int, where: VisualIdWhereInput): VisualId
+  findFirstVisualIdOrThrow(cursor: VisualIdWhereUniqueInput, distinct: [VisualIdScalarFieldEnum!], orderBy: [VisualIdOrderByWithRelationInput!], skip: Int, take: Int, where: VisualIdWhereInput): VisualId
   findFirstWeightRecord(cursor: WeightRecordWhereUniqueInput, distinct: [WeightRecordScalarFieldEnum!], orderBy: [WeightRecordOrderByWithRelationInput!], skip: Int, take: Int, where: WeightRecordWhereInput): WeightRecord
+  findFirstWeightRecordOrThrow(cursor: WeightRecordWhereUniqueInput, distinct: [WeightRecordScalarFieldEnum!], orderBy: [WeightRecordOrderByWithRelationInput!], skip: Int, take: Int, where: WeightRecordWhereInput): WeightRecord
   geoPoint(where: GeoPointWhereUniqueInput!): GeoPoint
   geoPoints(cursor: GeoPointWhereUniqueInput, distinct: [GeoPointScalarFieldEnum!], orderBy: [GeoPointOrderByWithRelationInput!], skip: Int, take: Int, where: GeoPointWhereInput): [GeoPoint!]!
+  getBreed(where: BreedWhereUniqueInput!): Breed
+  getChemicalProduct(where: ChemicalProductWhereUniqueInput!): ChemicalProduct
+  getChemicalTreatment(where: ChemicalTreatmentWhereUniqueInput!): ChemicalTreatment
+  getGeoPoint(where: GeoPointWhereUniqueInput!): GeoPoint
+  getGraze(where: GrazeWhereUniqueInput!): Graze
+  getLivestockUnit(where: LivestockUnitWhereUniqueInput!): LivestockUnit
+  getLivestockUnitPosition(where: LivestockUnitPositionWhereUniqueInput!): LivestockUnitPosition
+  getLoraDevice(where: LoraDeviceWhereUniqueInput!): LoraDevice
+  getMob(where: MobWhereUniqueInput!): Mob
+  getPaddock(where: PaddockWhereUniqueInput!): Paddock
+  getPregnancy(where: PregnancyWhereUniqueInput!): Pregnancy
+  getPregnancyTest(where: PregnancyTestWhereUniqueInput!): PregnancyTest
+  getUser(where: UserWhereUniqueInput!): User
+  getVisualId(where: VisualIdWhereUniqueInput!): VisualId
+  getWeightRecord(where: WeightRecordWhereUniqueInput!): WeightRecord
   graze(where: GrazeWhereUniqueInput!): Graze
   grazes(cursor: GrazeWhereUniqueInput, distinct: [GrazeScalarFieldEnum!], orderBy: [GrazeOrderByWithRelationInput!], skip: Int, take: Int, where: GrazeWhereInput): [Graze!]!
   groupByBreed(by: [BreedScalarFieldEnum!]!, having: BreedScalarWhereWithAggregatesInput, orderBy: [BreedOrderByWithAggregationInput!], skip: Int, take: Int, where: BreedWhereInput): [BreedGroupBy!]!
@@ -5298,99 +5246,133 @@ input StringWithAggregatesFilter {
 }
 
 type User {
+  firstName: String!
   id: String!
-  name: String
+  lastName: String!
+  preferredName: String
 }
 
 type UserCountAggregate {
   _all: Int!
+  firstName: Int!
   id: Int!
-  name: Int!
+  lastName: Int!
+  preferredName: Int!
 }
 
 input UserCountOrderByAggregateInput {
+  firstName: SortOrder
   id: SortOrder
-  name: SortOrder
+  lastName: SortOrder
+  preferredName: SortOrder
 }
 
 input UserCreateInput {
+  firstName: String!
   id: String
-  name: String
+  lastName: String!
+  preferredName: String
 }
 
 input UserCreateManyInput {
+  firstName: String!
   id: String
-  name: String
+  lastName: String!
+  preferredName: String
 }
 
 type UserGroupBy {
   _count: UserCountAggregate
   _max: UserMaxAggregate
   _min: UserMinAggregate
+  firstName: String!
   id: String!
-  name: String
+  lastName: String!
+  preferredName: String
 }
 
 type UserMaxAggregate {
+  firstName: String
   id: String
-  name: String
+  lastName: String
+  preferredName: String
 }
 
 input UserMaxOrderByAggregateInput {
+  firstName: SortOrder
   id: SortOrder
-  name: SortOrder
+  lastName: SortOrder
+  preferredName: SortOrder
 }
 
 type UserMinAggregate {
+  firstName: String
   id: String
-  name: String
+  lastName: String
+  preferredName: String
 }
 
 input UserMinOrderByAggregateInput {
+  firstName: SortOrder
   id: SortOrder
-  name: SortOrder
+  lastName: SortOrder
+  preferredName: SortOrder
 }
 
 input UserOrderByWithAggregationInput {
   _count: UserCountOrderByAggregateInput
   _max: UserMaxOrderByAggregateInput
   _min: UserMinOrderByAggregateInput
+  firstName: SortOrder
   id: SortOrder
-  name: SortOrder
+  lastName: SortOrder
+  preferredName: SortOrder
 }
 
 input UserOrderByWithRelationInput {
+  firstName: SortOrder
   id: SortOrder
-  name: SortOrder
+  lastName: SortOrder
+  preferredName: SortOrder
 }
 
 enum UserScalarFieldEnum {
+  firstName
   id
-  name
+  lastName
+  preferredName
 }
 
 input UserScalarWhereWithAggregatesInput {
   AND: [UserScalarWhereWithAggregatesInput!]
   NOT: [UserScalarWhereWithAggregatesInput!]
   OR: [UserScalarWhereWithAggregatesInput!]
+  firstName: StringWithAggregatesFilter
   id: StringWithAggregatesFilter
-  name: StringNullableWithAggregatesFilter
+  lastName: StringWithAggregatesFilter
+  preferredName: StringNullableWithAggregatesFilter
 }
 
 input UserUpdateInput {
-  name: NullableStringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  preferredName: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateManyMutationInput {
-  name: NullableStringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  preferredName: NullableStringFieldUpdateOperationsInput
 }
 
 input UserWhereInput {
   AND: [UserWhereInput!]
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
+  firstName: StringFilter
   id: StringFilter
-  name: StringNullableFilter
+  lastName: StringFilter
+  preferredName: StringNullableFilter
 }
 
 input UserWhereUniqueInput {
@@ -5402,15 +5384,7 @@ type VisualId {
   id: String!
   livestockUnit: LivestockUnit!
   livestockUnitId: String!
-  number: Int
-}
-
-type VisualIdAvgAggregate {
-  number: Float
-}
-
-input VisualIdAvgOrderByAggregateInput {
-  number: SortOrder
+  number: String
 }
 
 enum VisualIdColour {
@@ -5443,14 +5417,14 @@ input VisualIdCreateInput {
   colour: VisualIdColour
   id: String
   livestockUnit: LivestockUnitCreateNestedOneWithoutVisualidInput!
-  number: Int
+  number: String
 }
 
 input VisualIdCreateManyInput {
   colour: VisualIdColour
   id: String
   livestockUnitId: String!
-  number: Int
+  number: String
 }
 
 input VisualIdCreateNestedOneWithoutLivestockUnitInput {
@@ -5467,26 +5441,24 @@ input VisualIdCreateOrConnectWithoutLivestockUnitInput {
 input VisualIdCreateWithoutLivestockUnitInput {
   colour: VisualIdColour
   id: String
-  number: Int
+  number: String
 }
 
 type VisualIdGroupBy {
-  _avg: VisualIdAvgAggregate
   _count: VisualIdCountAggregate
   _max: VisualIdMaxAggregate
   _min: VisualIdMinAggregate
-  _sum: VisualIdSumAggregate
   colour: VisualIdColour
   id: String!
   livestockUnitId: String!
-  number: Int
+  number: String
 }
 
 type VisualIdMaxAggregate {
   colour: VisualIdColour
   id: String
   livestockUnitId: String
-  number: Int
+  number: String
 }
 
 input VisualIdMaxOrderByAggregateInput {
@@ -5500,7 +5472,7 @@ type VisualIdMinAggregate {
   colour: VisualIdColour
   id: String
   livestockUnitId: String
-  number: Int
+  number: String
 }
 
 input VisualIdMinOrderByAggregateInput {
@@ -5511,11 +5483,9 @@ input VisualIdMinOrderByAggregateInput {
 }
 
 input VisualIdOrderByWithAggregationInput {
-  _avg: VisualIdAvgOrderByAggregateInput
   _count: VisualIdCountOrderByAggregateInput
   _max: VisualIdMaxOrderByAggregateInput
   _min: VisualIdMinOrderByAggregateInput
-  _sum: VisualIdSumOrderByAggregateInput
   colour: SortOrder
   id: SortOrder
   livestockUnitId: SortOrder
@@ -5549,26 +5519,18 @@ input VisualIdScalarWhereWithAggregatesInput {
   colour: EnumVisualIdColourNullableWithAggregatesFilter
   id: StringWithAggregatesFilter
   livestockUnitId: StringWithAggregatesFilter
-  number: IntNullableWithAggregatesFilter
-}
-
-type VisualIdSumAggregate {
-  number: Int
-}
-
-input VisualIdSumOrderByAggregateInput {
-  number: SortOrder
+  number: StringNullableWithAggregatesFilter
 }
 
 input VisualIdUpdateInput {
   colour: NullableEnumVisualIdColourFieldUpdateOperationsInput
   livestockUnit: LivestockUnitUpdateOneRequiredWithoutVisualidNestedInput
-  number: NullableIntFieldUpdateOperationsInput
+  number: NullableStringFieldUpdateOperationsInput
 }
 
 input VisualIdUpdateManyMutationInput {
   colour: NullableEnumVisualIdColourFieldUpdateOperationsInput
-  number: NullableIntFieldUpdateOperationsInput
+  number: NullableStringFieldUpdateOperationsInput
 }
 
 input VisualIdUpdateOneWithoutLivestockUnitNestedInput {
@@ -5583,7 +5545,7 @@ input VisualIdUpdateOneWithoutLivestockUnitNestedInput {
 
 input VisualIdUpdateWithoutLivestockUnitInput {
   colour: NullableEnumVisualIdColourFieldUpdateOperationsInput
-  number: NullableIntFieldUpdateOperationsInput
+  number: NullableStringFieldUpdateOperationsInput
 }
 
 input VisualIdUpsertWithoutLivestockUnitInput {
@@ -5599,7 +5561,7 @@ input VisualIdWhereInput {
   id: StringFilter
   livestockUnit: LivestockUnitRelationFilter
   livestockUnitId: StringFilter
-  number: IntNullableFilter
+  number: StringNullableFilter
 }
 
 input VisualIdWhereUniqueInput {

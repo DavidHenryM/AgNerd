@@ -4,6 +4,7 @@ import { ApolloServer } from "apollo-server";
 import path from "path";
 import { PrismaClient } from "@prisma/client";
 
+import "reflect-metadata";
 import { resolvers } from "./prisma/generated/type-graphql";
 
 interface Context {
