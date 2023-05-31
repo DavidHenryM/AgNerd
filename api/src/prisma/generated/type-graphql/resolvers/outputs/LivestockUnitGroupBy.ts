@@ -69,9 +69,9 @@ export class LivestockUnitGroupBy {
   parentId!: string | null;
 
   @TypeGraphQL.Field((_type) => String, {
-    nullable: false,
+    nullable: true,
   })
-  mobId!: string;
+  mobId!: string | null;
 
   @TypeGraphQL.Field((_type) => [String], {
     nullable: true,
@@ -84,14 +84,19 @@ export class LivestockUnitGroupBy {
   drySheepEquivalent!: number;
 
   @TypeGraphQL.Field((_type) => TypeGraphQL.Float, {
-    nullable: false,
+    nullable: true,
   })
-  purchasePrice!: number;
+  purchasePrice!: number | null;
 
   @TypeGraphQL.Field((_type) => Date, {
-    nullable: false,
+    nullable: true,
   })
-  purchaseDate!: Date;
+  purchaseDate!: Date | null;
+
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
+  })
+  angusTechId!: string | null;
 
   @TypeGraphQL.Field((_type) => LivestockUnitCountAggregate, {
     nullable: true,

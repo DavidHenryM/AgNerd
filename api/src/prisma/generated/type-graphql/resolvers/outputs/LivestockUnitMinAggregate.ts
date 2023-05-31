@@ -83,4 +83,9 @@ export class LivestockUnitMinAggregate {
     nullable: true,
   })
   purchaseDate!: Date | null;
+
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
+  })
+  angusTechId!: string | null;
 }

@@ -51,6 +51,7 @@ export class PregnancyParentsArgs {
         | "drySheepEquivalent"
         | "purchasePrice"
         | "purchaseDate"
+        | "angusTechId"
       >
     | undefined;
 }

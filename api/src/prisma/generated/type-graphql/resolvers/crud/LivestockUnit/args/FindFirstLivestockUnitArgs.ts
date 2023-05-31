@@ -51,6 +51,7 @@ export class FindFirstLivestockUnitArgs {
         | "drySheepEquivalent"
         | "purchasePrice"
         | "purchaseDate"
+        | "angusTechId"
       >
     | undefined;
 }

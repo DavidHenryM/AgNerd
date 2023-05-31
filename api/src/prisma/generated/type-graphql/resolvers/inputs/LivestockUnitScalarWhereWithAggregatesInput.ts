@@ -3,10 +3,11 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { BoolWithAggregatesFilter } from "../inputs/BoolWithAggregatesFilter";
+import { DateTimeNullableWithAggregatesFilter } from "../inputs/DateTimeNullableWithAggregatesFilter";
 import { DateTimeWithAggregatesFilter } from "../inputs/DateTimeWithAggregatesFilter";
 import { EnumSexWithAggregatesFilter } from "../inputs/EnumSexWithAggregatesFilter";
 import { EnumStockClassWithAggregatesFilter } from "../inputs/EnumStockClassWithAggregatesFilter";
-import { FloatWithAggregatesFilter } from "../inputs/FloatWithAggregatesFilter";
+import { FloatNullableWithAggregatesFilter } from "../inputs/FloatNullableWithAggregatesFilter";
 import { IntWithAggregatesFilter } from "../inputs/IntWithAggregatesFilter";
 import { StringNullableListFilter } from "../inputs/StringNullableListFilter";
 import { StringNullableWithAggregatesFilter } from "../inputs/StringNullableWithAggregatesFilter";
@@ -76,10 +77,10 @@ export class LivestockUnitScalarWhereWithAggregatesInput {
   })
   parentId?: StringNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, {
+  @TypeGraphQL.Field((_type) => StringNullableWithAggregatesFilter, {
     nullable: true,
   })
-  mobId?: StringWithAggregatesFilter | undefined;
+  mobId?: StringNullableWithAggregatesFilter | undefined;
 
   @TypeGraphQL.Field((_type) => StringNullableListFilter, {
     nullable: true,
@@ -91,13 +92,18 @@ export class LivestockUnitScalarWhereWithAggregatesInput {
   })
   drySheepEquivalent?: IntWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => FloatWithAggregatesFilter, {
+  @TypeGraphQL.Field((_type) => FloatNullableWithAggregatesFilter, {
     nullable: true,
   })
-  purchasePrice?: FloatWithAggregatesFilter | undefined;
+  purchasePrice?: FloatNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeWithAggregatesFilter, {
+  @TypeGraphQL.Field((_type) => DateTimeNullableWithAggregatesFilter, {
     nullable: true,
   })
-  purchaseDate?: DateTimeWithAggregatesFilter | undefined;
+  purchaseDate?: DateTimeNullableWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field((_type) => StringNullableWithAggregatesFilter, {
+    nullable: true,
+  })
+  angusTechId?: StringNullableWithAggregatesFilter | undefined;
 }

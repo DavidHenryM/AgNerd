@@ -76,9 +76,14 @@ export class LivestockUnitCreateWithoutDamInput {
   purchasePrice?: number | undefined;
 
   @TypeGraphQL.Field((_type) => Date, {
-    nullable: false,
+    nullable: true,
   })
-  purchaseDate!: Date;
+  purchaseDate?: Date | undefined;
+
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
+  })
+  angusTechId?: string | undefined;
 
   @TypeGraphQL.Field(
     (_type) => VisualIdCreateNestedOneWithoutLivestockUnitInput,
@@ -99,9 +104,9 @@ export class LivestockUnitCreateWithoutDamInput {
   sire?: LivestockUnitCreateNestedOneWithoutDamInput | undefined;
 
   @TypeGraphQL.Field((_type) => MobCreateNestedOneWithoutMembersInput, {
-    nullable: false,
+    nullable: true,
   })
-  mob!: MobCreateNestedOneWithoutMembersInput;
+  mob?: MobCreateNestedOneWithoutMembersInput | undefined;
 
   @TypeGraphQL.Field((_type) => PregnancyCreateNestedManyWithoutParentsInput, {
     nullable: true,

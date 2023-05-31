@@ -80,7 +80,12 @@ export class LivestockUnitCreateManyMobInput {
   purchasePrice?: number | undefined;
 
   @TypeGraphQL.Field((_type) => Date, {
-    nullable: false,
+    nullable: true,
   })
-  purchaseDate!: Date;
+  purchaseDate?: Date | undefined;
+
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
+  })
+  angusTechId?: string | undefined;
 }

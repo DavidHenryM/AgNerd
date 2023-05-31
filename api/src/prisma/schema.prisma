@@ -65,15 +65,16 @@ model LivestockUnit {
   parentId           String?             @unique @db.ObjectId
   sire               LivestockUnit?      @relation("PARENT", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   dam                LivestockUnit?      @relation("PARENT")
-  mob                Mob                 @relation(fields: [mobId], references: [id])
-  mobId              String              @db.ObjectId
+  mob                Mob?                 @relation(fields: [mobId], references: [id])
+  mobId              String?             @db.ObjectId
   pregnancy          Pregnancy[]         @relation(fields: [pregnancyId], references: [id])
   pregnancyId        String[]            @db.ObjectId
   weights            WeightRecord[]
   treatments         ChemicalTreatment[]
   drySheepEquivalent Int                 @default(1)
-  purchasePrice      Float               @default(0)
-  purchaseDate      DateTime
+  purchasePrice      Float?               @default(0)
+  purchaseDate      DateTime?
+  angusTechId       String?
 }
 
 model VisualId {

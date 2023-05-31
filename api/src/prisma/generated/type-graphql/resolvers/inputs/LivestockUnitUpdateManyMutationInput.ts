@@ -6,8 +6,9 @@ import { BoolFieldUpdateOperationsInput } from "../inputs/BoolFieldUpdateOperati
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
 import { EnumSexFieldUpdateOperationsInput } from "../inputs/EnumSexFieldUpdateOperationsInput";
 import { EnumStockClassFieldUpdateOperationsInput } from "../inputs/EnumStockClassFieldUpdateOperationsInput";
-import { FloatFieldUpdateOperationsInput } from "../inputs/FloatFieldUpdateOperationsInput";
 import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperationsInput";
+import { NullableDateTimeFieldUpdateOperationsInput } from "../inputs/NullableDateTimeFieldUpdateOperationsInput";
+import { NullableFloatFieldUpdateOperationsInput } from "../inputs/NullableFloatFieldUpdateOperationsInput";
 import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("LivestockUnitUpdateManyMutationInput", {
@@ -54,13 +55,18 @@ export class LivestockUnitUpdateManyMutationInput {
   })
   drySheepEquivalent?: IntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => FloatFieldUpdateOperationsInput, {
+  @TypeGraphQL.Field((_type) => NullableFloatFieldUpdateOperationsInput, {
     nullable: true,
   })
-  purchasePrice?: FloatFieldUpdateOperationsInput | undefined;
+  purchasePrice?: NullableFloatFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
+  @TypeGraphQL.Field((_type) => NullableDateTimeFieldUpdateOperationsInput, {
     nullable: true,
   })
-  purchaseDate?: DateTimeFieldUpdateOperationsInput | undefined;
+  purchaseDate?: NullableDateTimeFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
+    nullable: true,
+  })
+  angusTechId?: NullableStringFieldUpdateOperationsInput | undefined;
 }

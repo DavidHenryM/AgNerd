@@ -84,6 +84,11 @@ export class LivestockUnitOrderByWithRelationInput {
   })
   purchaseDate?: "asc" | "desc" | undefined;
 
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
+  })
+  angusTechId?: "asc" | "desc" | undefined;
+
   @TypeGraphQL.Field((_type) => VisualIdOrderByWithRelationInput, {
     nullable: true,
   })

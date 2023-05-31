@@ -35,6 +35,7 @@ export class GroupByLivestockUnitArgs {
     | "drySheepEquivalent"
     | "purchasePrice"
     | "purchaseDate"
+    | "angusTechId"
   >;
 
   @TypeGraphQL.Field((_type) => LivestockUnitScalarWhereWithAggregatesInput, {

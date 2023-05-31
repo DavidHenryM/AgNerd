@@ -316,7 +316,7 @@ export { MobUpdateInput } from "./MobUpdateInput";
 export { MobUpdateManyMutationInput } from "./MobUpdateManyMutationInput";
 export { MobUpdateManyWithWhereWithoutGrazeInput } from "./MobUpdateManyWithWhereWithoutGrazeInput";
 export { MobUpdateManyWithoutGrazeNestedInput } from "./MobUpdateManyWithoutGrazeNestedInput";
-export { MobUpdateOneRequiredWithoutMembersNestedInput } from "./MobUpdateOneRequiredWithoutMembersNestedInput";
+export { MobUpdateOneWithoutMembersNestedInput } from "./MobUpdateOneWithoutMembersNestedInput";
 export { MobUpdateWithWhereUniqueWithoutGrazeInput } from "./MobUpdateWithWhereUniqueWithoutGrazeInput";
 export { MobUpdateWithoutGrazeInput } from "./MobUpdateWithoutGrazeInput";
 export { MobUpdateWithoutMembersInput } from "./MobUpdateWithoutMembersInput";

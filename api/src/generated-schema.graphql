@@ -1900,6 +1900,7 @@ input IntWithAggregatesFilter {
 
 type LivestockUnit {
   _count: LivestockUnitCount
+  angusTechId: String
   birthdate: DateTime!
   breed: Breed
   class: StockClass!
@@ -1908,15 +1909,15 @@ type LivestockUnit {
   desexed: Boolean!
   drySheepEquivalent: Int!
   id: String!
-  mob: Mob!
-  mobId: String!
+  mob: Mob
+  mobId: String
   name: String
   nlisid: String
   parentId: String
   pregnancy(cursor: PregnancyWhereUniqueInput, distinct: [PregnancyScalarFieldEnum!], orderBy: [PregnancyOrderByWithRelationInput!], skip: Int, take: Int, where: PregnancyWhereInput): [Pregnancy!]!
   pregnancyId: [String!]!
-  purchaseDate: DateTime!
-  purchasePrice: Float!
+  purchaseDate: DateTime
+  purchasePrice: Float
   sex: Sex!
   sire: LivestockUnit
   treatments(cursor: ChemicalTreatmentWhereUniqueInput, distinct: [ChemicalTreatmentScalarFieldEnum!], orderBy: [ChemicalTreatmentOrderByWithRelationInput!], skip: Int, take: Int, where: ChemicalTreatmentWhereInput): [ChemicalTreatment!]!
@@ -1942,6 +1943,7 @@ type LivestockUnitCount {
 
 type LivestockUnitCountAggregate {
   _all: Int!
+  angusTechId: Int!
   birthdate: Int!
   class: Int!
   comment: Int!
@@ -1959,6 +1961,7 @@ type LivestockUnitCountAggregate {
 }
 
 input LivestockUnitCountOrderByAggregateInput {
+  angusTechId: SortOrder
   birthdate: SortOrder
   class: SortOrder
   comment: SortOrder
@@ -1976,6 +1979,7 @@ input LivestockUnitCountOrderByAggregateInput {
 }
 
 input LivestockUnitCreateInput {
+  angusTechId: String
   birthdate: DateTime!
   breed: BreedCreateNestedOneWithoutMembersInput
   class: StockClass!
@@ -1984,11 +1988,11 @@ input LivestockUnitCreateInput {
   desexed: Boolean!
   drySheepEquivalent: Int
   id: String
-  mob: MobCreateNestedOneWithoutMembersInput!
+  mob: MobCreateNestedOneWithoutMembersInput
   name: String
   nlisid: String
   pregnancy: PregnancyCreateNestedManyWithoutParentsInput
-  purchaseDate: DateTime!
+  purchaseDate: DateTime
   purchasePrice: Float
   sex: Sex!
   sire: LivestockUnitCreateNestedOneWithoutDamInput
@@ -1998,23 +2002,25 @@ input LivestockUnitCreateInput {
 }
 
 input LivestockUnitCreateManyInput {
+  angusTechId: String
   birthdate: DateTime!
   class: StockClass!
   comment: String
   desexed: Boolean!
   drySheepEquivalent: Int
   id: String
-  mobId: String!
+  mobId: String
   name: String
   nlisid: String
   parentId: String
   pregnancyId: LivestockUnitCreatepregnancyIdInput
-  purchaseDate: DateTime!
+  purchaseDate: DateTime
   purchasePrice: Float
   sex: Sex!
 }
 
 input LivestockUnitCreateManyMobInput {
+  angusTechId: String
   birthdate: DateTime!
   class: StockClass!
   comment: String
@@ -2025,7 +2031,7 @@ input LivestockUnitCreateManyMobInput {
   nlisid: String
   parentId: String
   pregnancyId: LivestockUnitCreatepregnancyIdInput
-  purchaseDate: DateTime!
+  purchaseDate: DateTime
   purchasePrice: Float
   sex: Sex!
 }
@@ -2124,6 +2130,7 @@ input LivestockUnitCreateOrConnectWithoutWeightsInput {
 }
 
 input LivestockUnitCreateWithoutBreedInput {
+  angusTechId: String
   birthdate: DateTime!
   class: StockClass!
   comment: String
@@ -2131,11 +2138,11 @@ input LivestockUnitCreateWithoutBreedInput {
   desexed: Boolean!
   drySheepEquivalent: Int
   id: String
-  mob: MobCreateNestedOneWithoutMembersInput!
+  mob: MobCreateNestedOneWithoutMembersInput
   name: String
   nlisid: String
   pregnancy: PregnancyCreateNestedManyWithoutParentsInput
-  purchaseDate: DateTime!
+  purchaseDate: DateTime
   purchasePrice: Float
   sex: Sex!
   sire: LivestockUnitCreateNestedOneWithoutDamInput
@@ -2145,6 +2152,7 @@ input LivestockUnitCreateWithoutBreedInput {
 }
 
 input LivestockUnitCreateWithoutDamInput {
+  angusTechId: String
   birthdate: DateTime!
   breed: BreedCreateNestedOneWithoutMembersInput
   class: StockClass!
@@ -2152,11 +2160,11 @@ input LivestockUnitCreateWithoutDamInput {
   desexed: Boolean!
   drySheepEquivalent: Int
   id: String
-  mob: MobCreateNestedOneWithoutMembersInput!
+  mob: MobCreateNestedOneWithoutMembersInput
   name: String
   nlisid: String
   pregnancy: PregnancyCreateNestedManyWithoutParentsInput
-  purchaseDate: DateTime!
+  purchaseDate: DateTime
   purchasePrice: Float
   sex: Sex!
   sire: LivestockUnitCreateNestedOneWithoutDamInput
@@ -2166,6 +2174,7 @@ input LivestockUnitCreateWithoutDamInput {
 }
 
 input LivestockUnitCreateWithoutMobInput {
+  angusTechId: String
   birthdate: DateTime!
   breed: BreedCreateNestedOneWithoutMembersInput
   class: StockClass!
@@ -2177,7 +2186,7 @@ input LivestockUnitCreateWithoutMobInput {
   name: String
   nlisid: String
   pregnancy: PregnancyCreateNestedManyWithoutParentsInput
-  purchaseDate: DateTime!
+  purchaseDate: DateTime
   purchasePrice: Float
   sex: Sex!
   sire: LivestockUnitCreateNestedOneWithoutDamInput
@@ -2187,6 +2196,7 @@ input LivestockUnitCreateWithoutMobInput {
 }
 
 input LivestockUnitCreateWithoutPregnancyInput {
+  angusTechId: String
   birthdate: DateTime!
   breed: BreedCreateNestedOneWithoutMembersInput
   class: StockClass!
@@ -2195,10 +2205,10 @@ input LivestockUnitCreateWithoutPregnancyInput {
   desexed: Boolean!
   drySheepEquivalent: Int
   id: String
-  mob: MobCreateNestedOneWithoutMembersInput!
+  mob: MobCreateNestedOneWithoutMembersInput
   name: String
   nlisid: String
-  purchaseDate: DateTime!
+  purchaseDate: DateTime
   purchasePrice: Float
   sex: Sex!
   sire: LivestockUnitCreateNestedOneWithoutDamInput
@@ -2208,6 +2218,7 @@ input LivestockUnitCreateWithoutPregnancyInput {
 }
 
 input LivestockUnitCreateWithoutSireInput {
+  angusTechId: String
   birthdate: DateTime!
   breed: BreedCreateNestedOneWithoutMembersInput
   class: StockClass!
@@ -2216,11 +2227,11 @@ input LivestockUnitCreateWithoutSireInput {
   desexed: Boolean!
   drySheepEquivalent: Int
   id: String
-  mob: MobCreateNestedOneWithoutMembersInput!
+  mob: MobCreateNestedOneWithoutMembersInput
   name: String
   nlisid: String
   pregnancy: PregnancyCreateNestedManyWithoutParentsInput
-  purchaseDate: DateTime!
+  purchaseDate: DateTime
   purchasePrice: Float
   sex: Sex!
   treatments: ChemicalTreatmentCreateNestedManyWithoutLiveStockUnitInput
@@ -2229,6 +2240,7 @@ input LivestockUnitCreateWithoutSireInput {
 }
 
 input LivestockUnitCreateWithoutTreatmentsInput {
+  angusTechId: String
   birthdate: DateTime!
   breed: BreedCreateNestedOneWithoutMembersInput
   class: StockClass!
@@ -2237,11 +2249,11 @@ input LivestockUnitCreateWithoutTreatmentsInput {
   desexed: Boolean!
   drySheepEquivalent: Int
   id: String
-  mob: MobCreateNestedOneWithoutMembersInput!
+  mob: MobCreateNestedOneWithoutMembersInput
   name: String
   nlisid: String
   pregnancy: PregnancyCreateNestedManyWithoutParentsInput
-  purchaseDate: DateTime!
+  purchaseDate: DateTime
   purchasePrice: Float
   sex: Sex!
   sire: LivestockUnitCreateNestedOneWithoutDamInput
@@ -2250,6 +2262,7 @@ input LivestockUnitCreateWithoutTreatmentsInput {
 }
 
 input LivestockUnitCreateWithoutVisualidInput {
+  angusTechId: String
   birthdate: DateTime!
   breed: BreedCreateNestedOneWithoutMembersInput
   class: StockClass!
@@ -2258,11 +2271,11 @@ input LivestockUnitCreateWithoutVisualidInput {
   desexed: Boolean!
   drySheepEquivalent: Int
   id: String
-  mob: MobCreateNestedOneWithoutMembersInput!
+  mob: MobCreateNestedOneWithoutMembersInput
   name: String
   nlisid: String
   pregnancy: PregnancyCreateNestedManyWithoutParentsInput
-  purchaseDate: DateTime!
+  purchaseDate: DateTime
   purchasePrice: Float
   sex: Sex!
   sire: LivestockUnitCreateNestedOneWithoutDamInput
@@ -2271,6 +2284,7 @@ input LivestockUnitCreateWithoutVisualidInput {
 }
 
 input LivestockUnitCreateWithoutWeightsInput {
+  angusTechId: String
   birthdate: DateTime!
   breed: BreedCreateNestedOneWithoutMembersInput
   class: StockClass!
@@ -2279,11 +2293,11 @@ input LivestockUnitCreateWithoutWeightsInput {
   desexed: Boolean!
   drySheepEquivalent: Int
   id: String
-  mob: MobCreateNestedOneWithoutMembersInput!
+  mob: MobCreateNestedOneWithoutMembersInput
   name: String
   nlisid: String
   pregnancy: PregnancyCreateNestedManyWithoutParentsInput
-  purchaseDate: DateTime!
+  purchaseDate: DateTime
   purchasePrice: Float
   sex: Sex!
   sire: LivestockUnitCreateNestedOneWithoutDamInput
@@ -2301,19 +2315,20 @@ type LivestockUnitGroupBy {
   _max: LivestockUnitMaxAggregate
   _min: LivestockUnitMinAggregate
   _sum: LivestockUnitSumAggregate
+  angusTechId: String
   birthdate: DateTime!
   class: StockClass!
   comment: String
   desexed: Boolean!
   drySheepEquivalent: Int!
   id: String!
-  mobId: String!
+  mobId: String
   name: String
   nlisid: String
   parentId: String
   pregnancyId: [String!]
-  purchaseDate: DateTime!
-  purchasePrice: Float!
+  purchaseDate: DateTime
+  purchasePrice: Float
   sex: Sex!
 }
 
@@ -2324,6 +2339,7 @@ input LivestockUnitListRelationFilter {
 }
 
 type LivestockUnitMaxAggregate {
+  angusTechId: String
   birthdate: DateTime
   class: StockClass
   comment: String
@@ -2340,6 +2356,7 @@ type LivestockUnitMaxAggregate {
 }
 
 input LivestockUnitMaxOrderByAggregateInput {
+  angusTechId: SortOrder
   birthdate: SortOrder
   class: SortOrder
   comment: SortOrder
@@ -2356,6 +2373,7 @@ input LivestockUnitMaxOrderByAggregateInput {
 }
 
 type LivestockUnitMinAggregate {
+  angusTechId: String
   birthdate: DateTime
   class: StockClass
   comment: String
@@ -2372,6 +2390,7 @@ type LivestockUnitMinAggregate {
 }
 
 input LivestockUnitMinOrderByAggregateInput {
+  angusTechId: SortOrder
   birthdate: SortOrder
   class: SortOrder
   comment: SortOrder
@@ -2397,6 +2416,7 @@ input LivestockUnitOrderByWithAggregationInput {
   _max: LivestockUnitMaxOrderByAggregateInput
   _min: LivestockUnitMinOrderByAggregateInput
   _sum: LivestockUnitSumOrderByAggregateInput
+  angusTechId: SortOrder
   birthdate: SortOrder
   class: SortOrder
   comment: SortOrder
@@ -2414,6 +2434,7 @@ input LivestockUnitOrderByWithAggregationInput {
 }
 
 input LivestockUnitOrderByWithRelationInput {
+  angusTechId: SortOrder
   birthdate: SortOrder
   breed: BreedOrderByWithRelationInput
   class: SortOrder
@@ -2629,6 +2650,7 @@ input LivestockUnitRelationFilter {
 }
 
 enum LivestockUnitScalarFieldEnum {
+  angusTechId
   birthdate
   class
   comment
@@ -2649,19 +2671,20 @@ input LivestockUnitScalarWhereInput {
   AND: [LivestockUnitScalarWhereInput!]
   NOT: [LivestockUnitScalarWhereInput!]
   OR: [LivestockUnitScalarWhereInput!]
+  angusTechId: StringNullableFilter
   birthdate: DateTimeFilter
   class: EnumStockClassFilter
   comment: StringNullableFilter
   desexed: BoolFilter
   drySheepEquivalent: IntFilter
   id: StringFilter
-  mobId: StringFilter
+  mobId: StringNullableFilter
   name: StringNullableFilter
   nlisid: StringNullableFilter
   parentId: StringNullableFilter
   pregnancyId: StringNullableListFilter
-  purchaseDate: DateTimeFilter
-  purchasePrice: FloatFilter
+  purchaseDate: DateTimeNullableFilter
+  purchasePrice: FloatNullableFilter
   sex: EnumSexFilter
 }
 
@@ -2669,19 +2692,20 @@ input LivestockUnitScalarWhereWithAggregatesInput {
   AND: [LivestockUnitScalarWhereWithAggregatesInput!]
   NOT: [LivestockUnitScalarWhereWithAggregatesInput!]
   OR: [LivestockUnitScalarWhereWithAggregatesInput!]
+  angusTechId: StringNullableWithAggregatesFilter
   birthdate: DateTimeWithAggregatesFilter
   class: EnumStockClassWithAggregatesFilter
   comment: StringNullableWithAggregatesFilter
   desexed: BoolWithAggregatesFilter
   drySheepEquivalent: IntWithAggregatesFilter
   id: StringWithAggregatesFilter
-  mobId: StringWithAggregatesFilter
+  mobId: StringNullableWithAggregatesFilter
   name: StringNullableWithAggregatesFilter
   nlisid: StringNullableWithAggregatesFilter
   parentId: StringNullableWithAggregatesFilter
   pregnancyId: StringNullableListFilter
-  purchaseDate: DateTimeWithAggregatesFilter
-  purchasePrice: FloatWithAggregatesFilter
+  purchaseDate: DateTimeNullableWithAggregatesFilter
+  purchasePrice: FloatNullableWithAggregatesFilter
   sex: EnumSexWithAggregatesFilter
 }
 
@@ -2696,6 +2720,7 @@ input LivestockUnitSumOrderByAggregateInput {
 }
 
 input LivestockUnitUpdateInput {
+  angusTechId: NullableStringFieldUpdateOperationsInput
   birthdate: DateTimeFieldUpdateOperationsInput
   breed: BreedUpdateOneWithoutMembersNestedInput
   class: EnumStockClassFieldUpdateOperationsInput
@@ -2703,12 +2728,12 @@ input LivestockUnitUpdateInput {
   dam: LivestockUnitUpdateOneWithoutSireNestedInput
   desexed: BoolFieldUpdateOperationsInput
   drySheepEquivalent: IntFieldUpdateOperationsInput
-  mob: MobUpdateOneRequiredWithoutMembersNestedInput
+  mob: MobUpdateOneWithoutMembersNestedInput
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
   pregnancy: PregnancyUpdateManyWithoutParentsNestedInput
-  purchaseDate: DateTimeFieldUpdateOperationsInput
-  purchasePrice: FloatFieldUpdateOperationsInput
+  purchaseDate: NullableDateTimeFieldUpdateOperationsInput
+  purchasePrice: NullableFloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   sire: LivestockUnitUpdateOneWithoutDamNestedInput
   treatments: ChemicalTreatmentUpdateManyWithoutLiveStockUnitNestedInput
@@ -2717,6 +2742,7 @@ input LivestockUnitUpdateInput {
 }
 
 input LivestockUnitUpdateManyMutationInput {
+  angusTechId: NullableStringFieldUpdateOperationsInput
   birthdate: DateTimeFieldUpdateOperationsInput
   class: EnumStockClassFieldUpdateOperationsInput
   comment: NullableStringFieldUpdateOperationsInput
@@ -2724,8 +2750,8 @@ input LivestockUnitUpdateManyMutationInput {
   drySheepEquivalent: IntFieldUpdateOperationsInput
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
-  purchaseDate: DateTimeFieldUpdateOperationsInput
-  purchasePrice: FloatFieldUpdateOperationsInput
+  purchaseDate: NullableDateTimeFieldUpdateOperationsInput
+  purchasePrice: NullableFloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
 }
 
@@ -2831,18 +2857,19 @@ input LivestockUnitUpdateWithWhereUniqueWithoutPregnancyInput {
 }
 
 input LivestockUnitUpdateWithoutBreedInput {
+  angusTechId: NullableStringFieldUpdateOperationsInput
   birthdate: DateTimeFieldUpdateOperationsInput
   class: EnumStockClassFieldUpdateOperationsInput
   comment: NullableStringFieldUpdateOperationsInput
   dam: LivestockUnitUpdateOneWithoutSireNestedInput
   desexed: BoolFieldUpdateOperationsInput
   drySheepEquivalent: IntFieldUpdateOperationsInput
-  mob: MobUpdateOneRequiredWithoutMembersNestedInput
+  mob: MobUpdateOneWithoutMembersNestedInput
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
   pregnancy: PregnancyUpdateManyWithoutParentsNestedInput
-  purchaseDate: DateTimeFieldUpdateOperationsInput
-  purchasePrice: FloatFieldUpdateOperationsInput
+  purchaseDate: NullableDateTimeFieldUpdateOperationsInput
+  purchasePrice: NullableFloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   sire: LivestockUnitUpdateOneWithoutDamNestedInput
   treatments: ChemicalTreatmentUpdateManyWithoutLiveStockUnitNestedInput
@@ -2851,18 +2878,19 @@ input LivestockUnitUpdateWithoutBreedInput {
 }
 
 input LivestockUnitUpdateWithoutDamInput {
+  angusTechId: NullableStringFieldUpdateOperationsInput
   birthdate: DateTimeFieldUpdateOperationsInput
   breed: BreedUpdateOneWithoutMembersNestedInput
   class: EnumStockClassFieldUpdateOperationsInput
   comment: NullableStringFieldUpdateOperationsInput
   desexed: BoolFieldUpdateOperationsInput
   drySheepEquivalent: IntFieldUpdateOperationsInput
-  mob: MobUpdateOneRequiredWithoutMembersNestedInput
+  mob: MobUpdateOneWithoutMembersNestedInput
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
   pregnancy: PregnancyUpdateManyWithoutParentsNestedInput
-  purchaseDate: DateTimeFieldUpdateOperationsInput
-  purchasePrice: FloatFieldUpdateOperationsInput
+  purchaseDate: NullableDateTimeFieldUpdateOperationsInput
+  purchasePrice: NullableFloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   sire: LivestockUnitUpdateOneWithoutDamNestedInput
   treatments: ChemicalTreatmentUpdateManyWithoutLiveStockUnitNestedInput
@@ -2871,6 +2899,7 @@ input LivestockUnitUpdateWithoutDamInput {
 }
 
 input LivestockUnitUpdateWithoutMobInput {
+  angusTechId: NullableStringFieldUpdateOperationsInput
   birthdate: DateTimeFieldUpdateOperationsInput
   breed: BreedUpdateOneWithoutMembersNestedInput
   class: EnumStockClassFieldUpdateOperationsInput
@@ -2881,8 +2910,8 @@ input LivestockUnitUpdateWithoutMobInput {
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
   pregnancy: PregnancyUpdateManyWithoutParentsNestedInput
-  purchaseDate: DateTimeFieldUpdateOperationsInput
-  purchasePrice: FloatFieldUpdateOperationsInput
+  purchaseDate: NullableDateTimeFieldUpdateOperationsInput
+  purchasePrice: NullableFloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   sire: LivestockUnitUpdateOneWithoutDamNestedInput
   treatments: ChemicalTreatmentUpdateManyWithoutLiveStockUnitNestedInput
@@ -2891,6 +2920,7 @@ input LivestockUnitUpdateWithoutMobInput {
 }
 
 input LivestockUnitUpdateWithoutPregnancyInput {
+  angusTechId: NullableStringFieldUpdateOperationsInput
   birthdate: DateTimeFieldUpdateOperationsInput
   breed: BreedUpdateOneWithoutMembersNestedInput
   class: EnumStockClassFieldUpdateOperationsInput
@@ -2898,11 +2928,11 @@ input LivestockUnitUpdateWithoutPregnancyInput {
   dam: LivestockUnitUpdateOneWithoutSireNestedInput
   desexed: BoolFieldUpdateOperationsInput
   drySheepEquivalent: IntFieldUpdateOperationsInput
-  mob: MobUpdateOneRequiredWithoutMembersNestedInput
+  mob: MobUpdateOneWithoutMembersNestedInput
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
-  purchaseDate: DateTimeFieldUpdateOperationsInput
-  purchasePrice: FloatFieldUpdateOperationsInput
+  purchaseDate: NullableDateTimeFieldUpdateOperationsInput
+  purchasePrice: NullableFloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   sire: LivestockUnitUpdateOneWithoutDamNestedInput
   treatments: ChemicalTreatmentUpdateManyWithoutLiveStockUnitNestedInput
@@ -2911,6 +2941,7 @@ input LivestockUnitUpdateWithoutPregnancyInput {
 }
 
 input LivestockUnitUpdateWithoutSireInput {
+  angusTechId: NullableStringFieldUpdateOperationsInput
   birthdate: DateTimeFieldUpdateOperationsInput
   breed: BreedUpdateOneWithoutMembersNestedInput
   class: EnumStockClassFieldUpdateOperationsInput
@@ -2918,12 +2949,12 @@ input LivestockUnitUpdateWithoutSireInput {
   dam: LivestockUnitUpdateOneWithoutSireNestedInput
   desexed: BoolFieldUpdateOperationsInput
   drySheepEquivalent: IntFieldUpdateOperationsInput
-  mob: MobUpdateOneRequiredWithoutMembersNestedInput
+  mob: MobUpdateOneWithoutMembersNestedInput
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
   pregnancy: PregnancyUpdateManyWithoutParentsNestedInput
-  purchaseDate: DateTimeFieldUpdateOperationsInput
-  purchasePrice: FloatFieldUpdateOperationsInput
+  purchaseDate: NullableDateTimeFieldUpdateOperationsInput
+  purchasePrice: NullableFloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   treatments: ChemicalTreatmentUpdateManyWithoutLiveStockUnitNestedInput
   visualid: VisualIdUpdateOneWithoutLivestockUnitNestedInput
@@ -2931,6 +2962,7 @@ input LivestockUnitUpdateWithoutSireInput {
 }
 
 input LivestockUnitUpdateWithoutTreatmentsInput {
+  angusTechId: NullableStringFieldUpdateOperationsInput
   birthdate: DateTimeFieldUpdateOperationsInput
   breed: BreedUpdateOneWithoutMembersNestedInput
   class: EnumStockClassFieldUpdateOperationsInput
@@ -2938,12 +2970,12 @@ input LivestockUnitUpdateWithoutTreatmentsInput {
   dam: LivestockUnitUpdateOneWithoutSireNestedInput
   desexed: BoolFieldUpdateOperationsInput
   drySheepEquivalent: IntFieldUpdateOperationsInput
-  mob: MobUpdateOneRequiredWithoutMembersNestedInput
+  mob: MobUpdateOneWithoutMembersNestedInput
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
   pregnancy: PregnancyUpdateManyWithoutParentsNestedInput
-  purchaseDate: DateTimeFieldUpdateOperationsInput
-  purchasePrice: FloatFieldUpdateOperationsInput
+  purchaseDate: NullableDateTimeFieldUpdateOperationsInput
+  purchasePrice: NullableFloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   sire: LivestockUnitUpdateOneWithoutDamNestedInput
   visualid: VisualIdUpdateOneWithoutLivestockUnitNestedInput
@@ -2951,6 +2983,7 @@ input LivestockUnitUpdateWithoutTreatmentsInput {
 }
 
 input LivestockUnitUpdateWithoutVisualidInput {
+  angusTechId: NullableStringFieldUpdateOperationsInput
   birthdate: DateTimeFieldUpdateOperationsInput
   breed: BreedUpdateOneWithoutMembersNestedInput
   class: EnumStockClassFieldUpdateOperationsInput
@@ -2958,12 +2991,12 @@ input LivestockUnitUpdateWithoutVisualidInput {
   dam: LivestockUnitUpdateOneWithoutSireNestedInput
   desexed: BoolFieldUpdateOperationsInput
   drySheepEquivalent: IntFieldUpdateOperationsInput
-  mob: MobUpdateOneRequiredWithoutMembersNestedInput
+  mob: MobUpdateOneWithoutMembersNestedInput
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
   pregnancy: PregnancyUpdateManyWithoutParentsNestedInput
-  purchaseDate: DateTimeFieldUpdateOperationsInput
-  purchasePrice: FloatFieldUpdateOperationsInput
+  purchaseDate: NullableDateTimeFieldUpdateOperationsInput
+  purchasePrice: NullableFloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   sire: LivestockUnitUpdateOneWithoutDamNestedInput
   treatments: ChemicalTreatmentUpdateManyWithoutLiveStockUnitNestedInput
@@ -2971,6 +3004,7 @@ input LivestockUnitUpdateWithoutVisualidInput {
 }
 
 input LivestockUnitUpdateWithoutWeightsInput {
+  angusTechId: NullableStringFieldUpdateOperationsInput
   birthdate: DateTimeFieldUpdateOperationsInput
   breed: BreedUpdateOneWithoutMembersNestedInput
   class: EnumStockClassFieldUpdateOperationsInput
@@ -2978,12 +3012,12 @@ input LivestockUnitUpdateWithoutWeightsInput {
   dam: LivestockUnitUpdateOneWithoutSireNestedInput
   desexed: BoolFieldUpdateOperationsInput
   drySheepEquivalent: IntFieldUpdateOperationsInput
-  mob: MobUpdateOneRequiredWithoutMembersNestedInput
+  mob: MobUpdateOneWithoutMembersNestedInput
   name: NullableStringFieldUpdateOperationsInput
   nlisid: NullableStringFieldUpdateOperationsInput
   pregnancy: PregnancyUpdateManyWithoutParentsNestedInput
-  purchaseDate: DateTimeFieldUpdateOperationsInput
-  purchasePrice: FloatFieldUpdateOperationsInput
+  purchaseDate: NullableDateTimeFieldUpdateOperationsInput
+  purchasePrice: NullableFloatFieldUpdateOperationsInput
   sex: EnumSexFieldUpdateOperationsInput
   sire: LivestockUnitUpdateOneWithoutDamNestedInput
   treatments: ChemicalTreatmentUpdateManyWithoutLiveStockUnitNestedInput
@@ -3036,6 +3070,7 @@ input LivestockUnitWhereInput {
   AND: [LivestockUnitWhereInput!]
   NOT: [LivestockUnitWhereInput!]
   OR: [LivestockUnitWhereInput!]
+  angusTechId: StringNullableFilter
   birthdate: DateTimeFilter
   breed: BreedRelationFilter
   class: EnumStockClassFilter
@@ -3045,14 +3080,14 @@ input LivestockUnitWhereInput {
   drySheepEquivalent: IntFilter
   id: StringFilter
   mob: MobRelationFilter
-  mobId: StringFilter
+  mobId: StringNullableFilter
   name: StringNullableFilter
   nlisid: StringNullableFilter
   parentId: StringNullableFilter
   pregnancy: PregnancyListRelationFilter
   pregnancyId: StringNullableListFilter
-  purchaseDate: DateTimeFilter
-  purchasePrice: FloatFilter
+  purchaseDate: DateTimeNullableFilter
+  purchasePrice: FloatNullableFilter
   sex: EnumSexFilter
   sire: LivestockUnitRelationFilter
   treatments: ChemicalTreatmentListRelationFilter
@@ -3499,10 +3534,12 @@ input MobUpdateManyWithoutGrazeNestedInput {
   upsert: [MobUpsertWithWhereUniqueWithoutGrazeInput!]
 }
 
-input MobUpdateOneRequiredWithoutMembersNestedInput {
+input MobUpdateOneWithoutMembersNestedInput {
   connect: MobWhereUniqueInput
   connectOrCreate: MobCreateOrConnectWithoutMembersInput
   create: MobCreateWithoutMembersInput
+  delete: Boolean
+  disconnect: Boolean
   update: MobUpdateWithoutMembersInput
   upsert: MobUpsertWithoutMembersInput
 }

@@ -51,6 +51,7 @@ export class MobMembersArgs {
         | "drySheepEquivalent"
         | "purchasePrice"
         | "purchaseDate"
+        | "angusTechId"
       >
     | undefined;
 }

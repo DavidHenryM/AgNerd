@@ -4,9 +4,10 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { BoolFilter } from "../inputs/BoolFilter";
 import { DateTimeFilter } from "../inputs/DateTimeFilter";
+import { DateTimeNullableFilter } from "../inputs/DateTimeNullableFilter";
 import { EnumSexFilter } from "../inputs/EnumSexFilter";
 import { EnumStockClassFilter } from "../inputs/EnumStockClassFilter";
-import { FloatFilter } from "../inputs/FloatFilter";
+import { FloatNullableFilter } from "../inputs/FloatNullableFilter";
 import { IntFilter } from "../inputs/IntFilter";
 import { StringFilter } from "../inputs/StringFilter";
 import { StringNullableFilter } from "../inputs/StringNullableFilter";
@@ -76,10 +77,10 @@ export class LivestockUnitScalarWhereInput {
   })
   parentId?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => StringFilter, {
+  @TypeGraphQL.Field((_type) => StringNullableFilter, {
     nullable: true,
   })
-  mobId?: StringFilter | undefined;
+  mobId?: StringNullableFilter | undefined;
 
   @TypeGraphQL.Field((_type) => StringNullableListFilter, {
     nullable: true,
@@ -91,13 +92,18 @@ export class LivestockUnitScalarWhereInput {
   })
   drySheepEquivalent?: IntFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => FloatFilter, {
+  @TypeGraphQL.Field((_type) => FloatNullableFilter, {
     nullable: true,
   })
-  purchasePrice?: FloatFilter | undefined;
+  purchasePrice?: FloatNullableFilter | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFilter, {
+  @TypeGraphQL.Field((_type) => DateTimeNullableFilter, {
     nullable: true,
   })
-  purchaseDate?: DateTimeFilter | undefined;
+  purchaseDate?: DateTimeNullableFilter | undefined;
+
+  @TypeGraphQL.Field((_type) => StringNullableFilter, {
+    nullable: true,
+  })
+  angusTechId?: StringNullableFilter | undefined;
 }

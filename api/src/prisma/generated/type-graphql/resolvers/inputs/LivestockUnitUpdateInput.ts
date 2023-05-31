@@ -8,11 +8,12 @@ import { ChemicalTreatmentUpdateManyWithoutLiveStockUnitNestedInput } from "../i
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
 import { EnumSexFieldUpdateOperationsInput } from "../inputs/EnumSexFieldUpdateOperationsInput";
 import { EnumStockClassFieldUpdateOperationsInput } from "../inputs/EnumStockClassFieldUpdateOperationsInput";
-import { FloatFieldUpdateOperationsInput } from "../inputs/FloatFieldUpdateOperationsInput";
 import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperationsInput";
 import { LivestockUnitUpdateOneWithoutDamNestedInput } from "../inputs/LivestockUnitUpdateOneWithoutDamNestedInput";
 import { LivestockUnitUpdateOneWithoutSireNestedInput } from "../inputs/LivestockUnitUpdateOneWithoutSireNestedInput";
-import { MobUpdateOneRequiredWithoutMembersNestedInput } from "../inputs/MobUpdateOneRequiredWithoutMembersNestedInput";
+import { MobUpdateOneWithoutMembersNestedInput } from "../inputs/MobUpdateOneWithoutMembersNestedInput";
+import { NullableDateTimeFieldUpdateOperationsInput } from "../inputs/NullableDateTimeFieldUpdateOperationsInput";
+import { NullableFloatFieldUpdateOperationsInput } from "../inputs/NullableFloatFieldUpdateOperationsInput";
 import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
 import { PregnancyUpdateManyWithoutParentsNestedInput } from "../inputs/PregnancyUpdateManyWithoutParentsNestedInput";
 import { VisualIdUpdateOneWithoutLivestockUnitNestedInput } from "../inputs/VisualIdUpdateOneWithoutLivestockUnitNestedInput";
@@ -62,15 +63,20 @@ export class LivestockUnitUpdateInput {
   })
   drySheepEquivalent?: IntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => FloatFieldUpdateOperationsInput, {
+  @TypeGraphQL.Field((_type) => NullableFloatFieldUpdateOperationsInput, {
     nullable: true,
   })
-  purchasePrice?: FloatFieldUpdateOperationsInput | undefined;
+  purchasePrice?: NullableFloatFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
+  @TypeGraphQL.Field((_type) => NullableDateTimeFieldUpdateOperationsInput, {
     nullable: true,
   })
-  purchaseDate?: DateTimeFieldUpdateOperationsInput | undefined;
+  purchaseDate?: NullableDateTimeFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
+    nullable: true,
+  })
+  angusTechId?: NullableStringFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(
     (_type) => VisualIdUpdateOneWithoutLivestockUnitNestedInput,
@@ -95,10 +101,10 @@ export class LivestockUnitUpdateInput {
   })
   dam?: LivestockUnitUpdateOneWithoutSireNestedInput | undefined;
 
-  @TypeGraphQL.Field((_type) => MobUpdateOneRequiredWithoutMembersNestedInput, {
+  @TypeGraphQL.Field((_type) => MobUpdateOneWithoutMembersNestedInput, {
     nullable: true,
   })
-  mob?: MobUpdateOneRequiredWithoutMembersNestedInput | undefined;
+  mob?: MobUpdateOneWithoutMembersNestedInput | undefined;
 
   @TypeGraphQL.Field((_type) => PregnancyUpdateManyWithoutParentsNestedInput, {
     nullable: true,

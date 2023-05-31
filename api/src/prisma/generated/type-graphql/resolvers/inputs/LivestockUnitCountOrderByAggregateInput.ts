@@ -77,4 +77,9 @@ export class LivestockUnitCountOrderByAggregateInput {
     nullable: true,
   })
   purchaseDate?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
+  })
+  angusTechId?: "asc" | "desc" | undefined;
 }

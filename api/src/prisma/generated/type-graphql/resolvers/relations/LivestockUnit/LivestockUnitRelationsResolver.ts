@@ -99,13 +99,13 @@ export class LivestockUnitRelationsResolver {
   }
 
   @TypeGraphQL.FieldResolver((_type) => Mob, {
-    nullable: false,
+    nullable: true,
   })
   async mob(
     @TypeGraphQL.Root() livestockUnit: LivestockUnit,
     @TypeGraphQL.Ctx() ctx: any,
     @TypeGraphQL.Info() info: GraphQLResolveInfo
-  ): Promise<Mob> {
+  ): Promise<Mob | null> {
     const { _count } = transformInfoIntoPrismaArgs(info);
     return getPrismaFromContext(ctx)
       .livestockUnit.findUniqueOrThrow({
