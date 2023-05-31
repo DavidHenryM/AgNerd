@@ -8,31 +8,34 @@ import { LivestockUnitPositionMinOrderByAggregateInput } from "../inputs/Livesto
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("LivestockUnitPositionOrderByWithAggregationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitPositionOrderByWithAggregationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   date?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionCountOrderByAggregateInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitPositionCountOrderByAggregateInput,
+    {
+      nullable: true,
+    }
+  )
   _count?: LivestockUnitPositionCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionMaxOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitPositionMaxOrderByAggregateInput, {
+    nullable: true,
   })
   _max?: LivestockUnitPositionMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionMinOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitPositionMinOrderByAggregateInput, {
+    nullable: true,
   })
   _min?: LivestockUnitPositionMinOrderByAggregateInput | undefined;
 }

@@ -7,21 +7,21 @@ import { GrazeCreateWithoutMobInput } from "../inputs/GrazeCreateWithoutMobInput
 import { GrazeWhereUniqueInput } from "../inputs/GrazeWhereUniqueInput";
 
 @TypeGraphQL.InputType("GrazeCreateNestedManyWithoutMobInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GrazeCreateNestedManyWithoutMobInput {
-  @TypeGraphQL.Field(_type => [GrazeCreateWithoutMobInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeCreateWithoutMobInput], {
+    nullable: true,
   })
   create?: GrazeCreateWithoutMobInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeCreateOrConnectWithoutMobInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeCreateOrConnectWithoutMobInput], {
+    nullable: true,
   })
   connectOrCreate?: GrazeCreateOrConnectWithoutMobInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeWhereUniqueInput], {
+    nullable: true,
   })
   connect?: GrazeWhereUniqueInput[] | undefined;
 }

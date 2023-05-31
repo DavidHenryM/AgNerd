@@ -8,31 +8,41 @@ import { UserMinOrderByAggregateInput } from "../inputs/UserMinOrderByAggregateI
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("UserOrderByWithAggregationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class UserOrderByWithAggregationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
-  name?: "asc" | "desc" | undefined;
+  firstName?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => UserCountOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
+  })
+  preferredName?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
+  })
+  lastName?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field((_type) => UserCountOrderByAggregateInput, {
+    nullable: true,
   })
   _count?: UserCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => UserMaxOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => UserMaxOrderByAggregateInput, {
+    nullable: true,
   })
   _max?: UserMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => UserMinOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => UserMinOrderByAggregateInput, {
+    nullable: true,
   })
   _min?: UserMinOrderByAggregateInput | undefined;
 }

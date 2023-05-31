@@ -12,61 +12,70 @@ import { GeoPointUpsertWithWhereUniqueWithoutPaddockInput } from "../inputs/GeoP
 import { GeoPointWhereUniqueInput } from "../inputs/GeoPointWhereUniqueInput";
 
 @TypeGraphQL.InputType("GeoPointUpdateManyWithoutPaddockNestedInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GeoPointUpdateManyWithoutPaddockNestedInput {
-  @TypeGraphQL.Field(_type => [GeoPointCreateWithoutPaddockInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GeoPointCreateWithoutPaddockInput], {
+    nullable: true,
   })
   create?: GeoPointCreateWithoutPaddockInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GeoPointCreateOrConnectWithoutPaddockInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GeoPointCreateOrConnectWithoutPaddockInput], {
+    nullable: true,
   })
   connectOrCreate?: GeoPointCreateOrConnectWithoutPaddockInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GeoPointUpsertWithWhereUniqueWithoutPaddockInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [GeoPointUpsertWithWhereUniqueWithoutPaddockInput],
+    {
+      nullable: true,
+    }
+  )
   upsert?: GeoPointUpsertWithWhereUniqueWithoutPaddockInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => GeoPointCreateManyPaddockInputEnvelope, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GeoPointCreateManyPaddockInputEnvelope, {
+    nullable: true,
   })
   createMany?: GeoPointCreateManyPaddockInputEnvelope | undefined;
 
-  @TypeGraphQL.Field(_type => [GeoPointWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GeoPointWhereUniqueInput], {
+    nullable: true,
   })
   set?: GeoPointWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GeoPointWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GeoPointWhereUniqueInput], {
+    nullable: true,
   })
   disconnect?: GeoPointWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GeoPointWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GeoPointWhereUniqueInput], {
+    nullable: true,
   })
   delete?: GeoPointWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GeoPointWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GeoPointWhereUniqueInput], {
+    nullable: true,
   })
   connect?: GeoPointWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GeoPointUpdateWithWhereUniqueWithoutPaddockInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [GeoPointUpdateWithWhereUniqueWithoutPaddockInput],
+    {
+      nullable: true,
+    }
+  )
   update?: GeoPointUpdateWithWhereUniqueWithoutPaddockInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GeoPointUpdateManyWithWhereWithoutPaddockInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [GeoPointUpdateManyWithWhereWithoutPaddockInput],
+    {
+      nullable: true,
+    }
+  )
   updateMany?: GeoPointUpdateManyWithWhereWithoutPaddockInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GeoPointScalarWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GeoPointScalarWhereInput], {
+    nullable: true,
   })
   deleteMany?: GeoPointScalarWhereInput[] | undefined;
 }

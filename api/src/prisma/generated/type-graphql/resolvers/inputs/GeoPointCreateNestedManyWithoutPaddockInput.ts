@@ -8,26 +8,26 @@ import { GeoPointCreateWithoutPaddockInput } from "../inputs/GeoPointCreateWitho
 import { GeoPointWhereUniqueInput } from "../inputs/GeoPointWhereUniqueInput";
 
 @TypeGraphQL.InputType("GeoPointCreateNestedManyWithoutPaddockInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GeoPointCreateNestedManyWithoutPaddockInput {
-  @TypeGraphQL.Field(_type => [GeoPointCreateWithoutPaddockInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GeoPointCreateWithoutPaddockInput], {
+    nullable: true,
   })
   create?: GeoPointCreateWithoutPaddockInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GeoPointCreateOrConnectWithoutPaddockInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GeoPointCreateOrConnectWithoutPaddockInput], {
+    nullable: true,
   })
   connectOrCreate?: GeoPointCreateOrConnectWithoutPaddockInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => GeoPointCreateManyPaddockInputEnvelope, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GeoPointCreateManyPaddockInputEnvelope, {
+    nullable: true,
   })
   createMany?: GeoPointCreateManyPaddockInputEnvelope | undefined;
 
-  @TypeGraphQL.Field(_type => [GeoPointWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GeoPointWhereUniqueInput], {
+    nullable: true,
   })
   connect?: GeoPointWhereUniqueInput[] | undefined;
 }

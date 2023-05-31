@@ -7,21 +7,21 @@ import { LivestockUnitUpdateOneWithoutBreedNestedInput } from "../inputs/Livesto
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("BreedUpdateInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class BreedUpdateInput {
-  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   name?: StringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => EnumStockClassFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => EnumStockClassFieldUpdateOperationsInput, {
+    nullable: true,
   })
   class?: EnumStockClassFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitUpdateOneWithoutBreedNestedInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitUpdateOneWithoutBreedNestedInput, {
+    nullable: true,
   })
   members?: LivestockUnitUpdateOneWithoutBreedNestedInput | undefined;
 }

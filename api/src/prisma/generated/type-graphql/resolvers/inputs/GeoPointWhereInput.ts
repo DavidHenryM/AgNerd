@@ -8,56 +8,56 @@ import { PaddockRelationFilter } from "../inputs/PaddockRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
 
 @TypeGraphQL.InputType("GeoPointWhereInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GeoPointWhereInput {
-  @TypeGraphQL.Field(_type => [GeoPointWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GeoPointWhereInput], {
+    nullable: true,
   })
   AND?: GeoPointWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GeoPointWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GeoPointWhereInput], {
+    nullable: true,
   })
   OR?: GeoPointWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GeoPointWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GeoPointWhereInput], {
+    nullable: true,
   })
   NOT?: GeoPointWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFilter, {
+    nullable: true,
   })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => FloatFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => FloatFilter, {
+    nullable: true,
   })
   latitude?: FloatFilter | undefined;
 
-  @TypeGraphQL.Field(_type => FloatFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => FloatFilter, {
+    nullable: true,
   })
   longitude?: FloatFilter | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockRelationFilter, {
-    nullable: true
-  })
-  paddock?: PaddockRelationFilter | undefined;
-
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFilter, {
+    nullable: true,
   })
   paddockId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionRelationFilter, {
-    nullable: true
-  })
-  livestockUnitPosition?: LivestockUnitPositionRelationFilter | undefined;
-
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFilter, {
+    nullable: true,
   })
   livestockUnitPositionId?: StringFilter | undefined;
+
+  @TypeGraphQL.Field((_type) => PaddockRelationFilter, {
+    nullable: true,
+  })
+  paddock?: PaddockRelationFilter | undefined;
+
+  @TypeGraphQL.Field((_type) => LivestockUnitPositionRelationFilter, {
+    nullable: true,
+  })
+  livestockUnitPosition?: LivestockUnitPositionRelationFilter | undefined;
 }

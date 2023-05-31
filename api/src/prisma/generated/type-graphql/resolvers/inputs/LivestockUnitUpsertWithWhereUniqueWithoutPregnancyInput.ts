@@ -6,22 +6,25 @@ import { LivestockUnitCreateWithoutPregnancyInput } from "../inputs/LivestockUni
 import { LivestockUnitUpdateWithoutPregnancyInput } from "../inputs/LivestockUnitUpdateWithoutPregnancyInput";
 import { LivestockUnitWhereUniqueInput } from "../inputs/LivestockUnitWhereUniqueInput";
 
-@TypeGraphQL.InputType("LivestockUnitUpsertWithWhereUniqueWithoutPregnancyInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "LivestockUnitUpsertWithWhereUniqueWithoutPregnancyInput",
+  {
+    isAbstract: true,
+  }
+)
 export class LivestockUnitUpsertWithWhereUniqueWithoutPregnancyInput {
-  @TypeGraphQL.Field(_type => LivestockUnitWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitWhereUniqueInput, {
+    nullable: false,
   })
   where!: LivestockUnitWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => LivestockUnitUpdateWithoutPregnancyInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitUpdateWithoutPregnancyInput, {
+    nullable: false,
   })
   update!: LivestockUnitUpdateWithoutPregnancyInput;
 
-  @TypeGraphQL.Field(_type => LivestockUnitCreateWithoutPregnancyInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitCreateWithoutPregnancyInput, {
+    nullable: false,
   })
   create!: LivestockUnitCreateWithoutPregnancyInput;
 }

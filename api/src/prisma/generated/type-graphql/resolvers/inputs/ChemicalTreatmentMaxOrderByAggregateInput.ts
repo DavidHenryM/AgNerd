@@ -5,36 +5,36 @@ import { DecimalJSScalar } from "../../scalars";
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("ChemicalTreatmentMaxOrderByAggregateInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class ChemicalTreatmentMaxOrderByAggregateInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   livestockUnitId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   treatmentDate?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   applicationMethod?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   volume_ml?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   witholdingPeriodDays?: "asc" | "desc" | undefined;
 }

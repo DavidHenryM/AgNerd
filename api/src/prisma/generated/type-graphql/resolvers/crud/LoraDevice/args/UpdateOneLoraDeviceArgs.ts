@@ -5,13 +5,13 @@ import { LoraDeviceWhereUniqueInput } from "../../../inputs/LoraDeviceWhereUniqu
 
 @TypeGraphQL.ArgsType()
 export class UpdateOneLoraDeviceArgs {
-  @TypeGraphQL.Field(_type => LoraDeviceUpdateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LoraDeviceUpdateInput, {
+    nullable: false,
   })
   data!: LoraDeviceUpdateInput;
 
-  @TypeGraphQL.Field(_type => LoraDeviceWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LoraDeviceWhereUniqueInput, {
+    nullable: false,
   })
   where!: LoraDeviceWhereUniqueInput;
 }

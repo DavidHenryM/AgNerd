@@ -4,8 +4,8 @@ import { LivestockUnitPositionWhereUniqueInput } from "../../../inputs/Livestock
 
 @TypeGraphQL.ArgsType()
 export class DeleteOneLivestockUnitPositionArgs {
-  @TypeGraphQL.Field(_type => LivestockUnitPositionWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitPositionWhereUniqueInput, {
+    nullable: false,
   })
   where!: LivestockUnitPositionWhereUniqueInput;
 }

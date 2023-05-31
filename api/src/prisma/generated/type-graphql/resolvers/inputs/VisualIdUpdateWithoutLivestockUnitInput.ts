@@ -3,19 +3,22 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { NullableEnumVisualIdColourFieldUpdateOperationsInput } from "../inputs/NullableEnumVisualIdColourFieldUpdateOperationsInput";
-import { NullableIntFieldUpdateOperationsInput } from "../inputs/NullableIntFieldUpdateOperationsInput";
+import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("VisualIdUpdateWithoutLivestockUnitInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class VisualIdUpdateWithoutLivestockUnitInput {
-  @TypeGraphQL.Field(_type => NullableEnumVisualIdColourFieldUpdateOperationsInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => NullableEnumVisualIdColourFieldUpdateOperationsInput,
+    {
+      nullable: true,
+    }
+  )
   colour?: NullableEnumVisualIdColourFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => NullableIntFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
+    nullable: true,
   })
-  number?: NullableIntFieldUpdateOperationsInput | undefined;
+  number?: NullableStringFieldUpdateOperationsInput | undefined;
 }

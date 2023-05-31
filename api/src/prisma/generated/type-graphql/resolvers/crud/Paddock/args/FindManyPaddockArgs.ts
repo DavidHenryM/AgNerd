@@ -7,33 +7,35 @@ import { PaddockScalarFieldEnum } from "../../../../enums/PaddockScalarFieldEnum
 
 @TypeGraphQL.ArgsType()
 export class FindManyPaddockArgs {
-  @TypeGraphQL.Field(_type => PaddockWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockWhereInput, {
+    nullable: true,
   })
   where?: PaddockWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [PaddockOrderByWithRelationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PaddockOrderByWithRelationInput], {
+    nullable: true,
   })
   orderBy?: PaddockOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockWhereUniqueInput, {
+    nullable: true,
   })
   cursor?: PaddockWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field(_type => [PaddockScalarFieldEnum], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PaddockScalarFieldEnum], {
+    nullable: true,
   })
-  distinct?: Array<"id" | "name" | "areaHa" | "livestockUnitPositionId"> | undefined;
+  distinct?:
+    | Array<"id" | "name" | "areaHa" | "livestockUnitPositionId">
+    | undefined;
 }

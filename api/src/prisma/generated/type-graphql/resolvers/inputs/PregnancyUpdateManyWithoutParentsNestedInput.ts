@@ -11,56 +11,65 @@ import { PregnancyUpsertWithWhereUniqueWithoutParentsInput } from "../inputs/Pre
 import { PregnancyWhereUniqueInput } from "../inputs/PregnancyWhereUniqueInput";
 
 @TypeGraphQL.InputType("PregnancyUpdateManyWithoutParentsNestedInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PregnancyUpdateManyWithoutParentsNestedInput {
-  @TypeGraphQL.Field(_type => [PregnancyCreateWithoutParentsInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyCreateWithoutParentsInput], {
+    nullable: true,
   })
   create?: PregnancyCreateWithoutParentsInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyCreateOrConnectWithoutParentsInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyCreateOrConnectWithoutParentsInput], {
+    nullable: true,
   })
   connectOrCreate?: PregnancyCreateOrConnectWithoutParentsInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyUpsertWithWhereUniqueWithoutParentsInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [PregnancyUpsertWithWhereUniqueWithoutParentsInput],
+    {
+      nullable: true,
+    }
+  )
   upsert?: PregnancyUpsertWithWhereUniqueWithoutParentsInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyWhereUniqueInput], {
+    nullable: true,
   })
   set?: PregnancyWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyWhereUniqueInput], {
+    nullable: true,
   })
   disconnect?: PregnancyWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyWhereUniqueInput], {
+    nullable: true,
   })
   delete?: PregnancyWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyWhereUniqueInput], {
+    nullable: true,
   })
   connect?: PregnancyWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyUpdateWithWhereUniqueWithoutParentsInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [PregnancyUpdateWithWhereUniqueWithoutParentsInput],
+    {
+      nullable: true,
+    }
+  )
   update?: PregnancyUpdateWithWhereUniqueWithoutParentsInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyUpdateManyWithWhereWithoutParentsInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [PregnancyUpdateManyWithWhereWithoutParentsInput],
+    {
+      nullable: true,
+    }
+  )
   updateMany?: PregnancyUpdateManyWithWhereWithoutParentsInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyScalarWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyScalarWhereInput], {
+    nullable: true,
   })
   deleteMany?: PregnancyScalarWhereInput[] | undefined;
 }

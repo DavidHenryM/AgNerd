@@ -4,8 +4,8 @@ import { LoraDeviceWhereUniqueInput } from "../../../inputs/LoraDeviceWhereUniqu
 
 @TypeGraphQL.ArgsType()
 export class DeleteOneLoraDeviceArgs {
-  @TypeGraphQL.Field(_type => LoraDeviceWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LoraDeviceWhereUniqueInput, {
+    nullable: false,
   })
   where!: LoraDeviceWhereUniqueInput;
 }

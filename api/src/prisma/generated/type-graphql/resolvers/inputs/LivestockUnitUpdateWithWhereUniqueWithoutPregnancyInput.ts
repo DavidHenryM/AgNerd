@@ -5,17 +5,20 @@ import { DecimalJSScalar } from "../../scalars";
 import { LivestockUnitUpdateWithoutPregnancyInput } from "../inputs/LivestockUnitUpdateWithoutPregnancyInput";
 import { LivestockUnitWhereUniqueInput } from "../inputs/LivestockUnitWhereUniqueInput";
 
-@TypeGraphQL.InputType("LivestockUnitUpdateWithWhereUniqueWithoutPregnancyInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "LivestockUnitUpdateWithWhereUniqueWithoutPregnancyInput",
+  {
+    isAbstract: true,
+  }
+)
 export class LivestockUnitUpdateWithWhereUniqueWithoutPregnancyInput {
-  @TypeGraphQL.Field(_type => LivestockUnitWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitWhereUniqueInput, {
+    nullable: false,
   })
   where!: LivestockUnitWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => LivestockUnitUpdateWithoutPregnancyInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitUpdateWithoutPregnancyInput, {
+    nullable: false,
   })
   data!: LivestockUnitUpdateWithoutPregnancyInput;
 }

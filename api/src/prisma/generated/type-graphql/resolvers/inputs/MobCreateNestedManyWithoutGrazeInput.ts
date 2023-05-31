@@ -7,21 +7,21 @@ import { MobCreateWithoutGrazeInput } from "../inputs/MobCreateWithoutGrazeInput
 import { MobWhereUniqueInput } from "../inputs/MobWhereUniqueInput";
 
 @TypeGraphQL.InputType("MobCreateNestedManyWithoutGrazeInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class MobCreateNestedManyWithoutGrazeInput {
-  @TypeGraphQL.Field(_type => [MobCreateWithoutGrazeInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobCreateWithoutGrazeInput], {
+    nullable: true,
   })
   create?: MobCreateWithoutGrazeInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MobCreateOrConnectWithoutGrazeInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobCreateOrConnectWithoutGrazeInput], {
+    nullable: true,
   })
   connectOrCreate?: MobCreateOrConnectWithoutGrazeInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MobWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobWhereUniqueInput], {
+    nullable: true,
   })
   connect?: MobWhereUniqueInput[] | undefined;
 }

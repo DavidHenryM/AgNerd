@@ -8,26 +8,26 @@ import { GrazeCreateWithoutPaddockInput } from "../inputs/GrazeCreateWithoutPadd
 import { GrazeWhereUniqueInput } from "../inputs/GrazeWhereUniqueInput";
 
 @TypeGraphQL.InputType("GrazeCreateNestedManyWithoutPaddockInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GrazeCreateNestedManyWithoutPaddockInput {
-  @TypeGraphQL.Field(_type => [GrazeCreateWithoutPaddockInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeCreateWithoutPaddockInput], {
+    nullable: true,
   })
   create?: GrazeCreateWithoutPaddockInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeCreateOrConnectWithoutPaddockInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeCreateOrConnectWithoutPaddockInput], {
+    nullable: true,
   })
   connectOrCreate?: GrazeCreateOrConnectWithoutPaddockInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => GrazeCreateManyPaddockInputEnvelope, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeCreateManyPaddockInputEnvelope, {
+    nullable: true,
   })
   createMany?: GrazeCreateManyPaddockInputEnvelope | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeWhereUniqueInput], {
+    nullable: true,
   })
   connect?: GrazeWhereUniqueInput[] | undefined;
 }

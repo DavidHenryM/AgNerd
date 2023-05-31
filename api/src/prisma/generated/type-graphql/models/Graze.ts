@@ -7,45 +7,45 @@ import { Paddock } from "../models/Paddock";
 import { GrazeCount } from "../resolvers/outputs/GrazeCount";
 
 @TypeGraphQL.ObjectType("Graze", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class Graze {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   id!: string;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: false,
   })
   startDatetime!: Date;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   endDateTime?: Date | null;
 
   paddock?: Paddock;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   paddockId!: string;
 
-  @TypeGraphQL.Field(_type => [String], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [String], {
+    nullable: false,
   })
   mobIds!: string[];
 
   mob?: Mob[];
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Float, {
+    nullable: true,
   })
   dseDaysPerHectare?: number | null;
 
-  @TypeGraphQL.Field(_type => GrazeCount, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeCount, {
+    nullable: true,
   })
   _count?: GrazeCount | null;
 }

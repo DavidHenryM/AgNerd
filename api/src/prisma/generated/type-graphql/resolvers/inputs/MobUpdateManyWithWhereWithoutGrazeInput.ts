@@ -6,16 +6,16 @@ import { MobScalarWhereInput } from "../inputs/MobScalarWhereInput";
 import { MobUpdateManyMutationInput } from "../inputs/MobUpdateManyMutationInput";
 
 @TypeGraphQL.InputType("MobUpdateManyWithWhereWithoutGrazeInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class MobUpdateManyWithWhereWithoutGrazeInput {
-  @TypeGraphQL.Field(_type => MobScalarWhereInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => MobScalarWhereInput, {
+    nullable: false,
   })
   where!: MobScalarWhereInput;
 
-  @TypeGraphQL.Field(_type => MobUpdateManyMutationInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => MobUpdateManyMutationInput, {
+    nullable: false,
   })
   data!: MobUpdateManyMutationInput;
 }

@@ -5,13 +5,13 @@ import { PaddockWhereUniqueInput } from "../../../inputs/PaddockWhereUniqueInput
 
 @TypeGraphQL.ArgsType()
 export class UpdateOnePaddockArgs {
-  @TypeGraphQL.Field(_type => PaddockUpdateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PaddockUpdateInput, {
+    nullable: false,
   })
   data!: PaddockUpdateInput;
 
-  @TypeGraphQL.Field(_type => PaddockWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PaddockWhereUniqueInput, {
+    nullable: false,
   })
   where!: PaddockWhereUniqueInput;
 }

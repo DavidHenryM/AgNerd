@@ -6,16 +6,16 @@ import { GrazeScalarWhereInput } from "../inputs/GrazeScalarWhereInput";
 import { GrazeUpdateManyMutationInput } from "../inputs/GrazeUpdateManyMutationInput";
 
 @TypeGraphQL.InputType("GrazeUpdateManyWithWhereWithoutPaddockInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GrazeUpdateManyWithWhereWithoutPaddockInput {
-  @TypeGraphQL.Field(_type => GrazeScalarWhereInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GrazeScalarWhereInput, {
+    nullable: false,
   })
   where!: GrazeScalarWhereInput;
 
-  @TypeGraphQL.Field(_type => GrazeUpdateManyMutationInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GrazeUpdateManyMutationInput, {
+    nullable: false,
   })
   data!: GrazeUpdateManyMutationInput;
 }

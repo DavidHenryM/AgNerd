@@ -7,33 +7,33 @@ import { WeightRecordScalarFieldEnum } from "../../../../enums/WeightRecordScala
 
 @TypeGraphQL.ArgsType()
 export class GroupByWeightRecordArgs {
-  @TypeGraphQL.Field(_type => WeightRecordWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => WeightRecordWhereInput, {
+    nullable: true,
   })
   where?: WeightRecordWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [WeightRecordOrderByWithAggregationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [WeightRecordOrderByWithAggregationInput], {
+    nullable: true,
   })
   orderBy?: WeightRecordOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [WeightRecordScalarFieldEnum], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [WeightRecordScalarFieldEnum], {
+    nullable: false,
   })
   by!: Array<"id" | "weight" | "dateMeasured" | "method" | "livestockUnitId">;
 
-  @TypeGraphQL.Field(_type => WeightRecordScalarWhereWithAggregatesInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => WeightRecordScalarWhereWithAggregatesInput, {
+    nullable: true,
   })
   having?: WeightRecordScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

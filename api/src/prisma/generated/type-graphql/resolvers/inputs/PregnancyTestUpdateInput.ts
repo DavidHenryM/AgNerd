@@ -9,36 +9,47 @@ import { NullableFloatFieldUpdateOperationsInput } from "../inputs/NullableFloat
 import { PregnancyUpdateOneRequiredWithoutPregnancyTestNestedInput } from "../inputs/PregnancyUpdateOneRequiredWithoutPregnancyTestNestedInput";
 
 @TypeGraphQL.InputType("PregnancyTestUpdateInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PregnancyTestUpdateInput {
-  @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
+    nullable: true,
   })
   testDate?: DateTimeFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => EnumPregnancyTestTypeFieldUpdateOperationsInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => EnumPregnancyTestTypeFieldUpdateOperationsInput,
+    {
+      nullable: true,
+    }
+  )
   testType?: EnumPregnancyTestTypeFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
+    nullable: true,
   })
   resultDate?: DateTimeFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => EnumPregnancyTestResultFieldUpdateOperationsInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => EnumPregnancyTestResultFieldUpdateOperationsInput,
+    {
+      nullable: true,
+    }
+  )
   result?: EnumPregnancyTestResultFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => PregnancyUpdateOneRequiredWithoutPregnancyTestNestedInput, {
-    nullable: true
-  })
-  pregnancy?: PregnancyUpdateOneRequiredWithoutPregnancyTestNestedInput | undefined;
-
-  @TypeGraphQL.Field(_type => NullableFloatFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NullableFloatFieldUpdateOperationsInput, {
+    nullable: true,
   })
   cost?: NullableFloatFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(
+    (_type) => PregnancyUpdateOneRequiredWithoutPregnancyTestNestedInput,
+    {
+      nullable: true,
+    }
+  )
+  pregnancy?:
+    | PregnancyUpdateOneRequiredWithoutPregnancyTestNestedInput
+    | undefined;
 }

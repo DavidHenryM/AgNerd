@@ -5,16 +5,16 @@ import { DecimalJSScalar } from "../../scalars";
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("LivestockUnitAvgOrderByAggregateInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitAvgOrderByAggregateInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   drySheepEquivalent?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   purchasePrice?: "asc" | "desc" | undefined;
 }

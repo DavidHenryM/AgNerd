@@ -9,7 +9,7 @@ export enum PregnancyScalarFieldEnum {
   earliestPossibleBirth = "earliestPossibleBirth",
   latestPossibleBirth = "latestPossibleBirth",
   parentId = "parentId",
-  pregnancySireId = "pregnancySireId"
+  pregnancySireId = "pregnancySireId",
 }
 TypeGraphQL.registerEnumType(PregnancyScalarFieldEnum, {
   name: "PregnancyScalarFieldEnum",

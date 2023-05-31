@@ -8,32 +8,40 @@ import { PregnancyUpdateWithoutPregnancyTestInput } from "../inputs/PregnancyUpd
 import { PregnancyUpsertWithoutPregnancyTestInput } from "../inputs/PregnancyUpsertWithoutPregnancyTestInput";
 import { PregnancyWhereUniqueInput } from "../inputs/PregnancyWhereUniqueInput";
 
-@TypeGraphQL.InputType("PregnancyUpdateOneRequiredWithoutPregnancyTestNestedInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "PregnancyUpdateOneRequiredWithoutPregnancyTestNestedInput",
+  {
+    isAbstract: true,
+  }
+)
 export class PregnancyUpdateOneRequiredWithoutPregnancyTestNestedInput {
-  @TypeGraphQL.Field(_type => PregnancyCreateWithoutPregnancyTestInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyCreateWithoutPregnancyTestInput, {
+    nullable: true,
   })
   create?: PregnancyCreateWithoutPregnancyTestInput | undefined;
 
-  @TypeGraphQL.Field(_type => PregnancyCreateOrConnectWithoutPregnancyTestInput, {
-    nullable: true
-  })
-  connectOrCreate?: PregnancyCreateOrConnectWithoutPregnancyTestInput | undefined;
+  @TypeGraphQL.Field(
+    (_type) => PregnancyCreateOrConnectWithoutPregnancyTestInput,
+    {
+      nullable: true,
+    }
+  )
+  connectOrCreate?:
+    | PregnancyCreateOrConnectWithoutPregnancyTestInput
+    | undefined;
 
-  @TypeGraphQL.Field(_type => PregnancyUpsertWithoutPregnancyTestInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyUpsertWithoutPregnancyTestInput, {
+    nullable: true,
   })
   upsert?: PregnancyUpsertWithoutPregnancyTestInput | undefined;
 
-  @TypeGraphQL.Field(_type => PregnancyWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyWhereUniqueInput, {
+    nullable: true,
   })
   connect?: PregnancyWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => PregnancyUpdateWithoutPregnancyTestInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyUpdateWithoutPregnancyTestInput, {
+    nullable: true,
   })
   update?: PregnancyUpdateWithoutPregnancyTestInput | undefined;
 }

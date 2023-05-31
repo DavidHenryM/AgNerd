@@ -4,8 +4,8 @@ import { LivestockUnitPositionCreateInput } from "../../../inputs/LivestockUnitP
 
 @TypeGraphQL.ArgsType()
 export class CreateOneLivestockUnitPositionArgs {
-  @TypeGraphQL.Field(_type => LivestockUnitPositionCreateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitPositionCreateInput, {
+    nullable: false,
   })
   data!: LivestockUnitPositionCreateInput;
 }

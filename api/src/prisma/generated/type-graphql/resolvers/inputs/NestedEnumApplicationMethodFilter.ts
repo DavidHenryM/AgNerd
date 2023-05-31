@@ -5,26 +5,39 @@ import { DecimalJSScalar } from "../../scalars";
 import { ApplicationMethod } from "../../enums/ApplicationMethod";
 
 @TypeGraphQL.InputType("NestedEnumApplicationMethodFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class NestedEnumApplicationMethodFilter {
-  @TypeGraphQL.Field(_type => ApplicationMethod, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ApplicationMethod, {
+    nullable: true,
   })
-  equals?: "ORAL" | "TRANSDERMAL" | "SUB_CUT_INJECTION" | "INTRAVENUS_INJECTION" | undefined;
+  equals?:
+    | "ORAL"
+    | "TRANSDERMAL"
+    | "SUB_CUT_INJECTION"
+    | "INTRAVENUS_INJECTION"
+    | undefined;
 
-  @TypeGraphQL.Field(_type => [ApplicationMethod], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [ApplicationMethod], {
+    nullable: true,
   })
-  in?: Array<"ORAL" | "TRANSDERMAL" | "SUB_CUT_INJECTION" | "INTRAVENUS_INJECTION"> | undefined;
+  in?:
+    | Array<
+        "ORAL" | "TRANSDERMAL" | "SUB_CUT_INJECTION" | "INTRAVENUS_INJECTION"
+      >
+    | undefined;
 
-  @TypeGraphQL.Field(_type => [ApplicationMethod], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [ApplicationMethod], {
+    nullable: true,
   })
-  notIn?: Array<"ORAL" | "TRANSDERMAL" | "SUB_CUT_INJECTION" | "INTRAVENUS_INJECTION"> | undefined;
+  notIn?:
+    | Array<
+        "ORAL" | "TRANSDERMAL" | "SUB_CUT_INJECTION" | "INTRAVENUS_INJECTION"
+      >
+    | undefined;
 
-  @TypeGraphQL.Field(_type => NestedEnumApplicationMethodFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NestedEnumApplicationMethodFilter, {
+    nullable: true,
   })
   not?: NestedEnumApplicationMethodFilter | undefined;
 }

@@ -8,7 +8,7 @@ export enum VisualIdColour {
   YELLOW = "YELLOW",
   RED = "RED",
   SKY_BLUE = "SKY_BLUE",
-  BLACK = "BLACK"
+  BLACK = "BLACK",
 }
 TypeGraphQL.registerEnumType(VisualIdColour, {
   name: "VisualIdColour",

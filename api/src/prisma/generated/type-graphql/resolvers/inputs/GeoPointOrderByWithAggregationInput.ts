@@ -10,56 +10,56 @@ import { GeoPointSumOrderByAggregateInput } from "../inputs/GeoPointSumOrderByAg
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("GeoPointOrderByWithAggregationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GeoPointOrderByWithAggregationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   latitude?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   longitude?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   paddockId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   livestockUnitPositionId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => GeoPointCountOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GeoPointCountOrderByAggregateInput, {
+    nullable: true,
   })
   _count?: GeoPointCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => GeoPointAvgOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GeoPointAvgOrderByAggregateInput, {
+    nullable: true,
   })
   _avg?: GeoPointAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => GeoPointMaxOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GeoPointMaxOrderByAggregateInput, {
+    nullable: true,
   })
   _max?: GeoPointMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => GeoPointMinOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GeoPointMinOrderByAggregateInput, {
+    nullable: true,
   })
   _min?: GeoPointMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => GeoPointSumOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GeoPointSumOrderByAggregateInput, {
+    nullable: true,
   })
   _sum?: GeoPointSumOrderByAggregateInput | undefined;
 }

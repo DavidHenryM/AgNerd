@@ -4,8 +4,8 @@ import { BreedWhereInput } from "../../../inputs/BreedWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyBreedArgs {
-  @TypeGraphQL.Field(_type => BreedWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => BreedWhereInput, {
+    nullable: true,
   })
   where?: BreedWhereInput | undefined;
 }

@@ -6,16 +6,22 @@ import { LivestockUnitPositionCreateWithoutLocationInput } from "../inputs/Lives
 import { LivestockUnitPositionUpdateWithoutLocationInput } from "../inputs/LivestockUnitPositionUpdateWithoutLocationInput";
 
 @TypeGraphQL.InputType("LivestockUnitPositionUpsertWithoutLocationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitPositionUpsertWithoutLocationInput {
-  @TypeGraphQL.Field(_type => LivestockUnitPositionUpdateWithoutLocationInput, {
-    nullable: false
-  })
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitPositionUpdateWithoutLocationInput,
+    {
+      nullable: false,
+    }
+  )
   update!: LivestockUnitPositionUpdateWithoutLocationInput;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionCreateWithoutLocationInput, {
-    nullable: false
-  })
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitPositionCreateWithoutLocationInput,
+    {
+      nullable: false,
+    }
+  )
   create!: LivestockUnitPositionCreateWithoutLocationInput;
 }

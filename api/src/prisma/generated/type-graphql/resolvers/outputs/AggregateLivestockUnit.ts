@@ -9,31 +9,31 @@ import { LivestockUnitMinAggregate } from "../outputs/LivestockUnitMinAggregate"
 import { LivestockUnitSumAggregate } from "../outputs/LivestockUnitSumAggregate";
 
 @TypeGraphQL.ObjectType("AggregateLivestockUnit", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class AggregateLivestockUnit {
-  @TypeGraphQL.Field(_type => LivestockUnitCountAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitCountAggregate, {
+    nullable: true,
   })
   _count!: LivestockUnitCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => LivestockUnitAvgAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitAvgAggregate, {
+    nullable: true,
   })
   _avg!: LivestockUnitAvgAggregate | null;
 
-  @TypeGraphQL.Field(_type => LivestockUnitSumAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitSumAggregate, {
+    nullable: true,
   })
   _sum!: LivestockUnitSumAggregate | null;
 
-  @TypeGraphQL.Field(_type => LivestockUnitMinAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitMinAggregate, {
+    nullable: true,
   })
   _min!: LivestockUnitMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => LivestockUnitMaxAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitMaxAggregate, {
+    nullable: true,
   })
   _max!: LivestockUnitMaxAggregate | null;
 }

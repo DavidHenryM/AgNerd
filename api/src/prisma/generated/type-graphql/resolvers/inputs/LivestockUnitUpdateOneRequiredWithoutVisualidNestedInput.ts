@@ -8,32 +8,40 @@ import { LivestockUnitUpdateWithoutVisualidInput } from "../inputs/LivestockUnit
 import { LivestockUnitUpsertWithoutVisualidInput } from "../inputs/LivestockUnitUpsertWithoutVisualidInput";
 import { LivestockUnitWhereUniqueInput } from "../inputs/LivestockUnitWhereUniqueInput";
 
-@TypeGraphQL.InputType("LivestockUnitUpdateOneRequiredWithoutVisualidNestedInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "LivestockUnitUpdateOneRequiredWithoutVisualidNestedInput",
+  {
+    isAbstract: true,
+  }
+)
 export class LivestockUnitUpdateOneRequiredWithoutVisualidNestedInput {
-  @TypeGraphQL.Field(_type => LivestockUnitCreateWithoutVisualidInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitCreateWithoutVisualidInput, {
+    nullable: true,
   })
   create?: LivestockUnitCreateWithoutVisualidInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitCreateOrConnectWithoutVisualidInput, {
-    nullable: true
-  })
-  connectOrCreate?: LivestockUnitCreateOrConnectWithoutVisualidInput | undefined;
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitCreateOrConnectWithoutVisualidInput,
+    {
+      nullable: true,
+    }
+  )
+  connectOrCreate?:
+    | LivestockUnitCreateOrConnectWithoutVisualidInput
+    | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitUpsertWithoutVisualidInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitUpsertWithoutVisualidInput, {
+    nullable: true,
   })
   upsert?: LivestockUnitUpsertWithoutVisualidInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitWhereUniqueInput, {
+    nullable: true,
   })
   connect?: LivestockUnitWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitUpdateWithoutVisualidInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitUpdateWithoutVisualidInput, {
+    nullable: true,
   })
   update?: LivestockUnitUpdateWithoutVisualidInput | undefined;
 }

@@ -5,21 +5,21 @@ import { DecimalJSScalar } from "../../scalars";
 import { WeightRecordWhereInput } from "../inputs/WeightRecordWhereInput";
 
 @TypeGraphQL.InputType("WeightRecordListRelationFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class WeightRecordListRelationFilter {
-  @TypeGraphQL.Field(_type => WeightRecordWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => WeightRecordWhereInput, {
+    nullable: true,
   })
   every?: WeightRecordWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => WeightRecordWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => WeightRecordWhereInput, {
+    nullable: true,
   })
   some?: WeightRecordWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => WeightRecordWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => WeightRecordWhereInput, {
+    nullable: true,
   })
   none?: WeightRecordWhereInput | undefined;
 }

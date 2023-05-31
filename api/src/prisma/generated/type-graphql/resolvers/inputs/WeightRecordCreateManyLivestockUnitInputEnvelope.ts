@@ -5,11 +5,11 @@ import { DecimalJSScalar } from "../../scalars";
 import { WeightRecordCreateManyLivestockUnitInput } from "../inputs/WeightRecordCreateManyLivestockUnitInput";
 
 @TypeGraphQL.InputType("WeightRecordCreateManyLivestockUnitInputEnvelope", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class WeightRecordCreateManyLivestockUnitInputEnvelope {
-  @TypeGraphQL.Field(_type => [WeightRecordCreateManyLivestockUnitInput], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [WeightRecordCreateManyLivestockUnitInput], {
+    nullable: false,
   })
   data!: WeightRecordCreateManyLivestockUnitInput[];
 }

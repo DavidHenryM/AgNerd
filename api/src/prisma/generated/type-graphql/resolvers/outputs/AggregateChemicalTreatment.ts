@@ -9,31 +9,31 @@ import { ChemicalTreatmentMinAggregate } from "../outputs/ChemicalTreatmentMinAg
 import { ChemicalTreatmentSumAggregate } from "../outputs/ChemicalTreatmentSumAggregate";
 
 @TypeGraphQL.ObjectType("AggregateChemicalTreatment", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class AggregateChemicalTreatment {
-  @TypeGraphQL.Field(_type => ChemicalTreatmentCountAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentCountAggregate, {
+    nullable: true,
   })
   _count!: ChemicalTreatmentCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentAvgAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentAvgAggregate, {
+    nullable: true,
   })
   _avg!: ChemicalTreatmentAvgAggregate | null;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentSumAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentSumAggregate, {
+    nullable: true,
   })
   _sum!: ChemicalTreatmentSumAggregate | null;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentMinAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentMinAggregate, {
+    nullable: true,
   })
   _min!: ChemicalTreatmentMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentMaxAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentMaxAggregate, {
+    nullable: true,
   })
   _max!: ChemicalTreatmentMaxAggregate | null;
 }

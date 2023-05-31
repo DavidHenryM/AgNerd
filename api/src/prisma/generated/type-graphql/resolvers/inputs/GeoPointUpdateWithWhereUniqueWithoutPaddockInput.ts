@@ -6,16 +6,16 @@ import { GeoPointUpdateWithoutPaddockInput } from "../inputs/GeoPointUpdateWitho
 import { GeoPointWhereUniqueInput } from "../inputs/GeoPointWhereUniqueInput";
 
 @TypeGraphQL.InputType("GeoPointUpdateWithWhereUniqueWithoutPaddockInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GeoPointUpdateWithWhereUniqueWithoutPaddockInput {
-  @TypeGraphQL.Field(_type => GeoPointWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GeoPointWhereUniqueInput, {
+    nullable: false,
   })
   where!: GeoPointWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => GeoPointUpdateWithoutPaddockInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GeoPointUpdateWithoutPaddockInput, {
+    nullable: false,
   })
   data!: GeoPointUpdateWithoutPaddockInput;
 }

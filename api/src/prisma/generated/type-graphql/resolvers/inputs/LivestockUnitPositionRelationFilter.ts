@@ -5,16 +5,16 @@ import { DecimalJSScalar } from "../../scalars";
 import { LivestockUnitPositionWhereInput } from "../inputs/LivestockUnitPositionWhereInput";
 
 @TypeGraphQL.InputType("LivestockUnitPositionRelationFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitPositionRelationFilter {
-  @TypeGraphQL.Field(_type => LivestockUnitPositionWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitPositionWhereInput, {
+    nullable: true,
   })
   is?: LivestockUnitPositionWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitPositionWhereInput, {
+    nullable: true,
   })
   isNot?: LivestockUnitPositionWhereInput | undefined;
 }

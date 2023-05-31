@@ -7,21 +7,21 @@ import { PregnancyCreateWithoutParentsInput } from "../inputs/PregnancyCreateWit
 import { PregnancyWhereUniqueInput } from "../inputs/PregnancyWhereUniqueInput";
 
 @TypeGraphQL.InputType("PregnancyCreateNestedManyWithoutParentsInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PregnancyCreateNestedManyWithoutParentsInput {
-  @TypeGraphQL.Field(_type => [PregnancyCreateWithoutParentsInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyCreateWithoutParentsInput], {
+    nullable: true,
   })
   create?: PregnancyCreateWithoutParentsInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyCreateOrConnectWithoutParentsInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyCreateOrConnectWithoutParentsInput], {
+    nullable: true,
   })
   connectOrCreate?: PregnancyCreateOrConnectWithoutParentsInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyWhereUniqueInput], {
+    nullable: true,
   })
   connect?: PregnancyWhereUniqueInput[] | undefined;
 }

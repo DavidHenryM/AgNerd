@@ -5,11 +5,11 @@ import { DecimalJSScalar } from "../../scalars";
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("WeightRecordSumOrderByAggregateInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class WeightRecordSumOrderByAggregateInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   weight?: "asc" | "desc" | undefined;
 }

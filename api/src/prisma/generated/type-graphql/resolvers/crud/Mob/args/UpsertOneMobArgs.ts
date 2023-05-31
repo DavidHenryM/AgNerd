@@ -6,18 +6,18 @@ import { MobWhereUniqueInput } from "../../../inputs/MobWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpsertOneMobArgs {
-  @TypeGraphQL.Field(_type => MobWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => MobWhereUniqueInput, {
+    nullable: false,
   })
   where!: MobWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => MobCreateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => MobCreateInput, {
+    nullable: false,
   })
   create!: MobCreateInput;
 
-  @TypeGraphQL.Field(_type => MobUpdateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => MobUpdateInput, {
+    nullable: false,
   })
   update!: MobUpdateInput;
 }

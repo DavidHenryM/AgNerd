@@ -8,60 +8,59 @@ import { EnumSexFieldUpdateOperationsInput } from "../inputs/EnumSexFieldUpdateO
 import { EnumStockClassFieldUpdateOperationsInput } from "../inputs/EnumStockClassFieldUpdateOperationsInput";
 import { FloatFieldUpdateOperationsInput } from "../inputs/FloatFieldUpdateOperationsInput";
 import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperationsInput";
-import { LivestockUnitUpdatepregnancyIdInput } from "../inputs/LivestockUnitUpdatepregnancyIdInput";
 import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("LivestockUnitUpdateManyMutationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitUpdateManyMutationInput {
-  @TypeGraphQL.Field(_type => NullableStringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   nlisid?: NullableStringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => EnumStockClassFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => EnumStockClassFieldUpdateOperationsInput, {
+    nullable: true,
   })
   class?: EnumStockClassFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => NullableStringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   name?: NullableStringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => NullableStringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   comment?: NullableStringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => EnumSexFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => EnumSexFieldUpdateOperationsInput, {
+    nullable: true,
   })
   sex?: EnumSexFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
+    nullable: true,
   })
   birthdate?: DateTimeFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => BoolFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => BoolFieldUpdateOperationsInput, {
+    nullable: true,
   })
   desexed?: BoolFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitUpdatepregnancyIdInput, {
-    nullable: true
-  })
-  pregnancyId?: LivestockUnitUpdatepregnancyIdInput | undefined;
-
-  @TypeGraphQL.Field(_type => IntFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, {
+    nullable: true,
   })
   drySheepEquivalent?: IntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => FloatFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => FloatFieldUpdateOperationsInput, {
+    nullable: true,
   })
   purchasePrice?: FloatFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
+    nullable: true,
+  })
+  purchaseDate?: DateTimeFieldUpdateOperationsInput | undefined;
 }

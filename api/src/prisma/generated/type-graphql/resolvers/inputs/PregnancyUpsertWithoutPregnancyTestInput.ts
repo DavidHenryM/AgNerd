@@ -6,16 +6,16 @@ import { PregnancyCreateWithoutPregnancyTestInput } from "../inputs/PregnancyCre
 import { PregnancyUpdateWithoutPregnancyTestInput } from "../inputs/PregnancyUpdateWithoutPregnancyTestInput";
 
 @TypeGraphQL.InputType("PregnancyUpsertWithoutPregnancyTestInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PregnancyUpsertWithoutPregnancyTestInput {
-  @TypeGraphQL.Field(_type => PregnancyUpdateWithoutPregnancyTestInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PregnancyUpdateWithoutPregnancyTestInput, {
+    nullable: false,
   })
   update!: PregnancyUpdateWithoutPregnancyTestInput;
 
-  @TypeGraphQL.Field(_type => PregnancyCreateWithoutPregnancyTestInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PregnancyCreateWithoutPregnancyTestInput, {
+    nullable: false,
   })
   create!: PregnancyCreateWithoutPregnancyTestInput;
 }

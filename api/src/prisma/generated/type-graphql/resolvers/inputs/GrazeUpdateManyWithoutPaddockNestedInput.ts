@@ -12,61 +12,67 @@ import { GrazeUpsertWithWhereUniqueWithoutPaddockInput } from "../inputs/GrazeUp
 import { GrazeWhereUniqueInput } from "../inputs/GrazeWhereUniqueInput";
 
 @TypeGraphQL.InputType("GrazeUpdateManyWithoutPaddockNestedInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GrazeUpdateManyWithoutPaddockNestedInput {
-  @TypeGraphQL.Field(_type => [GrazeCreateWithoutPaddockInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeCreateWithoutPaddockInput], {
+    nullable: true,
   })
   create?: GrazeCreateWithoutPaddockInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeCreateOrConnectWithoutPaddockInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeCreateOrConnectWithoutPaddockInput], {
+    nullable: true,
   })
   connectOrCreate?: GrazeCreateOrConnectWithoutPaddockInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeUpsertWithWhereUniqueWithoutPaddockInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [GrazeUpsertWithWhereUniqueWithoutPaddockInput],
+    {
+      nullable: true,
+    }
+  )
   upsert?: GrazeUpsertWithWhereUniqueWithoutPaddockInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => GrazeCreateManyPaddockInputEnvelope, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeCreateManyPaddockInputEnvelope, {
+    nullable: true,
   })
   createMany?: GrazeCreateManyPaddockInputEnvelope | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeWhereUniqueInput], {
+    nullable: true,
   })
   set?: GrazeWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeWhereUniqueInput], {
+    nullable: true,
   })
   disconnect?: GrazeWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeWhereUniqueInput], {
+    nullable: true,
   })
   delete?: GrazeWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeWhereUniqueInput], {
+    nullable: true,
   })
   connect?: GrazeWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeUpdateWithWhereUniqueWithoutPaddockInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [GrazeUpdateWithWhereUniqueWithoutPaddockInput],
+    {
+      nullable: true,
+    }
+  )
   update?: GrazeUpdateWithWhereUniqueWithoutPaddockInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeUpdateManyWithWhereWithoutPaddockInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeUpdateManyWithWhereWithoutPaddockInput], {
+    nullable: true,
   })
   updateMany?: GrazeUpdateManyWithWhereWithoutPaddockInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeScalarWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeScalarWhereInput], {
+    nullable: true,
   })
   deleteMany?: GrazeScalarWhereInput[] | undefined;
 }

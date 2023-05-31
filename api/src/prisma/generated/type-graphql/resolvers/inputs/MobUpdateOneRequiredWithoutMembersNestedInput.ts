@@ -9,31 +9,31 @@ import { MobUpsertWithoutMembersInput } from "../inputs/MobUpsertWithoutMembersI
 import { MobWhereUniqueInput } from "../inputs/MobWhereUniqueInput";
 
 @TypeGraphQL.InputType("MobUpdateOneRequiredWithoutMembersNestedInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class MobUpdateOneRequiredWithoutMembersNestedInput {
-  @TypeGraphQL.Field(_type => MobCreateWithoutMembersInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => MobCreateWithoutMembersInput, {
+    nullable: true,
   })
   create?: MobCreateWithoutMembersInput | undefined;
 
-  @TypeGraphQL.Field(_type => MobCreateOrConnectWithoutMembersInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => MobCreateOrConnectWithoutMembersInput, {
+    nullable: true,
   })
   connectOrCreate?: MobCreateOrConnectWithoutMembersInput | undefined;
 
-  @TypeGraphQL.Field(_type => MobUpsertWithoutMembersInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => MobUpsertWithoutMembersInput, {
+    nullable: true,
   })
   upsert?: MobUpsertWithoutMembersInput | undefined;
 
-  @TypeGraphQL.Field(_type => MobWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => MobWhereUniqueInput, {
+    nullable: true,
   })
   connect?: MobWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => MobUpdateWithoutMembersInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => MobUpdateWithoutMembersInput, {
+    nullable: true,
   })
   update?: MobUpdateWithoutMembersInput | undefined;
 }

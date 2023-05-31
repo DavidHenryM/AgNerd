@@ -6,16 +6,16 @@ import { PaddockCreateWithoutGrazeInput } from "../inputs/PaddockCreateWithoutGr
 import { PaddockUpdateWithoutGrazeInput } from "../inputs/PaddockUpdateWithoutGrazeInput";
 
 @TypeGraphQL.InputType("PaddockUpsertWithoutGrazeInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PaddockUpsertWithoutGrazeInput {
-  @TypeGraphQL.Field(_type => PaddockUpdateWithoutGrazeInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PaddockUpdateWithoutGrazeInput, {
+    nullable: false,
   })
   update!: PaddockUpdateWithoutGrazeInput;
 
-  @TypeGraphQL.Field(_type => PaddockCreateWithoutGrazeInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PaddockCreateWithoutGrazeInput, {
+    nullable: false,
   })
   create!: PaddockCreateWithoutGrazeInput;
 }

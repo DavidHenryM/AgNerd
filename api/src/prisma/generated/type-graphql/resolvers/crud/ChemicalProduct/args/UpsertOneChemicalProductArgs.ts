@@ -6,18 +6,18 @@ import { ChemicalProductWhereUniqueInput } from "../../../inputs/ChemicalProduct
 
 @TypeGraphQL.ArgsType()
 export class UpsertOneChemicalProductArgs {
-  @TypeGraphQL.Field(_type => ChemicalProductWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => ChemicalProductWhereUniqueInput, {
+    nullable: false,
   })
   where!: ChemicalProductWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => ChemicalProductCreateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => ChemicalProductCreateInput, {
+    nullable: false,
   })
   create!: ChemicalProductCreateInput;
 
-  @TypeGraphQL.Field(_type => ChemicalProductUpdateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => ChemicalProductUpdateInput, {
+    nullable: false,
   })
   update!: ChemicalProductUpdateInput;
 }

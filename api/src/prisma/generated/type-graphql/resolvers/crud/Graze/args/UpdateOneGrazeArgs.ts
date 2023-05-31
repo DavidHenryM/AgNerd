@@ -5,13 +5,13 @@ import { GrazeWhereUniqueInput } from "../../../inputs/GrazeWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateOneGrazeArgs {
-  @TypeGraphQL.Field(_type => GrazeUpdateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GrazeUpdateInput, {
+    nullable: false,
   })
   data!: GrazeUpdateInput;
 
-  @TypeGraphQL.Field(_type => GrazeWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GrazeWhereUniqueInput, {
+    nullable: false,
   })
   where!: GrazeWhereUniqueInput;
 }

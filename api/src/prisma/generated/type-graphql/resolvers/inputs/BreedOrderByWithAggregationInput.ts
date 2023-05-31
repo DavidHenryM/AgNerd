@@ -8,41 +8,41 @@ import { BreedMinOrderByAggregateInput } from "../inputs/BreedMinOrderByAggregat
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("BreedOrderByWithAggregationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class BreedOrderByWithAggregationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   class?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   livestockUnitId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => BreedCountOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => BreedCountOrderByAggregateInput, {
+    nullable: true,
   })
   _count?: BreedCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => BreedMaxOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => BreedMaxOrderByAggregateInput, {
+    nullable: true,
   })
   _max?: BreedMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => BreedMinOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => BreedMinOrderByAggregateInput, {
+    nullable: true,
   })
   _min?: BreedMinOrderByAggregateInput | undefined;
 }

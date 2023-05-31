@@ -5,21 +5,21 @@ import { DecimalJSScalar } from "../../scalars";
 import { PregnancyWhereInput } from "../inputs/PregnancyWhereInput";
 
 @TypeGraphQL.InputType("PregnancyListRelationFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PregnancyListRelationFilter {
-  @TypeGraphQL.Field(_type => PregnancyWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyWhereInput, {
+    nullable: true,
   })
   every?: PregnancyWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => PregnancyWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyWhereInput, {
+    nullable: true,
   })
   some?: PregnancyWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => PregnancyWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyWhereInput, {
+    nullable: true,
   })
   none?: PregnancyWhereInput | undefined;
 }

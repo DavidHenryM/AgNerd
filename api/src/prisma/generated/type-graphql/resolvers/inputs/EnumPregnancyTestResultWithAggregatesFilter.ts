@@ -8,41 +8,44 @@ import { NestedIntFilter } from "../inputs/NestedIntFilter";
 import { PregnancyTestResult } from "../../enums/PregnancyTestResult";
 
 @TypeGraphQL.InputType("EnumPregnancyTestResultWithAggregatesFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class EnumPregnancyTestResultWithAggregatesFilter {
-  @TypeGraphQL.Field(_type => PregnancyTestResult, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyTestResult, {
+    nullable: true,
   })
   equals?: "PREGNANT" | "NOT_PREGNANT" | "INCONCLUSIVE" | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyTestResult], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyTestResult], {
+    nullable: true,
   })
   in?: Array<"PREGNANT" | "NOT_PREGNANT" | "INCONCLUSIVE"> | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyTestResult], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyTestResult], {
+    nullable: true,
   })
   notIn?: Array<"PREGNANT" | "NOT_PREGNANT" | "INCONCLUSIVE"> | undefined;
 
-  @TypeGraphQL.Field(_type => NestedEnumPregnancyTestResultWithAggregatesFilter, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => NestedEnumPregnancyTestResultWithAggregatesFilter,
+    {
+      nullable: true,
+    }
+  )
   not?: NestedEnumPregnancyTestResultWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => NestedIntFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NestedIntFilter, {
+    nullable: true,
   })
   _count?: NestedIntFilter | undefined;
 
-  @TypeGraphQL.Field(_type => NestedEnumPregnancyTestResultFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NestedEnumPregnancyTestResultFilter, {
+    nullable: true,
   })
   _min?: NestedEnumPregnancyTestResultFilter | undefined;
 
-  @TypeGraphQL.Field(_type => NestedEnumPregnancyTestResultFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NestedEnumPregnancyTestResultFilter, {
+    nullable: true,
   })
   _max?: NestedEnumPregnancyTestResultFilter | undefined;
 }

@@ -7,33 +7,39 @@ import { LivestockUnitPositionScalarFieldEnum } from "../../../../enums/Livestoc
 
 @TypeGraphQL.ArgsType()
 export class GroupByLivestockUnitPositionArgs {
-  @TypeGraphQL.Field(_type => LivestockUnitPositionWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitPositionWhereInput, {
+    nullable: true,
   })
   where?: LivestockUnitPositionWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitPositionOrderByWithAggregationInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [LivestockUnitPositionOrderByWithAggregationInput],
+    {
+      nullable: true,
+    }
+  )
   orderBy?: LivestockUnitPositionOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitPositionScalarFieldEnum], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [LivestockUnitPositionScalarFieldEnum], {
+    nullable: false,
   })
   by!: Array<"id" | "date">;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionScalarWhereWithAggregatesInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitPositionScalarWhereWithAggregatesInput,
+    {
+      nullable: true,
+    }
+  )
   having?: LivestockUnitPositionScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

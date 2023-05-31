@@ -6,16 +6,16 @@ import { BreedCreateWithoutMembersInput } from "../inputs/BreedCreateWithoutMemb
 import { BreedUpdateWithoutMembersInput } from "../inputs/BreedUpdateWithoutMembersInput";
 
 @TypeGraphQL.InputType("BreedUpsertWithoutMembersInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class BreedUpsertWithoutMembersInput {
-  @TypeGraphQL.Field(_type => BreedUpdateWithoutMembersInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => BreedUpdateWithoutMembersInput, {
+    nullable: false,
   })
   update!: BreedUpdateWithoutMembersInput;
 
-  @TypeGraphQL.Field(_type => BreedCreateWithoutMembersInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => BreedCreateWithoutMembersInput, {
+    nullable: false,
   })
   create!: BreedCreateWithoutMembersInput;
 }

@@ -4,16 +4,16 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 
 @TypeGraphQL.ObjectType("LivestockUnitSumAggregate", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitSumAggregate {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   drySheepEquivalent!: number | null;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Float, {
+    nullable: true,
   })
   purchasePrice!: number | null;
 }

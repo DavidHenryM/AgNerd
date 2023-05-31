@@ -4,7 +4,7 @@ export enum MobScalarFieldEnum {
   id = "id",
   name = "name",
   comment = "comment",
-  grazeIds = "grazeIds"
+  grazeIds = "grazeIds",
 }
 TypeGraphQL.registerEnumType(MobScalarFieldEnum, {
   name: "MobScalarFieldEnum",

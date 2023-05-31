@@ -9,41 +9,46 @@ import { VisualIdUpsertWithoutLivestockUnitInput } from "../inputs/VisualIdUpser
 import { VisualIdWhereUniqueInput } from "../inputs/VisualIdWhereUniqueInput";
 
 @TypeGraphQL.InputType("VisualIdUpdateOneWithoutLivestockUnitNestedInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class VisualIdUpdateOneWithoutLivestockUnitNestedInput {
-  @TypeGraphQL.Field(_type => VisualIdCreateWithoutLivestockUnitInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => VisualIdCreateWithoutLivestockUnitInput, {
+    nullable: true,
   })
   create?: VisualIdCreateWithoutLivestockUnitInput | undefined;
 
-  @TypeGraphQL.Field(_type => VisualIdCreateOrConnectWithoutLivestockUnitInput, {
-    nullable: true
-  })
-  connectOrCreate?: VisualIdCreateOrConnectWithoutLivestockUnitInput | undefined;
+  @TypeGraphQL.Field(
+    (_type) => VisualIdCreateOrConnectWithoutLivestockUnitInput,
+    {
+      nullable: true,
+    }
+  )
+  connectOrCreate?:
+    | VisualIdCreateOrConnectWithoutLivestockUnitInput
+    | undefined;
 
-  @TypeGraphQL.Field(_type => VisualIdUpsertWithoutLivestockUnitInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => VisualIdUpsertWithoutLivestockUnitInput, {
+    nullable: true,
   })
   upsert?: VisualIdUpsertWithoutLivestockUnitInput | undefined;
 
-  @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Boolean, {
+    nullable: true,
   })
   disconnect?: boolean | undefined;
 
-  @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Boolean, {
+    nullable: true,
   })
   delete?: boolean | undefined;
 
-  @TypeGraphQL.Field(_type => VisualIdWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => VisualIdWhereUniqueInput, {
+    nullable: true,
   })
   connect?: VisualIdWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => VisualIdUpdateWithoutLivestockUnitInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => VisualIdUpdateWithoutLivestockUnitInput, {
+    nullable: true,
   })
   update?: VisualIdUpdateWithoutLivestockUnitInput | undefined;
 }

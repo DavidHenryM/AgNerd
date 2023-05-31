@@ -5,7 +5,7 @@ export enum GeoPointScalarFieldEnum {
   latitude = "latitude",
   longitude = "longitude",
   paddockId = "paddockId",
-  livestockUnitPositionId = "livestockUnitPositionId"
+  livestockUnitPositionId = "livestockUnitPositionId",
 }
 TypeGraphQL.registerEnumType(GeoPointScalarFieldEnum, {
   name: "GeoPointScalarFieldEnum",

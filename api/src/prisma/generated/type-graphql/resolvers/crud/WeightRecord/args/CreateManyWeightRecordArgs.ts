@@ -4,8 +4,8 @@ import { WeightRecordCreateManyInput } from "../../../inputs/WeightRecordCreateM
 
 @TypeGraphQL.ArgsType()
 export class CreateManyWeightRecordArgs {
-  @TypeGraphQL.Field(_type => [WeightRecordCreateManyInput], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [WeightRecordCreateManyInput], {
+    nullable: false,
   })
   data!: WeightRecordCreateManyInput[];
 }

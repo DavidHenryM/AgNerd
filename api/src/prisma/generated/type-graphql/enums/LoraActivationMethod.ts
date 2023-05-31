@@ -2,7 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 
 export enum LoraActivationMethod {
   OTAA = "OTAA",
-  ABP = "ABP"
+  ABP = "ABP",
 }
 TypeGraphQL.registerEnumType(LoraActivationMethod, {
   name: "LoraActivationMethod",

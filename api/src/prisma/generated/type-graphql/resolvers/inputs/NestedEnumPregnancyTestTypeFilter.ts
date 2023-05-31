@@ -5,26 +5,30 @@ import { DecimalJSScalar } from "../../scalars";
 import { PregnancyTestType } from "../../enums/PregnancyTestType";
 
 @TypeGraphQL.InputType("NestedEnumPregnancyTestTypeFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class NestedEnumPregnancyTestTypeFilter {
-  @TypeGraphQL.Field(_type => PregnancyTestType, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyTestType, {
+    nullable: true,
   })
   equals?: "MANUAL_RECTAL_PALPATATION" | "ULTRASOUND" | "BIOPRYN" | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyTestType], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyTestType], {
+    nullable: true,
   })
-  in?: Array<"MANUAL_RECTAL_PALPATATION" | "ULTRASOUND" | "BIOPRYN"> | undefined;
+  in?:
+    | Array<"MANUAL_RECTAL_PALPATATION" | "ULTRASOUND" | "BIOPRYN">
+    | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyTestType], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyTestType], {
+    nullable: true,
   })
-  notIn?: Array<"MANUAL_RECTAL_PALPATATION" | "ULTRASOUND" | "BIOPRYN"> | undefined;
+  notIn?:
+    | Array<"MANUAL_RECTAL_PALPATATION" | "ULTRASOUND" | "BIOPRYN">
+    | undefined;
 
-  @TypeGraphQL.Field(_type => NestedEnumPregnancyTestTypeFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NestedEnumPregnancyTestTypeFilter, {
+    nullable: true,
   })
   not?: NestedEnumPregnancyTestTypeFilter | undefined;
 }

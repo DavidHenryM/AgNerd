@@ -7,21 +7,21 @@ import { PregnancyMaxAggregate } from "../outputs/PregnancyMaxAggregate";
 import { PregnancyMinAggregate } from "../outputs/PregnancyMinAggregate";
 
 @TypeGraphQL.ObjectType("AggregatePregnancy", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class AggregatePregnancy {
-  @TypeGraphQL.Field(_type => PregnancyCountAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyCountAggregate, {
+    nullable: true,
   })
   _count!: PregnancyCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => PregnancyMinAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyMinAggregate, {
+    nullable: true,
   })
   _min!: PregnancyMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => PregnancyMaxAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyMaxAggregate, {
+    nullable: true,
   })
   _max!: PregnancyMaxAggregate | null;
 }

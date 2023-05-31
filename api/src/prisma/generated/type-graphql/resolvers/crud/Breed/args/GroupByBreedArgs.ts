@@ -7,33 +7,33 @@ import { BreedScalarFieldEnum } from "../../../../enums/BreedScalarFieldEnum";
 
 @TypeGraphQL.ArgsType()
 export class GroupByBreedArgs {
-  @TypeGraphQL.Field(_type => BreedWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => BreedWhereInput, {
+    nullable: true,
   })
   where?: BreedWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [BreedOrderByWithAggregationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [BreedOrderByWithAggregationInput], {
+    nullable: true,
   })
   orderBy?: BreedOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [BreedScalarFieldEnum], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [BreedScalarFieldEnum], {
+    nullable: false,
   })
   by!: Array<"id" | "name" | "class" | "livestockUnitId">;
 
-  @TypeGraphQL.Field(_type => BreedScalarWhereWithAggregatesInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => BreedScalarWhereWithAggregatesInput, {
+    nullable: true,
   })
   having?: BreedScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

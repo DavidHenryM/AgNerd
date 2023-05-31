@@ -2,7 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 
 export enum QueryMode {
   "default" = "default",
-  insensitive = "insensitive"
+  insensitive = "insensitive",
 }
 TypeGraphQL.registerEnumType(QueryMode, {
   name: "QueryMode",

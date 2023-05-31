@@ -7,33 +7,42 @@ import { ChemicalTreatmentScalarFieldEnum } from "../../../../enums/ChemicalTrea
 
 @TypeGraphQL.ArgsType()
 export class FindManyChemicalTreatmentArgs {
-  @TypeGraphQL.Field(_type => ChemicalTreatmentWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentWhereInput, {
+    nullable: true,
   })
   where?: ChemicalTreatmentWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [ChemicalTreatmentOrderByWithRelationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [ChemicalTreatmentOrderByWithRelationInput], {
+    nullable: true,
   })
   orderBy?: ChemicalTreatmentOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentWhereUniqueInput, {
+    nullable: true,
   })
   cursor?: ChemicalTreatmentWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field(_type => [ChemicalTreatmentScalarFieldEnum], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [ChemicalTreatmentScalarFieldEnum], {
+    nullable: true,
   })
-  distinct?: Array<"id" | "livestockUnitId" | "treatmentDate" | "applicationMethod" | "volume_ml" | "witholdingPeriodDays"> | undefined;
+  distinct?:
+    | Array<
+        | "id"
+        | "livestockUnitId"
+        | "treatmentDate"
+        | "applicationMethod"
+        | "volume_ml"
+        | "witholdingPeriodDays"
+      >
+    | undefined;
 }

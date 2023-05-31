@@ -5,11 +5,11 @@ import { DecimalJSScalar } from "../../scalars";
 import { LivestockUnitCreateManyMobInput } from "../inputs/LivestockUnitCreateManyMobInput";
 
 @TypeGraphQL.InputType("LivestockUnitCreateManyMobInputEnvelope", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitCreateManyMobInputEnvelope {
-  @TypeGraphQL.Field(_type => [LivestockUnitCreateManyMobInput], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [LivestockUnitCreateManyMobInput], {
+    nullable: false,
   })
   data!: LivestockUnitCreateManyMobInput[];
 }

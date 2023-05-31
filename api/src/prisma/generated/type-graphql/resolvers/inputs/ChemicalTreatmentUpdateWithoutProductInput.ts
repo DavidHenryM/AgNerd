@@ -8,31 +8,41 @@ import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperation
 import { LivestockUnitUpdateOneRequiredWithoutTreatmentsNestedInput } from "../inputs/LivestockUnitUpdateOneRequiredWithoutTreatmentsNestedInput";
 
 @TypeGraphQL.InputType("ChemicalTreatmentUpdateWithoutProductInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class ChemicalTreatmentUpdateWithoutProductInput {
-  @TypeGraphQL.Field(_type => LivestockUnitUpdateOneRequiredWithoutTreatmentsNestedInput, {
-    nullable: true
-  })
-  liveStockUnit?: LivestockUnitUpdateOneRequiredWithoutTreatmentsNestedInput | undefined;
-
-  @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
+    nullable: true,
   })
   treatmentDate?: DateTimeFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => EnumApplicationMethodFieldUpdateOperationsInput, {
-    nullable: true
-  })
-  applicationMethod?: EnumApplicationMethodFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field(
+    (_type) => EnumApplicationMethodFieldUpdateOperationsInput,
+    {
+      nullable: true,
+    }
+  )
+  applicationMethod?:
+    | EnumApplicationMethodFieldUpdateOperationsInput
+    | undefined;
 
-  @TypeGraphQL.Field(_type => IntFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, {
+    nullable: true,
   })
   volume_ml?: IntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => IntFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, {
+    nullable: true,
   })
   witholdingPeriodDays?: IntFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitUpdateOneRequiredWithoutTreatmentsNestedInput,
+    {
+      nullable: true,
+    }
+  )
+  liveStockUnit?:
+    | LivestockUnitUpdateOneRequiredWithoutTreatmentsNestedInput
+    | undefined;
 }

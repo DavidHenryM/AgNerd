@@ -5,13 +5,13 @@ import { MobWhereUniqueInput } from "../../../inputs/MobWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateOneMobArgs {
-  @TypeGraphQL.Field(_type => MobUpdateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => MobUpdateInput, {
+    nullable: false,
   })
   data!: MobUpdateInput;
 
-  @TypeGraphQL.Field(_type => MobWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => MobWhereUniqueInput, {
+    nullable: false,
   })
   where!: MobWhereUniqueInput;
 }

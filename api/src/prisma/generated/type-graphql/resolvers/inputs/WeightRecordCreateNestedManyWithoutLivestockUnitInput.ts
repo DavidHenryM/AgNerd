@@ -7,27 +7,38 @@ import { WeightRecordCreateOrConnectWithoutLivestockUnitInput } from "../inputs/
 import { WeightRecordCreateWithoutLivestockUnitInput } from "../inputs/WeightRecordCreateWithoutLivestockUnitInput";
 import { WeightRecordWhereUniqueInput } from "../inputs/WeightRecordWhereUniqueInput";
 
-@TypeGraphQL.InputType("WeightRecordCreateNestedManyWithoutLivestockUnitInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "WeightRecordCreateNestedManyWithoutLivestockUnitInput",
+  {
+    isAbstract: true,
+  }
+)
 export class WeightRecordCreateNestedManyWithoutLivestockUnitInput {
-  @TypeGraphQL.Field(_type => [WeightRecordCreateWithoutLivestockUnitInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [WeightRecordCreateWithoutLivestockUnitInput], {
+    nullable: true,
   })
   create?: WeightRecordCreateWithoutLivestockUnitInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [WeightRecordCreateOrConnectWithoutLivestockUnitInput], {
-    nullable: true
-  })
-  connectOrCreate?: WeightRecordCreateOrConnectWithoutLivestockUnitInput[] | undefined;
+  @TypeGraphQL.Field(
+    (_type) => [WeightRecordCreateOrConnectWithoutLivestockUnitInput],
+    {
+      nullable: true,
+    }
+  )
+  connectOrCreate?:
+    | WeightRecordCreateOrConnectWithoutLivestockUnitInput[]
+    | undefined;
 
-  @TypeGraphQL.Field(_type => WeightRecordCreateManyLivestockUnitInputEnvelope, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => WeightRecordCreateManyLivestockUnitInputEnvelope,
+    {
+      nullable: true,
+    }
+  )
   createMany?: WeightRecordCreateManyLivestockUnitInputEnvelope | undefined;
 
-  @TypeGraphQL.Field(_type => [WeightRecordWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [WeightRecordWhereUniqueInput], {
+    nullable: true,
   })
   connect?: WeightRecordWhereUniqueInput[] | undefined;
 }

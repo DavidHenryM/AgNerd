@@ -6,28 +6,28 @@ import { VisualIdWhereUniqueInput } from "../../../inputs/VisualIdWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class AggregateVisualIdArgs {
-  @TypeGraphQL.Field(_type => VisualIdWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => VisualIdWhereInput, {
+    nullable: true,
   })
   where?: VisualIdWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [VisualIdOrderByWithRelationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [VisualIdOrderByWithRelationInput], {
+    nullable: true,
   })
   orderBy?: VisualIdOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => VisualIdWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => VisualIdWhereUniqueInput, {
+    nullable: true,
   })
   cursor?: VisualIdWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

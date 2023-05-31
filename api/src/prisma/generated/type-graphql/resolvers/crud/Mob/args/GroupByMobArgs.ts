@@ -7,33 +7,33 @@ import { MobScalarFieldEnum } from "../../../../enums/MobScalarFieldEnum";
 
 @TypeGraphQL.ArgsType()
 export class GroupByMobArgs {
-  @TypeGraphQL.Field(_type => MobWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => MobWhereInput, {
+    nullable: true,
   })
   where?: MobWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [MobOrderByWithAggregationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobOrderByWithAggregationInput], {
+    nullable: true,
   })
   orderBy?: MobOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MobScalarFieldEnum], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [MobScalarFieldEnum], {
+    nullable: false,
   })
   by!: Array<"id" | "name" | "comment" | "grazeIds">;
 
-  @TypeGraphQL.Field(_type => MobScalarWhereWithAggregatesInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => MobScalarWhereWithAggregatesInput, {
+    nullable: true,
   })
   having?: MobScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

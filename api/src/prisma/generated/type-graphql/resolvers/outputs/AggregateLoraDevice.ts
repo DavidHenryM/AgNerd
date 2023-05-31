@@ -7,21 +7,21 @@ import { LoraDeviceMaxAggregate } from "../outputs/LoraDeviceMaxAggregate";
 import { LoraDeviceMinAggregate } from "../outputs/LoraDeviceMinAggregate";
 
 @TypeGraphQL.ObjectType("AggregateLoraDevice", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class AggregateLoraDevice {
-  @TypeGraphQL.Field(_type => LoraDeviceCountAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LoraDeviceCountAggregate, {
+    nullable: true,
   })
   _count!: LoraDeviceCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => LoraDeviceMinAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LoraDeviceMinAggregate, {
+    nullable: true,
   })
   _min!: LoraDeviceMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => LoraDeviceMaxAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LoraDeviceMaxAggregate, {
+    nullable: true,
   })
   _max!: LoraDeviceMaxAggregate | null;
 }

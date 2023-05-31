@@ -4,8 +4,8 @@ import { MobCreateInput } from "../../../inputs/MobCreateInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateOneMobArgs {
-  @TypeGraphQL.Field(_type => MobCreateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => MobCreateInput, {
+    nullable: false,
   })
   data!: MobCreateInput;
 }

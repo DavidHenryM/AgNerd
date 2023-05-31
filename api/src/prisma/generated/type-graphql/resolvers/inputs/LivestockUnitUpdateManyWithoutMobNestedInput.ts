@@ -12,61 +12,70 @@ import { LivestockUnitUpsertWithWhereUniqueWithoutMobInput } from "../inputs/Liv
 import { LivestockUnitWhereUniqueInput } from "../inputs/LivestockUnitWhereUniqueInput";
 
 @TypeGraphQL.InputType("LivestockUnitUpdateManyWithoutMobNestedInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitUpdateManyWithoutMobNestedInput {
-  @TypeGraphQL.Field(_type => [LivestockUnitCreateWithoutMobInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LivestockUnitCreateWithoutMobInput], {
+    nullable: true,
   })
   create?: LivestockUnitCreateWithoutMobInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitCreateOrConnectWithoutMobInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LivestockUnitCreateOrConnectWithoutMobInput], {
+    nullable: true,
   })
   connectOrCreate?: LivestockUnitCreateOrConnectWithoutMobInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitUpsertWithWhereUniqueWithoutMobInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [LivestockUnitUpsertWithWhereUniqueWithoutMobInput],
+    {
+      nullable: true,
+    }
+  )
   upsert?: LivestockUnitUpsertWithWhereUniqueWithoutMobInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitCreateManyMobInputEnvelope, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitCreateManyMobInputEnvelope, {
+    nullable: true,
   })
   createMany?: LivestockUnitCreateManyMobInputEnvelope | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LivestockUnitWhereUniqueInput], {
+    nullable: true,
   })
   set?: LivestockUnitWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LivestockUnitWhereUniqueInput], {
+    nullable: true,
   })
   disconnect?: LivestockUnitWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LivestockUnitWhereUniqueInput], {
+    nullable: true,
   })
   delete?: LivestockUnitWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LivestockUnitWhereUniqueInput], {
+    nullable: true,
   })
   connect?: LivestockUnitWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitUpdateWithWhereUniqueWithoutMobInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [LivestockUnitUpdateWithWhereUniqueWithoutMobInput],
+    {
+      nullable: true,
+    }
+  )
   update?: LivestockUnitUpdateWithWhereUniqueWithoutMobInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitUpdateManyWithWhereWithoutMobInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [LivestockUnitUpdateManyWithWhereWithoutMobInput],
+    {
+      nullable: true,
+    }
+  )
   updateMany?: LivestockUnitUpdateManyWithWhereWithoutMobInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitScalarWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LivestockUnitScalarWhereInput], {
+    nullable: true,
   })
   deleteMany?: LivestockUnitScalarWhereInput[] | undefined;
 }

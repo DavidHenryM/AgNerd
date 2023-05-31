@@ -5,16 +5,16 @@ import { DecimalJSScalar } from "../../scalars";
 import { VisualIdWhereInput } from "../inputs/VisualIdWhereInput";
 
 @TypeGraphQL.InputType("VisualIdRelationFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class VisualIdRelationFilter {
-  @TypeGraphQL.Field(_type => VisualIdWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => VisualIdWhereInput, {
+    nullable: true,
   })
   is?: VisualIdWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => VisualIdWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => VisualIdWhereInput, {
+    nullable: true,
   })
   isNot?: VisualIdWhereInput | undefined;
 }

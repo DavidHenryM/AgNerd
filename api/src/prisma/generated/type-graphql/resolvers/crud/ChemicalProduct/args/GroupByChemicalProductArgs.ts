@@ -7,33 +7,41 @@ import { ChemicalProductScalarFieldEnum } from "../../../../enums/ChemicalProduc
 
 @TypeGraphQL.ArgsType()
 export class GroupByChemicalProductArgs {
-  @TypeGraphQL.Field(_type => ChemicalProductWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalProductWhereInput, {
+    nullable: true,
   })
   where?: ChemicalProductWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [ChemicalProductOrderByWithAggregationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [ChemicalProductOrderByWithAggregationInput], {
+    nullable: true,
   })
   orderBy?: ChemicalProductOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ChemicalProductScalarFieldEnum], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [ChemicalProductScalarFieldEnum], {
+    nullable: false,
   })
-  by!: Array<"id" | "chemicalTreatmentId" | "manufacturer" | "product_name" | "serial_number" | "volume_ml" | "cost">;
+  by!: Array<
+    | "id"
+    | "chemicalTreatmentId"
+    | "manufacturer"
+    | "product_name"
+    | "serial_number"
+    | "volume_ml"
+    | "cost"
+  >;
 
-  @TypeGraphQL.Field(_type => ChemicalProductScalarWhereWithAggregatesInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalProductScalarWhereWithAggregatesInput, {
+    nullable: true,
   })
   having?: ChemicalProductScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

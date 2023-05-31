@@ -4,8 +4,8 @@ import { PregnancyWhereInput } from "../../../inputs/PregnancyWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyPregnancyArgs {
-  @TypeGraphQL.Field(_type => PregnancyWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyWhereInput, {
+    nullable: true,
   })
   where?: PregnancyWhereInput | undefined;
 }

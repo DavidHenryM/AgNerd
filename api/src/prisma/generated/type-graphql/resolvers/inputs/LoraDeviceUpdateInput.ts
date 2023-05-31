@@ -7,46 +7,51 @@ import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStri
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("LoraDeviceUpdateInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LoraDeviceUpdateInput {
-  @TypeGraphQL.Field(_type => NullableStringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   name?: NullableStringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   deviceId?: StringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   deviceEui?: StringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   appEui?: StringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   appKey?: StringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => NullableStringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   manufacturer?: NullableStringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => NullableStringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   partNumber?: NullableStringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => EnumLoraActivationMethodFieldUpdateOperationsInput, {
-    nullable: true
-  })
-  activationMethod?: EnumLoraActivationMethodFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field(
+    (_type) => EnumLoraActivationMethodFieldUpdateOperationsInput,
+    {
+      nullable: true,
+    }
+  )
+  activationMethod?:
+    | EnumLoraActivationMethodFieldUpdateOperationsInput
+    | undefined;
 }

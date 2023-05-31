@@ -4,7 +4,7 @@ export enum VisualIdScalarFieldEnum {
   id = "id",
   livestockUnitId = "livestockUnitId",
   colour = "colour",
-  number = "number"
+  number = "number",
 }
 TypeGraphQL.registerEnumType(VisualIdScalarFieldEnum, {
   name: "VisualIdScalarFieldEnum",

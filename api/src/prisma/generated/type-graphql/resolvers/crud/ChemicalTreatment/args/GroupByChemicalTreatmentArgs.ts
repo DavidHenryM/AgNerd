@@ -7,33 +7,46 @@ import { ChemicalTreatmentScalarFieldEnum } from "../../../../enums/ChemicalTrea
 
 @TypeGraphQL.ArgsType()
 export class GroupByChemicalTreatmentArgs {
-  @TypeGraphQL.Field(_type => ChemicalTreatmentWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentWhereInput, {
+    nullable: true,
   })
   where?: ChemicalTreatmentWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [ChemicalTreatmentOrderByWithAggregationInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [ChemicalTreatmentOrderByWithAggregationInput],
+    {
+      nullable: true,
+    }
+  )
   orderBy?: ChemicalTreatmentOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ChemicalTreatmentScalarFieldEnum], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [ChemicalTreatmentScalarFieldEnum], {
+    nullable: false,
   })
-  by!: Array<"id" | "livestockUnitId" | "treatmentDate" | "applicationMethod" | "volume_ml" | "witholdingPeriodDays">;
+  by!: Array<
+    | "id"
+    | "livestockUnitId"
+    | "treatmentDate"
+    | "applicationMethod"
+    | "volume_ml"
+    | "witholdingPeriodDays"
+  >;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentScalarWhereWithAggregatesInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => ChemicalTreatmentScalarWhereWithAggregatesInput,
+    {
+      nullable: true,
+    }
+  )
   having?: ChemicalTreatmentScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

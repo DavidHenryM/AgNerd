@@ -9,56 +9,56 @@ import { FloatNullableWithAggregatesFilter } from "../inputs/FloatNullableWithAg
 import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter";
 
 @TypeGraphQL.InputType("PregnancyTestScalarWhereWithAggregatesInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PregnancyTestScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field(_type => [PregnancyTestScalarWhereWithAggregatesInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyTestScalarWhereWithAggregatesInput], {
+    nullable: true,
   })
   AND?: PregnancyTestScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyTestScalarWhereWithAggregatesInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyTestScalarWhereWithAggregatesInput], {
+    nullable: true,
   })
   OR?: PregnancyTestScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyTestScalarWhereWithAggregatesInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyTestScalarWhereWithAggregatesInput], {
+    nullable: true,
   })
   NOT?: PregnancyTestScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, {
+    nullable: true,
   })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeWithAggregatesFilter, {
+    nullable: true,
   })
   testDate?: DateTimeWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => EnumPregnancyTestTypeWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => EnumPregnancyTestTypeWithAggregatesFilter, {
+    nullable: true,
   })
   testType?: EnumPregnancyTestTypeWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeWithAggregatesFilter, {
+    nullable: true,
   })
   resultDate?: DateTimeWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => EnumPregnancyTestResultWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => EnumPregnancyTestResultWithAggregatesFilter, {
+    nullable: true,
   })
   result?: EnumPregnancyTestResultWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, {
+    nullable: true,
   })
   pregnancyId?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => FloatNullableWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => FloatNullableWithAggregatesFilter, {
+    nullable: true,
   })
   cost?: FloatNullableWithAggregatesFilter | undefined;
 }

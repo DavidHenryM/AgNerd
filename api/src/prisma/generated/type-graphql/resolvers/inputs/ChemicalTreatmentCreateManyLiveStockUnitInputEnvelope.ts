@@ -4,12 +4,18 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { ChemicalTreatmentCreateManyLiveStockUnitInput } from "../inputs/ChemicalTreatmentCreateManyLiveStockUnitInput";
 
-@TypeGraphQL.InputType("ChemicalTreatmentCreateManyLiveStockUnitInputEnvelope", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "ChemicalTreatmentCreateManyLiveStockUnitInputEnvelope",
+  {
+    isAbstract: true,
+  }
+)
 export class ChemicalTreatmentCreateManyLiveStockUnitInputEnvelope {
-  @TypeGraphQL.Field(_type => [ChemicalTreatmentCreateManyLiveStockUnitInput], {
-    nullable: false
-  })
+  @TypeGraphQL.Field(
+    (_type) => [ChemicalTreatmentCreateManyLiveStockUnitInput],
+    {
+      nullable: false,
+    }
+  )
   data!: ChemicalTreatmentCreateManyLiveStockUnitInput[];
 }

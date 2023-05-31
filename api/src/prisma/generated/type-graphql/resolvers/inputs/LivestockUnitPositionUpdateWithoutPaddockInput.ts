@@ -6,16 +6,21 @@ import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdat
 import { GeoPointUpdateOneWithoutLivestockUnitPositionNestedInput } from "../inputs/GeoPointUpdateOneWithoutLivestockUnitPositionNestedInput";
 
 @TypeGraphQL.InputType("LivestockUnitPositionUpdateWithoutPaddockInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitPositionUpdateWithoutPaddockInput {
-  @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
+    nullable: true,
   })
   date?: DateTimeFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => GeoPointUpdateOneWithoutLivestockUnitPositionNestedInput, {
-    nullable: true
-  })
-  location?: GeoPointUpdateOneWithoutLivestockUnitPositionNestedInput | undefined;
+  @TypeGraphQL.Field(
+    (_type) => GeoPointUpdateOneWithoutLivestockUnitPositionNestedInput,
+    {
+      nullable: true,
+    }
+  )
+  location?:
+    | GeoPointUpdateOneWithoutLivestockUnitPositionNestedInput
+    | undefined;
 }

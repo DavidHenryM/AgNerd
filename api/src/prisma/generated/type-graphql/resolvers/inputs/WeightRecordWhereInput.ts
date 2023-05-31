@@ -9,51 +9,51 @@ import { LivestockUnitRelationFilter } from "../inputs/LivestockUnitRelationFilt
 import { StringFilter } from "../inputs/StringFilter";
 
 @TypeGraphQL.InputType("WeightRecordWhereInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class WeightRecordWhereInput {
-  @TypeGraphQL.Field(_type => [WeightRecordWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [WeightRecordWhereInput], {
+    nullable: true,
   })
   AND?: WeightRecordWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [WeightRecordWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [WeightRecordWhereInput], {
+    nullable: true,
   })
   OR?: WeightRecordWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [WeightRecordWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [WeightRecordWhereInput], {
+    nullable: true,
   })
   NOT?: WeightRecordWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFilter, {
+    nullable: true,
   })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => FloatFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => FloatFilter, {
+    nullable: true,
   })
   weight?: FloatFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeFilter, {
+    nullable: true,
   })
   dateMeasured?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field(_type => EnumWeighMethodFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => EnumWeighMethodFilter, {
+    nullable: true,
   })
   method?: EnumWeighMethodFilter | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitRelationFilter, {
-    nullable: true
-  })
-  livestockUnit?: LivestockUnitRelationFilter | undefined;
-
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFilter, {
+    nullable: true,
   })
   livestockUnitId?: StringFilter | undefined;
+
+  @TypeGraphQL.Field((_type) => LivestockUnitRelationFilter, {
+    nullable: true,
+  })
+  livestockUnit?: LivestockUnitRelationFilter | undefined;
 }

@@ -4,8 +4,10 @@ export { CreateOneChemicalTreatmentArgs } from "./CreateOneChemicalTreatmentArgs
 export { DeleteManyChemicalTreatmentArgs } from "./DeleteManyChemicalTreatmentArgs";
 export { DeleteOneChemicalTreatmentArgs } from "./DeleteOneChemicalTreatmentArgs";
 export { FindFirstChemicalTreatmentArgs } from "./FindFirstChemicalTreatmentArgs";
+export { FindFirstChemicalTreatmentOrThrowArgs } from "./FindFirstChemicalTreatmentOrThrowArgs";
 export { FindManyChemicalTreatmentArgs } from "./FindManyChemicalTreatmentArgs";
 export { FindUniqueChemicalTreatmentArgs } from "./FindUniqueChemicalTreatmentArgs";
+export { FindUniqueChemicalTreatmentOrThrowArgs } from "./FindUniqueChemicalTreatmentOrThrowArgs";
 export { GroupByChemicalTreatmentArgs } from "./GroupByChemicalTreatmentArgs";
 export { UpdateManyChemicalTreatmentArgs } from "./UpdateManyChemicalTreatmentArgs";
 export { UpdateOneChemicalTreatmentArgs } from "./UpdateOneChemicalTreatmentArgs";

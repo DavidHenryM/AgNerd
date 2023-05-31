@@ -5,11 +5,11 @@ import { DecimalJSScalar } from "../../scalars";
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("GrazeSumOrderByAggregateInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GrazeSumOrderByAggregateInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   dseDaysPerHectare?: "asc" | "desc" | undefined;
 }

@@ -6,66 +6,81 @@ import { Sex } from "../../enums/Sex";
 import { StockClass } from "../../enums/StockClass";
 
 @TypeGraphQL.ObjectType("LivestockUnitMaxAggregate", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitMaxAggregate {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   id!: string | null;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   nlisid!: string | null;
 
-  @TypeGraphQL.Field(_type => StockClass, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StockClass, {
+    nullable: true,
   })
-  class!: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY" | null;
+  class!:
+    | "CATTLE"
+    | "SHEEP"
+    | "GOAT"
+    | "CAMEL"
+    | "ALPACA"
+    | "LLAMA"
+    | "CHICKEN"
+    | "DUCK"
+    | "TURKEY"
+    | null;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   name!: string | null;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   comment!: string | null;
 
-  @TypeGraphQL.Field(_type => Sex, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Sex, {
+    nullable: true,
   })
   sex!: "MALE" | "FEMALE" | null;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   birthdate!: Date | null;
 
-  @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Boolean, {
+    nullable: true,
   })
   desexed!: boolean | null;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   parentId!: string | null;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   mobId!: string | null;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   drySheepEquivalent!: number | null;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Float, {
+    nullable: true,
   })
   purchasePrice!: number | null;
+
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
+  })
+  purchaseDate!: Date | null;
 }

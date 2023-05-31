@@ -5,11 +5,11 @@ import { DecimalJSScalar } from "../../scalars";
 import { GeoPointCreateManyPaddockInput } from "../inputs/GeoPointCreateManyPaddockInput";
 
 @TypeGraphQL.InputType("GeoPointCreateManyPaddockInputEnvelope", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GeoPointCreateManyPaddockInputEnvelope {
-  @TypeGraphQL.Field(_type => [GeoPointCreateManyPaddockInput], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [GeoPointCreateManyPaddockInput], {
+    nullable: false,
   })
   data!: GeoPointCreateManyPaddockInput[];
 }

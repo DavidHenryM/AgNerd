@@ -5,11 +5,11 @@ import { DecimalJSScalar } from "../../scalars";
 import { PregnancyTestType } from "../../enums/PregnancyTestType";
 
 @TypeGraphQL.InputType("EnumPregnancyTestTypeFieldUpdateOperationsInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class EnumPregnancyTestTypeFieldUpdateOperationsInput {
-  @TypeGraphQL.Field(_type => PregnancyTestType, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyTestType, {
+    nullable: true,
   })
   set?: "MANUAL_RECTAL_PALPATATION" | "ULTRASOUND" | "BIOPRYN" | undefined;
 }

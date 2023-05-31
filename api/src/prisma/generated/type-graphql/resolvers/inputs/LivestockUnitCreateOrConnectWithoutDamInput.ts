@@ -6,16 +6,16 @@ import { LivestockUnitCreateWithoutDamInput } from "../inputs/LivestockUnitCreat
 import { LivestockUnitWhereUniqueInput } from "../inputs/LivestockUnitWhereUniqueInput";
 
 @TypeGraphQL.InputType("LivestockUnitCreateOrConnectWithoutDamInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitCreateOrConnectWithoutDamInput {
-  @TypeGraphQL.Field(_type => LivestockUnitWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitWhereUniqueInput, {
+    nullable: false,
   })
   where!: LivestockUnitWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => LivestockUnitCreateWithoutDamInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitCreateWithoutDamInput, {
+    nullable: false,
   })
   create!: LivestockUnitCreateWithoutDamInput;
 }

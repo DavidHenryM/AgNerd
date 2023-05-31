@@ -6,31 +6,62 @@ import { NestedEnumVisualIdColourNullableFilter } from "../inputs/NestedEnumVisu
 import { VisualIdColour } from "../../enums/VisualIdColour";
 
 @TypeGraphQL.InputType("EnumVisualIdColourNullableFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class EnumVisualIdColourNullableFilter {
-  @TypeGraphQL.Field(_type => VisualIdColour, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => VisualIdColour, {
+    nullable: true,
   })
-  equals?: "WHITE" | "ORANGE" | "LIGHT_GREEN" | "PURPLE" | "YELLOW" | "RED" | "SKY_BLUE" | "BLACK" | undefined;
+  equals?:
+    | "WHITE"
+    | "ORANGE"
+    | "LIGHT_GREEN"
+    | "PURPLE"
+    | "YELLOW"
+    | "RED"
+    | "SKY_BLUE"
+    | "BLACK"
+    | undefined;
 
-  @TypeGraphQL.Field(_type => [VisualIdColour], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [VisualIdColour], {
+    nullable: true,
   })
-  in?: Array<"WHITE" | "ORANGE" | "LIGHT_GREEN" | "PURPLE" | "YELLOW" | "RED" | "SKY_BLUE" | "BLACK"> | undefined;
+  in?:
+    | Array<
+        | "WHITE"
+        | "ORANGE"
+        | "LIGHT_GREEN"
+        | "PURPLE"
+        | "YELLOW"
+        | "RED"
+        | "SKY_BLUE"
+        | "BLACK"
+      >
+    | undefined;
 
-  @TypeGraphQL.Field(_type => [VisualIdColour], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [VisualIdColour], {
+    nullable: true,
   })
-  notIn?: Array<"WHITE" | "ORANGE" | "LIGHT_GREEN" | "PURPLE" | "YELLOW" | "RED" | "SKY_BLUE" | "BLACK"> | undefined;
+  notIn?:
+    | Array<
+        | "WHITE"
+        | "ORANGE"
+        | "LIGHT_GREEN"
+        | "PURPLE"
+        | "YELLOW"
+        | "RED"
+        | "SKY_BLUE"
+        | "BLACK"
+      >
+    | undefined;
 
-  @TypeGraphQL.Field(_type => NestedEnumVisualIdColourNullableFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NestedEnumVisualIdColourNullableFilter, {
+    nullable: true,
   })
   not?: NestedEnumVisualIdColourNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Boolean, {
+    nullable: true,
   })
   isSet?: boolean | undefined;
 }

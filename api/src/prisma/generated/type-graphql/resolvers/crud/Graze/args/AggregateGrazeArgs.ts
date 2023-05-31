@@ -6,28 +6,28 @@ import { GrazeWhereUniqueInput } from "../../../inputs/GrazeWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class AggregateGrazeArgs {
-  @TypeGraphQL.Field(_type => GrazeWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeWhereInput, {
+    nullable: true,
   })
   where?: GrazeWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeOrderByWithRelationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeOrderByWithRelationInput], {
+    nullable: true,
   })
   orderBy?: GrazeOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => GrazeWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeWhereUniqueInput, {
+    nullable: true,
   })
   cursor?: GrazeWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

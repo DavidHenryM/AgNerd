@@ -4,51 +4,51 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 
 @TypeGraphQL.InputType("NestedDateTimeNullableFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class NestedDateTimeNullableFilter {
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   equals?: Date | undefined;
 
-  @TypeGraphQL.Field(_type => [Date], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [Date], {
+    nullable: true,
   })
   in?: Date[] | undefined;
 
-  @TypeGraphQL.Field(_type => [Date], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [Date], {
+    nullable: true,
   })
   notIn?: Date[] | undefined;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   lt?: Date | undefined;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   lte?: Date | undefined;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   gt?: Date | undefined;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   gte?: Date | undefined;
 
-  @TypeGraphQL.Field(_type => NestedDateTimeNullableFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NestedDateTimeNullableFilter, {
+    nullable: true,
   })
   not?: NestedDateTimeNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Boolean, {
+    nullable: true,
   })
   isSet?: boolean | undefined;
 }

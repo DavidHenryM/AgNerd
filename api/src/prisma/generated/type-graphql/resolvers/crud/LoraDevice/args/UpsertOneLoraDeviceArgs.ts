@@ -6,18 +6,18 @@ import { LoraDeviceWhereUniqueInput } from "../../../inputs/LoraDeviceWhereUniqu
 
 @TypeGraphQL.ArgsType()
 export class UpsertOneLoraDeviceArgs {
-  @TypeGraphQL.Field(_type => LoraDeviceWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LoraDeviceWhereUniqueInput, {
+    nullable: false,
   })
   where!: LoraDeviceWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => LoraDeviceCreateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LoraDeviceCreateInput, {
+    nullable: false,
   })
   create!: LoraDeviceCreateInput;
 
-  @TypeGraphQL.Field(_type => LoraDeviceUpdateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LoraDeviceUpdateInput, {
+    nullable: false,
   })
   update!: LoraDeviceUpdateInput;
 }

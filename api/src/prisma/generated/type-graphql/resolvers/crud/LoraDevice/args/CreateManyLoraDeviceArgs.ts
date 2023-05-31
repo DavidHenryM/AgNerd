@@ -4,8 +4,8 @@ import { LoraDeviceCreateManyInput } from "../../../inputs/LoraDeviceCreateManyI
 
 @TypeGraphQL.ArgsType()
 export class CreateManyLoraDeviceArgs {
-  @TypeGraphQL.Field(_type => [LoraDeviceCreateManyInput], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [LoraDeviceCreateManyInput], {
+    nullable: false,
   })
   data!: LoraDeviceCreateManyInput[];
 }

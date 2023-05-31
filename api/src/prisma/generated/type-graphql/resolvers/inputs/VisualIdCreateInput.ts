@@ -6,26 +6,38 @@ import { LivestockUnitCreateNestedOneWithoutVisualidInput } from "../inputs/Live
 import { VisualIdColour } from "../../enums/VisualIdColour";
 
 @TypeGraphQL.InputType("VisualIdCreateInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class VisualIdCreateInput {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   id?: string | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitCreateNestedOneWithoutVisualidInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => VisualIdColour, {
+    nullable: true,
   })
+  colour?:
+    | "WHITE"
+    | "ORANGE"
+    | "LIGHT_GREEN"
+    | "PURPLE"
+    | "YELLOW"
+    | "RED"
+    | "SKY_BLUE"
+    | "BLACK"
+    | undefined;
+
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
+  })
+  number?: string | undefined;
+
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitCreateNestedOneWithoutVisualidInput,
+    {
+      nullable: false,
+    }
+  )
   livestockUnit!: LivestockUnitCreateNestedOneWithoutVisualidInput;
-
-  @TypeGraphQL.Field(_type => VisualIdColour, {
-    nullable: true
-  })
-  colour?: "WHITE" | "ORANGE" | "LIGHT_GREEN" | "PURPLE" | "YELLOW" | "RED" | "SKY_BLUE" | "BLACK" | undefined;
-
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
-  })
-  number?: number | undefined;
 }

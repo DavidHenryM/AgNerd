@@ -11,56 +11,56 @@ import { MobUpsertWithWhereUniqueWithoutGrazeInput } from "../inputs/MobUpsertWi
 import { MobWhereUniqueInput } from "../inputs/MobWhereUniqueInput";
 
 @TypeGraphQL.InputType("MobUpdateManyWithoutGrazeNestedInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class MobUpdateManyWithoutGrazeNestedInput {
-  @TypeGraphQL.Field(_type => [MobCreateWithoutGrazeInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobCreateWithoutGrazeInput], {
+    nullable: true,
   })
   create?: MobCreateWithoutGrazeInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MobCreateOrConnectWithoutGrazeInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobCreateOrConnectWithoutGrazeInput], {
+    nullable: true,
   })
   connectOrCreate?: MobCreateOrConnectWithoutGrazeInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MobUpsertWithWhereUniqueWithoutGrazeInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobUpsertWithWhereUniqueWithoutGrazeInput], {
+    nullable: true,
   })
   upsert?: MobUpsertWithWhereUniqueWithoutGrazeInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MobWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobWhereUniqueInput], {
+    nullable: true,
   })
   set?: MobWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MobWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobWhereUniqueInput], {
+    nullable: true,
   })
   disconnect?: MobWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MobWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobWhereUniqueInput], {
+    nullable: true,
   })
   delete?: MobWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MobWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobWhereUniqueInput], {
+    nullable: true,
   })
   connect?: MobWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MobUpdateWithWhereUniqueWithoutGrazeInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobUpdateWithWhereUniqueWithoutGrazeInput], {
+    nullable: true,
   })
   update?: MobUpdateWithWhereUniqueWithoutGrazeInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MobUpdateManyWithWhereWithoutGrazeInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobUpdateManyWithWhereWithoutGrazeInput], {
+    nullable: true,
   })
   updateMany?: MobUpdateManyWithWhereWithoutGrazeInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MobScalarWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobScalarWhereInput], {
+    nullable: true,
   })
   deleteMany?: MobScalarWhereInput[] | undefined;
 }

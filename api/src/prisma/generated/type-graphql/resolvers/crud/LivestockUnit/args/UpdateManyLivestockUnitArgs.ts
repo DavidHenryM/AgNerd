@@ -5,13 +5,13 @@ import { LivestockUnitWhereInput } from "../../../inputs/LivestockUnitWhereInput
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyLivestockUnitArgs {
-  @TypeGraphQL.Field(_type => LivestockUnitUpdateManyMutationInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitUpdateManyMutationInput, {
+    nullable: false,
   })
   data!: LivestockUnitUpdateManyMutationInput;
 
-  @TypeGraphQL.Field(_type => LivestockUnitWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitWhereInput, {
+    nullable: true,
   })
   where?: LivestockUnitWhereInput | undefined;
 }

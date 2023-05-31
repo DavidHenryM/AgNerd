@@ -5,11 +5,16 @@ import { DecimalJSScalar } from "../../scalars";
 import { ApplicationMethod } from "../../enums/ApplicationMethod";
 
 @TypeGraphQL.InputType("EnumApplicationMethodFieldUpdateOperationsInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class EnumApplicationMethodFieldUpdateOperationsInput {
-  @TypeGraphQL.Field(_type => ApplicationMethod, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ApplicationMethod, {
+    nullable: true,
   })
-  set?: "ORAL" | "TRANSDERMAL" | "SUB_CUT_INJECTION" | "INTRAVENUS_INJECTION" | undefined;
+  set?:
+    | "ORAL"
+    | "TRANSDERMAL"
+    | "SUB_CUT_INJECTION"
+    | "INTRAVENUS_INJECTION"
+    | undefined;
 }

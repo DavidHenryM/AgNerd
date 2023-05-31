@@ -5,11 +5,11 @@ import { DecimalJSScalar } from "../../scalars";
 import { GrazeCreateManyPaddockInput } from "../inputs/GrazeCreateManyPaddockInput";
 
 @TypeGraphQL.InputType("GrazeCreateManyPaddockInputEnvelope", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GrazeCreateManyPaddockInputEnvelope {
-  @TypeGraphQL.Field(_type => [GrazeCreateManyPaddockInput], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [GrazeCreateManyPaddockInput], {
+    nullable: false,
   })
   data!: GrazeCreateManyPaddockInput[];
 }

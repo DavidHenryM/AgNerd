@@ -9,56 +9,56 @@ import { FloatNullableFilter } from "../inputs/FloatNullableFilter";
 import { StringFilter } from "../inputs/StringFilter";
 
 @TypeGraphQL.InputType("PregnancyTestScalarWhereInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PregnancyTestScalarWhereInput {
-  @TypeGraphQL.Field(_type => [PregnancyTestScalarWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyTestScalarWhereInput], {
+    nullable: true,
   })
   AND?: PregnancyTestScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyTestScalarWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyTestScalarWhereInput], {
+    nullable: true,
   })
   OR?: PregnancyTestScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyTestScalarWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyTestScalarWhereInput], {
+    nullable: true,
   })
   NOT?: PregnancyTestScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFilter, {
+    nullable: true,
   })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeFilter, {
+    nullable: true,
   })
   testDate?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field(_type => EnumPregnancyTestTypeFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => EnumPregnancyTestTypeFilter, {
+    nullable: true,
   })
   testType?: EnumPregnancyTestTypeFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeFilter, {
+    nullable: true,
   })
   resultDate?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field(_type => EnumPregnancyTestResultFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => EnumPregnancyTestResultFilter, {
+    nullable: true,
   })
   result?: EnumPregnancyTestResultFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFilter, {
+    nullable: true,
   })
   pregnancyId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => FloatNullableFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => FloatNullableFilter, {
+    nullable: true,
   })
   cost?: FloatNullableFilter | undefined;
 }

@@ -5,11 +5,11 @@ import { DecimalJSScalar } from "../../scalars";
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("LivestockUnitPositionUpdateManyMutationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitPositionUpdateManyMutationInput {
-  @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
+    nullable: true,
   })
   date?: DateTimeFieldUpdateOperationsInput | undefined;
 }

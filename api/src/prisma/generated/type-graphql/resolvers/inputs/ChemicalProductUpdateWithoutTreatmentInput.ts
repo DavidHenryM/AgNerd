@@ -7,31 +7,31 @@ import { NullableFloatFieldUpdateOperationsInput } from "../inputs/NullableFloat
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("ChemicalProductUpdateWithoutTreatmentInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class ChemicalProductUpdateWithoutTreatmentInput {
-  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   manufacturer?: StringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   product_name?: StringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   serial_number?: StringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => IntFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, {
+    nullable: true,
   })
   volume_ml?: IntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => NullableFloatFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NullableFloatFieldUpdateOperationsInput, {
+    nullable: true,
   })
   cost?: NullableFloatFieldUpdateOperationsInput | undefined;
 }

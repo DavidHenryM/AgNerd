@@ -4,8 +4,8 @@ import { GeoPointWhereUniqueInput } from "../../../inputs/GeoPointWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueGeoPointArgs {
-  @TypeGraphQL.Field(_type => GeoPointWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GeoPointWhereUniqueInput, {
+    nullable: false,
   })
   where!: GeoPointWhereUniqueInput;
 }

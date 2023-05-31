@@ -4,8 +4,8 @@ import { BreedCreateManyInput } from "../../../inputs/BreedCreateManyInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateManyBreedArgs {
-  @TypeGraphQL.Field(_type => [BreedCreateManyInput], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [BreedCreateManyInput], {
+    nullable: false,
   })
   data!: BreedCreateManyInput[];
 }

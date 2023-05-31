@@ -4,8 +4,8 @@ import { WeightRecordWhereUniqueInput } from "../../../inputs/WeightRecordWhereU
 
 @TypeGraphQL.ArgsType()
 export class DeleteOneWeightRecordArgs {
-  @TypeGraphQL.Field(_type => WeightRecordWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => WeightRecordWhereUniqueInput, {
+    nullable: false,
   })
   where!: WeightRecordWhereUniqueInput;
 }

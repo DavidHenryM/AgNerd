@@ -7,21 +7,21 @@ import { MobUpdateWithoutGrazeInput } from "../inputs/MobUpdateWithoutGrazeInput
 import { MobWhereUniqueInput } from "../inputs/MobWhereUniqueInput";
 
 @TypeGraphQL.InputType("MobUpsertWithWhereUniqueWithoutGrazeInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class MobUpsertWithWhereUniqueWithoutGrazeInput {
-  @TypeGraphQL.Field(_type => MobWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => MobWhereUniqueInput, {
+    nullable: false,
   })
   where!: MobWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => MobUpdateWithoutGrazeInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => MobUpdateWithoutGrazeInput, {
+    nullable: false,
   })
   update!: MobUpdateWithoutGrazeInput;
 
-  @TypeGraphQL.Field(_type => MobCreateWithoutGrazeInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => MobCreateWithoutGrazeInput, {
+    nullable: false,
   })
   create!: MobCreateWithoutGrazeInput;
 }

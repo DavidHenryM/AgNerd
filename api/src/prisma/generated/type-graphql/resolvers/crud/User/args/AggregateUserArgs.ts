@@ -6,28 +6,28 @@ import { UserWhereUniqueInput } from "../../../inputs/UserWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class AggregateUserArgs {
-  @TypeGraphQL.Field(_type => UserWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => UserWhereInput, {
+    nullable: true,
   })
   where?: UserWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [UserOrderByWithRelationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [UserOrderByWithRelationInput], {
+    nullable: true,
   })
   orderBy?: UserOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => UserWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => UserWhereUniqueInput, {
+    nullable: true,
   })
   cursor?: UserWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

@@ -5,21 +5,26 @@ import { DecimalJSScalar } from "../../scalars";
 import { GeoPointCreateNestedOneWithoutLivestockUnitPositionInput } from "../inputs/GeoPointCreateNestedOneWithoutLivestockUnitPositionInput";
 
 @TypeGraphQL.InputType("LivestockUnitPositionCreateWithoutPaddockInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitPositionCreateWithoutPaddockInput {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   id?: string | undefined;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: false,
   })
   date!: Date;
 
-  @TypeGraphQL.Field(_type => GeoPointCreateNestedOneWithoutLivestockUnitPositionInput, {
-    nullable: true
-  })
-  location?: GeoPointCreateNestedOneWithoutLivestockUnitPositionInput | undefined;
+  @TypeGraphQL.Field(
+    (_type) => GeoPointCreateNestedOneWithoutLivestockUnitPositionInput,
+    {
+      nullable: true,
+    }
+  )
+  location?:
+    | GeoPointCreateNestedOneWithoutLivestockUnitPositionInput
+    | undefined;
 }

@@ -4,8 +4,8 @@ import { ChemicalTreatmentWhereUniqueInput } from "../../../inputs/ChemicalTreat
 
 @TypeGraphQL.ArgsType()
 export class DeleteOneChemicalTreatmentArgs {
-  @TypeGraphQL.Field(_type => ChemicalTreatmentWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentWhereUniqueInput, {
+    nullable: false,
   })
   where!: ChemicalTreatmentWhereUniqueInput;
 }

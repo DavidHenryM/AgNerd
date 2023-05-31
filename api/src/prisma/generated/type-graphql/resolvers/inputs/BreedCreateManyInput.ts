@@ -5,26 +5,35 @@ import { DecimalJSScalar } from "../../scalars";
 import { StockClass } from "../../enums/StockClass";
 
 @TypeGraphQL.InputType("BreedCreateManyInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class BreedCreateManyInput {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   id?: string | undefined;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   name!: string;
 
-  @TypeGraphQL.Field(_type => StockClass, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => StockClass, {
+    nullable: false,
   })
-  class!: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY";
+  class!:
+    | "CATTLE"
+    | "SHEEP"
+    | "GOAT"
+    | "CAMEL"
+    | "ALPACA"
+    | "LLAMA"
+    | "CHICKEN"
+    | "DUCK"
+    | "TURKEY";
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
-  livestockUnitId!: string;
+  livestockUnitId?: string | undefined;
 }

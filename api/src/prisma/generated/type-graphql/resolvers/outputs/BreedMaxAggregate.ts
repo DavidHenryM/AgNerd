@@ -5,26 +5,36 @@ import { DecimalJSScalar } from "../../scalars";
 import { StockClass } from "../../enums/StockClass";
 
 @TypeGraphQL.ObjectType("BreedMaxAggregate", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class BreedMaxAggregate {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   id!: string | null;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   name!: string | null;
 
-  @TypeGraphQL.Field(_type => StockClass, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StockClass, {
+    nullable: true,
   })
-  class!: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY" | null;
+  class!:
+    | "CATTLE"
+    | "SHEEP"
+    | "GOAT"
+    | "CAMEL"
+    | "ALPACA"
+    | "LLAMA"
+    | "CHICKEN"
+    | "DUCK"
+    | "TURKEY"
+    | null;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   livestockUnitId!: string | null;
 }

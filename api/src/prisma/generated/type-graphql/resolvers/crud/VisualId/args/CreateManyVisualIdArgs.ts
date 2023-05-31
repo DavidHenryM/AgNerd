@@ -4,8 +4,8 @@ import { VisualIdCreateManyInput } from "../../../inputs/VisualIdCreateManyInput
 
 @TypeGraphQL.ArgsType()
 export class CreateManyVisualIdArgs {
-  @TypeGraphQL.Field(_type => [VisualIdCreateManyInput], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [VisualIdCreateManyInput], {
+    nullable: false,
   })
   data!: VisualIdCreateManyInput[];
 }

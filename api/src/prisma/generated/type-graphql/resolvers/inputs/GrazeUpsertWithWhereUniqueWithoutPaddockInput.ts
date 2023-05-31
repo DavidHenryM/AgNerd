@@ -7,21 +7,21 @@ import { GrazeUpdateWithoutPaddockInput } from "../inputs/GrazeUpdateWithoutPadd
 import { GrazeWhereUniqueInput } from "../inputs/GrazeWhereUniqueInput";
 
 @TypeGraphQL.InputType("GrazeUpsertWithWhereUniqueWithoutPaddockInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GrazeUpsertWithWhereUniqueWithoutPaddockInput {
-  @TypeGraphQL.Field(_type => GrazeWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GrazeWhereUniqueInput, {
+    nullable: false,
   })
   where!: GrazeWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => GrazeUpdateWithoutPaddockInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GrazeUpdateWithoutPaddockInput, {
+    nullable: false,
   })
   update!: GrazeUpdateWithoutPaddockInput;
 
-  @TypeGraphQL.Field(_type => GrazeCreateWithoutPaddockInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GrazeCreateWithoutPaddockInput, {
+    nullable: false,
   })
   create!: GrazeCreateWithoutPaddockInput;
 }

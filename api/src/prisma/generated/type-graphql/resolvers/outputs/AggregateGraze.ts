@@ -9,31 +9,31 @@ import { GrazeMinAggregate } from "../outputs/GrazeMinAggregate";
 import { GrazeSumAggregate } from "../outputs/GrazeSumAggregate";
 
 @TypeGraphQL.ObjectType("AggregateGraze", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class AggregateGraze {
-  @TypeGraphQL.Field(_type => GrazeCountAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeCountAggregate, {
+    nullable: true,
   })
   _count!: GrazeCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => GrazeAvgAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeAvgAggregate, {
+    nullable: true,
   })
   _avg!: GrazeAvgAggregate | null;
 
-  @TypeGraphQL.Field(_type => GrazeSumAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeSumAggregate, {
+    nullable: true,
   })
   _sum!: GrazeSumAggregate | null;
 
-  @TypeGraphQL.Field(_type => GrazeMinAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeMinAggregate, {
+    nullable: true,
   })
   _min!: GrazeMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => GrazeMaxAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeMaxAggregate, {
+    nullable: true,
   })
   _max!: GrazeMaxAggregate | null;
 }

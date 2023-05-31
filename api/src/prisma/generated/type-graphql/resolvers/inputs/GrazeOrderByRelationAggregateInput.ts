@@ -5,11 +5,11 @@ import { DecimalJSScalar } from "../../scalars";
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("GrazeOrderByRelationAggregateInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GrazeOrderByRelationAggregateInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   _count?: "asc" | "desc" | undefined;
 }

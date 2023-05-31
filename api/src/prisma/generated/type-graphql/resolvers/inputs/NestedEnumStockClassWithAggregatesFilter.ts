@@ -7,41 +7,75 @@ import { NestedIntFilter } from "../inputs/NestedIntFilter";
 import { StockClass } from "../../enums/StockClass";
 
 @TypeGraphQL.InputType("NestedEnumStockClassWithAggregatesFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class NestedEnumStockClassWithAggregatesFilter {
-  @TypeGraphQL.Field(_type => StockClass, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StockClass, {
+    nullable: true,
   })
-  equals?: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY" | undefined;
+  equals?:
+    | "CATTLE"
+    | "SHEEP"
+    | "GOAT"
+    | "CAMEL"
+    | "ALPACA"
+    | "LLAMA"
+    | "CHICKEN"
+    | "DUCK"
+    | "TURKEY"
+    | undefined;
 
-  @TypeGraphQL.Field(_type => [StockClass], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [StockClass], {
+    nullable: true,
   })
-  in?: Array<"CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY"> | undefined;
+  in?:
+    | Array<
+        | "CATTLE"
+        | "SHEEP"
+        | "GOAT"
+        | "CAMEL"
+        | "ALPACA"
+        | "LLAMA"
+        | "CHICKEN"
+        | "DUCK"
+        | "TURKEY"
+      >
+    | undefined;
 
-  @TypeGraphQL.Field(_type => [StockClass], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [StockClass], {
+    nullable: true,
   })
-  notIn?: Array<"CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY"> | undefined;
+  notIn?:
+    | Array<
+        | "CATTLE"
+        | "SHEEP"
+        | "GOAT"
+        | "CAMEL"
+        | "ALPACA"
+        | "LLAMA"
+        | "CHICKEN"
+        | "DUCK"
+        | "TURKEY"
+      >
+    | undefined;
 
-  @TypeGraphQL.Field(_type => NestedEnumStockClassWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NestedEnumStockClassWithAggregatesFilter, {
+    nullable: true,
   })
   not?: NestedEnumStockClassWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => NestedIntFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NestedIntFilter, {
+    nullable: true,
   })
   _count?: NestedIntFilter | undefined;
 
-  @TypeGraphQL.Field(_type => NestedEnumStockClassFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NestedEnumStockClassFilter, {
+    nullable: true,
   })
   _min?: NestedEnumStockClassFilter | undefined;
 
-  @TypeGraphQL.Field(_type => NestedEnumStockClassFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NestedEnumStockClassFilter, {
+    nullable: true,
   })
   _max?: NestedEnumStockClassFilter | undefined;
 }

@@ -9,41 +9,41 @@ import { LivestockUnitUpsertWithoutBreedInput } from "../inputs/LivestockUnitUps
 import { LivestockUnitWhereUniqueInput } from "../inputs/LivestockUnitWhereUniqueInput";
 
 @TypeGraphQL.InputType("LivestockUnitUpdateOneWithoutBreedNestedInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitUpdateOneWithoutBreedNestedInput {
-  @TypeGraphQL.Field(_type => LivestockUnitCreateWithoutBreedInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitCreateWithoutBreedInput, {
+    nullable: true,
   })
   create?: LivestockUnitCreateWithoutBreedInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitCreateOrConnectWithoutBreedInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitCreateOrConnectWithoutBreedInput, {
+    nullable: true,
   })
   connectOrCreate?: LivestockUnitCreateOrConnectWithoutBreedInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitUpsertWithoutBreedInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitUpsertWithoutBreedInput, {
+    nullable: true,
   })
   upsert?: LivestockUnitUpsertWithoutBreedInput | undefined;
 
-  @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Boolean, {
+    nullable: true,
   })
   disconnect?: boolean | undefined;
 
-  @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Boolean, {
+    nullable: true,
   })
   delete?: boolean | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitWhereUniqueInput, {
+    nullable: true,
   })
   connect?: LivestockUnitWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitUpdateWithoutBreedInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitUpdateWithoutBreedInput, {
+    nullable: true,
   })
   update?: LivestockUnitUpdateWithoutBreedInput | undefined;
 }

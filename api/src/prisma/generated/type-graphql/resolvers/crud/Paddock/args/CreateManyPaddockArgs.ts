@@ -4,8 +4,8 @@ import { PaddockCreateManyInput } from "../../../inputs/PaddockCreateManyInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateManyPaddockArgs {
-  @TypeGraphQL.Field(_type => [PaddockCreateManyInput], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [PaddockCreateManyInput], {
+    nullable: false,
   })
   data!: PaddockCreateManyInput[];
 }

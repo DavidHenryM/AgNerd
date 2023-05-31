@@ -7,26 +7,26 @@ import { PaddockOrderByWithRelationInput } from "../inputs/PaddockOrderByWithRel
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("LivestockUnitPositionOrderByWithRelationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitPositionOrderByWithRelationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   date?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => GeoPointOrderByWithRelationInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GeoPointOrderByWithRelationInput, {
+    nullable: true,
   })
   location?: GeoPointOrderByWithRelationInput | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockOrderByWithRelationInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockOrderByWithRelationInput, {
+    nullable: true,
   })
   paddock?: PaddockOrderByWithRelationInput | undefined;
 }

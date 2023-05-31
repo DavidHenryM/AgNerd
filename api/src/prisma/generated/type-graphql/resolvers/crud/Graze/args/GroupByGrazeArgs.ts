@@ -7,33 +7,40 @@ import { GrazeScalarFieldEnum } from "../../../../enums/GrazeScalarFieldEnum";
 
 @TypeGraphQL.ArgsType()
 export class GroupByGrazeArgs {
-  @TypeGraphQL.Field(_type => GrazeWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeWhereInput, {
+    nullable: true,
   })
   where?: GrazeWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeOrderByWithAggregationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeOrderByWithAggregationInput], {
+    nullable: true,
   })
   orderBy?: GrazeOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeScalarFieldEnum], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [GrazeScalarFieldEnum], {
+    nullable: false,
   })
-  by!: Array<"id" | "startDatetime" | "endDateTime" | "paddockId" | "mobIds" | "dseDaysPerHectare">;
+  by!: Array<
+    | "id"
+    | "startDatetime"
+    | "endDateTime"
+    | "paddockId"
+    | "mobIds"
+    | "dseDaysPerHectare"
+  >;
 
-  @TypeGraphQL.Field(_type => GrazeScalarWhereWithAggregatesInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeScalarWhereWithAggregatesInput, {
+    nullable: true,
   })
   having?: GrazeScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

@@ -7,21 +7,29 @@ import { GeoPointUpdateOneWithoutLivestockUnitPositionNestedInput } from "../inp
 import { PaddockUpdateOneWithoutLivestockUnitPositionNestedInput } from "../inputs/PaddockUpdateOneWithoutLivestockUnitPositionNestedInput";
 
 @TypeGraphQL.InputType("LivestockUnitPositionUpdateInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitPositionUpdateInput {
-  @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
+    nullable: true,
   })
   date?: DateTimeFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => GeoPointUpdateOneWithoutLivestockUnitPositionNestedInput, {
-    nullable: true
-  })
-  location?: GeoPointUpdateOneWithoutLivestockUnitPositionNestedInput | undefined;
+  @TypeGraphQL.Field(
+    (_type) => GeoPointUpdateOneWithoutLivestockUnitPositionNestedInput,
+    {
+      nullable: true,
+    }
+  )
+  location?:
+    | GeoPointUpdateOneWithoutLivestockUnitPositionNestedInput
+    | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockUpdateOneWithoutLivestockUnitPositionNestedInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => PaddockUpdateOneWithoutLivestockUnitPositionNestedInput,
+    {
+      nullable: true,
+    }
+  )
   paddock?: PaddockUpdateOneWithoutLivestockUnitPositionNestedInput | undefined;
 }

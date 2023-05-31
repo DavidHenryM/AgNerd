@@ -6,16 +6,16 @@ import { FloatFieldUpdateOperationsInput } from "../inputs/FloatFieldUpdateOpera
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("PaddockUpdateManyMutationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PaddockUpdateManyMutationInput {
-  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   name?: StringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => FloatFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => FloatFieldUpdateOperationsInput, {
+    nullable: true,
   })
   areaHa?: FloatFieldUpdateOperationsInput | undefined;
 }

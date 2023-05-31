@@ -6,18 +6,18 @@ import { PaddockWhereUniqueInput } from "../../../inputs/PaddockWhereUniqueInput
 
 @TypeGraphQL.ArgsType()
 export class UpsertOnePaddockArgs {
-  @TypeGraphQL.Field(_type => PaddockWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PaddockWhereUniqueInput, {
+    nullable: false,
   })
   where!: PaddockWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => PaddockCreateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PaddockCreateInput, {
+    nullable: false,
   })
   create!: PaddockCreateInput;
 
-  @TypeGraphQL.Field(_type => PaddockUpdateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PaddockUpdateInput, {
+    nullable: false,
   })
   update!: PaddockUpdateInput;
 }

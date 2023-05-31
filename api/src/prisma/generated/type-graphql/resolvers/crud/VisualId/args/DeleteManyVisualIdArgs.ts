@@ -4,8 +4,8 @@ import { VisualIdWhereInput } from "../../../inputs/VisualIdWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyVisualIdArgs {
-  @TypeGraphQL.Field(_type => VisualIdWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => VisualIdWhereInput, {
+    nullable: true,
   })
   where?: VisualIdWhereInput | undefined;
 }

@@ -6,18 +6,18 @@ import { WeightRecordWhereUniqueInput } from "../../../inputs/WeightRecordWhereU
 
 @TypeGraphQL.ArgsType()
 export class UpsertOneWeightRecordArgs {
-  @TypeGraphQL.Field(_type => WeightRecordWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => WeightRecordWhereUniqueInput, {
+    nullable: false,
   })
   where!: WeightRecordWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => WeightRecordCreateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => WeightRecordCreateInput, {
+    nullable: false,
   })
   create!: WeightRecordCreateInput;
 
-  @TypeGraphQL.Field(_type => WeightRecordUpdateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => WeightRecordUpdateInput, {
+    nullable: false,
   })
   update!: WeightRecordUpdateInput;
 }

@@ -6,26 +6,26 @@ import { NestedEnumSexFilter } from "../inputs/NestedEnumSexFilter";
 import { Sex } from "../../enums/Sex";
 
 @TypeGraphQL.InputType("EnumSexFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class EnumSexFilter {
-  @TypeGraphQL.Field(_type => Sex, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Sex, {
+    nullable: true,
   })
   equals?: "MALE" | "FEMALE" | undefined;
 
-  @TypeGraphQL.Field(_type => [Sex], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [Sex], {
+    nullable: true,
   })
   in?: Array<"MALE" | "FEMALE"> | undefined;
 
-  @TypeGraphQL.Field(_type => [Sex], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [Sex], {
+    nullable: true,
   })
   notIn?: Array<"MALE" | "FEMALE"> | undefined;
 
-  @TypeGraphQL.Field(_type => NestedEnumSexFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NestedEnumSexFilter, {
+    nullable: true,
   })
   not?: NestedEnumSexFilter | undefined;
 }

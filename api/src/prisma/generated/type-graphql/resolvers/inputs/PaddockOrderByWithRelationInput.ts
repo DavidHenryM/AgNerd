@@ -8,41 +8,43 @@ import { LivestockUnitPositionOrderByWithRelationInput } from "../inputs/Livesto
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("PaddockOrderByWithRelationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PaddockOrderByWithRelationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => GeoPointOrderByRelationAggregateInput, {
-    nullable: true
-  })
-  polygon?: GeoPointOrderByRelationAggregateInput | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   areaHa?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => GrazeOrderByRelationAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
+  })
+  livestockUnitPositionId?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field((_type) => GeoPointOrderByRelationAggregateInput, {
+    nullable: true,
+  })
+  polygon?: GeoPointOrderByRelationAggregateInput | undefined;
+
+  @TypeGraphQL.Field((_type) => GrazeOrderByRelationAggregateInput, {
+    nullable: true,
   })
   graze?: GrazeOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionOrderByWithRelationInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitPositionOrderByWithRelationInput, {
+    nullable: true,
   })
-  livestockUnitPosition?: LivestockUnitPositionOrderByWithRelationInput | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
-  })
-  livestockUnitPositionId?: "asc" | "desc" | undefined;
+  livestockUnitPosition?:
+    | LivestockUnitPositionOrderByWithRelationInput
+    | undefined;
 }

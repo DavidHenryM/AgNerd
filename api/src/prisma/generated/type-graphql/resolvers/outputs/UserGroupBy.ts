@@ -7,31 +7,41 @@ import { UserMaxAggregate } from "../outputs/UserMaxAggregate";
 import { UserMinAggregate } from "../outputs/UserMinAggregate";
 
 @TypeGraphQL.ObjectType("UserGroupBy", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class UserGroupBy {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   id!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
-  name!: string | null;
+  firstName!: string;
 
-  @TypeGraphQL.Field(_type => UserCountAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
+  })
+  preferredName!: string | null;
+
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
+  })
+  lastName!: string;
+
+  @TypeGraphQL.Field((_type) => UserCountAggregate, {
+    nullable: true,
   })
   _count!: UserCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => UserMinAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => UserMinAggregate, {
+    nullable: true,
   })
   _min!: UserMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => UserMaxAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => UserMaxAggregate, {
+    nullable: true,
   })
   _max!: UserMaxAggregate | null;
 }

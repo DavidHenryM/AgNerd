@@ -6,31 +6,41 @@ import { StringFilter } from "../inputs/StringFilter";
 import { StringNullableFilter } from "../inputs/StringNullableFilter";
 
 @TypeGraphQL.InputType("UserWhereInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class UserWhereInput {
-  @TypeGraphQL.Field(_type => [UserWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [UserWhereInput], {
+    nullable: true,
   })
   AND?: UserWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [UserWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [UserWhereInput], {
+    nullable: true,
   })
   OR?: UserWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [UserWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [UserWhereInput], {
+    nullable: true,
   })
   NOT?: UserWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFilter, {
+    nullable: true,
   })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFilter, {
+    nullable: true,
   })
-  name?: StringNullableFilter | undefined;
+  firstName?: StringFilter | undefined;
+
+  @TypeGraphQL.Field((_type) => StringNullableFilter, {
+    nullable: true,
+  })
+  preferredName?: StringNullableFilter | undefined;
+
+  @TypeGraphQL.Field((_type) => StringFilter, {
+    nullable: true,
+  })
+  lastName?: StringFilter | undefined;
 }

@@ -6,36 +6,36 @@ import { LivestockUnitOrderByWithRelationInput } from "../inputs/LivestockUnitOr
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("WeightRecordOrderByWithRelationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class WeightRecordOrderByWithRelationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   weight?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   dateMeasured?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   method?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitOrderByWithRelationInput, {
-    nullable: true
-  })
-  livestockUnit?: LivestockUnitOrderByWithRelationInput | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   livestockUnitId?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field((_type) => LivestockUnitOrderByWithRelationInput, {
+    nullable: true,
+  })
+  livestockUnit?: LivestockUnitOrderByWithRelationInput | undefined;
 }

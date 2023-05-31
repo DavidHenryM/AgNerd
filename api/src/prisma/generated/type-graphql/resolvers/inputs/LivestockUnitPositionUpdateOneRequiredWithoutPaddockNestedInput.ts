@@ -8,32 +8,49 @@ import { LivestockUnitPositionUpdateWithoutPaddockInput } from "../inputs/Livest
 import { LivestockUnitPositionUpsertWithoutPaddockInput } from "../inputs/LivestockUnitPositionUpsertWithoutPaddockInput";
 import { LivestockUnitPositionWhereUniqueInput } from "../inputs/LivestockUnitPositionWhereUniqueInput";
 
-@TypeGraphQL.InputType("LivestockUnitPositionUpdateOneRequiredWithoutPaddockNestedInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "LivestockUnitPositionUpdateOneRequiredWithoutPaddockNestedInput",
+  {
+    isAbstract: true,
+  }
+)
 export class LivestockUnitPositionUpdateOneRequiredWithoutPaddockNestedInput {
-  @TypeGraphQL.Field(_type => LivestockUnitPositionCreateWithoutPaddockInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitPositionCreateWithoutPaddockInput,
+    {
+      nullable: true,
+    }
+  )
   create?: LivestockUnitPositionCreateWithoutPaddockInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionCreateOrConnectWithoutPaddockInput, {
-    nullable: true
-  })
-  connectOrCreate?: LivestockUnitPositionCreateOrConnectWithoutPaddockInput | undefined;
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitPositionCreateOrConnectWithoutPaddockInput,
+    {
+      nullable: true,
+    }
+  )
+  connectOrCreate?:
+    | LivestockUnitPositionCreateOrConnectWithoutPaddockInput
+    | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionUpsertWithoutPaddockInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitPositionUpsertWithoutPaddockInput,
+    {
+      nullable: true,
+    }
+  )
   upsert?: LivestockUnitPositionUpsertWithoutPaddockInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitPositionWhereUniqueInput, {
+    nullable: true,
   })
   connect?: LivestockUnitPositionWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionUpdateWithoutPaddockInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitPositionUpdateWithoutPaddockInput,
+    {
+      nullable: true,
+    }
+  )
   update?: LivestockUnitPositionUpdateWithoutPaddockInput | undefined;
 }

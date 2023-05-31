@@ -4,8 +4,8 @@ import { PaddockWhereUniqueInput } from "../../../inputs/PaddockWhereUniqueInput
 
 @TypeGraphQL.ArgsType()
 export class FindUniquePaddockArgs {
-  @TypeGraphQL.Field(_type => PaddockWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PaddockWhereUniqueInput, {
+    nullable: false,
   })
   where!: PaddockWhereUniqueInput;
 }

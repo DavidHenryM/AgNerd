@@ -4,8 +4,8 @@ import { VisualIdWhereUniqueInput } from "../../../inputs/VisualIdWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueVisualIdArgs {
-  @TypeGraphQL.Field(_type => VisualIdWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => VisualIdWhereUniqueInput, {
+    nullable: false,
   })
   where!: VisualIdWhereUniqueInput;
 }

@@ -5,13 +5,13 @@ import { VisualIdWhereInput } from "../../../inputs/VisualIdWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyVisualIdArgs {
-  @TypeGraphQL.Field(_type => VisualIdUpdateManyMutationInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => VisualIdUpdateManyMutationInput, {
+    nullable: false,
   })
   data!: VisualIdUpdateManyMutationInput;
 
-  @TypeGraphQL.Field(_type => VisualIdWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => VisualIdWhereInput, {
+    nullable: true,
   })
   where?: VisualIdWhereInput | undefined;
 }

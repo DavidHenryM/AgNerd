@@ -5,11 +5,11 @@ import { DecimalJSScalar } from "../../scalars";
 import { PregnancyTestCreateManyPregnancyInput } from "../inputs/PregnancyTestCreateManyPregnancyInput";
 
 @TypeGraphQL.InputType("PregnancyTestCreateManyPregnancyInputEnvelope", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PregnancyTestCreateManyPregnancyInputEnvelope {
-  @TypeGraphQL.Field(_type => [PregnancyTestCreateManyPregnancyInput], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [PregnancyTestCreateManyPregnancyInput], {
+    nullable: false,
   })
   data!: PregnancyTestCreateManyPregnancyInput[];
 }

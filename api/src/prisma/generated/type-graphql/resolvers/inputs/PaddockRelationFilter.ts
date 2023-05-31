@@ -5,16 +5,16 @@ import { DecimalJSScalar } from "../../scalars";
 import { PaddockWhereInput } from "../inputs/PaddockWhereInput";
 
 @TypeGraphQL.InputType("PaddockRelationFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PaddockRelationFilter {
-  @TypeGraphQL.Field(_type => PaddockWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockWhereInput, {
+    nullable: true,
   })
   is?: PaddockWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockWhereInput, {
+    nullable: true,
   })
   isNot?: PaddockWhereInput | undefined;
 }

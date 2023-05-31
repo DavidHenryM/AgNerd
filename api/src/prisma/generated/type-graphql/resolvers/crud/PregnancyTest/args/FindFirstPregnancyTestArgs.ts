@@ -7,33 +7,43 @@ import { PregnancyTestScalarFieldEnum } from "../../../../enums/PregnancyTestSca
 
 @TypeGraphQL.ArgsType()
 export class FindFirstPregnancyTestArgs {
-  @TypeGraphQL.Field(_type => PregnancyTestWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyTestWhereInput, {
+    nullable: true,
   })
   where?: PregnancyTestWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyTestOrderByWithRelationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyTestOrderByWithRelationInput], {
+    nullable: true,
   })
   orderBy?: PregnancyTestOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => PregnancyTestWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyTestWhereUniqueInput, {
+    nullable: true,
   })
   cursor?: PregnancyTestWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyTestScalarFieldEnum], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyTestScalarFieldEnum], {
+    nullable: true,
   })
-  distinct?: Array<"id" | "testDate" | "testType" | "resultDate" | "result" | "pregnancyId" | "cost"> | undefined;
+  distinct?:
+    | Array<
+        | "id"
+        | "testDate"
+        | "testType"
+        | "resultDate"
+        | "result"
+        | "pregnancyId"
+        | "cost"
+      >
+    | undefined;
 }

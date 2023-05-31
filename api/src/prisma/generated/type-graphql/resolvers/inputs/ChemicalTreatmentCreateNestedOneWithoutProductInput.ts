@@ -7,21 +7,26 @@ import { ChemicalTreatmentCreateWithoutProductInput } from "../inputs/ChemicalTr
 import { ChemicalTreatmentWhereUniqueInput } from "../inputs/ChemicalTreatmentWhereUniqueInput";
 
 @TypeGraphQL.InputType("ChemicalTreatmentCreateNestedOneWithoutProductInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class ChemicalTreatmentCreateNestedOneWithoutProductInput {
-  @TypeGraphQL.Field(_type => ChemicalTreatmentCreateWithoutProductInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentCreateWithoutProductInput, {
+    nullable: true,
   })
   create?: ChemicalTreatmentCreateWithoutProductInput | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentCreateOrConnectWithoutProductInput, {
-    nullable: true
-  })
-  connectOrCreate?: ChemicalTreatmentCreateOrConnectWithoutProductInput | undefined;
+  @TypeGraphQL.Field(
+    (_type) => ChemicalTreatmentCreateOrConnectWithoutProductInput,
+    {
+      nullable: true,
+    }
+  )
+  connectOrCreate?:
+    | ChemicalTreatmentCreateOrConnectWithoutProductInput
+    | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentWhereUniqueInput, {
+    nullable: true,
   })
   connect?: ChemicalTreatmentWhereUniqueInput | undefined;
 }

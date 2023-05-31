@@ -9,66 +9,66 @@ import { ChemicalProductMinAggregate } from "../outputs/ChemicalProductMinAggreg
 import { ChemicalProductSumAggregate } from "../outputs/ChemicalProductSumAggregate";
 
 @TypeGraphQL.ObjectType("ChemicalProductGroupBy", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class ChemicalProductGroupBy {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   id!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   chemicalTreatmentId!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   manufacturer!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   product_name!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   serial_number!: string;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: false,
   })
   volume_ml!: number;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Float, {
+    nullable: true,
   })
   cost!: number | null;
 
-  @TypeGraphQL.Field(_type => ChemicalProductCountAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalProductCountAggregate, {
+    nullable: true,
   })
   _count!: ChemicalProductCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => ChemicalProductAvgAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalProductAvgAggregate, {
+    nullable: true,
   })
   _avg!: ChemicalProductAvgAggregate | null;
 
-  @TypeGraphQL.Field(_type => ChemicalProductSumAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalProductSumAggregate, {
+    nullable: true,
   })
   _sum!: ChemicalProductSumAggregate | null;
 
-  @TypeGraphQL.Field(_type => ChemicalProductMinAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalProductMinAggregate, {
+    nullable: true,
   })
   _min!: ChemicalProductMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => ChemicalProductMaxAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalProductMaxAggregate, {
+    nullable: true,
   })
   _max!: ChemicalProductMaxAggregate | null;
 }

@@ -7,33 +7,42 @@ import { GrazeScalarFieldEnum } from "../../../../enums/GrazeScalarFieldEnum";
 
 @TypeGraphQL.ArgsType()
 export class PaddockGrazeArgs {
-  @TypeGraphQL.Field(_type => GrazeWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeWhereInput, {
+    nullable: true,
   })
   where?: GrazeWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeOrderByWithRelationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeOrderByWithRelationInput], {
+    nullable: true,
   })
   orderBy?: GrazeOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => GrazeWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeWhereUniqueInput, {
+    nullable: true,
   })
   cursor?: GrazeWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeScalarFieldEnum], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeScalarFieldEnum], {
+    nullable: true,
   })
-  distinct?: Array<"id" | "startDatetime" | "endDateTime" | "paddockId" | "mobIds" | "dseDaysPerHectare"> | undefined;
+  distinct?:
+    | Array<
+        | "id"
+        | "startDatetime"
+        | "endDateTime"
+        | "paddockId"
+        | "mobIds"
+        | "dseDaysPerHectare"
+      >
+    | undefined;
 }

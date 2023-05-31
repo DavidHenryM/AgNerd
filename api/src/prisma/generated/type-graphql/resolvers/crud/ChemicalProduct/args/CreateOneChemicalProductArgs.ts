@@ -4,8 +4,8 @@ import { ChemicalProductCreateInput } from "../../../inputs/ChemicalProductCreat
 
 @TypeGraphQL.ArgsType()
 export class CreateOneChemicalProductArgs {
-  @TypeGraphQL.Field(_type => ChemicalProductCreateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => ChemicalProductCreateInput, {
+    nullable: false,
   })
   data!: ChemicalProductCreateInput;
 }

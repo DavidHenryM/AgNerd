@@ -4,11 +4,11 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 
 @TypeGraphQL.InputType("DateTimeFieldUpdateOperationsInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class DateTimeFieldUpdateOperationsInput {
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   set?: Date | undefined;
 }

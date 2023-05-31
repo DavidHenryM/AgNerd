@@ -5,16 +5,16 @@ import { DecimalJSScalar } from "../../scalars";
 import { ChemicalProductWhereInput } from "../inputs/ChemicalProductWhereInput";
 
 @TypeGraphQL.InputType("ChemicalProductRelationFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class ChemicalProductRelationFilter {
-  @TypeGraphQL.Field(_type => ChemicalProductWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalProductWhereInput, {
+    nullable: true,
   })
   is?: ChemicalProductWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalProductWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalProductWhereInput, {
+    nullable: true,
   })
   isNot?: ChemicalProductWhereInput | undefined;
 }

@@ -6,16 +6,16 @@ import { LivestockUnitCreateWithoutSireInput } from "../inputs/LivestockUnitCrea
 import { LivestockUnitUpdateWithoutSireInput } from "../inputs/LivestockUnitUpdateWithoutSireInput";
 
 @TypeGraphQL.InputType("LivestockUnitUpsertWithoutSireInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitUpsertWithoutSireInput {
-  @TypeGraphQL.Field(_type => LivestockUnitUpdateWithoutSireInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitUpdateWithoutSireInput, {
+    nullable: false,
   })
   update!: LivestockUnitUpdateWithoutSireInput;
 
-  @TypeGraphQL.Field(_type => LivestockUnitCreateWithoutSireInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitCreateWithoutSireInput, {
+    nullable: false,
   })
   create!: LivestockUnitCreateWithoutSireInput;
 }

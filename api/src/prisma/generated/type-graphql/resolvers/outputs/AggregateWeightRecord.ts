@@ -9,31 +9,31 @@ import { WeightRecordMinAggregate } from "../outputs/WeightRecordMinAggregate";
 import { WeightRecordSumAggregate } from "../outputs/WeightRecordSumAggregate";
 
 @TypeGraphQL.ObjectType("AggregateWeightRecord", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class AggregateWeightRecord {
-  @TypeGraphQL.Field(_type => WeightRecordCountAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => WeightRecordCountAggregate, {
+    nullable: true,
   })
   _count!: WeightRecordCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => WeightRecordAvgAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => WeightRecordAvgAggregate, {
+    nullable: true,
   })
   _avg!: WeightRecordAvgAggregate | null;
 
-  @TypeGraphQL.Field(_type => WeightRecordSumAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => WeightRecordSumAggregate, {
+    nullable: true,
   })
   _sum!: WeightRecordSumAggregate | null;
 
-  @TypeGraphQL.Field(_type => WeightRecordMinAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => WeightRecordMinAggregate, {
+    nullable: true,
   })
   _min!: WeightRecordMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => WeightRecordMaxAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => WeightRecordMaxAggregate, {
+    nullable: true,
   })
   _max!: WeightRecordMaxAggregate | null;
 }

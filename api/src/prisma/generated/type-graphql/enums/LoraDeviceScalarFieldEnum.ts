@@ -9,7 +9,7 @@ export enum LoraDeviceScalarFieldEnum {
   appKey = "appKey",
   manufacturer = "manufacturer",
   partNumber = "partNumber",
-  activationMethod = "activationMethod"
+  activationMethod = "activationMethod",
 }
 TypeGraphQL.registerEnumType(LoraDeviceScalarFieldEnum, {
   name: "LoraDeviceScalarFieldEnum",

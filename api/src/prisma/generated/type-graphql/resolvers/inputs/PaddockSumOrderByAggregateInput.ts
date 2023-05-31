@@ -5,11 +5,11 @@ import { DecimalJSScalar } from "../../scalars";
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("PaddockSumOrderByAggregateInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PaddockSumOrderByAggregateInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   areaHa?: "asc" | "desc" | undefined;
 }

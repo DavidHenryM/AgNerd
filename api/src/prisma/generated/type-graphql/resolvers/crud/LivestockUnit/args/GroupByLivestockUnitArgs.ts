@@ -7,33 +7,48 @@ import { LivestockUnitScalarFieldEnum } from "../../../../enums/LivestockUnitSca
 
 @TypeGraphQL.ArgsType()
 export class GroupByLivestockUnitArgs {
-  @TypeGraphQL.Field(_type => LivestockUnitWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitWhereInput, {
+    nullable: true,
   })
   where?: LivestockUnitWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitOrderByWithAggregationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LivestockUnitOrderByWithAggregationInput], {
+    nullable: true,
   })
   orderBy?: LivestockUnitOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitScalarFieldEnum], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [LivestockUnitScalarFieldEnum], {
+    nullable: false,
   })
-  by!: Array<"id" | "nlisid" | "class" | "name" | "comment" | "sex" | "birthdate" | "desexed" | "parentId" | "mobId" | "pregnancyId" | "drySheepEquivalent" | "purchasePrice">;
+  by!: Array<
+    | "id"
+    | "nlisid"
+    | "class"
+    | "name"
+    | "comment"
+    | "sex"
+    | "birthdate"
+    | "desexed"
+    | "parentId"
+    | "mobId"
+    | "pregnancyId"
+    | "drySheepEquivalent"
+    | "purchasePrice"
+    | "purchaseDate"
+  >;
 
-  @TypeGraphQL.Field(_type => LivestockUnitScalarWhereWithAggregatesInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitScalarWhereWithAggregatesInput, {
+    nullable: true,
   })
   having?: LivestockUnitScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

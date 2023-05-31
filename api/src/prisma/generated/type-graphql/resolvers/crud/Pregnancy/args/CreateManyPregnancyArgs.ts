@@ -4,8 +4,8 @@ import { PregnancyCreateManyInput } from "../../../inputs/PregnancyCreateManyInp
 
 @TypeGraphQL.ArgsType()
 export class CreateManyPregnancyArgs {
-  @TypeGraphQL.Field(_type => [PregnancyCreateManyInput], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [PregnancyCreateManyInput], {
+    nullable: false,
   })
   data!: PregnancyCreateManyInput[];
 }

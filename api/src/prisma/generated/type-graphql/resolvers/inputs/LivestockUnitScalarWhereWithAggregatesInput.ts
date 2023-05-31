@@ -13,86 +13,91 @@ import { StringNullableWithAggregatesFilter } from "../inputs/StringNullableWith
 import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter";
 
 @TypeGraphQL.InputType("LivestockUnitScalarWhereWithAggregatesInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field(_type => [LivestockUnitScalarWhereWithAggregatesInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LivestockUnitScalarWhereWithAggregatesInput], {
+    nullable: true,
   })
   AND?: LivestockUnitScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitScalarWhereWithAggregatesInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LivestockUnitScalarWhereWithAggregatesInput], {
+    nullable: true,
   })
   OR?: LivestockUnitScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitScalarWhereWithAggregatesInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LivestockUnitScalarWhereWithAggregatesInput], {
+    nullable: true,
   })
   NOT?: LivestockUnitScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, {
+    nullable: true,
   })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringNullableWithAggregatesFilter, {
+    nullable: true,
   })
   nlisid?: StringNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => EnumStockClassWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => EnumStockClassWithAggregatesFilter, {
+    nullable: true,
   })
   class?: EnumStockClassWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringNullableWithAggregatesFilter, {
+    nullable: true,
   })
   name?: StringNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringNullableWithAggregatesFilter, {
+    nullable: true,
   })
   comment?: StringNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => EnumSexWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => EnumSexWithAggregatesFilter, {
+    nullable: true,
   })
   sex?: EnumSexWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeWithAggregatesFilter, {
+    nullable: true,
   })
   birthdate?: DateTimeWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => BoolWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => BoolWithAggregatesFilter, {
+    nullable: true,
   })
   desexed?: BoolWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringNullableWithAggregatesFilter, {
+    nullable: true,
   })
   parentId?: StringNullableWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, {
+    nullable: true,
   })
   mobId?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableListFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringNullableListFilter, {
+    nullable: true,
   })
   pregnancyId?: StringNullableListFilter | undefined;
 
-  @TypeGraphQL.Field(_type => IntWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => IntWithAggregatesFilter, {
+    nullable: true,
   })
   drySheepEquivalent?: IntWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => FloatWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => FloatWithAggregatesFilter, {
+    nullable: true,
   })
   purchasePrice?: FloatWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field((_type) => DateTimeWithAggregatesFilter, {
+    nullable: true,
+  })
+  purchaseDate?: DateTimeWithAggregatesFilter | undefined;
 }

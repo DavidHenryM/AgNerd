@@ -4,8 +4,8 @@ import { LivestockUnitWhereInput } from "../../../inputs/LivestockUnitWhereInput
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyLivestockUnitArgs {
-  @TypeGraphQL.Field(_type => LivestockUnitWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitWhereInput, {
+    nullable: true,
   })
   where?: LivestockUnitWhereInput | undefined;
 }

@@ -4,11 +4,11 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 
 @TypeGraphQL.ObjectType("GrazeSumAggregate", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GrazeSumAggregate {
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Float, {
+    nullable: true,
   })
   dseDaysPerHectare!: number | null;
 }

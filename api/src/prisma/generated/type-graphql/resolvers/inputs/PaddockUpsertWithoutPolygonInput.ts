@@ -6,16 +6,16 @@ import { PaddockCreateWithoutPolygonInput } from "../inputs/PaddockCreateWithout
 import { PaddockUpdateWithoutPolygonInput } from "../inputs/PaddockUpdateWithoutPolygonInput";
 
 @TypeGraphQL.InputType("PaddockUpsertWithoutPolygonInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PaddockUpsertWithoutPolygonInput {
-  @TypeGraphQL.Field(_type => PaddockUpdateWithoutPolygonInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PaddockUpdateWithoutPolygonInput, {
+    nullable: false,
   })
   update!: PaddockUpdateWithoutPolygonInput;
 
-  @TypeGraphQL.Field(_type => PaddockCreateWithoutPolygonInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PaddockCreateWithoutPolygonInput, {
+    nullable: false,
   })
   create!: PaddockCreateWithoutPolygonInput;
 }

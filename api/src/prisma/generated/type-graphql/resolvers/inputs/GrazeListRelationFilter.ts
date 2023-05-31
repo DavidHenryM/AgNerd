@@ -5,21 +5,21 @@ import { DecimalJSScalar } from "../../scalars";
 import { GrazeWhereInput } from "../inputs/GrazeWhereInput";
 
 @TypeGraphQL.InputType("GrazeListRelationFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GrazeListRelationFilter {
-  @TypeGraphQL.Field(_type => GrazeWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeWhereInput, {
+    nullable: true,
   })
   every?: GrazeWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => GrazeWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeWhereInput, {
+    nullable: true,
   })
   some?: GrazeWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => GrazeWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeWhereInput, {
+    nullable: true,
   })
   none?: GrazeWhereInput | undefined;
 }

@@ -8,31 +8,37 @@ import { EnumPregnancyTestTypeFieldUpdateOperationsInput } from "../inputs/EnumP
 import { NullableFloatFieldUpdateOperationsInput } from "../inputs/NullableFloatFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("PregnancyTestUpdateManyMutationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PregnancyTestUpdateManyMutationInput {
-  @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
+    nullable: true,
   })
   testDate?: DateTimeFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => EnumPregnancyTestTypeFieldUpdateOperationsInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => EnumPregnancyTestTypeFieldUpdateOperationsInput,
+    {
+      nullable: true,
+    }
+  )
   testType?: EnumPregnancyTestTypeFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
+    nullable: true,
   })
   resultDate?: DateTimeFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => EnumPregnancyTestResultFieldUpdateOperationsInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => EnumPregnancyTestResultFieldUpdateOperationsInput,
+    {
+      nullable: true,
+    }
+  )
   result?: EnumPregnancyTestResultFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => NullableFloatFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NullableFloatFieldUpdateOperationsInput, {
+    nullable: true,
   })
   cost?: NullableFloatFieldUpdateOperationsInput | undefined;
 }

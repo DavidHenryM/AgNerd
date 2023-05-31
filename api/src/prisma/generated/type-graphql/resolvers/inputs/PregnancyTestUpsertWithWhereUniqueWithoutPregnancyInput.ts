@@ -6,22 +6,25 @@ import { PregnancyTestCreateWithoutPregnancyInput } from "../inputs/PregnancyTes
 import { PregnancyTestUpdateWithoutPregnancyInput } from "../inputs/PregnancyTestUpdateWithoutPregnancyInput";
 import { PregnancyTestWhereUniqueInput } from "../inputs/PregnancyTestWhereUniqueInput";
 
-@TypeGraphQL.InputType("PregnancyTestUpsertWithWhereUniqueWithoutPregnancyInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "PregnancyTestUpsertWithWhereUniqueWithoutPregnancyInput",
+  {
+    isAbstract: true,
+  }
+)
 export class PregnancyTestUpsertWithWhereUniqueWithoutPregnancyInput {
-  @TypeGraphQL.Field(_type => PregnancyTestWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PregnancyTestWhereUniqueInput, {
+    nullable: false,
   })
   where!: PregnancyTestWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => PregnancyTestUpdateWithoutPregnancyInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PregnancyTestUpdateWithoutPregnancyInput, {
+    nullable: false,
   })
   update!: PregnancyTestUpdateWithoutPregnancyInput;
 
-  @TypeGraphQL.Field(_type => PregnancyTestCreateWithoutPregnancyInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PregnancyTestCreateWithoutPregnancyInput, {
+    nullable: false,
   })
   create!: PregnancyTestCreateWithoutPregnancyInput;
 }

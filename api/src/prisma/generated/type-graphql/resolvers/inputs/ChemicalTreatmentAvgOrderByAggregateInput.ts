@@ -5,16 +5,16 @@ import { DecimalJSScalar } from "../../scalars";
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("ChemicalTreatmentAvgOrderByAggregateInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class ChemicalTreatmentAvgOrderByAggregateInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   volume_ml?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   witholdingPeriodDays?: "asc" | "desc" | undefined;
 }

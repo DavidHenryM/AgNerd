@@ -11,61 +11,61 @@ import { StringFilter } from "../inputs/StringFilter";
 import { StringNullableListFilter } from "../inputs/StringNullableListFilter";
 
 @TypeGraphQL.InputType("GrazeWhereInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GrazeWhereInput {
-  @TypeGraphQL.Field(_type => [GrazeWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeWhereInput], {
+    nullable: true,
   })
   AND?: GrazeWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeWhereInput], {
+    nullable: true,
   })
   OR?: GrazeWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [GrazeWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [GrazeWhereInput], {
+    nullable: true,
   })
   NOT?: GrazeWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFilter, {
+    nullable: true,
   })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeFilter, {
+    nullable: true,
   })
   startDatetime?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeNullableFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeNullableFilter, {
+    nullable: true,
   })
   endDateTime?: DateTimeNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockRelationFilter, {
-    nullable: true
-  })
-  paddock?: PaddockRelationFilter | undefined;
-
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFilter, {
+    nullable: true,
   })
   paddockId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableListFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringNullableListFilter, {
+    nullable: true,
   })
   mobIds?: StringNullableListFilter | undefined;
 
-  @TypeGraphQL.Field(_type => MobListRelationFilter, {
-    nullable: true
-  })
-  mob?: MobListRelationFilter | undefined;
-
-  @TypeGraphQL.Field(_type => FloatNullableFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => FloatNullableFilter, {
+    nullable: true,
   })
   dseDaysPerHectare?: FloatNullableFilter | undefined;
+
+  @TypeGraphQL.Field((_type) => PaddockRelationFilter, {
+    nullable: true,
+  })
+  paddock?: PaddockRelationFilter | undefined;
+
+  @TypeGraphQL.Field((_type) => MobListRelationFilter, {
+    nullable: true,
+  })
+  mob?: MobListRelationFilter | undefined;
 }

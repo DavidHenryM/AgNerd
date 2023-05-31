@@ -13,86 +13,91 @@ import { StringNullableFilter } from "../inputs/StringNullableFilter";
 import { StringNullableListFilter } from "../inputs/StringNullableListFilter";
 
 @TypeGraphQL.InputType("LivestockUnitScalarWhereInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitScalarWhereInput {
-  @TypeGraphQL.Field(_type => [LivestockUnitScalarWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LivestockUnitScalarWhereInput], {
+    nullable: true,
   })
   AND?: LivestockUnitScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitScalarWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LivestockUnitScalarWhereInput], {
+    nullable: true,
   })
   OR?: LivestockUnitScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitScalarWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LivestockUnitScalarWhereInput], {
+    nullable: true,
   })
   NOT?: LivestockUnitScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFilter, {
+    nullable: true,
   })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringNullableFilter, {
+    nullable: true,
   })
   nlisid?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => EnumStockClassFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => EnumStockClassFilter, {
+    nullable: true,
   })
   class?: EnumStockClassFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringNullableFilter, {
+    nullable: true,
   })
   name?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringNullableFilter, {
+    nullable: true,
   })
   comment?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => EnumSexFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => EnumSexFilter, {
+    nullable: true,
   })
   sex?: EnumSexFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeFilter, {
+    nullable: true,
   })
   birthdate?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field(_type => BoolFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => BoolFilter, {
+    nullable: true,
   })
   desexed?: BoolFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringNullableFilter, {
+    nullable: true,
   })
   parentId?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFilter, {
+    nullable: true,
   })
   mobId?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableListFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringNullableListFilter, {
+    nullable: true,
   })
   pregnancyId?: StringNullableListFilter | undefined;
 
-  @TypeGraphQL.Field(_type => IntFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => IntFilter, {
+    nullable: true,
   })
   drySheepEquivalent?: IntFilter | undefined;
 
-  @TypeGraphQL.Field(_type => FloatFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => FloatFilter, {
+    nullable: true,
   })
   purchasePrice?: FloatFilter | undefined;
+
+  @TypeGraphQL.Field((_type) => DateTimeFilter, {
+    nullable: true,
+  })
+  purchaseDate?: DateTimeFilter | undefined;
 }

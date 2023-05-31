@@ -5,17 +5,23 @@ import { DecimalJSScalar } from "../../scalars";
 import { PaddockCreateWithoutLivestockUnitPositionInput } from "../inputs/PaddockCreateWithoutLivestockUnitPositionInput";
 import { PaddockWhereUniqueInput } from "../inputs/PaddockWhereUniqueInput";
 
-@TypeGraphQL.InputType("PaddockCreateOrConnectWithoutLivestockUnitPositionInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "PaddockCreateOrConnectWithoutLivestockUnitPositionInput",
+  {
+    isAbstract: true,
+  }
+)
 export class PaddockCreateOrConnectWithoutLivestockUnitPositionInput {
-  @TypeGraphQL.Field(_type => PaddockWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PaddockWhereUniqueInput, {
+    nullable: false,
   })
   where!: PaddockWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => PaddockCreateWithoutLivestockUnitPositionInput, {
-    nullable: false
-  })
+  @TypeGraphQL.Field(
+    (_type) => PaddockCreateWithoutLivestockUnitPositionInput,
+    {
+      nullable: false,
+    }
+  )
   create!: PaddockCreateWithoutLivestockUnitPositionInput;
 }

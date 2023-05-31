@@ -4,8 +4,8 @@ import { GrazeWhereUniqueInput } from "../../../inputs/GrazeWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteOneGrazeArgs {
-  @TypeGraphQL.Field(_type => GrazeWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GrazeWhereUniqueInput, {
+    nullable: false,
   })
   where!: GrazeWhereUniqueInput;
 }

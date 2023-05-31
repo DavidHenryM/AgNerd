@@ -6,18 +6,18 @@ import { LivestockUnitWhereUniqueInput } from "../../../inputs/LivestockUnitWher
 
 @TypeGraphQL.ArgsType()
 export class UpsertOneLivestockUnitArgs {
-  @TypeGraphQL.Field(_type => LivestockUnitWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitWhereUniqueInput, {
+    nullable: false,
   })
   where!: LivestockUnitWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => LivestockUnitCreateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitCreateInput, {
+    nullable: false,
   })
   create!: LivestockUnitCreateInput;
 
-  @TypeGraphQL.Field(_type => LivestockUnitUpdateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitUpdateInput, {
+    nullable: false,
   })
   update!: LivestockUnitUpdateInput;
 }

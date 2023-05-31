@@ -5,13 +5,13 @@ import { PregnancyWhereUniqueInput } from "../../../inputs/PregnancyWhereUniqueI
 
 @TypeGraphQL.ArgsType()
 export class UpdateOnePregnancyArgs {
-  @TypeGraphQL.Field(_type => PregnancyUpdateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PregnancyUpdateInput, {
+    nullable: false,
   })
   data!: PregnancyUpdateInput;
 
-  @TypeGraphQL.Field(_type => PregnancyWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PregnancyWhereUniqueInput, {
+    nullable: false,
   })
   where!: PregnancyWhereUniqueInput;
 }

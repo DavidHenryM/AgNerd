@@ -11,62 +11,88 @@ import { WeightRecordUpdateWithWhereUniqueWithoutLivestockUnitInput } from "../i
 import { WeightRecordUpsertWithWhereUniqueWithoutLivestockUnitInput } from "../inputs/WeightRecordUpsertWithWhereUniqueWithoutLivestockUnitInput";
 import { WeightRecordWhereUniqueInput } from "../inputs/WeightRecordWhereUniqueInput";
 
-@TypeGraphQL.InputType("WeightRecordUpdateManyWithoutLivestockUnitNestedInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "WeightRecordUpdateManyWithoutLivestockUnitNestedInput",
+  {
+    isAbstract: true,
+  }
+)
 export class WeightRecordUpdateManyWithoutLivestockUnitNestedInput {
-  @TypeGraphQL.Field(_type => [WeightRecordCreateWithoutLivestockUnitInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [WeightRecordCreateWithoutLivestockUnitInput], {
+    nullable: true,
   })
   create?: WeightRecordCreateWithoutLivestockUnitInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [WeightRecordCreateOrConnectWithoutLivestockUnitInput], {
-    nullable: true
-  })
-  connectOrCreate?: WeightRecordCreateOrConnectWithoutLivestockUnitInput[] | undefined;
+  @TypeGraphQL.Field(
+    (_type) => [WeightRecordCreateOrConnectWithoutLivestockUnitInput],
+    {
+      nullable: true,
+    }
+  )
+  connectOrCreate?:
+    | WeightRecordCreateOrConnectWithoutLivestockUnitInput[]
+    | undefined;
 
-  @TypeGraphQL.Field(_type => [WeightRecordUpsertWithWhereUniqueWithoutLivestockUnitInput], {
-    nullable: true
-  })
-  upsert?: WeightRecordUpsertWithWhereUniqueWithoutLivestockUnitInput[] | undefined;
+  @TypeGraphQL.Field(
+    (_type) => [WeightRecordUpsertWithWhereUniqueWithoutLivestockUnitInput],
+    {
+      nullable: true,
+    }
+  )
+  upsert?:
+    | WeightRecordUpsertWithWhereUniqueWithoutLivestockUnitInput[]
+    | undefined;
 
-  @TypeGraphQL.Field(_type => WeightRecordCreateManyLivestockUnitInputEnvelope, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => WeightRecordCreateManyLivestockUnitInputEnvelope,
+    {
+      nullable: true,
+    }
+  )
   createMany?: WeightRecordCreateManyLivestockUnitInputEnvelope | undefined;
 
-  @TypeGraphQL.Field(_type => [WeightRecordWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [WeightRecordWhereUniqueInput], {
+    nullable: true,
   })
   set?: WeightRecordWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [WeightRecordWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [WeightRecordWhereUniqueInput], {
+    nullable: true,
   })
   disconnect?: WeightRecordWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [WeightRecordWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [WeightRecordWhereUniqueInput], {
+    nullable: true,
   })
   delete?: WeightRecordWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [WeightRecordWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [WeightRecordWhereUniqueInput], {
+    nullable: true,
   })
   connect?: WeightRecordWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [WeightRecordUpdateWithWhereUniqueWithoutLivestockUnitInput], {
-    nullable: true
-  })
-  update?: WeightRecordUpdateWithWhereUniqueWithoutLivestockUnitInput[] | undefined;
+  @TypeGraphQL.Field(
+    (_type) => [WeightRecordUpdateWithWhereUniqueWithoutLivestockUnitInput],
+    {
+      nullable: true,
+    }
+  )
+  update?:
+    | WeightRecordUpdateWithWhereUniqueWithoutLivestockUnitInput[]
+    | undefined;
 
-  @TypeGraphQL.Field(_type => [WeightRecordUpdateManyWithWhereWithoutLivestockUnitInput], {
-    nullable: true
-  })
-  updateMany?: WeightRecordUpdateManyWithWhereWithoutLivestockUnitInput[] | undefined;
+  @TypeGraphQL.Field(
+    (_type) => [WeightRecordUpdateManyWithWhereWithoutLivestockUnitInput],
+    {
+      nullable: true,
+    }
+  )
+  updateMany?:
+    | WeightRecordUpdateManyWithWhereWithoutLivestockUnitInput[]
+    | undefined;
 
-  @TypeGraphQL.Field(_type => [WeightRecordScalarWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [WeightRecordScalarWhereInput], {
+    nullable: true,
   })
   deleteMany?: WeightRecordScalarWhereInput[] | undefined;
 }

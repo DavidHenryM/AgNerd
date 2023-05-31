@@ -4,8 +4,8 @@ import { ChemicalTreatmentCreateManyInput } from "../../../inputs/ChemicalTreatm
 
 @TypeGraphQL.ArgsType()
 export class CreateManyChemicalTreatmentArgs {
-  @TypeGraphQL.Field(_type => [ChemicalTreatmentCreateManyInput], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [ChemicalTreatmentCreateManyInput], {
+    nullable: false,
   })
   data!: ChemicalTreatmentCreateManyInput[];
 }

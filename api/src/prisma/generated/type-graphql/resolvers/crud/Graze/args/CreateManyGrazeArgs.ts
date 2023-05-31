@@ -4,8 +4,8 @@ import { GrazeCreateManyInput } from "../../../inputs/GrazeCreateManyInput";
 
 @TypeGraphQL.ArgsType()
 export class CreateManyGrazeArgs {
-  @TypeGraphQL.Field(_type => [GrazeCreateManyInput], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [GrazeCreateManyInput], {
+    nullable: false,
   })
   data!: GrazeCreateManyInput[];
 }

@@ -5,11 +5,21 @@ import { DecimalJSScalar } from "../../scalars";
 import { StockClass } from "../../enums/StockClass";
 
 @TypeGraphQL.InputType("EnumStockClassFieldUpdateOperationsInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class EnumStockClassFieldUpdateOperationsInput {
-  @TypeGraphQL.Field(_type => StockClass, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StockClass, {
+    nullable: true,
   })
-  set?: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY" | undefined;
+  set?:
+    | "CATTLE"
+    | "SHEEP"
+    | "GOAT"
+    | "CAMEL"
+    | "ALPACA"
+    | "LLAMA"
+    | "CHICKEN"
+    | "DUCK"
+    | "TURKEY"
+    | undefined;
 }

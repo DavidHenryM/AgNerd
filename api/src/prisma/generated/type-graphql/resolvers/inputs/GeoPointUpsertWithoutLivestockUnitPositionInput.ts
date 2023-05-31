@@ -6,16 +6,22 @@ import { GeoPointCreateWithoutLivestockUnitPositionInput } from "../inputs/GeoPo
 import { GeoPointUpdateWithoutLivestockUnitPositionInput } from "../inputs/GeoPointUpdateWithoutLivestockUnitPositionInput";
 
 @TypeGraphQL.InputType("GeoPointUpsertWithoutLivestockUnitPositionInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GeoPointUpsertWithoutLivestockUnitPositionInput {
-  @TypeGraphQL.Field(_type => GeoPointUpdateWithoutLivestockUnitPositionInput, {
-    nullable: false
-  })
+  @TypeGraphQL.Field(
+    (_type) => GeoPointUpdateWithoutLivestockUnitPositionInput,
+    {
+      nullable: false,
+    }
+  )
   update!: GeoPointUpdateWithoutLivestockUnitPositionInput;
 
-  @TypeGraphQL.Field(_type => GeoPointCreateWithoutLivestockUnitPositionInput, {
-    nullable: false
-  })
+  @TypeGraphQL.Field(
+    (_type) => GeoPointCreateWithoutLivestockUnitPositionInput,
+    {
+      nullable: false,
+    }
+  )
   create!: GeoPointCreateWithoutLivestockUnitPositionInput;
 }

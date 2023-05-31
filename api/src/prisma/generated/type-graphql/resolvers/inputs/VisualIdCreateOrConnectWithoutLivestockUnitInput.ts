@@ -6,16 +6,16 @@ import { VisualIdCreateWithoutLivestockUnitInput } from "../inputs/VisualIdCreat
 import { VisualIdWhereUniqueInput } from "../inputs/VisualIdWhereUniqueInput";
 
 @TypeGraphQL.InputType("VisualIdCreateOrConnectWithoutLivestockUnitInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class VisualIdCreateOrConnectWithoutLivestockUnitInput {
-  @TypeGraphQL.Field(_type => VisualIdWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => VisualIdWhereUniqueInput, {
+    nullable: false,
   })
   where!: VisualIdWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => VisualIdCreateWithoutLivestockUnitInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => VisualIdCreateWithoutLivestockUnitInput, {
+    nullable: false,
   })
   create!: VisualIdCreateWithoutLivestockUnitInput;
 }

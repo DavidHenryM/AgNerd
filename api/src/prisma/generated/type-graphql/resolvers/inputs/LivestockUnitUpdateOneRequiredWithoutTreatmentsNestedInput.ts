@@ -8,32 +8,40 @@ import { LivestockUnitUpdateWithoutTreatmentsInput } from "../inputs/LivestockUn
 import { LivestockUnitUpsertWithoutTreatmentsInput } from "../inputs/LivestockUnitUpsertWithoutTreatmentsInput";
 import { LivestockUnitWhereUniqueInput } from "../inputs/LivestockUnitWhereUniqueInput";
 
-@TypeGraphQL.InputType("LivestockUnitUpdateOneRequiredWithoutTreatmentsNestedInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "LivestockUnitUpdateOneRequiredWithoutTreatmentsNestedInput",
+  {
+    isAbstract: true,
+  }
+)
 export class LivestockUnitUpdateOneRequiredWithoutTreatmentsNestedInput {
-  @TypeGraphQL.Field(_type => LivestockUnitCreateWithoutTreatmentsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitCreateWithoutTreatmentsInput, {
+    nullable: true,
   })
   create?: LivestockUnitCreateWithoutTreatmentsInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitCreateOrConnectWithoutTreatmentsInput, {
-    nullable: true
-  })
-  connectOrCreate?: LivestockUnitCreateOrConnectWithoutTreatmentsInput | undefined;
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitCreateOrConnectWithoutTreatmentsInput,
+    {
+      nullable: true,
+    }
+  )
+  connectOrCreate?:
+    | LivestockUnitCreateOrConnectWithoutTreatmentsInput
+    | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitUpsertWithoutTreatmentsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitUpsertWithoutTreatmentsInput, {
+    nullable: true,
   })
   upsert?: LivestockUnitUpsertWithoutTreatmentsInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitWhereUniqueInput, {
+    nullable: true,
   })
   connect?: LivestockUnitWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitUpdateWithoutTreatmentsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitUpdateWithoutTreatmentsInput, {
+    nullable: true,
   })
   update?: LivestockUnitUpdateWithoutTreatmentsInput | undefined;
 }

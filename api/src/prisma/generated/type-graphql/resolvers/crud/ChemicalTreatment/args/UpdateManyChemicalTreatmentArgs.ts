@@ -5,13 +5,13 @@ import { ChemicalTreatmentWhereInput } from "../../../inputs/ChemicalTreatmentWh
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyChemicalTreatmentArgs {
-  @TypeGraphQL.Field(_type => ChemicalTreatmentUpdateManyMutationInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentUpdateManyMutationInput, {
+    nullable: false,
   })
   data!: ChemicalTreatmentUpdateManyMutationInput;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentWhereInput, {
+    nullable: true,
   })
   where?: ChemicalTreatmentWhereInput | undefined;
 }

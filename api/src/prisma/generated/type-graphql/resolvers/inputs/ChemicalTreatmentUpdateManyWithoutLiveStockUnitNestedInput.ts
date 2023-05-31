@@ -11,62 +11,97 @@ import { ChemicalTreatmentUpdateWithWhereUniqueWithoutLiveStockUnitInput } from 
 import { ChemicalTreatmentUpsertWithWhereUniqueWithoutLiveStockUnitInput } from "../inputs/ChemicalTreatmentUpsertWithWhereUniqueWithoutLiveStockUnitInput";
 import { ChemicalTreatmentWhereUniqueInput } from "../inputs/ChemicalTreatmentWhereUniqueInput";
 
-@TypeGraphQL.InputType("ChemicalTreatmentUpdateManyWithoutLiveStockUnitNestedInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "ChemicalTreatmentUpdateManyWithoutLiveStockUnitNestedInput",
+  {
+    isAbstract: true,
+  }
+)
 export class ChemicalTreatmentUpdateManyWithoutLiveStockUnitNestedInput {
-  @TypeGraphQL.Field(_type => [ChemicalTreatmentCreateWithoutLiveStockUnitInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [ChemicalTreatmentCreateWithoutLiveStockUnitInput],
+    {
+      nullable: true,
+    }
+  )
   create?: ChemicalTreatmentCreateWithoutLiveStockUnitInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ChemicalTreatmentCreateOrConnectWithoutLiveStockUnitInput], {
-    nullable: true
-  })
-  connectOrCreate?: ChemicalTreatmentCreateOrConnectWithoutLiveStockUnitInput[] | undefined;
+  @TypeGraphQL.Field(
+    (_type) => [ChemicalTreatmentCreateOrConnectWithoutLiveStockUnitInput],
+    {
+      nullable: true,
+    }
+  )
+  connectOrCreate?:
+    | ChemicalTreatmentCreateOrConnectWithoutLiveStockUnitInput[]
+    | undefined;
 
-  @TypeGraphQL.Field(_type => [ChemicalTreatmentUpsertWithWhereUniqueWithoutLiveStockUnitInput], {
-    nullable: true
-  })
-  upsert?: ChemicalTreatmentUpsertWithWhereUniqueWithoutLiveStockUnitInput[] | undefined;
+  @TypeGraphQL.Field(
+    (_type) => [
+      ChemicalTreatmentUpsertWithWhereUniqueWithoutLiveStockUnitInput,
+    ],
+    {
+      nullable: true,
+    }
+  )
+  upsert?:
+    | ChemicalTreatmentUpsertWithWhereUniqueWithoutLiveStockUnitInput[]
+    | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentCreateManyLiveStockUnitInputEnvelope, {
-    nullable: true
-  })
-  createMany?: ChemicalTreatmentCreateManyLiveStockUnitInputEnvelope | undefined;
+  @TypeGraphQL.Field(
+    (_type) => ChemicalTreatmentCreateManyLiveStockUnitInputEnvelope,
+    {
+      nullable: true,
+    }
+  )
+  createMany?:
+    | ChemicalTreatmentCreateManyLiveStockUnitInputEnvelope
+    | undefined;
 
-  @TypeGraphQL.Field(_type => [ChemicalTreatmentWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [ChemicalTreatmentWhereUniqueInput], {
+    nullable: true,
   })
   set?: ChemicalTreatmentWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ChemicalTreatmentWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [ChemicalTreatmentWhereUniqueInput], {
+    nullable: true,
   })
   disconnect?: ChemicalTreatmentWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ChemicalTreatmentWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [ChemicalTreatmentWhereUniqueInput], {
+    nullable: true,
   })
   delete?: ChemicalTreatmentWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ChemicalTreatmentWhereUniqueInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [ChemicalTreatmentWhereUniqueInput], {
+    nullable: true,
   })
   connect?: ChemicalTreatmentWhereUniqueInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [ChemicalTreatmentUpdateWithWhereUniqueWithoutLiveStockUnitInput], {
-    nullable: true
-  })
-  update?: ChemicalTreatmentUpdateWithWhereUniqueWithoutLiveStockUnitInput[] | undefined;
+  @TypeGraphQL.Field(
+    (_type) => [
+      ChemicalTreatmentUpdateWithWhereUniqueWithoutLiveStockUnitInput,
+    ],
+    {
+      nullable: true,
+    }
+  )
+  update?:
+    | ChemicalTreatmentUpdateWithWhereUniqueWithoutLiveStockUnitInput[]
+    | undefined;
 
-  @TypeGraphQL.Field(_type => [ChemicalTreatmentUpdateManyWithWhereWithoutLiveStockUnitInput], {
-    nullable: true
-  })
-  updateMany?: ChemicalTreatmentUpdateManyWithWhereWithoutLiveStockUnitInput[] | undefined;
+  @TypeGraphQL.Field(
+    (_type) => [ChemicalTreatmentUpdateManyWithWhereWithoutLiveStockUnitInput],
+    {
+      nullable: true,
+    }
+  )
+  updateMany?:
+    | ChemicalTreatmentUpdateManyWithWhereWithoutLiveStockUnitInput[]
+    | undefined;
 
-  @TypeGraphQL.Field(_type => [ChemicalTreatmentScalarWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [ChemicalTreatmentScalarWhereInput], {
+    nullable: true,
   })
   deleteMany?: ChemicalTreatmentScalarWhereInput[] | undefined;
 }

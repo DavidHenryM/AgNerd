@@ -4,7 +4,7 @@ export enum BreedScalarFieldEnum {
   id = "id",
   name = "name",
   "class" = "class",
-  livestockUnitId = "livestockUnitId"
+  livestockUnitId = "livestockUnitId",
 }
 TypeGraphQL.registerEnumType(BreedScalarFieldEnum, {
   name: "BreedScalarFieldEnum",

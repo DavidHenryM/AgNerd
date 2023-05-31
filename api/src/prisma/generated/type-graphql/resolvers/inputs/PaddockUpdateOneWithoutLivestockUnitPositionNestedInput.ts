@@ -8,42 +8,59 @@ import { PaddockUpdateWithoutLivestockUnitPositionInput } from "../inputs/Paddoc
 import { PaddockUpsertWithoutLivestockUnitPositionInput } from "../inputs/PaddockUpsertWithoutLivestockUnitPositionInput";
 import { PaddockWhereUniqueInput } from "../inputs/PaddockWhereUniqueInput";
 
-@TypeGraphQL.InputType("PaddockUpdateOneWithoutLivestockUnitPositionNestedInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "PaddockUpdateOneWithoutLivestockUnitPositionNestedInput",
+  {
+    isAbstract: true,
+  }
+)
 export class PaddockUpdateOneWithoutLivestockUnitPositionNestedInput {
-  @TypeGraphQL.Field(_type => PaddockCreateWithoutLivestockUnitPositionInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => PaddockCreateWithoutLivestockUnitPositionInput,
+    {
+      nullable: true,
+    }
+  )
   create?: PaddockCreateWithoutLivestockUnitPositionInput | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockCreateOrConnectWithoutLivestockUnitPositionInput, {
-    nullable: true
-  })
-  connectOrCreate?: PaddockCreateOrConnectWithoutLivestockUnitPositionInput | undefined;
+  @TypeGraphQL.Field(
+    (_type) => PaddockCreateOrConnectWithoutLivestockUnitPositionInput,
+    {
+      nullable: true,
+    }
+  )
+  connectOrCreate?:
+    | PaddockCreateOrConnectWithoutLivestockUnitPositionInput
+    | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockUpsertWithoutLivestockUnitPositionInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => PaddockUpsertWithoutLivestockUnitPositionInput,
+    {
+      nullable: true,
+    }
+  )
   upsert?: PaddockUpsertWithoutLivestockUnitPositionInput | undefined;
 
-  @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Boolean, {
+    nullable: true,
   })
   disconnect?: boolean | undefined;
 
-  @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Boolean, {
+    nullable: true,
   })
   delete?: boolean | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockWhereUniqueInput, {
+    nullable: true,
   })
   connect?: PaddockWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockUpdateWithoutLivestockUnitPositionInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => PaddockUpdateWithoutLivestockUnitPositionInput,
+    {
+      nullable: true,
+    }
+  )
   update?: PaddockUpdateWithoutLivestockUnitPositionInput | undefined;
 }

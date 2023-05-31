@@ -9,31 +9,31 @@ import { PaddockUpsertWithoutPolygonInput } from "../inputs/PaddockUpsertWithout
 import { PaddockWhereUniqueInput } from "../inputs/PaddockWhereUniqueInput";
 
 @TypeGraphQL.InputType("PaddockUpdateOneRequiredWithoutPolygonNestedInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PaddockUpdateOneRequiredWithoutPolygonNestedInput {
-  @TypeGraphQL.Field(_type => PaddockCreateWithoutPolygonInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockCreateWithoutPolygonInput, {
+    nullable: true,
   })
   create?: PaddockCreateWithoutPolygonInput | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockCreateOrConnectWithoutPolygonInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockCreateOrConnectWithoutPolygonInput, {
+    nullable: true,
   })
   connectOrCreate?: PaddockCreateOrConnectWithoutPolygonInput | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockUpsertWithoutPolygonInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockUpsertWithoutPolygonInput, {
+    nullable: true,
   })
   upsert?: PaddockUpsertWithoutPolygonInput | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockWhereUniqueInput, {
+    nullable: true,
   })
   connect?: PaddockWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockUpdateWithoutPolygonInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockUpdateWithoutPolygonInput, {
+    nullable: true,
   })
   update?: PaddockUpdateWithoutPolygonInput | undefined;
 }

@@ -7,33 +7,33 @@ import { MobScalarFieldEnum } from "../../../../enums/MobScalarFieldEnum";
 
 @TypeGraphQL.ArgsType()
 export class FindManyMobArgs {
-  @TypeGraphQL.Field(_type => MobWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => MobWhereInput, {
+    nullable: true,
   })
   where?: MobWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [MobOrderByWithRelationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobOrderByWithRelationInput], {
+    nullable: true,
   })
   orderBy?: MobOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => MobWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => MobWhereUniqueInput, {
+    nullable: true,
   })
   cursor?: MobWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field(_type => [MobScalarFieldEnum], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobScalarFieldEnum], {
+    nullable: true,
   })
   distinct?: Array<"id" | "name" | "comment" | "grazeIds"> | undefined;
 }

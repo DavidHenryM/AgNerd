@@ -6,16 +6,16 @@ import { PregnancyScalarWhereInput } from "../inputs/PregnancyScalarWhereInput";
 import { PregnancyUpdateManyMutationInput } from "../inputs/PregnancyUpdateManyMutationInput";
 
 @TypeGraphQL.InputType("PregnancyUpdateManyWithWhereWithoutParentsInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PregnancyUpdateManyWithWhereWithoutParentsInput {
-  @TypeGraphQL.Field(_type => PregnancyScalarWhereInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PregnancyScalarWhereInput, {
+    nullable: false,
   })
   where!: PregnancyScalarWhereInput;
 
-  @TypeGraphQL.Field(_type => PregnancyUpdateManyMutationInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PregnancyUpdateManyMutationInput, {
+    nullable: false,
   })
   data!: PregnancyUpdateManyMutationInput;
 }

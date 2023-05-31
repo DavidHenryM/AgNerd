@@ -5,17 +5,20 @@ import { DecimalJSScalar } from "../../scalars";
 import { WeightRecordScalarWhereInput } from "../inputs/WeightRecordScalarWhereInput";
 import { WeightRecordUpdateManyMutationInput } from "../inputs/WeightRecordUpdateManyMutationInput";
 
-@TypeGraphQL.InputType("WeightRecordUpdateManyWithWhereWithoutLivestockUnitInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "WeightRecordUpdateManyWithWhereWithoutLivestockUnitInput",
+  {
+    isAbstract: true,
+  }
+)
 export class WeightRecordUpdateManyWithWhereWithoutLivestockUnitInput {
-  @TypeGraphQL.Field(_type => WeightRecordScalarWhereInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => WeightRecordScalarWhereInput, {
+    nullable: false,
   })
   where!: WeightRecordScalarWhereInput;
 
-  @TypeGraphQL.Field(_type => WeightRecordUpdateManyMutationInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => WeightRecordUpdateManyMutationInput, {
+    nullable: false,
   })
   data!: WeightRecordUpdateManyMutationInput;
 }

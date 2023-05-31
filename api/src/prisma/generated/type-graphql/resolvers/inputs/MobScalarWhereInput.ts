@@ -7,41 +7,41 @@ import { StringNullableFilter } from "../inputs/StringNullableFilter";
 import { StringNullableListFilter } from "../inputs/StringNullableListFilter";
 
 @TypeGraphQL.InputType("MobScalarWhereInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class MobScalarWhereInput {
-  @TypeGraphQL.Field(_type => [MobScalarWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobScalarWhereInput], {
+    nullable: true,
   })
   AND?: MobScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MobScalarWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobScalarWhereInput], {
+    nullable: true,
   })
   OR?: MobScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MobScalarWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [MobScalarWhereInput], {
+    nullable: true,
   })
   NOT?: MobScalarWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFilter, {
+    nullable: true,
   })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringNullableFilter, {
+    nullable: true,
   })
   name?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringNullableFilter, {
+    nullable: true,
   })
   comment?: StringNullableFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableListFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringNullableListFilter, {
+    nullable: true,
   })
   grazeIds?: StringNullableListFilter | undefined;
 }

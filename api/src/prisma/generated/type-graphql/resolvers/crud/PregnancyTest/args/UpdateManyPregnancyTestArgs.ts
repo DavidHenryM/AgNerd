@@ -5,13 +5,13 @@ import { PregnancyTestWhereInput } from "../../../inputs/PregnancyTestWhereInput
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyPregnancyTestArgs {
-  @TypeGraphQL.Field(_type => PregnancyTestUpdateManyMutationInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PregnancyTestUpdateManyMutationInput, {
+    nullable: false,
   })
   data!: PregnancyTestUpdateManyMutationInput;
 
-  @TypeGraphQL.Field(_type => PregnancyTestWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyTestWhereInput, {
+    nullable: true,
   })
   where?: PregnancyTestWhereInput | undefined;
 }

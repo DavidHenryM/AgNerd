@@ -4,8 +4,8 @@ import { PregnancyTestWhereUniqueInput } from "../../../inputs/PregnancyTestWher
 
 @TypeGraphQL.ArgsType()
 export class FindUniquePregnancyTestArgs {
-  @TypeGraphQL.Field(_type => PregnancyTestWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PregnancyTestWhereUniqueInput, {
+    nullable: false,
   })
   where!: PregnancyTestWhereUniqueInput;
 }

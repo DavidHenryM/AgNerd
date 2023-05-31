@@ -7,26 +7,31 @@ import { EnumApplicationMethodFieldUpdateOperationsInput } from "../inputs/EnumA
 import { IntFieldUpdateOperationsInput } from "../inputs/IntFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("ChemicalTreatmentUpdateManyMutationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class ChemicalTreatmentUpdateManyMutationInput {
-  @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
+    nullable: true,
   })
   treatmentDate?: DateTimeFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => EnumApplicationMethodFieldUpdateOperationsInput, {
-    nullable: true
-  })
-  applicationMethod?: EnumApplicationMethodFieldUpdateOperationsInput | undefined;
+  @TypeGraphQL.Field(
+    (_type) => EnumApplicationMethodFieldUpdateOperationsInput,
+    {
+      nullable: true,
+    }
+  )
+  applicationMethod?:
+    | EnumApplicationMethodFieldUpdateOperationsInput
+    | undefined;
 
-  @TypeGraphQL.Field(_type => IntFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, {
+    nullable: true,
   })
   volume_ml?: IntFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => IntFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => IntFieldUpdateOperationsInput, {
+    nullable: true,
   })
   witholdingPeriodDays?: IntFieldUpdateOperationsInput | undefined;
 }

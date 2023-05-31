@@ -5,16 +5,16 @@ import { DecimalJSScalar } from "../../scalars";
 import { GeoPointWhereInput } from "../inputs/GeoPointWhereInput";
 
 @TypeGraphQL.InputType("GeoPointRelationFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GeoPointRelationFilter {
-  @TypeGraphQL.Field(_type => GeoPointWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GeoPointWhereInput, {
+    nullable: true,
   })
   is?: GeoPointWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => GeoPointWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GeoPointWhereInput, {
+    nullable: true,
   })
   isNot?: GeoPointWhereInput | undefined;
 }

@@ -8,46 +8,46 @@ import { FloatWithAggregatesFilter } from "../inputs/FloatWithAggregatesFilter";
 import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter";
 
 @TypeGraphQL.InputType("WeightRecordScalarWhereWithAggregatesInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class WeightRecordScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field(_type => [WeightRecordScalarWhereWithAggregatesInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [WeightRecordScalarWhereWithAggregatesInput], {
+    nullable: true,
   })
   AND?: WeightRecordScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [WeightRecordScalarWhereWithAggregatesInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [WeightRecordScalarWhereWithAggregatesInput], {
+    nullable: true,
   })
   OR?: WeightRecordScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [WeightRecordScalarWhereWithAggregatesInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [WeightRecordScalarWhereWithAggregatesInput], {
+    nullable: true,
   })
   NOT?: WeightRecordScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, {
+    nullable: true,
   })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => FloatWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => FloatWithAggregatesFilter, {
+    nullable: true,
   })
   weight?: FloatWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeWithAggregatesFilter, {
+    nullable: true,
   })
   dateMeasured?: DateTimeWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => EnumWeighMethodWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => EnumWeighMethodWithAggregatesFilter, {
+    nullable: true,
   })
   method?: EnumWeighMethodWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, {
+    nullable: true,
   })
   livestockUnitId?: StringWithAggregatesFilter | undefined;
 }

@@ -6,26 +6,26 @@ import { NestedEnumLoraActivationMethodFilter } from "../inputs/NestedEnumLoraAc
 import { LoraActivationMethod } from "../../enums/LoraActivationMethod";
 
 @TypeGraphQL.InputType("EnumLoraActivationMethodFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class EnumLoraActivationMethodFilter {
-  @TypeGraphQL.Field(_type => LoraActivationMethod, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LoraActivationMethod, {
+    nullable: true,
   })
   equals?: "OTAA" | "ABP" | undefined;
 
-  @TypeGraphQL.Field(_type => [LoraActivationMethod], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LoraActivationMethod], {
+    nullable: true,
   })
   in?: Array<"OTAA" | "ABP"> | undefined;
 
-  @TypeGraphQL.Field(_type => [LoraActivationMethod], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LoraActivationMethod], {
+    nullable: true,
   })
   notIn?: Array<"OTAA" | "ABP"> | undefined;
 
-  @TypeGraphQL.Field(_type => NestedEnumLoraActivationMethodFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NestedEnumLoraActivationMethodFilter, {
+    nullable: true,
   })
   not?: NestedEnumLoraActivationMethodFilter | undefined;
 }

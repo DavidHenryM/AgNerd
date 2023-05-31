@@ -8,41 +8,41 @@ import { PaddockRelationFilter } from "../inputs/PaddockRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
 
 @TypeGraphQL.InputType("LivestockUnitPositionWhereInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitPositionWhereInput {
-  @TypeGraphQL.Field(_type => [LivestockUnitPositionWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LivestockUnitPositionWhereInput], {
+    nullable: true,
   })
   AND?: LivestockUnitPositionWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitPositionWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LivestockUnitPositionWhereInput], {
+    nullable: true,
   })
   OR?: LivestockUnitPositionWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitPositionWhereInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LivestockUnitPositionWhereInput], {
+    nullable: true,
   })
   NOT?: LivestockUnitPositionWhereInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFilter, {
+    nullable: true,
   })
   id?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeFilter, {
+    nullable: true,
   })
   date?: DateTimeFilter | undefined;
 
-  @TypeGraphQL.Field(_type => GeoPointRelationFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GeoPointRelationFilter, {
+    nullable: true,
   })
   location?: GeoPointRelationFilter | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockRelationFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockRelationFilter, {
+    nullable: true,
   })
   paddock?: PaddockRelationFilter | undefined;
 }

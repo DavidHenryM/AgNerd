@@ -6,28 +6,28 @@ import { ChemicalTreatmentWhereUniqueInput } from "../../../inputs/ChemicalTreat
 
 @TypeGraphQL.ArgsType()
 export class AggregateChemicalTreatmentArgs {
-  @TypeGraphQL.Field(_type => ChemicalTreatmentWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentWhereInput, {
+    nullable: true,
   })
   where?: ChemicalTreatmentWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [ChemicalTreatmentOrderByWithRelationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [ChemicalTreatmentOrderByWithRelationInput], {
+    nullable: true,
   })
   orderBy?: ChemicalTreatmentOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentWhereUniqueInput, {
+    nullable: true,
   })
   cursor?: ChemicalTreatmentWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

@@ -7,21 +7,24 @@ import { LivestockUnitCreateWithoutWeightsInput } from "../inputs/LivestockUnitC
 import { LivestockUnitWhereUniqueInput } from "../inputs/LivestockUnitWhereUniqueInput";
 
 @TypeGraphQL.InputType("LivestockUnitCreateNestedOneWithoutWeightsInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitCreateNestedOneWithoutWeightsInput {
-  @TypeGraphQL.Field(_type => LivestockUnitCreateWithoutWeightsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitCreateWithoutWeightsInput, {
+    nullable: true,
   })
   create?: LivestockUnitCreateWithoutWeightsInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitCreateOrConnectWithoutWeightsInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitCreateOrConnectWithoutWeightsInput,
+    {
+      nullable: true,
+    }
+  )
   connectOrCreate?: LivestockUnitCreateOrConnectWithoutWeightsInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitWhereUniqueInput, {
+    nullable: true,
   })
   connect?: LivestockUnitWhereUniqueInput | undefined;
 }

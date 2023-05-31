@@ -7,33 +7,45 @@ import { PregnancyScalarFieldEnum } from "../../../../enums/PregnancyScalarField
 
 @TypeGraphQL.ArgsType()
 export class LivestockUnitPregnancyArgs {
-  @TypeGraphQL.Field(_type => PregnancyWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyWhereInput, {
+    nullable: true,
   })
   where?: PregnancyWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyOrderByWithRelationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyOrderByWithRelationInput], {
+    nullable: true,
   })
   orderBy?: PregnancyOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => PregnancyWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyWhereUniqueInput, {
+    nullable: true,
   })
   cursor?: PregnancyWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyScalarFieldEnum], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyScalarFieldEnum], {
+    nullable: true,
   })
-  distinct?: Array<"id" | "earliestPossibleConception" | "latestPossibleConception" | "conception" | "dueDate" | "earliestPossibleBirth" | "latestPossibleBirth" | "parentId" | "pregnancySireId"> | undefined;
+  distinct?:
+    | Array<
+        | "id"
+        | "earliestPossibleConception"
+        | "latestPossibleConception"
+        | "conception"
+        | "dueDate"
+        | "earliestPossibleBirth"
+        | "latestPossibleBirth"
+        | "parentId"
+        | "pregnancySireId"
+      >
+    | undefined;
 }

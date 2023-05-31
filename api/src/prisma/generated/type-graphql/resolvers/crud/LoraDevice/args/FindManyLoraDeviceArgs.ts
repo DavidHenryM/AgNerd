@@ -7,33 +7,45 @@ import { LoraDeviceScalarFieldEnum } from "../../../../enums/LoraDeviceScalarFie
 
 @TypeGraphQL.ArgsType()
 export class FindManyLoraDeviceArgs {
-  @TypeGraphQL.Field(_type => LoraDeviceWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LoraDeviceWhereInput, {
+    nullable: true,
   })
   where?: LoraDeviceWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [LoraDeviceOrderByWithRelationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LoraDeviceOrderByWithRelationInput], {
+    nullable: true,
   })
   orderBy?: LoraDeviceOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => LoraDeviceWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LoraDeviceWhereUniqueInput, {
+    nullable: true,
   })
   cursor?: LoraDeviceWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field(_type => [LoraDeviceScalarFieldEnum], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LoraDeviceScalarFieldEnum], {
+    nullable: true,
   })
-  distinct?: Array<"id" | "name" | "deviceId" | "deviceEui" | "appEui" | "appKey" | "manufacturer" | "partNumber" | "activationMethod"> | undefined;
+  distinct?:
+    | Array<
+        | "id"
+        | "name"
+        | "deviceId"
+        | "deviceEui"
+        | "appEui"
+        | "appKey"
+        | "manufacturer"
+        | "partNumber"
+        | "activationMethod"
+      >
+    | undefined;
 }

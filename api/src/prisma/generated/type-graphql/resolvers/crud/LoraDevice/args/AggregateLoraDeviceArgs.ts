@@ -6,28 +6,28 @@ import { LoraDeviceWhereUniqueInput } from "../../../inputs/LoraDeviceWhereUniqu
 
 @TypeGraphQL.ArgsType()
 export class AggregateLoraDeviceArgs {
-  @TypeGraphQL.Field(_type => LoraDeviceWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LoraDeviceWhereInput, {
+    nullable: true,
   })
   where?: LoraDeviceWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [LoraDeviceOrderByWithRelationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LoraDeviceOrderByWithRelationInput], {
+    nullable: true,
   })
   orderBy?: LoraDeviceOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => LoraDeviceWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LoraDeviceWhereUniqueInput, {
+    nullable: true,
   })
   cursor?: LoraDeviceWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

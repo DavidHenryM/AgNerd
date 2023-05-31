@@ -6,18 +6,18 @@ import { PregnancyTestWhereUniqueInput } from "../../../inputs/PregnancyTestWher
 
 @TypeGraphQL.ArgsType()
 export class UpsertOnePregnancyTestArgs {
-  @TypeGraphQL.Field(_type => PregnancyTestWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PregnancyTestWhereUniqueInput, {
+    nullable: false,
   })
   where!: PregnancyTestWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => PregnancyTestCreateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PregnancyTestCreateInput, {
+    nullable: false,
   })
   create!: PregnancyTestCreateInput;
 
-  @TypeGraphQL.Field(_type => PregnancyTestUpdateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PregnancyTestUpdateInput, {
+    nullable: false,
   })
   update!: PregnancyTestUpdateInput;
 }

@@ -7,33 +7,33 @@ import { PaddockScalarFieldEnum } from "../../../../enums/PaddockScalarFieldEnum
 
 @TypeGraphQL.ArgsType()
 export class GroupByPaddockArgs {
-  @TypeGraphQL.Field(_type => PaddockWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockWhereInput, {
+    nullable: true,
   })
   where?: PaddockWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [PaddockOrderByWithAggregationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PaddockOrderByWithAggregationInput], {
+    nullable: true,
   })
   orderBy?: PaddockOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PaddockScalarFieldEnum], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [PaddockScalarFieldEnum], {
+    nullable: false,
   })
   by!: Array<"id" | "name" | "areaHa" | "livestockUnitPositionId">;
 
-  @TypeGraphQL.Field(_type => PaddockScalarWhereWithAggregatesInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockScalarWhereWithAggregatesInput, {
+    nullable: true,
   })
   having?: PaddockScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

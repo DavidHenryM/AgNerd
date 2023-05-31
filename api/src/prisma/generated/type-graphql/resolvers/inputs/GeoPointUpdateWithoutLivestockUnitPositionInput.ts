@@ -6,21 +6,24 @@ import { FloatFieldUpdateOperationsInput } from "../inputs/FloatFieldUpdateOpera
 import { PaddockUpdateOneRequiredWithoutPolygonNestedInput } from "../inputs/PaddockUpdateOneRequiredWithoutPolygonNestedInput";
 
 @TypeGraphQL.InputType("GeoPointUpdateWithoutLivestockUnitPositionInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GeoPointUpdateWithoutLivestockUnitPositionInput {
-  @TypeGraphQL.Field(_type => FloatFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => FloatFieldUpdateOperationsInput, {
+    nullable: true,
   })
   latitude?: FloatFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => FloatFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => FloatFieldUpdateOperationsInput, {
+    nullable: true,
   })
   longitude?: FloatFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockUpdateOneRequiredWithoutPolygonNestedInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => PaddockUpdateOneRequiredWithoutPolygonNestedInput,
+    {
+      nullable: true,
+    }
+  )
   paddock?: PaddockUpdateOneRequiredWithoutPolygonNestedInput | undefined;
 }

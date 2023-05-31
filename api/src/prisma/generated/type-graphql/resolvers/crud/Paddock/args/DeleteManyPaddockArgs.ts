@@ -4,8 +4,8 @@ import { PaddockWhereInput } from "../../../inputs/PaddockWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyPaddockArgs {
-  @TypeGraphQL.Field(_type => PaddockWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockWhereInput, {
+    nullable: true,
   })
   where?: PaddockWhereInput | undefined;
 }

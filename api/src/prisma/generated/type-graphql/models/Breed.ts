@@ -6,28 +6,37 @@ import { LivestockUnit } from "../models/LivestockUnit";
 import { StockClass } from "../enums/StockClass";
 
 @TypeGraphQL.ObjectType("Breed", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class Breed {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   id!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   name!: string;
 
-  @TypeGraphQL.Field(_type => StockClass, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => StockClass, {
+    nullable: false,
   })
-  class!: "CATTLE" | "SHEEP" | "GOAT" | "CAMEL" | "ALPACA" | "LLAMA" | "CHICKEN" | "DUCK" | "TURKEY";
+  class!:
+    | "CATTLE"
+    | "SHEEP"
+    | "GOAT"
+    | "CAMEL"
+    | "ALPACA"
+    | "LLAMA"
+    | "CHICKEN"
+    | "DUCK"
+    | "TURKEY";
 
   members?: LivestockUnit | null;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
-  livestockUnitId!: string;
+  livestockUnitId?: string | null;
 }

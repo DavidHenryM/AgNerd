@@ -5,16 +5,25 @@ import { DecimalJSScalar } from "../../scalars";
 import { VisualIdColour } from "../../enums/VisualIdColour";
 
 @TypeGraphQL.InputType("NullableEnumVisualIdColourFieldUpdateOperationsInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class NullableEnumVisualIdColourFieldUpdateOperationsInput {
-  @TypeGraphQL.Field(_type => VisualIdColour, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => VisualIdColour, {
+    nullable: true,
   })
-  set?: "WHITE" | "ORANGE" | "LIGHT_GREEN" | "PURPLE" | "YELLOW" | "RED" | "SKY_BLUE" | "BLACK" | undefined;
+  set?:
+    | "WHITE"
+    | "ORANGE"
+    | "LIGHT_GREEN"
+    | "PURPLE"
+    | "YELLOW"
+    | "RED"
+    | "SKY_BLUE"
+    | "BLACK"
+    | undefined;
 
-  @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Boolean, {
+    nullable: true,
   })
   unset?: boolean | undefined;
 }

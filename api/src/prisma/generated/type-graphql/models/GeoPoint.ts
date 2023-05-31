@@ -6,35 +6,35 @@ import { LivestockUnitPosition } from "../models/LivestockUnitPosition";
 import { Paddock } from "../models/Paddock";
 
 @TypeGraphQL.ObjectType("GeoPoint", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GeoPoint {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   id!: string;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Float, {
+    nullable: false,
   })
   latitude!: number;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Float, {
+    nullable: false,
   })
   longitude!: number;
 
   paddock?: Paddock;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   paddockId!: string;
 
   livestockUnitPosition?: LivestockUnitPosition;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   livestockUnitPositionId!: string;
 }

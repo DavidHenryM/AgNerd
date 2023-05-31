@@ -7,60 +7,60 @@ import { PregnancyTest } from "../models/PregnancyTest";
 import { PregnancyCount } from "../resolvers/outputs/PregnancyCount";
 
 @TypeGraphQL.ObjectType("Pregnancy", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class Pregnancy {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   id!: string;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   earliestPossibleConception?: Date | null;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   latestPossibleConception?: Date | null;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   conception?: Date | null;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   dueDate?: Date | null;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   earliestPossibleBirth?: Date | null;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   latestPossibleBirth?: Date | null;
 
-  @TypeGraphQL.Field(_type => [String], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [String], {
+    nullable: false,
   })
   parentId!: string[];
 
   parents?: LivestockUnit[];
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   pregnancySireId!: string;
 
   pregnancyTest?: PregnancyTest[];
 
-  @TypeGraphQL.Field(_type => PregnancyCount, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyCount, {
+    nullable: true,
   })
   _count?: PregnancyCount | null;
 }

@@ -5,17 +5,23 @@ import { DecimalJSScalar } from "../../scalars";
 import { ChemicalTreatmentCreateWithoutLiveStockUnitInput } from "../inputs/ChemicalTreatmentCreateWithoutLiveStockUnitInput";
 import { ChemicalTreatmentWhereUniqueInput } from "../inputs/ChemicalTreatmentWhereUniqueInput";
 
-@TypeGraphQL.InputType("ChemicalTreatmentCreateOrConnectWithoutLiveStockUnitInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "ChemicalTreatmentCreateOrConnectWithoutLiveStockUnitInput",
+  {
+    isAbstract: true,
+  }
+)
 export class ChemicalTreatmentCreateOrConnectWithoutLiveStockUnitInput {
-  @TypeGraphQL.Field(_type => ChemicalTreatmentWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentWhereUniqueInput, {
+    nullable: false,
   })
   where!: ChemicalTreatmentWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentCreateWithoutLiveStockUnitInput, {
-    nullable: false
-  })
+  @TypeGraphQL.Field(
+    (_type) => ChemicalTreatmentCreateWithoutLiveStockUnitInput,
+    {
+      nullable: false,
+    }
+  )
   create!: ChemicalTreatmentCreateWithoutLiveStockUnitInput;
 }

@@ -6,31 +6,40 @@ import { DateTimeWithAggregatesFilter } from "../inputs/DateTimeWithAggregatesFi
 import { StringWithAggregatesFilter } from "../inputs/StringWithAggregatesFilter";
 
 @TypeGraphQL.InputType("LivestockUnitPositionScalarWhereWithAggregatesInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitPositionScalarWhereWithAggregatesInput {
-  @TypeGraphQL.Field(_type => [LivestockUnitPositionScalarWhereWithAggregatesInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [LivestockUnitPositionScalarWhereWithAggregatesInput],
+    {
+      nullable: true,
+    }
+  )
   AND?: LivestockUnitPositionScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitPositionScalarWhereWithAggregatesInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [LivestockUnitPositionScalarWhereWithAggregatesInput],
+    {
+      nullable: true,
+    }
+  )
   OR?: LivestockUnitPositionScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitPositionScalarWhereWithAggregatesInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [LivestockUnitPositionScalarWhereWithAggregatesInput],
+    {
+      nullable: true,
+    }
+  )
   NOT?: LivestockUnitPositionScalarWhereWithAggregatesInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => StringWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringWithAggregatesFilter, {
+    nullable: true,
   })
   id?: StringWithAggregatesFilter | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeWithAggregatesFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeWithAggregatesFilter, {
+    nullable: true,
   })
   date?: DateTimeWithAggregatesFilter | undefined;
 }

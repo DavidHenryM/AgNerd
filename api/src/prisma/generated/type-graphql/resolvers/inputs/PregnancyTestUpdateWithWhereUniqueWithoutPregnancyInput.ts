@@ -5,17 +5,20 @@ import { DecimalJSScalar } from "../../scalars";
 import { PregnancyTestUpdateWithoutPregnancyInput } from "../inputs/PregnancyTestUpdateWithoutPregnancyInput";
 import { PregnancyTestWhereUniqueInput } from "../inputs/PregnancyTestWhereUniqueInput";
 
-@TypeGraphQL.InputType("PregnancyTestUpdateWithWhereUniqueWithoutPregnancyInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "PregnancyTestUpdateWithWhereUniqueWithoutPregnancyInput",
+  {
+    isAbstract: true,
+  }
+)
 export class PregnancyTestUpdateWithWhereUniqueWithoutPregnancyInput {
-  @TypeGraphQL.Field(_type => PregnancyTestWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PregnancyTestWhereUniqueInput, {
+    nullable: false,
   })
   where!: PregnancyTestWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => PregnancyTestUpdateWithoutPregnancyInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => PregnancyTestUpdateWithoutPregnancyInput, {
+    nullable: false,
   })
   data!: PregnancyTestUpdateWithoutPregnancyInput;
 }

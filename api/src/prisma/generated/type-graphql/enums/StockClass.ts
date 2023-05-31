@@ -9,7 +9,7 @@ export enum StockClass {
   LLAMA = "LLAMA",
   CHICKEN = "CHICKEN",
   DUCK = "DUCK",
-  TURKEY = "TURKEY"
+  TURKEY = "TURKEY",
 }
 TypeGraphQL.registerEnumType(StockClass, {
   name: "StockClass",

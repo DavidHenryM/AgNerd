@@ -5,51 +5,51 @@ import { DecimalJSScalar } from "../../scalars";
 import { LoraActivationMethod } from "../../enums/LoraActivationMethod";
 
 @TypeGraphQL.InputType("LoraDeviceCreateManyInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LoraDeviceCreateManyInput {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   id?: string | undefined;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   name?: string | undefined;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   deviceId!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   deviceEui!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   appEui!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   appKey!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   manufacturer?: string | undefined;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   partNumber?: string | undefined;
 
-  @TypeGraphQL.Field(_type => LoraActivationMethod, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LoraActivationMethod, {
+    nullable: true,
   })
   activationMethod?: "OTAA" | "ABP" | undefined;
 }

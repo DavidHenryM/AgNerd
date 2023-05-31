@@ -5,26 +5,26 @@ import { DecimalJSScalar } from "../../scalars";
 import { MobCreategrazeIdsInput } from "../inputs/MobCreategrazeIdsInput";
 
 @TypeGraphQL.InputType("MobCreateManyInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class MobCreateManyInput {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   id?: string | undefined;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   name?: string | undefined;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   comment?: string | undefined;
 
-  @TypeGraphQL.Field(_type => MobCreategrazeIdsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => MobCreategrazeIdsInput, {
+    nullable: true,
   })
   grazeIds?: MobCreategrazeIdsInput | undefined;
 }

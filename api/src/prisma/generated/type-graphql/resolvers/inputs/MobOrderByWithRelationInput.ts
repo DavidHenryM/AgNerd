@@ -7,36 +7,36 @@ import { LivestockUnitOrderByRelationAggregateInput } from "../inputs/LivestockU
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("MobOrderByWithRelationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class MobOrderByWithRelationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitOrderByRelationAggregateInput, {
-    nullable: true
-  })
-  members?: LivestockUnitOrderByRelationAggregateInput | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   comment?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   grazeIds?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => GrazeOrderByRelationAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitOrderByRelationAggregateInput, {
+    nullable: true,
+  })
+  members?: LivestockUnitOrderByRelationAggregateInput | undefined;
+
+  @TypeGraphQL.Field((_type) => GrazeOrderByRelationAggregateInput, {
+    nullable: true,
   })
   graze?: GrazeOrderByRelationAggregateInput | undefined;
 }

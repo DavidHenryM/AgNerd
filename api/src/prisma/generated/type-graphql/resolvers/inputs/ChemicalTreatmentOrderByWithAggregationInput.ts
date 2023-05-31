@@ -10,61 +10,61 @@ import { ChemicalTreatmentSumOrderByAggregateInput } from "../inputs/ChemicalTre
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("ChemicalTreatmentOrderByWithAggregationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class ChemicalTreatmentOrderByWithAggregationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   livestockUnitId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   treatmentDate?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   applicationMethod?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   volume_ml?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   witholdingPeriodDays?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentCountOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentCountOrderByAggregateInput, {
+    nullable: true,
   })
   _count?: ChemicalTreatmentCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentAvgOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentAvgOrderByAggregateInput, {
+    nullable: true,
   })
   _avg?: ChemicalTreatmentAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentMaxOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentMaxOrderByAggregateInput, {
+    nullable: true,
   })
   _max?: ChemicalTreatmentMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentMinOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentMinOrderByAggregateInput, {
+    nullable: true,
   })
   _min?: ChemicalTreatmentMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentSumOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentSumOrderByAggregateInput, {
+    nullable: true,
   })
   _sum?: ChemicalTreatmentSumOrderByAggregateInput | undefined;
 }

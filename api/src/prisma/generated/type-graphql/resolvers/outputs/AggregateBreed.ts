@@ -7,21 +7,21 @@ import { BreedMaxAggregate } from "../outputs/BreedMaxAggregate";
 import { BreedMinAggregate } from "../outputs/BreedMinAggregate";
 
 @TypeGraphQL.ObjectType("AggregateBreed", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class AggregateBreed {
-  @TypeGraphQL.Field(_type => BreedCountAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => BreedCountAggregate, {
+    nullable: true,
   })
   _count!: BreedCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => BreedMinAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => BreedMinAggregate, {
+    nullable: true,
   })
   _min!: BreedMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => BreedMaxAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => BreedMaxAggregate, {
+    nullable: true,
   })
   _max!: BreedMaxAggregate | null;
 }

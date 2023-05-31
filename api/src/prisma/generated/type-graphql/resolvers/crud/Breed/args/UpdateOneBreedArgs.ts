@@ -5,13 +5,13 @@ import { BreedWhereUniqueInput } from "../../../inputs/BreedWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateOneBreedArgs {
-  @TypeGraphQL.Field(_type => BreedUpdateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => BreedUpdateInput, {
+    nullable: false,
   })
   data!: BreedUpdateInput;
 
-  @TypeGraphQL.Field(_type => BreedWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => BreedWhereUniqueInput, {
+    nullable: false,
   })
   where!: BreedWhereUniqueInput;
 }

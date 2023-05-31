@@ -7,33 +7,43 @@ import { LoraDeviceScalarFieldEnum } from "../../../../enums/LoraDeviceScalarFie
 
 @TypeGraphQL.ArgsType()
 export class GroupByLoraDeviceArgs {
-  @TypeGraphQL.Field(_type => LoraDeviceWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LoraDeviceWhereInput, {
+    nullable: true,
   })
   where?: LoraDeviceWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [LoraDeviceOrderByWithAggregationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [LoraDeviceOrderByWithAggregationInput], {
+    nullable: true,
   })
   orderBy?: LoraDeviceOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LoraDeviceScalarFieldEnum], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [LoraDeviceScalarFieldEnum], {
+    nullable: false,
   })
-  by!: Array<"id" | "name" | "deviceId" | "deviceEui" | "appEui" | "appKey" | "manufacturer" | "partNumber" | "activationMethod">;
+  by!: Array<
+    | "id"
+    | "name"
+    | "deviceId"
+    | "deviceEui"
+    | "appEui"
+    | "appKey"
+    | "manufacturer"
+    | "partNumber"
+    | "activationMethod"
+  >;
 
-  @TypeGraphQL.Field(_type => LoraDeviceScalarWhereWithAggregatesInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LoraDeviceScalarWhereWithAggregatesInput, {
+    nullable: true,
   })
   having?: LoraDeviceScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

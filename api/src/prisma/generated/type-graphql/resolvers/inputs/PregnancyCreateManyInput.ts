@@ -5,51 +5,51 @@ import { DecimalJSScalar } from "../../scalars";
 import { PregnancyCreateparentIdInput } from "../inputs/PregnancyCreateparentIdInput";
 
 @TypeGraphQL.InputType("PregnancyCreateManyInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PregnancyCreateManyInput {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   id?: string | undefined;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   earliestPossibleConception?: Date | undefined;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   latestPossibleConception?: Date | undefined;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   conception?: Date | undefined;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   dueDate?: Date | undefined;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   earliestPossibleBirth?: Date | undefined;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   latestPossibleBirth?: Date | undefined;
 
-  @TypeGraphQL.Field(_type => PregnancyCreateparentIdInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyCreateparentIdInput, {
+    nullable: true,
   })
   parentId?: PregnancyCreateparentIdInput | undefined;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   pregnancySireId!: string;
 }

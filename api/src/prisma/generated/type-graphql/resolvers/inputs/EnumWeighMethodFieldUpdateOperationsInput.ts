@@ -5,11 +5,16 @@ import { DecimalJSScalar } from "../../scalars";
 import { WeighMethod } from "../../enums/WeighMethod";
 
 @TypeGraphQL.InputType("EnumWeighMethodFieldUpdateOperationsInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class EnumWeighMethodFieldUpdateOperationsInput {
-  @TypeGraphQL.Field(_type => WeighMethod, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => WeighMethod, {
+    nullable: true,
   })
-  set?: "SCALES" | "IMAGE_ANALYSIS" | "VISUAL_ESTIMATE" | "MOB_AVERAGE" | undefined;
+  set?:
+    | "SCALES"
+    | "IMAGE_ANALYSIS"
+    | "VISUAL_ESTIMATE"
+    | "MOB_AVERAGE"
+    | undefined;
 }

@@ -6,16 +6,22 @@ import { PaddockCreateWithoutLivestockUnitPositionInput } from "../inputs/Paddoc
 import { PaddockUpdateWithoutLivestockUnitPositionInput } from "../inputs/PaddockUpdateWithoutLivestockUnitPositionInput";
 
 @TypeGraphQL.InputType("PaddockUpsertWithoutLivestockUnitPositionInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PaddockUpsertWithoutLivestockUnitPositionInput {
-  @TypeGraphQL.Field(_type => PaddockUpdateWithoutLivestockUnitPositionInput, {
-    nullable: false
-  })
+  @TypeGraphQL.Field(
+    (_type) => PaddockUpdateWithoutLivestockUnitPositionInput,
+    {
+      nullable: false,
+    }
+  )
   update!: PaddockUpdateWithoutLivestockUnitPositionInput;
 
-  @TypeGraphQL.Field(_type => PaddockCreateWithoutLivestockUnitPositionInput, {
-    nullable: false
-  })
+  @TypeGraphQL.Field(
+    (_type) => PaddockCreateWithoutLivestockUnitPositionInput,
+    {
+      nullable: false,
+    }
+  )
   create!: PaddockCreateWithoutLivestockUnitPositionInput;
 }

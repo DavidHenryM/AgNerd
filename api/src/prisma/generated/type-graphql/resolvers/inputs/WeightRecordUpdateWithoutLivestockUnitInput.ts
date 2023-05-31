@@ -7,21 +7,21 @@ import { EnumWeighMethodFieldUpdateOperationsInput } from "../inputs/EnumWeighMe
 import { FloatFieldUpdateOperationsInput } from "../inputs/FloatFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("WeightRecordUpdateWithoutLivestockUnitInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class WeightRecordUpdateWithoutLivestockUnitInput {
-  @TypeGraphQL.Field(_type => FloatFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => FloatFieldUpdateOperationsInput, {
+    nullable: true,
   })
   weight?: FloatFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => DateTimeFieldUpdateOperationsInput, {
+    nullable: true,
   })
   dateMeasured?: DateTimeFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => EnumWeighMethodFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => EnumWeighMethodFieldUpdateOperationsInput, {
+    nullable: true,
   })
   method?: EnumWeighMethodFieldUpdateOperationsInput | undefined;
 }

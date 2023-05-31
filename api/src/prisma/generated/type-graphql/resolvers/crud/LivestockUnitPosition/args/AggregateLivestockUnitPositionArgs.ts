@@ -6,28 +6,31 @@ import { LivestockUnitPositionWhereUniqueInput } from "../../../inputs/Livestock
 
 @TypeGraphQL.ArgsType()
 export class AggregateLivestockUnitPositionArgs {
-  @TypeGraphQL.Field(_type => LivestockUnitPositionWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitPositionWhereInput, {
+    nullable: true,
   })
   where?: LivestockUnitPositionWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [LivestockUnitPositionOrderByWithRelationInput], {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => [LivestockUnitPositionOrderByWithRelationInput],
+    {
+      nullable: true,
+    }
+  )
   orderBy?: LivestockUnitPositionOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitPositionWhereUniqueInput, {
+    nullable: true,
   })
   cursor?: LivestockUnitPositionWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

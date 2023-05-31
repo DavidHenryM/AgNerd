@@ -5,11 +5,11 @@ import { DecimalJSScalar } from "../../scalars";
 import { Sex } from "../../enums/Sex";
 
 @TypeGraphQL.InputType("EnumSexFieldUpdateOperationsInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class EnumSexFieldUpdateOperationsInput {
-  @TypeGraphQL.Field(_type => Sex, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Sex, {
+    nullable: true,
   })
   set?: "MALE" | "FEMALE" | undefined;
 }

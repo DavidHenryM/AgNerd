@@ -9,51 +9,51 @@ import { PaddockMinAggregate } from "../outputs/PaddockMinAggregate";
 import { PaddockSumAggregate } from "../outputs/PaddockSumAggregate";
 
 @TypeGraphQL.ObjectType("PaddockGroupBy", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PaddockGroupBy {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   id!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   name!: string;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Float, {
+    nullable: false,
   })
   areaHa!: number;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   livestockUnitPositionId!: string;
 
-  @TypeGraphQL.Field(_type => PaddockCountAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockCountAggregate, {
+    nullable: true,
   })
   _count!: PaddockCountAggregate | null;
 
-  @TypeGraphQL.Field(_type => PaddockAvgAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockAvgAggregate, {
+    nullable: true,
   })
   _avg!: PaddockAvgAggregate | null;
 
-  @TypeGraphQL.Field(_type => PaddockSumAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockSumAggregate, {
+    nullable: true,
   })
   _sum!: PaddockSumAggregate | null;
 
-  @TypeGraphQL.Field(_type => PaddockMinAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockMinAggregate, {
+    nullable: true,
   })
   _min!: PaddockMinAggregate | null;
 
-  @TypeGraphQL.Field(_type => PaddockMaxAggregate, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockMaxAggregate, {
+    nullable: true,
   })
   _max!: PaddockMaxAggregate | null;
 }

@@ -9,31 +9,36 @@ import { LivestockUnitPositionUpdateOneRequiredWithoutPaddockNestedInput } from 
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("PaddockUpdateInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PaddockUpdateInput {
-  @TypeGraphQL.Field(_type => StringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => StringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   name?: StringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => GeoPointUpdateManyWithoutPaddockNestedInput, {
-    nullable: true
-  })
-  polygon?: GeoPointUpdateManyWithoutPaddockNestedInput | undefined;
-
-  @TypeGraphQL.Field(_type => FloatFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => FloatFieldUpdateOperationsInput, {
+    nullable: true,
   })
   areaHa?: FloatFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => GrazeUpdateManyWithoutPaddockNestedInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GeoPointUpdateManyWithoutPaddockNestedInput, {
+    nullable: true,
+  })
+  polygon?: GeoPointUpdateManyWithoutPaddockNestedInput | undefined;
+
+  @TypeGraphQL.Field((_type) => GrazeUpdateManyWithoutPaddockNestedInput, {
+    nullable: true,
   })
   graze?: GrazeUpdateManyWithoutPaddockNestedInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionUpdateOneRequiredWithoutPaddockNestedInput, {
-    nullable: true
-  })
-  livestockUnitPosition?: LivestockUnitPositionUpdateOneRequiredWithoutPaddockNestedInput | undefined;
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitPositionUpdateOneRequiredWithoutPaddockNestedInput,
+    {
+      nullable: true,
+    }
+  )
+  livestockUnitPosition?:
+    | LivestockUnitPositionUpdateOneRequiredWithoutPaddockNestedInput
+    | undefined;
 }

@@ -4,11 +4,11 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 
 @TypeGraphQL.InputType("MobCreategrazeIdsInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class MobCreategrazeIdsInput {
-  @TypeGraphQL.Field(_type => [String], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [String], {
+    nullable: false,
   })
   set!: string[];
 }

@@ -6,16 +6,16 @@ import { GeoPointCreateWithoutPaddockInput } from "../inputs/GeoPointCreateWitho
 import { GeoPointWhereUniqueInput } from "../inputs/GeoPointWhereUniqueInput";
 
 @TypeGraphQL.InputType("GeoPointCreateOrConnectWithoutPaddockInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GeoPointCreateOrConnectWithoutPaddockInput {
-  @TypeGraphQL.Field(_type => GeoPointWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GeoPointWhereUniqueInput, {
+    nullable: false,
   })
   where!: GeoPointWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => GeoPointCreateWithoutPaddockInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GeoPointCreateWithoutPaddockInput, {
+    nullable: false,
   })
   create!: GeoPointCreateWithoutPaddockInput;
 }

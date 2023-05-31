@@ -5,11 +5,11 @@ import { DecimalJSScalar } from "../../scalars";
 import { LoraActivationMethod } from "../../enums/LoraActivationMethod";
 
 @TypeGraphQL.InputType("EnumLoraActivationMethodFieldUpdateOperationsInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class EnumLoraActivationMethodFieldUpdateOperationsInput {
-  @TypeGraphQL.Field(_type => LoraActivationMethod, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LoraActivationMethod, {
+    nullable: true,
   })
   set?: "OTAA" | "ABP" | undefined;
 }

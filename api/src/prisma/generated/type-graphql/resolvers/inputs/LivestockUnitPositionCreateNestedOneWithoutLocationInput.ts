@@ -6,22 +6,33 @@ import { LivestockUnitPositionCreateOrConnectWithoutLocationInput } from "../inp
 import { LivestockUnitPositionCreateWithoutLocationInput } from "../inputs/LivestockUnitPositionCreateWithoutLocationInput";
 import { LivestockUnitPositionWhereUniqueInput } from "../inputs/LivestockUnitPositionWhereUniqueInput";
 
-@TypeGraphQL.InputType("LivestockUnitPositionCreateNestedOneWithoutLocationInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "LivestockUnitPositionCreateNestedOneWithoutLocationInput",
+  {
+    isAbstract: true,
+  }
+)
 export class LivestockUnitPositionCreateNestedOneWithoutLocationInput {
-  @TypeGraphQL.Field(_type => LivestockUnitPositionCreateWithoutLocationInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitPositionCreateWithoutLocationInput,
+    {
+      nullable: true,
+    }
+  )
   create?: LivestockUnitPositionCreateWithoutLocationInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionCreateOrConnectWithoutLocationInput, {
-    nullable: true
-  })
-  connectOrCreate?: LivestockUnitPositionCreateOrConnectWithoutLocationInput | undefined;
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitPositionCreateOrConnectWithoutLocationInput,
+    {
+      nullable: true,
+    }
+  )
+  connectOrCreate?:
+    | LivestockUnitPositionCreateOrConnectWithoutLocationInput
+    | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitPositionWhereUniqueInput, {
+    nullable: true,
   })
   connect?: LivestockUnitPositionWhereUniqueInput | undefined;
 }

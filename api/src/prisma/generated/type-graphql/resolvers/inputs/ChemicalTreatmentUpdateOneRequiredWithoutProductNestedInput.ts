@@ -8,32 +8,40 @@ import { ChemicalTreatmentUpdateWithoutProductInput } from "../inputs/ChemicalTr
 import { ChemicalTreatmentUpsertWithoutProductInput } from "../inputs/ChemicalTreatmentUpsertWithoutProductInput";
 import { ChemicalTreatmentWhereUniqueInput } from "../inputs/ChemicalTreatmentWhereUniqueInput";
 
-@TypeGraphQL.InputType("ChemicalTreatmentUpdateOneRequiredWithoutProductNestedInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "ChemicalTreatmentUpdateOneRequiredWithoutProductNestedInput",
+  {
+    isAbstract: true,
+  }
+)
 export class ChemicalTreatmentUpdateOneRequiredWithoutProductNestedInput {
-  @TypeGraphQL.Field(_type => ChemicalTreatmentCreateWithoutProductInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentCreateWithoutProductInput, {
+    nullable: true,
   })
   create?: ChemicalTreatmentCreateWithoutProductInput | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentCreateOrConnectWithoutProductInput, {
-    nullable: true
-  })
-  connectOrCreate?: ChemicalTreatmentCreateOrConnectWithoutProductInput | undefined;
+  @TypeGraphQL.Field(
+    (_type) => ChemicalTreatmentCreateOrConnectWithoutProductInput,
+    {
+      nullable: true,
+    }
+  )
+  connectOrCreate?:
+    | ChemicalTreatmentCreateOrConnectWithoutProductInput
+    | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentUpsertWithoutProductInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentUpsertWithoutProductInput, {
+    nullable: true,
   })
   upsert?: ChemicalTreatmentUpsertWithoutProductInput | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentWhereUniqueInput, {
+    nullable: true,
   })
   connect?: ChemicalTreatmentWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentUpdateWithoutProductInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentUpdateWithoutProductInput, {
+    nullable: true,
   })
   update?: ChemicalTreatmentUpdateWithoutProductInput | undefined;
 }

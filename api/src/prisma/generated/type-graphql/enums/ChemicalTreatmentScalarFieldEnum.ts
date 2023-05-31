@@ -6,7 +6,7 @@ export enum ChemicalTreatmentScalarFieldEnum {
   treatmentDate = "treatmentDate",
   applicationMethod = "applicationMethod",
   volume_ml = "volume_ml",
-  witholdingPeriodDays = "witholdingPeriodDays"
+  witholdingPeriodDays = "witholdingPeriodDays",
 }
 TypeGraphQL.registerEnumType(ChemicalTreatmentScalarFieldEnum, {
   name: "ChemicalTreatmentScalarFieldEnum",

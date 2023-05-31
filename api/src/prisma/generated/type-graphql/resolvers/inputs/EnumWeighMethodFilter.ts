@@ -6,26 +6,35 @@ import { NestedEnumWeighMethodFilter } from "../inputs/NestedEnumWeighMethodFilt
 import { WeighMethod } from "../../enums/WeighMethod";
 
 @TypeGraphQL.InputType("EnumWeighMethodFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class EnumWeighMethodFilter {
-  @TypeGraphQL.Field(_type => WeighMethod, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => WeighMethod, {
+    nullable: true,
   })
-  equals?: "SCALES" | "IMAGE_ANALYSIS" | "VISUAL_ESTIMATE" | "MOB_AVERAGE" | undefined;
+  equals?:
+    | "SCALES"
+    | "IMAGE_ANALYSIS"
+    | "VISUAL_ESTIMATE"
+    | "MOB_AVERAGE"
+    | undefined;
 
-  @TypeGraphQL.Field(_type => [WeighMethod], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [WeighMethod], {
+    nullable: true,
   })
-  in?: Array<"SCALES" | "IMAGE_ANALYSIS" | "VISUAL_ESTIMATE" | "MOB_AVERAGE"> | undefined;
+  in?:
+    | Array<"SCALES" | "IMAGE_ANALYSIS" | "VISUAL_ESTIMATE" | "MOB_AVERAGE">
+    | undefined;
 
-  @TypeGraphQL.Field(_type => [WeighMethod], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [WeighMethod], {
+    nullable: true,
   })
-  notIn?: Array<"SCALES" | "IMAGE_ANALYSIS" | "VISUAL_ESTIMATE" | "MOB_AVERAGE"> | undefined;
+  notIn?:
+    | Array<"SCALES" | "IMAGE_ANALYSIS" | "VISUAL_ESTIMATE" | "MOB_AVERAGE">
+    | undefined;
 
-  @TypeGraphQL.Field(_type => NestedEnumWeighMethodFilter, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NestedEnumWeighMethodFilter, {
+    nullable: true,
   })
   not?: NestedEnumWeighMethodFilter | undefined;
 }

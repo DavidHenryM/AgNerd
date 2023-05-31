@@ -6,16 +6,16 @@ import { ChemicalTreatmentCreateWithoutProductInput } from "../inputs/ChemicalTr
 import { ChemicalTreatmentUpdateWithoutProductInput } from "../inputs/ChemicalTreatmentUpdateWithoutProductInput";
 
 @TypeGraphQL.InputType("ChemicalTreatmentUpsertWithoutProductInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class ChemicalTreatmentUpsertWithoutProductInput {
-  @TypeGraphQL.Field(_type => ChemicalTreatmentUpdateWithoutProductInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentUpdateWithoutProductInput, {
+    nullable: false,
   })
   update!: ChemicalTreatmentUpdateWithoutProductInput;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentCreateWithoutProductInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentCreateWithoutProductInput, {
+    nullable: false,
   })
   create!: ChemicalTreatmentCreateWithoutProductInput;
 }

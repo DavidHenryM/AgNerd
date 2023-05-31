@@ -7,7 +7,7 @@ export enum ChemicalProductScalarFieldEnum {
   product_name = "product_name",
   serial_number = "serial_number",
   volume_ml = "volume_ml",
-  cost = "cost"
+  cost = "cost",
 }
 TypeGraphQL.registerEnumType(ChemicalProductScalarFieldEnum, {
   name: "ChemicalProductScalarFieldEnum",

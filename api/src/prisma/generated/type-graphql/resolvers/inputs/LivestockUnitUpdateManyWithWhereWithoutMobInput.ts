@@ -6,16 +6,16 @@ import { LivestockUnitScalarWhereInput } from "../inputs/LivestockUnitScalarWher
 import { LivestockUnitUpdateManyMutationInput } from "../inputs/LivestockUnitUpdateManyMutationInput";
 
 @TypeGraphQL.InputType("LivestockUnitUpdateManyWithWhereWithoutMobInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitUpdateManyWithWhereWithoutMobInput {
-  @TypeGraphQL.Field(_type => LivestockUnitScalarWhereInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitScalarWhereInput, {
+    nullable: false,
   })
   where!: LivestockUnitScalarWhereInput;
 
-  @TypeGraphQL.Field(_type => LivestockUnitUpdateManyMutationInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitUpdateManyMutationInput, {
+    nullable: false,
   })
   data!: LivestockUnitUpdateManyMutationInput;
 }

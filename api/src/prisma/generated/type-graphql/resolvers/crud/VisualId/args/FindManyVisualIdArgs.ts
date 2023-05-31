@@ -7,33 +7,33 @@ import { VisualIdScalarFieldEnum } from "../../../../enums/VisualIdScalarFieldEn
 
 @TypeGraphQL.ArgsType()
 export class FindManyVisualIdArgs {
-  @TypeGraphQL.Field(_type => VisualIdWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => VisualIdWhereInput, {
+    nullable: true,
   })
   where?: VisualIdWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [VisualIdOrderByWithRelationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [VisualIdOrderByWithRelationInput], {
+    nullable: true,
   })
   orderBy?: VisualIdOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => VisualIdWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => VisualIdWhereUniqueInput, {
+    nullable: true,
   })
   cursor?: VisualIdWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 
-  @TypeGraphQL.Field(_type => [VisualIdScalarFieldEnum], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [VisualIdScalarFieldEnum], {
+    nullable: true,
   })
   distinct?: Array<"id" | "livestockUnitId" | "colour" | "number"> | undefined;
 }

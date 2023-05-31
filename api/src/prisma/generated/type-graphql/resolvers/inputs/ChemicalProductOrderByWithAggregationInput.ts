@@ -10,66 +10,66 @@ import { ChemicalProductSumOrderByAggregateInput } from "../inputs/ChemicalProdu
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("ChemicalProductOrderByWithAggregationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class ChemicalProductOrderByWithAggregationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   chemicalTreatmentId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   manufacturer?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   product_name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   serial_number?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   volume_ml?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   cost?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalProductCountOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalProductCountOrderByAggregateInput, {
+    nullable: true,
   })
   _count?: ChemicalProductCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalProductAvgOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalProductAvgOrderByAggregateInput, {
+    nullable: true,
   })
   _avg?: ChemicalProductAvgOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalProductMaxOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalProductMaxOrderByAggregateInput, {
+    nullable: true,
   })
   _max?: ChemicalProductMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalProductMinOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalProductMinOrderByAggregateInput, {
+    nullable: true,
   })
   _min?: ChemicalProductMinOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => ChemicalProductSumOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => ChemicalProductSumOrderByAggregateInput, {
+    nullable: true,
   })
   _sum?: ChemicalProductSumOrderByAggregateInput | undefined;
 }

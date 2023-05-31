@@ -9,31 +9,31 @@ import { PaddockUpsertWithoutGrazeInput } from "../inputs/PaddockUpsertWithoutGr
 import { PaddockWhereUniqueInput } from "../inputs/PaddockWhereUniqueInput";
 
 @TypeGraphQL.InputType("PaddockUpdateOneRequiredWithoutGrazeNestedInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PaddockUpdateOneRequiredWithoutGrazeNestedInput {
-  @TypeGraphQL.Field(_type => PaddockCreateWithoutGrazeInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockCreateWithoutGrazeInput, {
+    nullable: true,
   })
   create?: PaddockCreateWithoutGrazeInput | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockCreateOrConnectWithoutGrazeInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockCreateOrConnectWithoutGrazeInput, {
+    nullable: true,
   })
   connectOrCreate?: PaddockCreateOrConnectWithoutGrazeInput | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockUpsertWithoutGrazeInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockUpsertWithoutGrazeInput, {
+    nullable: true,
   })
   upsert?: PaddockUpsertWithoutGrazeInput | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockWhereUniqueInput, {
+    nullable: true,
   })
   connect?: PaddockWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockUpdateWithoutGrazeInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockUpdateWithoutGrazeInput, {
+    nullable: true,
   })
   update?: PaddockUpdateWithoutGrazeInput | undefined;
 }

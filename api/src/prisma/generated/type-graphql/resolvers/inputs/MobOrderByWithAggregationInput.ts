@@ -8,41 +8,41 @@ import { MobMinOrderByAggregateInput } from "../inputs/MobMinOrderByAggregateInp
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("MobOrderByWithAggregationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class MobOrderByWithAggregationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   comment?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   grazeIds?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => MobCountOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => MobCountOrderByAggregateInput, {
+    nullable: true,
   })
   _count?: MobCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => MobMaxOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => MobMaxOrderByAggregateInput, {
+    nullable: true,
   })
   _max?: MobMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => MobMinOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => MobMinOrderByAggregateInput, {
+    nullable: true,
   })
   _min?: MobMinOrderByAggregateInput | undefined;
 }

@@ -5,17 +5,20 @@ import { DecimalJSScalar } from "../../scalars";
 import { ChemicalTreatmentScalarWhereInput } from "../inputs/ChemicalTreatmentScalarWhereInput";
 import { ChemicalTreatmentUpdateManyMutationInput } from "../inputs/ChemicalTreatmentUpdateManyMutationInput";
 
-@TypeGraphQL.InputType("ChemicalTreatmentUpdateManyWithWhereWithoutLiveStockUnitInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "ChemicalTreatmentUpdateManyWithWhereWithoutLiveStockUnitInput",
+  {
+    isAbstract: true,
+  }
+)
 export class ChemicalTreatmentUpdateManyWithWhereWithoutLiveStockUnitInput {
-  @TypeGraphQL.Field(_type => ChemicalTreatmentScalarWhereInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentScalarWhereInput, {
+    nullable: false,
   })
   where!: ChemicalTreatmentScalarWhereInput;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentUpdateManyMutationInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentUpdateManyMutationInput, {
+    nullable: false,
   })
   data!: ChemicalTreatmentUpdateManyMutationInput;
 }

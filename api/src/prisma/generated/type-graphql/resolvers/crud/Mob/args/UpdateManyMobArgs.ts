@@ -5,13 +5,13 @@ import { MobWhereInput } from "../../../inputs/MobWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyMobArgs {
-  @TypeGraphQL.Field(_type => MobUpdateManyMutationInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => MobUpdateManyMutationInput, {
+    nullable: false,
   })
   data!: MobUpdateManyMutationInput;
 
-  @TypeGraphQL.Field(_type => MobWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => MobWhereInput, {
+    nullable: true,
   })
   where?: MobWhereInput | undefined;
 }

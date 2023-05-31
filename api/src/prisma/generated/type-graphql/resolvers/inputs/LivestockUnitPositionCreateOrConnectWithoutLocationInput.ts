@@ -5,17 +5,23 @@ import { DecimalJSScalar } from "../../scalars";
 import { LivestockUnitPositionCreateWithoutLocationInput } from "../inputs/LivestockUnitPositionCreateWithoutLocationInput";
 import { LivestockUnitPositionWhereUniqueInput } from "../inputs/LivestockUnitPositionWhereUniqueInput";
 
-@TypeGraphQL.InputType("LivestockUnitPositionCreateOrConnectWithoutLocationInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "LivestockUnitPositionCreateOrConnectWithoutLocationInput",
+  {
+    isAbstract: true,
+  }
+)
 export class LivestockUnitPositionCreateOrConnectWithoutLocationInput {
-  @TypeGraphQL.Field(_type => LivestockUnitPositionWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => LivestockUnitPositionWhereUniqueInput, {
+    nullable: false,
   })
   where!: LivestockUnitPositionWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionCreateWithoutLocationInput, {
-    nullable: false
-  })
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitPositionCreateWithoutLocationInput,
+    {
+      nullable: false,
+    }
+  )
   create!: LivestockUnitPositionCreateWithoutLocationInput;
 }

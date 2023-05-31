@@ -7,21 +7,21 @@ import { PaddockCreateWithoutGrazeInput } from "../inputs/PaddockCreateWithoutGr
 import { PaddockWhereUniqueInput } from "../inputs/PaddockWhereUniqueInput";
 
 @TypeGraphQL.InputType("PaddockCreateNestedOneWithoutGrazeInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PaddockCreateNestedOneWithoutGrazeInput {
-  @TypeGraphQL.Field(_type => PaddockCreateWithoutGrazeInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockCreateWithoutGrazeInput, {
+    nullable: true,
   })
   create?: PaddockCreateWithoutGrazeInput | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockCreateOrConnectWithoutGrazeInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockCreateOrConnectWithoutGrazeInput, {
+    nullable: true,
   })
   connectOrCreate?: PaddockCreateOrConnectWithoutGrazeInput | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PaddockWhereUniqueInput, {
+    nullable: true,
   })
   connect?: PaddockWhereUniqueInput | undefined;
 }

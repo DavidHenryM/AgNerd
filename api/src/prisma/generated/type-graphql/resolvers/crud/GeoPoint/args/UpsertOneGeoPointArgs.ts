@@ -6,18 +6,18 @@ import { GeoPointWhereUniqueInput } from "../../../inputs/GeoPointWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class UpsertOneGeoPointArgs {
-  @TypeGraphQL.Field(_type => GeoPointWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GeoPointWhereUniqueInput, {
+    nullable: false,
   })
   where!: GeoPointWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => GeoPointCreateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GeoPointCreateInput, {
+    nullable: false,
   })
   create!: GeoPointCreateInput;
 
-  @TypeGraphQL.Field(_type => GeoPointUpdateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GeoPointUpdateInput, {
+    nullable: false,
   })
   update!: GeoPointUpdateInput;
 }

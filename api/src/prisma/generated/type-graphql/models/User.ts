@@ -4,16 +4,26 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../scalars";
 
 @TypeGraphQL.ObjectType("User", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class User {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   id!: string;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
-  name?: string | null;
+  firstName!: string;
+
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
+  })
+  preferredName?: string | null;
+
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
+  })
+  lastName!: string;
 }

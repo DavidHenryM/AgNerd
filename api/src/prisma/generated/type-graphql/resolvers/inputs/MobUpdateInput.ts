@@ -4,35 +4,29 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { GrazeUpdateManyWithoutMobNestedInput } from "../inputs/GrazeUpdateManyWithoutMobNestedInput";
 import { LivestockUnitUpdateManyWithoutMobNestedInput } from "../inputs/LivestockUnitUpdateManyWithoutMobNestedInput";
-import { MobUpdategrazeIdsInput } from "../inputs/MobUpdategrazeIdsInput";
 import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("MobUpdateInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class MobUpdateInput {
-  @TypeGraphQL.Field(_type => NullableStringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   name?: NullableStringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitUpdateManyWithoutMobNestedInput, {
-    nullable: true
-  })
-  members?: LivestockUnitUpdateManyWithoutMobNestedInput | undefined;
-
-  @TypeGraphQL.Field(_type => NullableStringFieldUpdateOperationsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => NullableStringFieldUpdateOperationsInput, {
+    nullable: true,
   })
   comment?: NullableStringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => MobUpdategrazeIdsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitUpdateManyWithoutMobNestedInput, {
+    nullable: true,
   })
-  grazeIds?: MobUpdategrazeIdsInput | undefined;
+  members?: LivestockUnitUpdateManyWithoutMobNestedInput | undefined;
 
-  @TypeGraphQL.Field(_type => GrazeUpdateManyWithoutMobNestedInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeUpdateManyWithoutMobNestedInput, {
+    nullable: true,
   })
   graze?: GrazeUpdateManyWithoutMobNestedInput | undefined;
 }

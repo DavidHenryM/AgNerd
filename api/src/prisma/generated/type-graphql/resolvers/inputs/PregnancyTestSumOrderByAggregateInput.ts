@@ -5,11 +5,11 @@ import { DecimalJSScalar } from "../../scalars";
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("PregnancyTestSumOrderByAggregateInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PregnancyTestSumOrderByAggregateInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   cost?: "asc" | "desc" | undefined;
 }

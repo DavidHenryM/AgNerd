@@ -4,11 +4,11 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 
 @TypeGraphQL.InputType("PregnancyCreateparentIdInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PregnancyCreateparentIdInput {
-  @TypeGraphQL.Field(_type => [String], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [String], {
+    nullable: false,
   })
   set!: string[];
 }

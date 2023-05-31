@@ -5,36 +5,36 @@ import { DecimalJSScalar } from "../../scalars";
 import { GrazeCreatemobIdsInput } from "../inputs/GrazeCreatemobIdsInput";
 
 @TypeGraphQL.InputType("GrazeCreateManyInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GrazeCreateManyInput {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   id?: string | undefined;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: false,
   })
   startDatetime!: Date;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: true,
   })
   endDateTime?: Date | undefined;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   paddockId!: string;
 
-  @TypeGraphQL.Field(_type => GrazeCreatemobIdsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GrazeCreatemobIdsInput, {
+    nullable: true,
   })
   mobIds?: GrazeCreatemobIdsInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Float, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Float, {
+    nullable: true,
   })
   dseDaysPerHectare?: number | undefined;
 }

@@ -13,7 +13,8 @@ export enum LivestockUnitScalarFieldEnum {
   mobId = "mobId",
   pregnancyId = "pregnancyId",
   drySheepEquivalent = "drySheepEquivalent",
-  purchasePrice = "purchasePrice"
+  purchasePrice = "purchasePrice",
+  purchaseDate = "purchaseDate",
 }
 TypeGraphQL.registerEnumType(LivestockUnitScalarFieldEnum, {
   name: "LivestockUnitScalarFieldEnum",

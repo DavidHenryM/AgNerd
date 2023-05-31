@@ -6,16 +6,16 @@ import { GrazeCreateWithoutMobInput } from "../inputs/GrazeCreateWithoutMobInput
 import { GrazeWhereUniqueInput } from "../inputs/GrazeWhereUniqueInput";
 
 @TypeGraphQL.InputType("GrazeCreateOrConnectWithoutMobInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GrazeCreateOrConnectWithoutMobInput {
-  @TypeGraphQL.Field(_type => GrazeWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GrazeWhereUniqueInput, {
+    nullable: false,
   })
   where!: GrazeWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => GrazeCreateWithoutMobInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GrazeCreateWithoutMobInput, {
+    nullable: false,
   })
   create!: GrazeCreateWithoutMobInput;
 }

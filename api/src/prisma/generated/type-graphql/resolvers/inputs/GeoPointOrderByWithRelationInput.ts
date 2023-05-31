@@ -7,41 +7,43 @@ import { PaddockOrderByWithRelationInput } from "../inputs/PaddockOrderByWithRel
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("GeoPointOrderByWithRelationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class GeoPointOrderByWithRelationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   latitude?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   longitude?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => PaddockOrderByWithRelationInput, {
-    nullable: true
-  })
-  paddock?: PaddockOrderByWithRelationInput | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   paddockId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitPositionOrderByWithRelationInput, {
-    nullable: true
-  })
-  livestockUnitPosition?: LivestockUnitPositionOrderByWithRelationInput | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   livestockUnitPositionId?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field((_type) => PaddockOrderByWithRelationInput, {
+    nullable: true,
+  })
+  paddock?: PaddockOrderByWithRelationInput | undefined;
+
+  @TypeGraphQL.Field((_type) => LivestockUnitPositionOrderByWithRelationInput, {
+    nullable: true,
+  })
+  livestockUnitPosition?:
+    | LivestockUnitPositionOrderByWithRelationInput
+    | undefined;
 }

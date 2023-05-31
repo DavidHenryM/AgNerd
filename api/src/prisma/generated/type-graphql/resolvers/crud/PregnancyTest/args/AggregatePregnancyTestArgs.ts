@@ -6,28 +6,28 @@ import { PregnancyTestWhereUniqueInput } from "../../../inputs/PregnancyTestWher
 
 @TypeGraphQL.ArgsType()
 export class AggregatePregnancyTestArgs {
-  @TypeGraphQL.Field(_type => PregnancyTestWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyTestWhereInput, {
+    nullable: true,
   })
   where?: PregnancyTestWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyTestOrderByWithRelationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyTestOrderByWithRelationInput], {
+    nullable: true,
   })
   orderBy?: PregnancyTestOrderByWithRelationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => PregnancyTestWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyTestWhereUniqueInput, {
+    nullable: true,
   })
   cursor?: PregnancyTestWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

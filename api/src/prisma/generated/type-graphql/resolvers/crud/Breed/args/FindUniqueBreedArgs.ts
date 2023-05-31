@@ -4,8 +4,8 @@ import { BreedWhereUniqueInput } from "../../../inputs/BreedWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class FindUniqueBreedArgs {
-  @TypeGraphQL.Field(_type => BreedWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => BreedWhereUniqueInput, {
+    nullable: false,
   })
   where!: BreedWhereUniqueInput;
 }

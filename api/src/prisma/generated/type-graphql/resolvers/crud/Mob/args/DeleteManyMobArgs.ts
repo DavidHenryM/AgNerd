@@ -4,8 +4,8 @@ import { MobWhereInput } from "../../../inputs/MobWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyMobArgs {
-  @TypeGraphQL.Field(_type => MobWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => MobWhereInput, {
+    nullable: true,
   })
   where?: MobWhereInput | undefined;
 }

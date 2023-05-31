@@ -4,16 +4,26 @@ import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 
 @TypeGraphQL.InputType("UserCreateManyInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class UserCreateManyInput {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   id?: string | undefined;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
-  name?: string | undefined;
+  firstName!: string;
+
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
+  })
+  preferredName?: string | undefined;
+
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
+  })
+  lastName!: string;
 }

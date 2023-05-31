@@ -5,13 +5,13 @@ import { GeoPointWhereInput } from "../../../inputs/GeoPointWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyGeoPointArgs {
-  @TypeGraphQL.Field(_type => GeoPointUpdateManyMutationInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => GeoPointUpdateManyMutationInput, {
+    nullable: false,
   })
   data!: GeoPointUpdateManyMutationInput;
 
-  @TypeGraphQL.Field(_type => GeoPointWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GeoPointWhereInput, {
+    nullable: true,
   })
   where?: GeoPointWhereInput | undefined;
 }

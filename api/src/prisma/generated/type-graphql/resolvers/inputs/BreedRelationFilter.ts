@@ -5,16 +5,16 @@ import { DecimalJSScalar } from "../../scalars";
 import { BreedWhereInput } from "../inputs/BreedWhereInput";
 
 @TypeGraphQL.InputType("BreedRelationFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class BreedRelationFilter {
-  @TypeGraphQL.Field(_type => BreedWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => BreedWhereInput, {
+    nullable: true,
   })
   is?: BreedWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => BreedWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => BreedWhereInput, {
+    nullable: true,
   })
   isNot?: BreedWhereInput | undefined;
 }

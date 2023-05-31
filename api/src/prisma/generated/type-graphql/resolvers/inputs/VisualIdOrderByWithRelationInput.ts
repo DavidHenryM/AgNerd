@@ -6,31 +6,31 @@ import { LivestockUnitOrderByWithRelationInput } from "../inputs/LivestockUnitOr
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("VisualIdOrderByWithRelationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class VisualIdOrderByWithRelationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitOrderByWithRelationInput, {
-    nullable: true
-  })
-  livestockUnit?: LivestockUnitOrderByWithRelationInput | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   livestockUnitId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   colour?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   number?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field((_type) => LivestockUnitOrderByWithRelationInput, {
+    nullable: true,
+  })
+  livestockUnit?: LivestockUnitOrderByWithRelationInput | undefined;
 }

@@ -6,16 +6,16 @@ import { BreedCreateWithoutMembersInput } from "../inputs/BreedCreateWithoutMemb
 import { BreedWhereUniqueInput } from "../inputs/BreedWhereUniqueInput";
 
 @TypeGraphQL.InputType("BreedCreateOrConnectWithoutMembersInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class BreedCreateOrConnectWithoutMembersInput {
-  @TypeGraphQL.Field(_type => BreedWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => BreedWhereUniqueInput, {
+    nullable: false,
   })
   where!: BreedWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => BreedCreateWithoutMembersInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => BreedCreateWithoutMembersInput, {
+    nullable: false,
   })
   create!: BreedCreateWithoutMembersInput;
 }

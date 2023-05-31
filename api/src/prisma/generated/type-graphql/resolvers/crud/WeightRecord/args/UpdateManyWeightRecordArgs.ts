@@ -5,13 +5,13 @@ import { WeightRecordWhereInput } from "../../../inputs/WeightRecordWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class UpdateManyWeightRecordArgs {
-  @TypeGraphQL.Field(_type => WeightRecordUpdateManyMutationInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => WeightRecordUpdateManyMutationInput, {
+    nullable: false,
   })
   data!: WeightRecordUpdateManyMutationInput;
 
-  @TypeGraphQL.Field(_type => WeightRecordWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => WeightRecordWhereInput, {
+    nullable: true,
   })
   where?: WeightRecordWhereInput | undefined;
 }

@@ -4,8 +4,8 @@ import { MobWhereUniqueInput } from "../../../inputs/MobWhereUniqueInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteOneMobArgs {
-  @TypeGraphQL.Field(_type => MobWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => MobWhereUniqueInput, {
+    nullable: false,
   })
   where!: MobWhereUniqueInput;
 }

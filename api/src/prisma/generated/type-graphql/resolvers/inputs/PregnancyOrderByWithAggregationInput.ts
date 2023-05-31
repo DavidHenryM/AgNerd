@@ -8,66 +8,66 @@ import { PregnancyMinOrderByAggregateInput } from "../inputs/PregnancyMinOrderBy
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("PregnancyOrderByWithAggregationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class PregnancyOrderByWithAggregationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   earliestPossibleConception?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   latestPossibleConception?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   conception?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   dueDate?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   earliestPossibleBirth?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   latestPossibleBirth?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   parentId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   pregnancySireId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => PregnancyCountOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyCountOrderByAggregateInput, {
+    nullable: true,
   })
   _count?: PregnancyCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => PregnancyMaxOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyMaxOrderByAggregateInput, {
+    nullable: true,
   })
   _max?: PregnancyMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => PregnancyMinOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyMinOrderByAggregateInput, {
+    nullable: true,
   })
   _min?: PregnancyMinOrderByAggregateInput | undefined;
 }

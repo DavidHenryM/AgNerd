@@ -4,8 +4,8 @@ import { GeoPointWhereInput } from "../../../inputs/GeoPointWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyGeoPointArgs {
-  @TypeGraphQL.Field(_type => GeoPointWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => GeoPointWhereInput, {
+    nullable: true,
   })
   where?: GeoPointWhereInput | undefined;
 }

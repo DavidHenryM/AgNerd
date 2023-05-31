@@ -5,26 +5,35 @@ import { DecimalJSScalar } from "../../scalars";
 import { VisualIdColour } from "../../enums/VisualIdColour";
 
 @TypeGraphQL.ObjectType("VisualIdMinAggregate", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class VisualIdMinAggregate {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   id!: string | null;
 
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
   livestockUnitId!: string | null;
 
-  @TypeGraphQL.Field(_type => VisualIdColour, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => VisualIdColour, {
+    nullable: true,
   })
-  colour!: "WHITE" | "ORANGE" | "LIGHT_GREEN" | "PURPLE" | "YELLOW" | "RED" | "SKY_BLUE" | "BLACK" | null;
+  colour!:
+    | "WHITE"
+    | "ORANGE"
+    | "LIGHT_GREEN"
+    | "PURPLE"
+    | "YELLOW"
+    | "RED"
+    | "SKY_BLUE"
+    | "BLACK"
+    | null;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
   })
-  number!: number | null;
+  number!: string | null;
 }

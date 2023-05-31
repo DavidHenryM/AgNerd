@@ -6,22 +6,31 @@ import { ChemicalTreatmentCreateWithoutLiveStockUnitInput } from "../inputs/Chem
 import { ChemicalTreatmentUpdateWithoutLiveStockUnitInput } from "../inputs/ChemicalTreatmentUpdateWithoutLiveStockUnitInput";
 import { ChemicalTreatmentWhereUniqueInput } from "../inputs/ChemicalTreatmentWhereUniqueInput";
 
-@TypeGraphQL.InputType("ChemicalTreatmentUpsertWithWhereUniqueWithoutLiveStockUnitInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "ChemicalTreatmentUpsertWithWhereUniqueWithoutLiveStockUnitInput",
+  {
+    isAbstract: true,
+  }
+)
 export class ChemicalTreatmentUpsertWithWhereUniqueWithoutLiveStockUnitInput {
-  @TypeGraphQL.Field(_type => ChemicalTreatmentWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => ChemicalTreatmentWhereUniqueInput, {
+    nullable: false,
   })
   where!: ChemicalTreatmentWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentUpdateWithoutLiveStockUnitInput, {
-    nullable: false
-  })
+  @TypeGraphQL.Field(
+    (_type) => ChemicalTreatmentUpdateWithoutLiveStockUnitInput,
+    {
+      nullable: false,
+    }
+  )
   update!: ChemicalTreatmentUpdateWithoutLiveStockUnitInput;
 
-  @TypeGraphQL.Field(_type => ChemicalTreatmentCreateWithoutLiveStockUnitInput, {
-    nullable: false
-  })
+  @TypeGraphQL.Field(
+    (_type) => ChemicalTreatmentCreateWithoutLiveStockUnitInput,
+    {
+      nullable: false,
+    }
+  )
   create!: ChemicalTreatmentCreateWithoutLiveStockUnitInput;
 }

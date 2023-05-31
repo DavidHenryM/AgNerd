@@ -6,16 +6,16 @@ import { GeoPoint } from "../models/GeoPoint";
 import { Paddock } from "../models/Paddock";
 
 @TypeGraphQL.ObjectType("LivestockUnitPosition", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitPosition {
-  @TypeGraphQL.Field(_type => String, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: false,
   })
   id!: string;
 
-  @TypeGraphQL.Field(_type => Date, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: false,
   })
   date!: Date;
 

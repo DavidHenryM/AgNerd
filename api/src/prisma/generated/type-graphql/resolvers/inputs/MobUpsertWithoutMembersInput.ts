@@ -6,16 +6,16 @@ import { MobCreateWithoutMembersInput } from "../inputs/MobCreateWithoutMembersI
 import { MobUpdateWithoutMembersInput } from "../inputs/MobUpdateWithoutMembersInput";
 
 @TypeGraphQL.InputType("MobUpsertWithoutMembersInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class MobUpsertWithoutMembersInput {
-  @TypeGraphQL.Field(_type => MobUpdateWithoutMembersInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => MobUpdateWithoutMembersInput, {
+    nullable: false,
   })
   update!: MobUpdateWithoutMembersInput;
 
-  @TypeGraphQL.Field(_type => MobCreateWithoutMembersInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => MobCreateWithoutMembersInput, {
+    nullable: false,
   })
   create!: MobCreateWithoutMembersInput;
 }

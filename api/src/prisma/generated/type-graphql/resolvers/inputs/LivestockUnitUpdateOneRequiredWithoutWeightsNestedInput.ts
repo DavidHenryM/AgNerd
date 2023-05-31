@@ -8,32 +8,38 @@ import { LivestockUnitUpdateWithoutWeightsInput } from "../inputs/LivestockUnitU
 import { LivestockUnitUpsertWithoutWeightsInput } from "../inputs/LivestockUnitUpsertWithoutWeightsInput";
 import { LivestockUnitWhereUniqueInput } from "../inputs/LivestockUnitWhereUniqueInput";
 
-@TypeGraphQL.InputType("LivestockUnitUpdateOneRequiredWithoutWeightsNestedInput", {
-  isAbstract: true
-})
+@TypeGraphQL.InputType(
+  "LivestockUnitUpdateOneRequiredWithoutWeightsNestedInput",
+  {
+    isAbstract: true,
+  }
+)
 export class LivestockUnitUpdateOneRequiredWithoutWeightsNestedInput {
-  @TypeGraphQL.Field(_type => LivestockUnitCreateWithoutWeightsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitCreateWithoutWeightsInput, {
+    nullable: true,
   })
   create?: LivestockUnitCreateWithoutWeightsInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitCreateOrConnectWithoutWeightsInput, {
-    nullable: true
-  })
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitCreateOrConnectWithoutWeightsInput,
+    {
+      nullable: true,
+    }
+  )
   connectOrCreate?: LivestockUnitCreateOrConnectWithoutWeightsInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitUpsertWithoutWeightsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitUpsertWithoutWeightsInput, {
+    nullable: true,
   })
   upsert?: LivestockUnitUpsertWithoutWeightsInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitWhereUniqueInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitWhereUniqueInput, {
+    nullable: true,
   })
   connect?: LivestockUnitWhereUniqueInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitUpdateWithoutWeightsInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitUpdateWithoutWeightsInput, {
+    nullable: true,
   })
   update?: LivestockUnitUpdateWithoutWeightsInput | undefined;
 }

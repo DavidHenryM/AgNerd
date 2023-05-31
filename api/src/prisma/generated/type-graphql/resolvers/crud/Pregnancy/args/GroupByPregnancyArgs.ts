@@ -7,33 +7,43 @@ import { PregnancyScalarFieldEnum } from "../../../../enums/PregnancyScalarField
 
 @TypeGraphQL.ArgsType()
 export class GroupByPregnancyArgs {
-  @TypeGraphQL.Field(_type => PregnancyWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyWhereInput, {
+    nullable: true,
   })
   where?: PregnancyWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyOrderByWithAggregationInput], {
-    nullable: true
+  @TypeGraphQL.Field((_type) => [PregnancyOrderByWithAggregationInput], {
+    nullable: true,
   })
   orderBy?: PregnancyOrderByWithAggregationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [PregnancyScalarFieldEnum], {
-    nullable: false
+  @TypeGraphQL.Field((_type) => [PregnancyScalarFieldEnum], {
+    nullable: false,
   })
-  by!: Array<"id" | "earliestPossibleConception" | "latestPossibleConception" | "conception" | "dueDate" | "earliestPossibleBirth" | "latestPossibleBirth" | "parentId" | "pregnancySireId">;
+  by!: Array<
+    | "id"
+    | "earliestPossibleConception"
+    | "latestPossibleConception"
+    | "conception"
+    | "dueDate"
+    | "earliestPossibleBirth"
+    | "latestPossibleBirth"
+    | "parentId"
+    | "pregnancySireId"
+  >;
 
-  @TypeGraphQL.Field(_type => PregnancyScalarWhereWithAggregatesInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => PregnancyScalarWhereWithAggregatesInput, {
+    nullable: true,
   })
   having?: PregnancyScalarWhereWithAggregatesInput | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   take?: number | undefined;
 
-  @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: true,
   })
   skip?: number | undefined;
 }

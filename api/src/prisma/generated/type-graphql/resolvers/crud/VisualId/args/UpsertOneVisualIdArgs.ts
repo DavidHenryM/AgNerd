@@ -6,18 +6,18 @@ import { VisualIdWhereUniqueInput } from "../../../inputs/VisualIdWhereUniqueInp
 
 @TypeGraphQL.ArgsType()
 export class UpsertOneVisualIdArgs {
-  @TypeGraphQL.Field(_type => VisualIdWhereUniqueInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => VisualIdWhereUniqueInput, {
+    nullable: false,
   })
   where!: VisualIdWhereUniqueInput;
 
-  @TypeGraphQL.Field(_type => VisualIdCreateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => VisualIdCreateInput, {
+    nullable: false,
   })
   create!: VisualIdCreateInput;
 
-  @TypeGraphQL.Field(_type => VisualIdUpdateInput, {
-    nullable: false
+  @TypeGraphQL.Field((_type) => VisualIdUpdateInput, {
+    nullable: false,
   })
   update!: VisualIdUpdateInput;
 }

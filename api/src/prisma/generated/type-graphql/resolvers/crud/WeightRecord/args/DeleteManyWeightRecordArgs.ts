@@ -4,8 +4,8 @@ import { WeightRecordWhereInput } from "../../../inputs/WeightRecordWhereInput";
 
 @TypeGraphQL.ArgsType()
 export class DeleteManyWeightRecordArgs {
-  @TypeGraphQL.Field(_type => WeightRecordWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => WeightRecordWhereInput, {
+    nullable: true,
   })
   where?: WeightRecordWhereInput | undefined;
 }

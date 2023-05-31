@@ -8,66 +8,66 @@ import { LoraDeviceMinOrderByAggregateInput } from "../inputs/LoraDeviceMinOrder
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("LoraDeviceOrderByWithAggregationInput", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LoraDeviceOrderByWithAggregationInput {
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   id?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   name?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   deviceId?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   deviceEui?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   appEui?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   appKey?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   manufacturer?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   partNumber?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
   })
   activationMethod?: "asc" | "desc" | undefined;
 
-  @TypeGraphQL.Field(_type => LoraDeviceCountOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LoraDeviceCountOrderByAggregateInput, {
+    nullable: true,
   })
   _count?: LoraDeviceCountOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => LoraDeviceMaxOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LoraDeviceMaxOrderByAggregateInput, {
+    nullable: true,
   })
   _max?: LoraDeviceMaxOrderByAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => LoraDeviceMinOrderByAggregateInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LoraDeviceMinOrderByAggregateInput, {
+    nullable: true,
   })
   _min?: LoraDeviceMinOrderByAggregateInput | undefined;
 }

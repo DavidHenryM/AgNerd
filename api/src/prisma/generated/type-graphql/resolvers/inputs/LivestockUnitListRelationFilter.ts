@@ -5,21 +5,21 @@ import { DecimalJSScalar } from "../../scalars";
 import { LivestockUnitWhereInput } from "../inputs/LivestockUnitWhereInput";
 
 @TypeGraphQL.InputType("LivestockUnitListRelationFilter", {
-  isAbstract: true
+  isAbstract: true,
 })
 export class LivestockUnitListRelationFilter {
-  @TypeGraphQL.Field(_type => LivestockUnitWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitWhereInput, {
+    nullable: true,
   })
   every?: LivestockUnitWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitWhereInput, {
+    nullable: true,
   })
   some?: LivestockUnitWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => LivestockUnitWhereInput, {
-    nullable: true
+  @TypeGraphQL.Field((_type) => LivestockUnitWhereInput, {
+    nullable: true,
   })
   none?: LivestockUnitWhereInput | undefined;
 }

@@ -7,7 +7,7 @@ export enum PregnancyTestScalarFieldEnum {
   resultDate = "resultDate",
   result = "result",
   pregnancyId = "pregnancyId",
-  cost = "cost"
+  cost = "cost",
 }
 TypeGraphQL.registerEnumType(PregnancyTestScalarFieldEnum, {
   name: "PregnancyTestScalarFieldEnum",
