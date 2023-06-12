@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 
 module.exports = {
-    experiments: {
+    experimental: {
         appDir: true,
-        topLevelAwait: true,
+        // topLevelAwait: true,
     }
 }
