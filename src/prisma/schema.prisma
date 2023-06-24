@@ -6,8 +6,8 @@ generator client {
 }
 
 generator typegraphql {
-  provider = "typegraphql-prisma"
-  output = "generated/"
+  provider            = "typegraphql-prisma"
+  output              = "generated/"
   formatGeneratedCode = "prettier"
 }
 
@@ -16,11 +16,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Farm {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  businessName   String?
+  lotSectionPlan String[]
+  abn            String?
+  acn            String?
+  pic            String?
+  // livestockUnits LivestockUnit[]
+  // paddocks       Paddock[]
+  users          User[]
+}
+
 model User {
   id            String  @id @default(auto()) @map("_id") @db.ObjectId
   firstName     String
   preferredName String?
   lastName      String
+  farm          Farm    @relation(fields: [farmId], references: [id])
+  farmId        String  @unique @db.ObjectId
 }
 
 model Graze {
@@ -52,35 +67,37 @@ model Mob {
 }
 
 model LivestockUnit {
-  id                     String                   @id @default(auto()) @map("_id") @db.ObjectId
-  nlisId                 String?  @unique
-  visualIdNumber         String?
-  visualIdColour         VisualIdColour?
-  class                  StockClass
-  breed                  Breed?
-  name                   String?
-  comment                String?
-  sex                    Sex
-  birthDate              DateTime
-  desexed                Boolean
-  sireId               String?              @db.ObjectId @unique
-  sire                   LivestockUnit?      @relation("SIRED", fields: [sireId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  sired                   LivestockUnit[]      @relation("SIRED")
-  damId               String?                  @db.ObjectId @unique
-  dam                    LivestockUnit?          @relation("BIRTHED", fields: [damId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  birthed LivestockUnit[]          @relation("BIRTHED")
-  mob                    Mob?                     @relation(fields: [mobRef], references: [id])
-  mobRef                 String?                  @db.ObjectId
-  pregnancy              Pregnancy[]              @relation(fields: [pregnancyId], references: [id])
-  pregnancyId            String[]                 @db.ObjectId
-  weights                WeightRecord[]
-  treatments             ChemicalTreatment[]
-  drySheepEquivalent     Int                      @default(1)
-  purchasePrice          Float?
-  purchaseDate           DateTime?
-  angusTechId            String?
-  active                 Boolean                  @default(true)
-  estimatedBreedingValue EstimatedBreedingValue[]
+  id                           String                         @id @default(auto()) @map("_id") @db.ObjectId
+  nlisId                       String?                        @unique
+  visualIdNumber               String?
+  visualIdColour               VisualIdColour?
+  class                        StockClass
+  breed                        Breed?
+  name                         String?
+  comment                      String?
+  sex                          Sex
+  birthDate                    DateTime
+  desexed                      Boolean
+  sireId                       String?                        @unique @db.ObjectId
+  sire                         LivestockUnit?                 @relation("SIRED", fields: [sireId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sired                        LivestockUnit[]                @relation("SIRED")
+  damId                        String?                        @unique @db.ObjectId
+  dam                          LivestockUnit?                 @relation("BIRTHED", fields: [damId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  birthed                      LivestockUnit[]                @relation("BIRTHED")
+  mob                          Mob?                           @relation(fields: [mobRef], references: [id])
+  mobRef                       String?                        @db.ObjectId
+  pregnancy                    Pregnancy[]                    @relation(fields: [pregnancyId], references: [id])
+  pregnancyId                  String[]                       @db.ObjectId
+  weights                      WeightRecord[]
+  treatments                   ChemicalTreatment[]
+  drySheepEquivalent           Int                            @default(1)
+  purchasePrice                Float?
+  purchaseDate                 DateTime?
+  angusTechId                  String?
+  active                       Boolean                        @default(true)
+  estimatedBreedingValueResult EstimatedBreedingValueResult[]
+  // farm                         Farm                           @relation(fields: [farmId], references: [id])
+  // farmId                       String                         @unique @db.ObjectId
 }
 
 model Pregnancy {
@@ -121,27 +138,28 @@ enum PregnancyTestType {
 }
 
 model ChemicalTreatment {
-  id                   String            @id @default(auto()) @map("_id") @db.ObjectId
-  liveStockUnit        LivestockUnit     @relation(fields: [livestockUnitId], references: [id])
-  livestockUnitId      String            @unique @db.ObjectId
-  treatmentDate        DateTime
-  applicationMethod    ApplicationMethod
-  product              ChemicalProduct   @relation(fields: [chemicalProductId], references: [id])
-  chemicalProductId    String            @unique @db.ObjectId
-  volumeMl             Int
-  witholdingPeriodDays Int               @default(0)
+  id                String            @id @default(auto()) @map("_id") @db.ObjectId
+  liveStockUnit     LivestockUnit     @relation(fields: [livestockUnitId], references: [id])
+  livestockUnitId   String            @unique @db.ObjectId
+  treatmentDate     DateTime
+  applicationMethod ApplicationMethod
+  product           ChemicalProduct   @relation(fields: [chemicalProductId], references: [id])
+  chemicalProductId String            @unique @db.ObjectId
+  volumeMl          Int
 }
 
 model ChemicalProduct {
-  id                String              @id @default(auto()) @map("_id") @db.ObjectId
-  manufacturer      String
-  productName       String
-  serialNumber      String?             @unique
-  volumeMl          Int?
-  cost              Float?
-  type              ChemicalType
-  activeIngredients ActiveIngredient[]
-  ChemicalTreatment ChemicalTreatment[]
+  id                   String               @id @default(auto()) @map("_id") @db.ObjectId
+  manufacturer         ChemicalManufacturer
+  productName          ChemicalProductName
+  serialNumber         String?              @unique
+  batchNumber          String?
+  volumeMl             Int?
+  cost                 Float?
+  type                 ChemicalType
+  witholdingPeriodDays Int                  @default(0)
+  activeIngredients    ActiveIngredient[]
+  ChemicalTreatment    ChemicalTreatment[]
 }
 
 model ActiveIngredient {
@@ -152,15 +170,72 @@ model ActiveIngredient {
   productId  String          @db.ObjectId
 }
 
-model EstimatedBreedingValue {
-  id              String        @id @default(auto()) @map("_id") @db.ObjectId
-  name            String
-  code            String
-  value           Float
-  percentile      Float
-  accuracy        Float
-  livestockUnit   LivestockUnit @relation(fields: [livestockUnitId], references: [id])
-  livestockUnitId String        @db.ObjectId
+model EstimatedBreedingValueDefinition {
+  id                           String                         @id @default(auto()) @map("_id") @db.ObjectId
+  name                         String
+  code                         String
+  category                     EbvCategory
+  description                  String
+  higherIsBetter               Boolean
+  units                        Units
+  measurement                  Measurement
+  angusTechFieldNameValue      String?
+  angusTechFieldNamePercentile String?
+  angusTechFieldNameAccuracy   String?
+  results                      EstimatedBreedingValueResult[]
+}
+
+model EstimatedBreedingValueResult {
+  id                                 String                           @id @default(auto()) @map("_id") @db.ObjectId
+  ebv                                EstimatedBreedingValueDefinition @relation(fields: [estimatedBreedingValueDefinitionId], references: [id])
+  estimatedBreedingValueDefinitionId String                           @db.ObjectId
+  value                              Float
+  percentile                         Float
+  accuracy                           Float
+  livestockUnit                      LivestockUnit                    @relation(fields: [livestockUnitId], references: [id])
+  livestockUnitId                    String                           @db.ObjectId
+}
+
+enum Units {
+  KILOGRAMS
+  DAYS
+  PERCENTAGE
+  CENTIMETRES
+  SQUARE_CENTIMETRES
+  MILLIMETRES
+  KILOGRAMS_PER_DAY
+  STRUCTURAL_SCORE
+  DOLLARS_AUSTRALIAN
+}
+
+enum Measurement {
+  CARCASE_WEIGHT
+  LIVE_WEIGHT
+  CIRCUMFERENCE
+  CALVING_UNASSISTED
+  GESTATION
+  DOCILE_CALVES
+  MUSCLE_AREA
+  FAT_DEPTH
+  SALEABLE_BEEF
+  INTRAMUSCULAR_FAT
+  FEED_CONSUMED
+  CLAW_SET
+  FOOT_ANGLE
+  LEG_ANGLE
+  JOINING_TO_CALVING
+  NET_PROFITABILITY
+}
+
+enum EbvCategory {
+  CALVING_EASE
+  GROWTH
+  FERTILITY
+  TEMPERAMENT
+  CARCASE
+  FEED_EFFICIENCY
+  STRUCTURAL
+  SELECTION_INDEX
 }
 
 enum Ingredient {
@@ -201,6 +276,8 @@ model Paddock {
   graze                   Graze[]
   livestockUnitPosition   LivestockUnitPosition? @relation(fields: [livestockUnitPositionId], references: [id])
   livestockUnitPositionId String?                @unique @db.ObjectId
+  // farm                    Farm                   @relation(fields: [farmId], references: [id])
+  // farmId                  String                 @unique @db.ObjectId
 }
 
 model LivestockUnitPosition {
@@ -239,6 +316,14 @@ model LoraDevice {
   manufacturer     String?
   partNumber       String?
   activationMethod LoraActivationMethod @default(OTAA)
+}
+
+enum ChemicalManufacturer {
+  BOEHRINGER_INGLEHEIM
+}
+
+enum ChemicalProductName {
+  AVOMEC_PLUS_POUR_ON
 }
 
 enum LoraActivationMethod {
