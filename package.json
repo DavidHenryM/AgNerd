@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "generate": "prisma generate --schema 'src/prisma/schema.prisma'",
+    "format": "prisma format --schema 'src/prisma/schema.prisma'",
     "studio": "prisma studio --schema 'src/prisma/schema.prisma'"
   },
   "dependencies": {
@@ -30,7 +31,7 @@
     "graphql-fields": "^2.0.3",
     "graphql-scalars": "^1.22.1",
     "graphql-tag": "^2.12.6",
-    "next": "13.4.4",
+    "next": "^13.4.7",
     "postcss": "8.4.24",
     "react": "18.2.0",
     "react-apollo-form": "^0.1.8",
