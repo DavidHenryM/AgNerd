@@ -2,7 +2,8 @@ import 'reflect-metadata';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { ApolloServer } from '@apollo/server';
 import { NextRequest } from 'next/server';
-import  {resolvers} from '../../prisma/generated'
+import  {resolvers} from '../../src/prisma/generated'
+import { customResolvers } from '@/prisma/customResolvers';
 import { buildSchemaSync } from 'type-graphql'
 import { PrismaClient } from "@prisma/client";
 import dotenv from 'dotenv';
@@ -14,7 +15,7 @@ const prisma = new PrismaClient();
 
 
 const schema = buildSchemaSync({
-    resolvers: [...resolvers],
+    resolvers: [...resolvers, ...customResolvers],
     validate: false,
   });
 

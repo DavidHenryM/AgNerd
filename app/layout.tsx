@@ -1,6 +1,7 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
-import { ApolloWrapper } from "./ApolloWrapper";
+import Home from './page'
+// import { ApolloWrapper } from "./ApolloWrapper";
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -18,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ApolloWrapper>{children}</ApolloWrapper>
+        <Home></Home>
       </body>
     </html>
   );

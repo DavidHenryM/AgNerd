@@ -1,6 +1,34 @@
 import Image from 'next/image'
+import { getClient } from "@/lib/client";
+import { QueryOptions, gql } from "@apollo/client";
+import { env } from 'process';
 
-export default function Home() {
+const query = gql`query Query($where: LivestockUnitWhereInput) {
+  aggregateLivestockUnit(where: $where) {
+    _count {
+      _all
+    }
+  }
+}`;
+
+const params = { 
+  "where": {
+    "active": {
+      "equals": true
+    }
+  }
+}
+
+const context = {"headers": {"Authorization": env.API_AUTH_TOKEN}};
+
+const queryOptions: QueryOptions = {query: query, variables: params, context: context};
+
+export default async function Home() {
+  const { data } = await getClient().query(queryOptions);
+  return <main>{data.aggregateLivestockUnit._count._all}</main>;
+}
+
+export function Page() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
