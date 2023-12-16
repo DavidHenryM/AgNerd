@@ -69,8 +69,11 @@ model Mob {
 model LivestockUnit {
   id                           String                         @id @default(auto()) @map("_id") @db.ObjectId
   nlisId                       String?                        @unique
-  visualIdNumber               String?
-  visualIdColour               VisualIdColour?
+  visualIdLine1                String?
+  visualIdLine2                String?
+  visualIdLine3                String?
+  visualIdBackgroundColour     VisualIdColour?
+  visualIdTextColour           VisualIdColour?
   class                        StockClass
   breed                        Breed?
   name                         String?

@@ -2,8 +2,8 @@ import 'reflect-metadata';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { ApolloServer } from '@apollo/server';
 import { NextRequest } from 'next/server';
-import  {resolvers} from '../../src/prisma/generated'
-import { customResolvers } from '@/prisma/customResolvers';
+import  {resolvers} from '../prisma/generated'
+import { customResolvers } from '../prisma/customResolvers';
 import { buildSchemaSync } from 'type-graphql'
 import { PrismaClient } from "@prisma/client";
 import dotenv from 'dotenv';
@@ -41,7 +41,7 @@ const server = new ApolloServer({
 
 const handler = startServerAndCreateNextHandler<NextRequest>(server, {
   context: async request => { 
-    if (! await authorize(request)){
+    if (! (await authorize(request))){
       throw new GraphQLError('Not authorized', {
         extensions: {
           code: 'UNAUTHORISED',

@@ -30,19 +30,88 @@ import {
   ModalFooter,
   ButtonGroup,
   IconButton, 
-  CircularProgress,
   ScaleFade,
   Table,
   Tr,
   Td,
   Tbody
 } from '@chakra-ui/react';
+import { 
+  Stack, 
+  Paper, 
+  Box, 
+  Button, 
+  Snackbar, 
+  Alert
+ } from '@mui/material';
 import { GiBull, GiCow, GiFemale, GiHelp, GiMale, GiCardboardBox } from 'react-icons/gi';
 import { IconType } from 'react-icons';
 import { HiScissors } from 'react-icons/hi';
 import { BeastView } from './beastView';
 import { useState } from 'react';
+import { LivestockUnit } from './prisma/generated';
+import { DateTime } from 'graphql-scalars/typings/typeDefs';
+import { VariableDefinitionNode, DocumentNode, Kind } from 'graphql';
+import React from 'react';
+import { getActiveLivestockQuery } from './lib/queries';
 
+
+function getAge(birth: typeof DateTime): {
+  ageYears: number,
+  ageMonths: number
+  yearSuffix: string,
+  monthSuffix: string
+}{
+  const yearMilliseconds = 3.154e+10
+  const monthMilliseconds = yearMilliseconds/12.0
+  console.log(yearMilliseconds)
+  const now = new Date()
+  const birthDate = Date.parse(birth)
+  const ageMilliseconds = now.valueOf() - birthDate.valueOf()
+  const ageMonthsTotal = Math.floor(ageMilliseconds / monthMilliseconds);
+  const ageYears = Math.floor(ageMonthsTotal / 12.0)
+  const ageMonthsRemainder = Math.floor(ageMonthsTotal % 12)
+  let monthSuffix = 'months'
+  if (ageMonthsRemainder == 1) {
+    monthSuffix = 'month'
+  }
+  let yearSuffix = 'years'
+  if (ageYears == 1) {
+    yearSuffix = 'year'
+  }
+  console.log(`Age ms: ${ageMilliseconds}, age months total: ${ageMonthsTotal}`)
+  return { 
+    ageYears: ageYears,
+    ageMonths: ageMonthsRemainder, 
+    yearSuffix: yearSuffix,
+    monthSuffix: monthSuffix
+  }
+}
+
+function TagGraphic(props: any){
+  return (
+    <>
+    <Box>
+      <svg xmlns="http://www.w3.org/2000/svg"  width="140" height="140">
+        <g transform="translate(5,5)">
+          <polygon points="5,130 1,128 0,125 0,70 1,65 4,60 35,45 38,43 40,40 40,10 42,4 45,2 50,1 55,2 58,4 60,10 60,40 62,43 65,45 95,60 99,65 100,70 100,125 99,128 95,130 " 
+            fill='yellow'/>
+          <circle cx="50" cy="10" r="5" fill="black" />
+          <g transform="translate(-15,15)">
+            <svg width="130" height="130">
+              <g>
+                <text x="50%" y='55px'  fontSize={16} text-anchor="middle">{props.textLine1}</text>     
+                <text x="50%" y='70px'  fontSize={16} text-anchor="middle" >{props.textLine2}</text>      
+                <text x="50%" y='105px' fontSize={42} text-anchor="middle">{props.textLine3}</text>      
+              </g>
+          </svg>
+</g>
+        </g>
+      </svg>
+    </Box>
+    </>
+  )
+}
 
 function WeightStats(props: any){
   if (props.weights.length > 0){
@@ -56,7 +125,6 @@ function WeightStats(props: any){
       }
       return (
         <Stat>
-          <StatLabel>Live weight</StatLabel>
           <StatNumber>{props.weights.at(-1).weight + "kg"}</StatNumber>
           <StatHelpText>
               <StatArrow type={statArrow} />
@@ -67,7 +135,6 @@ function WeightStats(props: any){
     } else {
       return (
         <Stat>
-          <StatLabel>Live weight</StatLabel>
           <StatNumber>{props.weights.at(-1).weight + "kg"}</StatNumber>
         </Stat>
         )
@@ -75,13 +142,13 @@ function WeightStats(props: any){
   } 
 }
 
-function sexTag(sex: string) {
+function SexTag(props: {sex: string}) {
   let SexIcon: IconType
   let sexColour: string
-  if(sex == 'FEMALE'){
+  if(props.sex == 'FEMALE'){
       SexIcon = GiFemale
       sexColour = 'pink'
-  } else if (sex == 'MALE') {
+  } else if (props.sex == 'MALE') {
       SexIcon = GiMale
       sexColour = 'blue'
   } else {
@@ -92,7 +159,7 @@ function sexTag(sex: string) {
       <Tag colorScheme={sexColour}>
           <HStack spacing='6px'>
               <SexIcon />
-              <TagLabel>{sex}</TagLabel>
+              <TagLabel>{props.sex}</TagLabel>
           </HStack>
       </Tag>
   )
@@ -122,20 +189,20 @@ function desexedTag(desexed: boolean, sex: string) {
   )
 }
 
-function stockClassTag(stockClass: String) {
-  if(stockClass == "CATTLE"){
+function StockClassTag(props: any) {
+  if(props.stockClass == "CATTLE"){
       return (   
         <Tag color='burlywood'>
           <HStack spacing='6px'>
             <GiCow />
-            <TagLabel>{stockClass}</TagLabel>
+            <TagLabel>{props.stockClass}</TagLabel>
           </HStack>
         </Tag> 
       )
   } else {
       return (
           <Tag>
-              <TagLabel>{stockClass}</TagLabel>
+              <TagLabel>{props.stockClass}</TagLabel>
           </Tag>
       )
   }
@@ -181,25 +248,28 @@ export async function FarmName(): Promise<String> {
 
 
 
-export function StockPreviewCard(props: any) {
+export function StockPreviewCard(props: {stock: LivestockUnit, index: Number, onClick: ()=>{}}) {
+  const age = getAge(props.stock.birthDate)
   let statChange
   let statArrow: "increase" | "decrease" | undefined
-  let weight = "?"
-  if (props.stock.weights.length > 0) {
-    weight = props.stock.weights[0].weight
-    if (props.stock.weights.length > 1){
-      statChange = props.stock.weights[0] - props.stock.weights[1]
-      if (statChange) {
-        if (statChange >= 0){
-          statArrow = "increase"
-        } else {
-          statArrow = "decrease"
+  let weightString = "?"
+  if (props.stock.weights) {
+    if (props.stock.weights.length > 0) {
+      weightString = `${props.stock.weights[0].weight}`
+      if (props.stock.weights.length > 1){
+        statChange = props.stock.weights[0].weight - props.stock.weights[1].weight
+        if (statChange) {
+          if (statChange >= 0){
+            statArrow = "increase"
+          } else {
+            statArrow = "decrease"
+          }
         }
       }
     }
   }
   return (  
-    <>
+    // <Paper>
       <Card key={"stockCard" + props.index}>
         <ButtonGroup spacing='2' justifyContent={'right'}>
           <IconButton
@@ -207,73 +277,46 @@ export function StockPreviewCard(props: any) {
             aria-label='Open details'
             icon={<GiCardboardBox />} />
         </ButtonGroup>
-        <CardHeader>
-          <Text>{props.stock.name}</Text>
-          <Text>{props.stock.angusTechId}</Text>
-        </CardHeader>
         <CardBody>
-          <Text>{props.stock.nlisId}</Text>
-          <WeightStats weights={props.stock.weights}/>
-          {/* <Stat>
-          <StatLabel>Live weight</StatLabel>
-          <StatNumber>{weight + 'kg'}</StatNumber>
-          <StatHelpText>
-              <StatArrow type={statArrow} />
-          {String(statChange) + "kg"}
-          </StatHelpText>
-        </Stat>  */}
-      </CardBody>
+          <Stack direction='row'>
+            <TagGraphic 
+              tagColour={props.stock.visualIdBackgroundColour} 
+              textColour={props.stock.visualIdTextColour} 
+              textLine1={props.stock.visualIdLine1} 
+              textLine2={props.stock.visualIdLine2} 
+              textLine3={props.stock.visualIdLine3}
+            />
+              <Stack direction='column'>
+                <Text>{props.stock.name}</Text>
+                <Text>{props.stock.angusTechId}</Text>
+                <Text>{props.stock.nlisId}</Text>
+                <Text>{`${age.ageYears} ${age.yearSuffix} ${age.ageMonths} ${age.monthSuffix}`}</Text>
+                <WeightStats weights={props.stock.weights}/>
+              </Stack>
+          </Stack>
+        </CardBody>
       <CardFooter>
         <HStack>
-          {stockClassTag(props.stock.class)}
-          {sexTag(props.stock.sex)}
+          <StockClassTag stockClass={props.stock.class}/>
+          <SexTag sex={props.stock.sex}/>
           {desexedTag(props.stock.desexed, props.stock.sex)}
         </HStack>
-        </CardFooter>
+      </CardFooter>
       </Card>
-    </>
   )
 }
 
-export function ActiveLivestock() {
-  const query = gql`
-  query LivestockUnits($where: LivestockUnitWhereInput, $orderBy: [WeightRecordOrderByWithRelationInput!]) {
-    livestockUnits(where: $where) {
-      id
-      name
-      class
-      sex
-      visualIdNumber
-      visualIdColour
-      nlisId
-      birthDate
-      angusTechId
-      active
-      weights(orderBy: $orderBy) {
-        weight
-        dateMeasured
-        method
-      }
-    }
-  }`
-  const variables = {
-    "where": {
-      "active": {
-        "equals": true
-      }
-    },
-    "orderBy": [
-      {
-        "dateMeasured": "desc"
-      }
-    ]
-  }
+
+
+
+export function ActiveLivestock(props: any) {
+  const {query, variables} = getActiveLivestockQuery()
   const { loading, error, data } = useQuery(query, {variables})
-  const { isOpen, onToggle, getDisclosureProps } = useDisclosure()
-  var [stockFocus, setStockFocus] = useState(null)
+  let [stockFocus, setStockFocus] = useState(null)
 
   if (loading) {
-    return <CircularProgress isIndeterminate/>
+    // return <CircularProgress/>
+    return ('Loading')
   } else if(error) {
     console.log(error)
     return (
@@ -290,7 +333,7 @@ export function ActiveLivestock() {
               function(stock: any, index: number){
                 return (
                   <WrapItem key={index}>
-                    <StockPreviewCard stock={stock} index={index} onClick={() => setStockFocus(stock)}/>
+                    <StockPreviewCard stock={stock} index={index} onClick={async () => setStockFocus(stock)}/>
                   </WrapItem>
                 )
               }
@@ -300,7 +343,9 @@ export function ActiveLivestock() {
       )
     } else {
       return (
-        <BeastView stock={stockFocus} close={() => setStockFocus(null)}/>
+        <BeastView 
+          stock={stockFocus}
+          close={() => setStockFocus(null)} />
       )
     }
   }

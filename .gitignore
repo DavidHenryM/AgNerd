@@ -36,5 +36,9 @@ next-env.d.ts
 
 
 #prisma
-/src/prisma/generated/**
+app/prisma/generated/**
 .env
+local.env
+app/admin/data-tables.tsx
+app/admin/nft-marketplace.tsx
+public/tag.svg
