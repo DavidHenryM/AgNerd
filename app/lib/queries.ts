@@ -8,6 +8,7 @@ export function getActiveLivestockQuery(): {query: DocumentNode, variables: any}
         name
         class
         sex
+        desexed
         visualIdLine1
         visualIdLine2
         visualIdLine3

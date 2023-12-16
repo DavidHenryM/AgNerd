@@ -3,6 +3,7 @@ import {getClient} from './lib/apolloClient';
 import {useQuery} from "@apollo/experimental-nextjs-app-support/ssr"
 import { gql } from '@apollo/client';
 import { 
+  Box,
   Card, 
   CardBody, 
   CardHeader,
@@ -34,17 +35,16 @@ import {
   Table,
   Tr,
   Td,
-  Tbody
+  Tbody,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel,
+  VStack,
+  Button
 } from '@chakra-ui/react';
-import { 
-  Stack, 
-  Paper, 
-  Box, 
-  Button, 
-  Snackbar, 
-  Alert
- } from '@mui/material';
-import { GiBull, GiCow, GiFemale, GiHelp, GiMale, GiCardboardBox } from 'react-icons/gi';
+import { GiBull, GiCow, GiFemale, GiHelp, GiMale, GiCardboardBox, GiCorkedTube, GiIceCube, GiMedicines, GiReceiveMoney, GiWeight, GiScissors, GiGloop, GiSyringe } from 'react-icons/gi';
 import { IconType } from 'react-icons';
 import { HiScissors } from 'react-icons/hi';
 import { BeastView } from './beastView';
@@ -56,7 +56,7 @@ import React from 'react';
 import { getActiveLivestockQuery } from './lib/queries';
 
 
-function getAge(birth: typeof DateTime): {
+function getAge(birth: any): {
   ageYears: number,
   ageMonths: number
   yearSuffix: string,
@@ -90,7 +90,6 @@ function getAge(birth: typeof DateTime): {
 
 function TagGraphic(props: any){
   return (
-    <>
     <Box>
       <svg xmlns="http://www.w3.org/2000/svg"  width="140" height="140">
         <g transform="translate(5,5)">
@@ -102,14 +101,13 @@ function TagGraphic(props: any){
               <g>
                 <text x="50%" y='55px'  fontSize={16} text-anchor="middle">{props.textLine1}</text>     
                 <text x="50%" y='70px'  fontSize={16} text-anchor="middle" >{props.textLine2}</text>      
-                <text x="50%" y='105px' fontSize={42} text-anchor="middle">{props.textLine3}</text>      
+                <text x="50%" y='105px' fontSize={42} fontWeight="bold" text-anchor="middle">{props.textLine3}</text>      
               </g>
-          </svg>
-</g>
+            </svg>
+          </g>
         </g>
       </svg>
     </Box>
-    </>
   )
 }
 
@@ -165,18 +163,19 @@ function SexTag(props: {sex: string}) {
   )
 }
 
-function desexedTag(desexed: boolean, sex: string) {
+function DesexedTag(props: {desexed: boolean, sex: string}) {
+  console.log(`Desex status: ${props.desexed}`)
   let DesexedIcon: IconType
   let desexedText: String
-  if(desexed){
+  if(props.desexed){
       DesexedIcon = HiScissors
       desexedText = "DESEXED"
   } else {
-      if (sex == 'MALE'){
+      if (props.sex == 'MALE'){
           DesexedIcon = GiBull
           desexedText = "INTACT"
       } else {
-          return
+          return (<></>)
       }
   }
   return (
@@ -238,17 +237,43 @@ export async function FarmName(): Promise<String> {
       name
     }
   }` 
-  const { data } = useQuery(query)
-
-  // const { data } = await getClient().query({ query: query });
-  
+  const { data } = useQuery(query)  
   return data.findFirstFarm.name
-    
 }
 
+function DesexButton(props: any) {
+  if (!props.desexed && props.sex == "MALE") {
+    return (
+      <Button onClick={() => {}}  style={{width:70, height:90}}>
+        <VStack>
+          <GiScissors style={{width:50, height:50}}/>  
+          <Text>Desex</Text>
+        </VStack>
+      </Button>
+    )
+  } else {
+    return (<></>)
+  }
+}
 
+function AIButton(props: any) {
+  if (props.sex == "FEMALE") {
+    return (
+      <Button onClick={() => {}}  style={{width:70, height:90}}>
+        <VStack>
+          <GiGloop style={{width:50, height:50}}/>
+          <Text>A.I.</Text>
+        </VStack>
+      </Button>
+    )
+  } else {
+    return (<></>)
+  }
+}
 
 export function StockPreviewCard(props: {stock: LivestockUnit, index: Number, onClick: ()=>{}}) {
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  console.log(props.stock)
   const age = getAge(props.stock.birthDate)
   let statChange
   let statArrow: "increase" | "decrease" | undefined
@@ -269,40 +294,99 @@ export function StockPreviewCard(props: {stock: LivestockUnit, index: Number, on
     }
   }
   return (  
-    // <Paper>
-      <Card key={"stockCard" + props.index}>
-        <ButtonGroup spacing='2' justifyContent={'right'}>
-          <IconButton
-            onClick={props.onClick}
-            aria-label='Open details'
-            icon={<GiCardboardBox />} />
-        </ButtonGroup>
-        <CardBody>
-          <Stack direction='row'>
-            <TagGraphic 
-              tagColour={props.stock.visualIdBackgroundColour} 
-              textColour={props.stock.visualIdTextColour} 
-              textLine1={props.stock.visualIdLine1} 
-              textLine2={props.stock.visualIdLine2} 
-              textLine3={props.stock.visualIdLine3}
-            />
-              <Stack direction='column'>
-                <Text>{props.stock.name}</Text>
-                <Text>{props.stock.angusTechId}</Text>
-                <Text>{props.stock.nlisId}</Text>
-                <Text>{`${age.ageYears} ${age.yearSuffix} ${age.ageMonths} ${age.monthSuffix}`}</Text>
-                <WeightStats weights={props.stock.weights}/>
-              </Stack>
-          </Stack>
-        </CardBody>
-      <CardFooter>
+    <Card key={"stockCard" + props.index}>
+      <ButtonGroup spacing='2' justifyContent={'right'}>
+        <IconButton
+          onClick={props.onClick}
+          aria-label='Open details'
+          icon={<GiCardboardBox />} />
+      </ButtonGroup>
+      <CardBody>
         <HStack>
-          <StockClassTag stockClass={props.stock.class}/>
-          <SexTag sex={props.stock.sex}/>
-          {desexedTag(props.stock.desexed, props.stock.sex)}
+          <TagGraphic 
+            tagColour={props.stock.visualIdBackgroundColour} 
+            textColour={props.stock.visualIdTextColour} 
+            textLine1={props.stock.visualIdLine1} 
+            textLine2={props.stock.visualIdLine2} 
+            textLine3={props.stock.visualIdLine3}
+          />
+            <VStack>
+              <Text fontSize='2xl'>{props.stock.name}</Text>
+              <Text>{props.stock.angusTechId}</Text>
+              <Text>{props.stock.nlisId}</Text>
+              <Text>{`${age.ageYears} ${age.yearSuffix} ${age.ageMonths} ${age.monthSuffix}`}</Text>
+              <WeightStats weights={props.stock.weights}/>
+            </VStack>
         </HStack>
+      </CardBody>
+      <CardFooter>
+        <VStack>
+          <HStack>
+            <StockClassTag stockClass={props.stock.class}/>
+            <SexTag sex={props.stock.sex}/>
+            <DesexedTag desexed={props.stock.desexed} sex={props.stock.sex}/>
+          </HStack>
+          <Accordion allowMultiple={false} allowToggle={true}>
+            <AccordionItem key={"opsAccordian" + props.index}>
+              <h2>
+                <AccordionButton >
+                  <Box as="span" flex='1' textAlign='left'>
+                    Operations
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <ButtonGroup spacing='2' justifyContent={'right'}>
+                  <Button onClick={() => {}}  style={{width:70, height:90}}>
+                    <VStack>
+                      <GiSyringe style={{width:50, height:50}}/>  
+                      <Text>Treat</Text>
+                    </VStack>
+                  </Button>
+                  <DesexButton desexed={props.stock.desexed} sex={props.stock.sex}/>
+                  <AIButton sex={props.stock.sex}/>
+                  {/* <Button onClick={() => {}}  style={{width:70, height:90}}>
+                    <VStack>
+                      <GiReceiveMoney  style={{width:50, height:50}}/>
+                      <Text>Sell</Text>
+                    </VStack>
+                  </Button>
+                  <Button onClick={() => {}}  style={{width:70, height:90}}>
+                    <VStack>
+                      <GiCorkedTube style={{width:50, height:50}}/>
+                      <Text>Sample</Text>
+                    </VStack>
+                  </Button> */}
+
+                  <Button onClick={() => {}}  style={{width:70, height:90}}>
+                    <VStack>
+                      <GiWeight style={{width:50, height:50}}/>
+                      <Text>Weigh</Text>
+                    </VStack>
+                  </Button>
+                </ButtonGroup>
+              </AccordionPanel>
+            </AccordionItem>
+            <AccordionItem key={"adminAccordian" + props.index}>
+              <h2>
+                <AccordionButton>
+                  <Box as="span" flex='1' textAlign='left'>
+                    Admin
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <Button onClick={() => {setConfirmOpen(true)}}>
+                  Deactivate
+                </Button>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+        </VStack>
       </CardFooter>
-      </Card>
+    </Card>
   )
 }
 
