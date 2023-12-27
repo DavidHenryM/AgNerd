@@ -1,7 +1,7 @@
 "use client"
 import {getClient} from './lib/apolloClient';
 import {useQuery} from "@apollo/experimental-nextjs-app-support/ssr"
-import { gql } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { 
   Box,
   Card, 
@@ -42,18 +42,41 @@ import {
   AccordionIcon,
   AccordionPanel,
   VStack,
-  Button
+  Button,
+  Colors,
+  Divider,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerHeader,
+  DrawerBody,
+  DrawerFooter,
+  DrawerCloseButton,
+  Input,
+  NumberInput,
+  RadioGroup,
+  Radio,
+  Checkbox,
+  AlertTitle,
+  Alert,
+  AlertIcon,
+  AlertDescription,
+  CircularProgress,
+  useToast,
+  Center
 } from '@chakra-ui/react';
-import { GiBull, GiCow, GiFemale, GiHelp, GiMale, GiCardboardBox, GiCorkedTube, GiIceCube, GiMedicines, GiReceiveMoney, GiWeight, GiScissors, GiGloop, GiSyringe } from 'react-icons/gi';
+import { GiBull, GiCow, GiFemale, GiHelp, GiMale, GiCardboardBox, GiCorkedTube, GiIceCube, GiMedicines, GiReceiveMoney, GiWeight, GiScissors, GiEmbryo, GiSyringe } from 'react-icons/gi';
 import { IconType } from 'react-icons';
-import { HiScissors } from 'react-icons/hi';
+import { HiFilter, HiSwitchVertical, HiPlus, HiScissors } from 'react-icons/hi';
 import { BeastView } from './beastView';
-import { useState } from 'react';
+import { ChangeEventHandler, ReactNode, useState } from 'react';
 import { LivestockUnit } from './prisma/generated';
 import { DateTime } from 'graphql-scalars/typings/typeDefs';
 import { VariableDefinitionNode, DocumentNode, Kind } from 'graphql';
 import React from 'react';
 import { getActiveLivestockQuery } from './lib/queries';
+import { VisualIdColour } from '@prisma/client';
+import { createLivestockUnitMutation } from './lib/mutations';
 
 
 function getAge(birth: any): {
@@ -94,7 +117,7 @@ function TagGraphic(props: any){
       <svg xmlns="http://www.w3.org/2000/svg"  width="140" height="140">
         <g transform="translate(5,5)">
           <polygon points="5,130 1,128 0,125 0,70 1,65 4,60 35,45 38,43 40,40 40,10 42,4 45,2 50,1 55,2 58,4 60,10 60,40 62,43 65,45 95,60 99,65 100,70 100,125 99,128 95,130 " 
-            fill='yellow'/>
+            fill={props.tagColour}/>
           <circle cx="50" cy="10" r="5" fill="black" />
           <g transform="translate(-15,15)">
             <svg width="130" height="130">
@@ -256,13 +279,13 @@ function DesexButton(props: any) {
   }
 }
 
-function AIButton(props: any) {
+function PregButton(props: any) {
   if (props.sex == "FEMALE") {
     return (
       <Button onClick={() => {}}  style={{width:70, height:90}}>
         <VStack>
-          <GiGloop style={{width:50, height:50}}/>
-          <Text>A.I.</Text>
+          <GiEmbryo style={{width:50, height:50}}/>
+          <Text>Preg</Text>
         </VStack>
       </Button>
     )
@@ -304,7 +327,7 @@ export function StockPreviewCard(props: {stock: LivestockUnit, index: Number, on
       <CardBody>
         <HStack>
           <TagGraphic 
-            tagColour={props.stock.visualIdBackgroundColour} 
+            tagColour={parseColour(props.stock.visualIdBackgroundColour)} 
             textColour={props.stock.visualIdTextColour} 
             textLine1={props.stock.visualIdLine1} 
             textLine2={props.stock.visualIdLine2} 
@@ -345,7 +368,7 @@ export function StockPreviewCard(props: {stock: LivestockUnit, index: Number, on
                     </VStack>
                   </Button>
                   <DesexButton desexed={props.stock.desexed} sex={props.stock.sex}/>
-                  <AIButton sex={props.stock.sex}/>
+                  <PregButton sex={props.stock.sex}/>
                   {/* <Button onClick={() => {}}  style={{width:70, height:90}}>
                     <VStack>
                       <GiReceiveMoney  style={{width:50, height:50}}/>
@@ -390,17 +413,291 @@ export function StockPreviewCard(props: {stock: LivestockUnit, index: Number, on
   )
 }
 
+function SavingData(props: any) {
+  const [save, { loading, error, data }] =  useMutation(props.mutation, {variables: props.variables})
+  if (data) {
+    return (
+      <Alert
+        status='success'
+        variant='subtle'
+        flexDirection='column'
+        alignItems='center'
+        justifyContent='center'
+        textAlign='center'
+        height='200px'
+      >
+        <AlertIcon boxSize='40px' mr={0} />
+        <AlertTitle mt={4} mb={1} fontSize='lg'>New beast added</AlertTitle>
+        <AlertDescription maxWidth='sm'>
+          Thanks for submitting your application. Our team will get back to you soon.
+        </AlertDescription>
+      </Alert>
+    )
+  } else if (loading) {
+    return (
+      <Alert
+        status='loading'
+        variant='subtle'
+        flexDirection='column'
+        alignItems='center'
+        justifyContent='center'
+        textAlign='center'
+        height='200px'
+      >
+        <AlertIcon boxSize='40px' mr={0} />
+        <AlertTitle mt={4} mb={1} fontSize='lg'>Saving</AlertTitle>
+        <AlertDescription maxWidth='sm'>
+          <CircularProgress/>
+        </AlertDescription>
+      </Alert>
+    )
+  } else if (error) {
+    return (
+      <Alert
+        status='error'
+        variant='subtle'
+        flexDirection='column'
+        alignItems='center'
+        justifyContent='center'
+        textAlign='center'
+        height='200px'
+      >
+        <AlertIcon boxSize='40px' mr={0} />
+        <AlertTitle mt={4} mb={1} fontSize='lg'>New beast NOT added</AlertTitle>
+        <AlertDescription maxWidth='sm'>
+          Thanks for submitting your application. Our team will get back to you soon.
+        </AlertDescription>
+      </Alert>
+    )
+  }
+  
+}
+
+function ControlBar(props: any) {
+  const createNew = useDisclosure()
+  const filter = useDisclosure()
+  const sort = useDisclosure()
+  const [name, setName] = useState('')
+  const [angusId, setAngusId] = useState('')
+  const [row1, setRow1] = useState('')
+  const [row2, setRow2] = useState('')
+  const [row3, setRow3] = useState('')
+  const [nlis, setNlis] = useState('')
+  const [birthDate, setBirthDate] = useState()
+  const [sex, setSex] = useState('FEMALE')
+  const [desexed, setDesexed] = useState(false)
+  const [visualIdBackgroundColour, setVisualIdBackgroundColour] = useState('YELLOW')
+  const [visualIdTextColour, setvisualIdTextColour] = useState('BLACK')
+  const mutation = gql`
+    mutation Mutation($data: LivestockUnitCreateInput!) {
+      createOneLivestockUnit(data: $data) {
+        name
+        angusTechId
+        nlisId
+      }
+    }`
+  const variables = {
+    "data": {
+      "active": true,
+      "birthDate": birthDate,
+      "angusTechId": angusId,
+      "class": "CATTLE",
+      "desexed": desexed,
+      "sex": sex,
+      "visualIdLine1": row1,
+      "visualIdLine2": row2,
+      "visualIdLine3": row3,
+      "visualIdTextColour": visualIdTextColour,
+      "visualIdBackgroundColour": visualIdBackgroundColour,
+      "nlisId": nlis,
+      "name": name,
+      }
+  }
+  const [addBeast, { loading, error, data }] =  useMutation(mutation, {variables}) 
+
+  function SuccessAlert(props:any){
+    const toast = useToast()
+    if (props.data) {     
+      toast.closeAll()
+      return (
+        toast(
+          {
+            title: 'Account created.',
+            description: "We've created your account for you.",
+            status: 'success',
+            duration: 9000,
+            isClosable: true,
+          }
+        )
+      )
+    } else if (props.loading) {
+      toast.closeAll()
+
+      return (
+        toast(
+          {
+            title: 'Saving beast',
+            description: "We've created your account for you.",
+            status: 'loading',
+            duration: 9000,
+            isClosable: true,
+          }
+        )
+      )
+    } else if (props.error) {
+      toast.closeAll()
+
+      return (
+        toast(
+          {
+            title: 'Error.',
+            description: "Didn't work",
+            status: 'error',
+            duration: 9000,
+            isClosable: true,
+          }
+        )
+      )
+    }
+  }
+  return (
+    <>
+      <Card>
+        <ButtonGroup padding={'20px'}>
+          <Button onClick={createNew.onOpen}>
+            <HiPlus/>
+          </Button>
+          <Button onClick={filter.onOpen}>
+            <HiFilter/>
+          </Button>
+          <Button onClick={sort.onOpen}>
+            <HiSwitchVertical/>
+          </Button>
+        </ButtonGroup>
+      </Card>
+      <Drawer
+        isOpen={sort.isOpen}
+        onClose={sort.onClose}
+        placement='top'>
+          <DrawerOverlay/>
+          <DrawerContent bg='blackAlpha.900'>
+            <DrawerCloseButton />
+            <DrawerHeader>Sort</DrawerHeader>
+            <DrawerBody>
+            </DrawerBody>
+          </DrawerContent>
+      </Drawer>
+      <Drawer
+        isOpen={filter.isOpen}
+        onClose={filter.onClose}
+        placement='top'>
+          <DrawerOverlay/>
+          <DrawerContent bg='blackAlpha.900'>
+            <DrawerCloseButton />
+            <DrawerHeader>Filter</DrawerHeader>
+            <DrawerBody>
+            </DrawerBody>
+          </DrawerContent>
+      </Drawer>
+      <Drawer
+        isOpen={createNew.isOpen}
+        placement='top'
+        onClose={createNew.onClose}
+      >
+        <DrawerOverlay/>
+        <DrawerContent bg='blackAlpha.900'>
+          <DrawerCloseButton />
+          <DrawerHeader>Add a beast...</DrawerHeader>
+
+          <DrawerBody>
+          <SuccessAlert loading={loading} data={data} error={error}/>
+            <Wrap spacing={'50px'}>
+              <Card padding={'20px'}>
+                <VStack>
+                <Text>Name</Text>
+                <Input value={name} onChange={(event: any) => setName(event.target.value)}/>
+                <Text>Angus Australia ID</Text>
+                <Input value={angusId} onChange={(event: any) => setAngusId(event.target.value)}/>
+                <Text>NLIS ID</Text>
+                <Input value={nlis} onChange={(event: any) => setNlis(event.target.value)}/>
+                <Text>Birthdate</Text>
+                <Input required={true} type="date" value={birthDate} onChange={(event: any) => setBirthDate(event.target.value)}/>
+                <Text>Sex</Text>
+                <RadioGroup defaultValue='FEMALE' value={sex} onChange={setSex}>
+                  <HStack spacing={5} direction='row'>
+                    <Radio colorScheme='pink' value='FEMALE'>
+                      Female
+                    </Radio>
+                    <Radio colorScheme='blue' value='MALE'>
+                      Male
+                    </Radio>
+                  </HStack>
+                </RadioGroup>
+                <Checkbox isChecked={desexed} onChange={(event: any) => setDesexed(event.target.checked)}>Desexed</Checkbox>
+                </VStack>
+              </Card>
+              <Card padding={'20px'}>
+              <VStack>
+                <Text fontSize={'lg'}>Visual tag</Text>
+                <Text>Background colour</Text>
+                <RadioGroup defaultValue='YELLOW' value={visualIdBackgroundColour} onChange={setVisualIdBackgroundColour}>
+                  <HStack spacing={5} direction='row'>
+                    <Radio colorScheme='yellow' value='YELLOW'>
+                      Yellow
+                    </Radio>
+                    <Radio colorScheme='blue' value='SKY_BLUE'>
+                      Blue
+                    </Radio>
+                  </HStack>
+                </RadioGroup>
+                <Text>Text colour</Text>
+                <RadioGroup defaultValue='BLACK' value={visualIdTextColour} onChange={setvisualIdTextColour}>
+                  <HStack spacing={5} direction='row'>
+                    <Radio colorScheme='black' value='BLACK'>
+                      Black
+                    </Radio>
+                    <Radio colorScheme='white' value='WHITE'>
+                      White
+                    </Radio>
+                  </HStack>
+                </RadioGroup>
+                <Text>Row 1 text</Text>
+                <Input value={row1} onChange={(event: any) => setRow1(event.target.value)}/>
+                <Text>Row 2 text</Text>
+                <Input value={row2} onChange={(event: any) => setRow2(event.target.value)}/>
+                <Text>Row 3 text</Text>
+                <Input value={row3} onChange={(event: any) => setRow3(event.target.value)}/>
+                </VStack>
+              </Card>
+            </Wrap>
+          </DrawerBody>
+
+          <DrawerFooter>
+            <Button variant='outline' mr={3} onClick={createNew.onClose}>
+              Cancel
+            </Button>
+            <Button colorScheme='blue' onClick={()=> {addBeast()}}>Save</Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </>
+  )
+}
 
 
 
 export function ActiveLivestock(props: any) {
   const {query, variables} = getActiveLivestockQuery()
-  const { loading, error, data } = useQuery(query, {variables})
+  let { loading, error, data } = useQuery(query, {variables})
   let [stockFocus, setStockFocus] = useState(null)
 
   if (loading) {
     // return <CircularProgress/>
-    return ('Loading')
+    return (
+      <Center>
+        <CircularProgress/>
+      </Center>
+    )
   } else if(error) {
     console.log(error)
     return (
@@ -411,6 +708,9 @@ export function ActiveLivestock(props: any) {
   } else if(data) {
     if (!stockFocus){
       return (
+        <>
+        <VStack>
+        <ControlBar/>
         <Wrap>
           {
             data.livestockUnits.map(
@@ -424,6 +724,8 @@ export function ActiveLivestock(props: any) {
             )
           }
         </Wrap>
+        </VStack>
+        </>
       )
     } else {
       return (
@@ -457,4 +759,16 @@ export async function ActiveDrySheepEquivalent() {
 
     // const { data } = await getClient().query({ query: query, variables: variables });
     return data.aggregateLivestockUnit._sum.drySheepEquivalent
+}
+
+
+function parseColour(tagColour: LivestockUnit["visualIdBackgroundColour"] | undefined): string {
+  if (tagColour == "SKY_BLUE"){
+    return '#03d7fc'
+  } else if (tagColour == "YELLOW"){
+    return '#fcdf03'
+  } else {
+    return 'green'
+  }
+
 }
