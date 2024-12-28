@@ -4,7 +4,6 @@ import { LivestockUnit, WeighMethod, Prisma } from "@prisma/client"
 import prisma from './lib/prisma'
 
 export async function getLivestock(whereFilter: Prisma.LivestockUnitWhereInput) {
-  console.log(`Fetching livestock records with the filter: ${JSON.stringify(whereFilter)}`)
   const livestockActive = await prisma.livestockUnit.findMany(
     {
       where: whereFilter,
@@ -130,6 +129,7 @@ export async function getActiveLivestockCount(): Promise<number> {
       where: {active: {equals: true}},
     }
   )
+  console.log(livestockActiveCount)
   return livestockActiveCount
 }
 
