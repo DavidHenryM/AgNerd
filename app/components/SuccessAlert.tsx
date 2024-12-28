@@ -1,46 +1,44 @@
-// import { ApolloError } from "@apollo/client"
-import { useToast } from "@chakra-ui/react"
+import { Toaster, toaster } from "@/components/ui/toaster"
 
-export default function SuccessAlert(props: {operation: string, loading: boolean, error: ApolloError | undefined, data: any}){
-    const toast = useToast()
+export default function SuccessAlert(props: {operation: string, loading: boolean, error: String | undefined, data: any}){
     if (props.data) {     
-      toast.closeAll()
+      toaster.dismiss()
+      toaster.create(
+        {
+          title: `${props.operation} succesful`,
+          description: props.operation,
+          type: 'success',
+          duration: 9000,
+        }
+      )
       return (
-        toast(
-          {
-            title: `${props.operation} succesful`,
-            description: props.operation,
-            status: 'success',
-            duration: 9000,
-            isClosable: true,
-          }
-        )
+        <Toaster/>
       )
     } else if (props.loading) {
-      toast.closeAll()
+      toaster.dismiss()
+      toaster.create(
+        {
+          title: `Working on ${props.operation.toLowerCase()}`,
+          description: "We've created your account for you.",
+          type: 'loading',
+          duration: 9000,
+        }
+      )
       return (
-        toast(
-          {
-            title: `Working on ${props.operation.toLowerCase()}`,
-            description: "We've created your account for you.",
-            status: 'loading',
-            duration: 9000,
-            isClosable: true,
-          }
-        )
+        <Toaster/>
       )
     } else if (props.error) {
-      toast.closeAll()
+      toaster.dismiss()
+      toaster.create(
+        {
+          title: `Ran into a problem whilst ${props.operation.toLowerCase()}`,
+          description: props.error,
+          type: 'error',
+          duration: 9000,
+        }
+      )
       return (
-        toast(
-          {
-            title: `Ran into a problem whilst ${props.operation.toLowerCase()}`,
-            description: props.error.message,
-            status: 'error',
-            duration: 9000,
-            isClosable: true,
-          }
-        )
+        <Toaster/>
       )
     }
   }
