@@ -1,352 +1,94 @@
 "use client"
-// import {getClient} from './lib/apolloClient';
-// import {useQuery} from "@apollo/experimental-nextjs-app-support/ssr"
-// import { ApolloError, gql, useMutation } from '@apollo/client';
-import { 
-  Box,
-  Card, 
-  CardBody, 
-  CardHeader,
-  CardFooter,
-  HStack, 
-  Wrap, 
-  WrapItem, 
-  Text, 
-  Stat, 
-  StatArrow, 
-  StatHelpText, 
-  StatLabel, 
-  StatNumber, 
-  Tag, 
-  TagLabel, 
-  LinkBox, 
-  LinkOverlay, 
-  useDisclosure, 
-  Modal, 
-  ModalOverlay, 
-  ModalContent, 
-  ModalHeader, 
-  ModalCloseButton, 
-  ModalBody, 
-  ModalFooter,
-  ButtonGroup,
-  IconButton, 
-  ScaleFade,
-  Table,
-  Tr,
-  Td,
-  Tbody,
-  Accordion,
+import { Icons } from "./lib/Icons"
+import { EarTagGraphic } from "./components/EarTag";
+import {
+  DrawerBackdrop,
+  DrawerBody,
+  DrawerCloseTrigger,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerRoot,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
+import { Alert } from "@/components/ui/alert"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Radio, RadioGroup } from "@/components/ui/radio"
+import {
   AccordionItem,
-  AccordionButton,
-  AccordionIcon,
-  AccordionPanel,
+  AccordionItemContent,
+  AccordionItemTrigger,
+  AccordionRoot,
+} from "@/components/ui/accordion"
+
+import {
+  Accordion,
+  Box,
+  Card,
+  HStack, 
+  Text, 
+  useDisclosure, 
+  Group,
+  IconButton, 
   VStack,
   Button,
-  Colors,
-  Divider,
-  Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerHeader,
-  DrawerBody,
-  DrawerFooter,
-  DrawerCloseButton,
   Input,
-  NumberInput,
-  RadioGroup,
-  Radio,
-  Checkbox,
-  AlertTitle,
-  Alert,
-  AlertIcon,
-  AlertDescription,
-  CircularProgress,
-  useToast,
-  Center,
-  Link,
   CheckboxGroup,
+  Link,
+  Icon,
 } from '@chakra-ui/react';
-import { $Enums } from '@prisma/client'
-import { GiBull, GiCow, GiFemale, GiHelp, GiMale, GiCardboardBox, GiCorkedTube, GiIceCube, GiMedicines, GiReceiveMoney, GiWeight, GiScissors, GiEmbryo, GiSyringe, GiMoneyStack, GiSeedling, GiPawHeart } from 'react-icons/gi';
-import { IconType } from 'react-icons';
-import { HiFilter, HiSwitchVertical, HiPlus, HiScissors } from 'react-icons/hi';
+import { $Enums, LivestockUnit, Prisma } from '@prisma/client'
 import { BeastView } from './beastView';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import React from 'react';
-// import { getActiveLivestockQuery } from './lib/queries';
-import { LivestockUnit, Prisma } from '@prisma/client'
 import SuccessAlert from './components/SuccessAlert';
 import AddWeightDrawer from './components/AddWeightDrawer';
 import Loading from './loading';
-import { getLivestock } from './queries';
+import { getActiveLivestock, getLivestock } from './queries';
+import { getAge, parseColour, sortWeightsByDate } from "./utils/utils";
+import { WeightStats } from "./components/Stats";
+import { CommercialClassTag, DesexedTag, SexTag, StockClassTag } from "./components/Tags";
+import { DesexButton } from "./components/Buttons";
+import prisma from "./lib/prisma";
 // import ActiveBeastCount from './lib';
 
 
+// export function LivestockCount(): Promise<String> {
+//   const query = gql`
+//   query Query($where: LivestockUnitWhereInput) {
+//     aggregateLivestockUnit(where: $where) {
+//       _count {
+//         _all
+//       }
+//     }
+//   }`;
 
-function getAge(birth: any): {
-  ageYears: number,
-  ageMonths: number
-  yearSuffix: string,
-  monthSuffix: string
-}{
-  const yearMilliseconds = 3.154e+10
-  const monthMilliseconds = yearMilliseconds/12.0
-  const now = new Date()
-  const birthDate = Date.parse(birth)
-  const ageMilliseconds = now.valueOf() - birthDate.valueOf()
-  const ageMonthsTotal = Math.floor(ageMilliseconds / monthMilliseconds);
-  const ageYears = Math.floor(ageMonthsTotal / 12.0)
-  const ageMonthsRemainder = Math.floor(ageMonthsTotal % 12)
-  let monthSuffix = 'months'
-  if (ageMonthsRemainder == 1) {
-    monthSuffix = 'month'
-  }
-  let yearSuffix = 'years'
-  if (ageYears == 1) {
-    yearSuffix = 'year'
-  }
-  return { 
-    ageYears: ageYears,
-    ageMonths: ageMonthsRemainder, 
-    yearSuffix: yearSuffix,
-    monthSuffix: monthSuffix
-  }
-}
-
-function TagGraphic(props: any){
-  return (
-    <Box>
-      <svg xmlns="http://www.w3.org/2000/svg"  width="140" height="140">
-        <g transform="translate(5,5)">
-          <polygon points="5,130 1,128 0,125 0,70 1,65 4,60 35,45 38,43 40,40 40,10 42,4 45,2 50,1 55,2 58,4 60,10 60,40 62,43 65,45 95,60 99,65 100,70 100,125 99,128 95,130 " 
-            fill={props.tagColour}/>
-          <circle cx="50" cy="10" r="5" fill="black" />
-          <g transform="translate(-15,15)">
-            <svg width="130" height="130">
-              <g>
-                <text x="50%" y='55px'  fontSize={16} text-anchor="middle">{props.textLine1}</text>     
-                <text x="50%" y='70px'  fontSize={16} text-anchor="middle" >{props.textLine2}</text>      
-                <text x="50%" y='105px' fontSize={42} fontWeight="bold" text-anchor="middle">{props.textLine3}</text>      
-              </g>
-            </svg>
-          </g>
-        </g>
-      </svg>
-    </Box>
-  )
-}
-
-function WeightStats(props: any){
-  if (props.weights.length > 0){
-    let statArrow: "increase" | "decrease" | undefined
-    if (props.weights.length > 1) {
-      const statChange = props.weights.at(-1).weight - props.weights.at(-2).weight 
-      if (statChange > 0){
-        statArrow = "increase"
-      } else if (statChange < 0){
-        statArrow = "decrease"
-      }
-
-      if (statChange == 0){
-        return (
-          <Stat>
-            <StatNumber>{props.weights.at(-1).weight + "kg"}</StatNumber>
-          </Stat>
-          )
-      } else {
-        return (
-          <Stat>
-            <StatNumber>{props.weights.at(-1).weight + "kg"}</StatNumber>
-            <StatHelpText>
-                <StatArrow type={statArrow} />
-              {String(statChange) + "kg"}
-            </StatHelpText>
-          </Stat> 
-        )
-      }
-    } else {
-      return (
-        <Stat>
-          <StatNumber>{props.weights.at(-1).weight + "kg"}</StatNumber>
-        </Stat>
-        )
-    }
-  } 
-}
-
-function ColouredIconTag(props: {tagText: string, TagIcon: IconType, colorScheme: string}) {
-  return (
-    <Tag colorScheme={props.colorScheme}>
-      <HStack spacing='6px'>
-        <props.TagIcon />
-        <TagLabel>{props.tagText}</TagLabel>
-      </HStack>
-    </Tag>
-  )
-}
-
-function SexTag(props: {sex: string}) {
-  let SexIcon: IconType
-  let sexColour: string
-  if(props.sex == 'FEMALE'){
-      SexIcon = GiFemale
-      sexColour = 'pink'
-  } else if (props.sex == 'MALE') {
-      SexIcon = GiMale
-      sexColour = 'blue'
-  } else {
-      SexIcon = GiHelp
-      sexColour = 'white'
-  }
-  return (
-    <>
-      <ColouredIconTag colorScheme={sexColour} tagText={props.sex} TagIcon={SexIcon}/>
-    </>
-  )
-}
-
-function DesexedTag(props: {desexed: boolean, sex: string}) {
-  let DesexedIcon: IconType
-  let desexedText: string
-  if(props.desexed){
-      DesexedIcon = HiScissors
-      desexedText = "DESEXED"
-  } else {
-      if (props.sex == 'MALE'){
-          DesexedIcon = GiBull
-          desexedText = "INTACT"
-      } else {
-          return (<></>)
-      }
-  }
-  return (
-    <>
-      <ColouredIconTag colorScheme={'green'} tagText={desexedText} TagIcon={DesexedIcon}/>
-    </>
-  )
-}
-
-function StockClassTag(props: any) {
-  if(props.stockClass == "CATTLE"){
-    return (
-      <>
-        <ColouredIconTag 
-          colorScheme={'orange'} 
-          tagText={props.stockClass} 
-          TagIcon={GiCow}
-        />
-      </>
-    )
-  } else {
-    return (
-      <Tag>
-        <TagLabel>{props.stockClass}</TagLabel>
-      </Tag>
-    )
-  }
-}
-
-function CommercialClassTag(props: {commercialClass: string}) {
-  if(props.commercialClass == "COMMERCIAL"){
-    return (
-      <>
-        <ColouredIconTag 
-          colorScheme={'yellow'} 
-          tagText={props.commercialClass} 
-          TagIcon={GiMoneyStack}
-        />
-      </>
-    )
-  } else if(props.commercialClass == "SEEDSTOCK"){
-    return (
-      <>
-        <ColouredIconTag 
-          colorScheme={'teal'} 
-          tagText={props.commercialClass} 
-          TagIcon={GiSeedling}
-        />
-      </>
-    )
-  } else if(props.commercialClass == "PET"){
-    return (
-      <>
-        <ColouredIconTag 
-          colorScheme={'red'} 
-          tagText={props.commercialClass} 
-          TagIcon={GiPawHeart}
-        />
-      </>
-    )
-  } else {
-    return (<></>)
-  }
-}
-
-
-export function LivestockCount(): Promise<String> {
-  const query = gql`
-  query Query($where: LivestockUnitWhereInput) {
-    aggregateLivestockUnit(where: $where) {
-      _count {
-        _all
-      }
-    }
-  }`;
-
-  const variables = {
-    "where": {
-      "active": {
-        "equals": true
-      }
-    }
-  }
-  const { data } = useQuery(query, {variables})
-  // const { data } = await getClient().query({ query: query, variables: variables });
+//   const variables = {
+//     "where": {
+//       "active": {
+//         "equals": true
+//       }
+//     }
+//   }
+//   const { data } = useQuery(query, {variables})
+//   // const { data } = await getClient().query({ query: query, variables: variables });
   
-  return data.aggregateLivestockUnit._count._all
-}
+//   return data.aggregateLivestockUnit._count._all
+// }
 
-export async function FarmName(): Promise<String> {
-  const query = gql`
-  query FindFirstFarm {
-    findFirstFarm {
-      name
-    }
-  }` 
-  const { data } = useQuery(query)  
-  return data.findFirstFarm.name
-}
+// export async function FarmName(): Promise<String> {
+//   const query = gql`
+//   query FindFirstFarm {
+//     findFirstFarm {
+//       name
+//     }
+//   }` 
+//   const { data } = useQuery(query)  
+//   return data.findFirstFarm.name
+// }
 
-function DesexButton(props: any) {
-  if (!props.desexed && props.sex == "MALE") {
-    return (
-      <Button onClick={() => {}}  style={{width:70, height:90}}>
-        <VStack>
-          <GiScissors style={{width:50, height:50}}/>  
-          <Text>Desex</Text>
-        </VStack>
-      </Button>
-    )
-  } else {
-    return (<></>)
-  }
-}
 
-function PregButton(props: any) {
-  if (props.sex == "FEMALE") {
-    return (
-      <Button onClick={props.onOpen}  style={{width:70, height:90}}>
-        <VStack>
-          <GiEmbryo style={{width:50, height:50}}/>
-          <Text>Preg</Text>
-        </VStack>
-      </Button>
-    )
-  } else {
-    return (<></>)
-  }
-}
 
 export function StockPreviewCard(props: {stock: LivestockUnit, index: Number, onClick: ()=>{}}) {
   const weightDisclosure = useDisclosure()
@@ -360,32 +102,38 @@ export function StockPreviewCard(props: {stock: LivestockUnit, index: Number, on
   let weightString = "?"
   let sortedWeights 
   if (stock.weights) {
-    sortedWeights = stock.weights.sort((a,b) => a.dateMeasured - b.dateMeasured)
+    sortedWeights = sortWeightsByDate(stock.weights)
     if (sortedWeights.at(-1)) {
       weightNumber = sortedWeights.at(-1)?.weight
       weightString = `${weightNumber}`
     }
   return (  
     <>
-    <Card key={"stockCard" + props.index}>
-      <ButtonGroup spacing='2' justifyContent={'right'}>
+    <Card.Root key={"stockCard" + props.index}>
+      <Group gap='2' justifyContent={'right'}>
         <IconButton
           onClick={props.onClick}
           aria-label='Open details'
-          icon={<GiCardboardBox />} />
-      </ButtonGroup>
-      <CardBody>
+        >
+          <Icons.GiCardboardBox/>
+        </IconButton>
+      </Group>
+      <Card.Body>
         <HStack>
-          <TagGraphic 
+          <EarTagGraphic 
             tagColour={parseColour(stock.visualIdBackgroundColour)} 
-            textColour={stock.visualIdTextColour} 
-            textLine1={stock.visualIdLine1} 
-            textLine2={stock.visualIdLine2} 
-            textLine3={stock.visualIdLine3}
+            text={
+              {
+                colour: stock.visualIdTextColour,
+                line1: stock.visualIdLine1, 
+                line2: stock.visualIdLine2, 
+                line3: stock.visualIdLine3
+              }
+            }
           />
             <VStack>
               <Text fontSize='2xl'>{stock.name}</Text>
-              <Link href={`https://angus.tech/enquiry/animal/result?page=1&tql=id%20is%20%27${props.stock.angusTechId}%27&title=`} isExternal>
+              <Link href={`https://angus.tech/enquiry/animal/result?page=1&tql=id%20is%20%27${props.stock.angusTechId}%27&title=`}>
                 <Text>{stock.angusTechId}</Text>
               </Link>
               <Text>{stock.nlisId}</Text>
@@ -393,93 +141,91 @@ export function StockPreviewCard(props: {stock: LivestockUnit, index: Number, on
               <WeightStats weights={stock.weights}/>
             </VStack>
         </HStack>
-      </CardBody>
-      <CardFooter>
+      </Card.Body>
+      <Card.Footer>
         <VStack>
           <HStack>
             <StockClassTag stockClass={stock.class}/>
             <SexTag sex={stock.sex}/>
             <DesexedTag desexed={stock.desexed} sex={stock.sex}/>
-            <CommercialClassTag commercialClass={`${stock.commercialClass}`}/>
+            <CommercialClassTag commercialClass={stock.commercialClass!}/>
           </HStack>
-          <Accordion allowMultiple={false} allowToggle={true}>
-            <AccordionItem key={"opsAccordian" + props.index}>
+          <Accordion.Root multiple={false}>
+            <Accordion.Item key={"opsAccordian" + props.index} value="opsAccordian">
               <h2>
-                <AccordionButton >
+                <Accordion.ItemTrigger>
                   <Box as="span" flex='1' textAlign='left'>
                     Operations
-                  </Box>
-                  <AccordionIcon />
-                </AccordionButton>
+                  </Box>                  
+                </Accordion.ItemTrigger>
               </h2>
-              <AccordionPanel pb={4}>
-                <ButtonGroup spacing='2' justifyContent={'right'}>
+              {/* <Accordion.Panel pb={4}> */}
+                <Group gap='2' justifyContent={'right'}>
                   <Button onClick={treatDisclosure.onOpen} style={{width:70, height:90}}>
                     <VStack>
-                      <GiSyringe style={{width:50, height:50}}/>  
+                      <Icons.GiSyringe style={{width:50, height:50}}/>  
                       <Text>Treat</Text>
                     </VStack>
                   </Button>
                   <DesexButton desexed={props.stock.desexed} sex={props.stock.sex}/>
                   <Button onClick={pregDisclosure.onOpen}  style={{width:70, height:90}}>
                     <VStack>
-                      <GiEmbryo style={{width:50, height:50}}/>
+                      <Icons.GiEmbryo style={{width:50, height:50}}/>
                       <Text>Preg</Text>
                     </VStack>
                   </Button>                  
                   <Button onClick={weightDisclosure.onOpen}  style={{width:70, height:90}}>
                     <VStack>
-                      <GiWeight style={{width:50, height:50}}/>
+                      <Icons.GiWeight style={{width:50, height:50}}/>
                       <Text>Weigh</Text>
                     </VStack>
                   </Button>
-                </ButtonGroup>
-              </AccordionPanel>
-            </AccordionItem>
-            <AccordionItem key={"adminAccordian" + props.index}>
+                </Group>
+              {/* </AccordionPanel> */}
+            </Accordion.Item>
+            <Accordion.Item key={"adminAccordian" + props.index} value="adminAccordian">
               <h2>
-                <AccordionButton>
+                <Button>
                   <Box as="span" flex='1' textAlign='left'>
                     Admin
                   </Box>
-                  <AccordionIcon />
-                </AccordionButton>
+                </Button>
               </h2>
-              <AccordionPanel pb={4}>
+              {/* <AccordionPanel pb={4}> */}
                 <Button onClick={() => {setConfirmOpen(true)}}>
                   Deactivate
                 </Button>
-              </AccordionPanel>
-            </AccordionItem>
-          </Accordion>
+              {/* </AccordionPanel> */}
+            </Accordion.Item>
+          </Accordion.Root>
         </VStack>
-      </CardFooter>
-    </Card>
-      <AddWeightDrawer stock={stock} setStock={setStock} isOpen={weightDisclosure.isOpen} onClose={weightDisclosure.onClose}/>
-      <Drawer
-        isOpen={treatDisclosure.isOpen}
-        onClose={treatDisclosure.onClose}
-        placement='right'>
-          <DrawerOverlay/>
+      </Card.Footer>
+    </Card.Root>
+      <AddWeightDrawer stock={stock} setStock={setStock} open={weightDisclosure.open} onOpenChange={weightDisclosure.onClose}/>
+      <DrawerRoot
+        open={treatDisclosure.open}
+        onOpenChange ={treatDisclosure.onClose}
+        >
+          <DrawerBackdrop/>
           <DrawerContent bg='blackAlpha.900'>
-            <DrawerCloseButton />
+            <DrawerCloseTrigger />
             <DrawerHeader>Record treatment</DrawerHeader>
             <DrawerBody>
             </DrawerBody>
           </DrawerContent>
-      </Drawer>
-      <Drawer
-        isOpen={pregDisclosure.isOpen}
-        onClose={pregDisclosure.onClose}
-        placement='right'>
-          <DrawerOverlay/>
+      </DrawerRoot>
+      <DrawerRoot
+        open={pregDisclosure.open}
+        onOpenChange ={pregDisclosure.onClose}
+        >
+          <DrawerBackdrop/>
           <DrawerContent bg='blackAlpha.900'>
-            <DrawerCloseButton />
+            <DrawerCloseTrigger />
             <DrawerHeader>Record reproductive event</DrawerHeader>
             <DrawerBody>
             </DrawerBody>
           </DrawerContent>
-      </Drawer>
+      </DrawerRoot>
     </>
   )
 } else {
@@ -487,67 +233,67 @@ export function StockPreviewCard(props: {stock: LivestockUnit, index: Number, on
 }
 }
 
-function SavingData(props: any) {
-  const [save, { loading, error, data }] =  useMutation(props.mutation, {variables: props.variables})
-  if (data) {
-    return (
-      <Alert
-        status='success'
-        variant='subtle'
-        flexDirection='column'
-        alignItems='center'
-        justifyContent='center'
-        textAlign='center'
-        height='200px'
-      >
-        <AlertIcon boxSize='40px' mr={0} />
-        <AlertTitle mt={4} mb={1} fontSize='lg'>New beast added</AlertTitle>
-        <AlertDescription maxWidth='sm'>
-          Thanks for submitting your application. Our team will get back to you soon.
-        </AlertDescription>
-      </Alert>
-    )
-  } else if (loading) {
-    return (
-      <Alert
-        status='loading'
-        variant='subtle'
-        flexDirection='column'
-        alignItems='center'
-        justifyContent='center'
-        textAlign='center'
-        height='200px'
-      >
-        <AlertIcon boxSize='40px' mr={0} />
-        <AlertTitle mt={4} mb={1} fontSize='lg'>Saving</AlertTitle>
-        <AlertDescription maxWidth='sm'>
-          <CircularProgress isIndeterminate/>
-        </AlertDescription>
-      </Alert>
-    )
-  } else if (error) {
-    return (
-      <Alert
-        status='error'
-        variant='subtle'
-        flexDirection='column'
-        alignItems='center'
-        justifyContent='center'
-        textAlign='center'
-        height='200px'
-      >
-        <AlertIcon boxSize='40px' mr={0} />
-        <AlertTitle mt={4} mb={1} fontSize='lg'>New beast NOT added</AlertTitle>
-        <AlertDescription maxWidth='sm'>
-          Thanks for submitting your application. Our team will get back to you soon.
-        </AlertDescription>
-      </Alert>
-    )
-  }
+// function SavingData(props: any) {
+//   const [save, { loading, error, data }] =  useMutation(props.mutation, {variables: props.variables})
+//   if (data) {
+//     return (
+//       <Alert
+//         status='success'
+//         variant='subtle'
+//         flexDirection='column'
+//         alignItems='center'
+//         justifyContent='center'
+//         textAlign='center'
+//         height='200px'
+//       >
+//         <AlertIcon boxSize='40px' mr={0} />
+//         <AlertTitle mt={4} mb={1} fontSize='lg'>New beast added</AlertTitle>
+//         <AlertDescription maxWidth='sm'>
+//           Thanks for submitting your application. Our team will get back to you soon.
+//         </AlertDescription>
+//       </Alert>
+//     )
+//   } else if (loading) {
+//     return (
+//       <Alert
+//         status='loading'
+//         variant='subtle'
+//         flexDirection='column'
+//         alignItems='center'
+//         justifyContent='center'
+//         textAlign='center'
+//         height='200px'
+//       >
+//         <AlertIcon boxSize='40px' mr={0} />
+//         <AlertTitle mt={4} mb={1} fontSize='lg'>Saving</AlertTitle>
+//         <AlertDescription maxWidth='sm'>
+//           <CircularProgress isIndeterminate/>
+//         </AlertDescription>
+//       </Alert>
+//     )
+//   } else if (error) {
+//     return (
+//       <Alert
+//         status='error'
+//         variant='subtle'
+//         flexDirection='column'
+//         alignItems='center'
+//         justifyContent='center'
+//         textAlign='center'
+//         height='200px'
+//       >
+//         <AlertIcon boxSize='40px' mr={0} />
+//         <AlertTitle mt={4} mb={1} fontSize='lg'>New beast NOT added</AlertTitle>
+//         <AlertDescription maxWidth='sm'>
+//           Thanks for submitting your application. Our team will get back to you soon.
+//         </AlertDescription>
+//       </Alert>
+//     )
+//   }
   
-}
+// }
 
-function ControlBar(props: {setFilter: Dispatch<SetStateAction<string>>}) {
+export function ControlBar(props: {setFilter: Dispatch<SetStateAction<string>>}) {
   const createNew = useDisclosure()
   const filter = useDisclosure()
   const sort = useDisclosure()
@@ -592,42 +338,42 @@ function ControlBar(props: {setFilter: Dispatch<SetStateAction<string>>}) {
 
   return (
     <>
-      <Card>
-        <ButtonGroup padding={'20px'}>
+      <Card.Root>
+        <Group gap={'20px'}>
           <Button onClick={createNew.onOpen}>
-            <HiPlus/>
+            <Icons.HiPlus/>
           </Button>
           <Button onClick={filter.onOpen}>
-            <HiFilter/>
+            <Icons.HiFilter/>
           </Button>
           <Button onClick={sort.onOpen}>
-            <HiSwitchVertical/>
+            <Icons.HiSwitchVertical/>
           </Button>
-        </ButtonGroup>
-      </Card>
-      <Drawer
-        isOpen={sort.isOpen}
-        onClose={sort.onClose}
+        </Group>
+      </Card.Root>
+      <DrawerRoot
+        open={sort.open}
+        onOpenChange ={sort.onClose}
         placement='top'>
-          <DrawerOverlay/>
+          <DrawerBackdrop/>
           <DrawerContent bg='blackAlpha.900'>
-            <DrawerCloseButton />
+            <DrawerCloseTrigger />
             <DrawerHeader>Sort</DrawerHeader>
             <DrawerBody>
             </DrawerBody>
           </DrawerContent>
-      </Drawer>
-      <Drawer
-        isOpen={filter.isOpen}
-        onClose={filter.onClose}
+      </DrawerRoot>
+      <DrawerRoot
+        open={filter.open}
+        onOpenChange={filter.onClose}
         placement='top'>
-          <DrawerOverlay/>
+          <DrawerBackdrop/>
           <DrawerContent bg='blackAlpha.900'>
-            <DrawerCloseButton />
+            <DrawerCloseTrigger />
             <DrawerHeader>Filter</DrawerHeader>
             <DrawerBody>
             <CheckboxGroup colorScheme='green'>
-              <Wrap>
+              <HStack wrap={"wrap"}>
                 {
                   Object.keys($Enums.CommercialClass).map((key: any)=>{
                     return (
@@ -635,25 +381,25 @@ function ControlBar(props: {setFilter: Dispatch<SetStateAction<string>>}) {
                     )
                   })
                 }
-              </Wrap>
+              </HStack>
             </CheckboxGroup>
             </DrawerBody>
           </DrawerContent>
-      </Drawer>
-      <Drawer
-        isOpen={createNew.isOpen}
+      </DrawerRoot>
+      <DrawerRoot
+        open={createNew.open}
         placement='top'
-        onClose={createNew.onClose}
+        onOpenChange={createNew.onClose}
       >
-        <DrawerOverlay/>
+        <DrawerBackdrop/>
         <DrawerContent bg='blackAlpha.900'>
-          <DrawerCloseButton />
+          <DrawerCloseTrigger />
           <DrawerHeader>Add a beast...</DrawerHeader>
 
           <DrawerBody>
           {/* <SuccessAlert operation={`Adding a beast`} loading={loading} data={data} error={error}/> */}
-            <Wrap spacing={'50px'}>
-              <Card padding={'20px'}>
+            <HStack wrap={"wrap"} gap={'50px'}>
+              <Card.Root padding={'20px'}>
                 <VStack>
                 <Text>Name</Text>
                 <Input value={name} onChange={(event: any) => setName(event.target.value)}/>
@@ -664,8 +410,8 @@ function ControlBar(props: {setFilter: Dispatch<SetStateAction<string>>}) {
                 <Text>Birthdate</Text>
                 <Input required={true} type="date" value={birthDate} onChange={(event: any) => setBirthDate(event.target.value)}/>
                 <Text>Sex</Text>
-                <RadioGroup defaultValue='FEMALE' value={sex} onChange={setSex}>
-                  <HStack spacing={5} direction='row'>
+                <RadioGroup defaultValue='FEMALE' value={sex} onValueChange={(e) => setSex(e.value)}>
+                  <HStack gap={5} direction='row'>
                     <Radio colorScheme='pink' value='FEMALE'>
                       Female
                     </Radio>
@@ -674,15 +420,15 @@ function ControlBar(props: {setFilter: Dispatch<SetStateAction<string>>}) {
                     </Radio>
                   </HStack>
                 </RadioGroup>
-                <Checkbox isChecked={desexed} onChange={(event: any) => setDesexed(event.target.checked)}>Desexed</Checkbox>
+                <Checkbox checked={desexed} onChange={(event: any) => setDesexed(event.target.checked)}>Desexed</Checkbox>
                 </VStack>
-              </Card>
-              <Card padding={'20px'}>
+              </Card.Root>
+              <Card.Root padding={'20px'}>
               <VStack>
                 <Text fontSize={'lg'}>Visual tag</Text>
                 <Text>Background colour</Text>
-                <RadioGroup defaultValue='YELLOW' value={visualIdBackgroundColour} onChange={setVisualIdBackgroundColour}>
-                  <HStack spacing={5} direction='row'>
+                <RadioGroup defaultValue='YELLOW' value={visualIdBackgroundColour} onValueChange={(e) => setVisualIdBackgroundColour(e.value)}>
+                  <HStack gap={5} direction='row'>
                     <Radio colorScheme='yellow' value='YELLOW'>
                       Yellow
                     </Radio>
@@ -692,8 +438,8 @@ function ControlBar(props: {setFilter: Dispatch<SetStateAction<string>>}) {
                   </HStack>
                 </RadioGroup>
                 <Text>Text colour</Text>
-                <RadioGroup defaultValue='BLACK' value={visualIdTextColour} onChange={setvisualIdTextColour}>
-                  <HStack spacing={5} direction='row'>
+                <RadioGroup defaultValue='BLACK' value={visualIdTextColour} onValueChange={(e) => setVisualIdBackgroundColour(e.value)}>
+                  <HStack gap={5} direction='row'>
                     <Radio colorScheme='black' value='BLACK'>
                       Black
                     </Radio>
@@ -709,8 +455,8 @@ function ControlBar(props: {setFilter: Dispatch<SetStateAction<string>>}) {
                 <Text>Row 3 text</Text>
                 <Input value={row3} onChange={(event: any) => setRow3(event.target.value)}/>
                 </VStack>
-              </Card>
-            </Wrap>
+              </Card.Root>
+            </HStack>
           </DrawerBody>
 
           <DrawerFooter>
@@ -721,7 +467,6 @@ function ControlBar(props: {setFilter: Dispatch<SetStateAction<string>>}) {
               colorScheme='blue' 
               onClick={
                 ()=> {
-                  addBeast()
                   setAngusId('')
                   setBirthDate(undefined)
                   setDesexed(false)
@@ -735,21 +480,22 @@ function ControlBar(props: {setFilter: Dispatch<SetStateAction<string>>}) {
             </Button>
           </DrawerFooter>
         </DrawerContent>
-      </Drawer>
+      </DrawerRoot>
     </>
   )
 }
 
 
 
-export function ActiveLivestock(props: any) {
-  let livestockUnits = useRef<any[]>([])
-  let [stockFocus, setStockFocus] = useState()
+export function ActiveLivestock() {
+  let livestockUnits = useRef<LivestockUnit[]>([])
+  let [stockFocus, setStockFocus] = useState<LivestockUnit>()
   let [loading, setLoading] = useState(true)
   let [filter, setFilter] = useState(JSON.stringify({active: {equals: true}}))
   useEffect(() => {
     getLivestock(filter)
-      .then((livestock) => {
+      .then((livestock: LivestockUnit[]) => {
+        console.log(livestock)
         livestockUnits.current = livestock
         setLoading(false)
       })
@@ -760,43 +506,30 @@ export function ActiveLivestock(props: any) {
   } else {
     if (!stockFocus){
       return (
-        <>
         <VStack>
-        <ControlBar/>
-        <Wrap>
-          {
-            livestockUnits.current.map(
-              function(stock: LivestockUnit, index: number){
-                return (
-                  <WrapItem key={index}>
-                    <StockPreviewCard stock={stock} index={index} onClick={async () => setStockFocus(stock)}/>
-                  </WrapItem>
-                )
-              }
-            )
-          }
-        </Wrap>
+          <HStack wrap={"wrap"}>
+            {
+              livestockUnits.current.map(
+                function(stock: LivestockUnit, index: number){
+                  return (
+                    <div key={index}>
+                      <StockPreviewCard stock={stock} index={index} onClick={async () => setStockFocus(stock)}/>
+                    </div>
+                  )
+                }
+              )
+            }
+          </HStack>
         </VStack>
-        </>
       )
     } else {
       return (
         <BeastView 
           stock={stockFocus}
-          close={() => setStockFocus(undefined)} />
+          close={() => setStockFocus(undefined)} edit={function (): void {
+            throw new Error("Function not implemented.");
+          } } />
       )
     }
   }
-}
-
-
-function parseColour(tagColour: LivestockUnit["visualIdBackgroundColour"] | undefined): string {
-  if (tagColour == "SKY_BLUE"){
-    return '#03d7fc'
-  } else if (tagColour == "YELLOW"){
-    return '#fcdf03'
-  } else {
-    return 'green'
-  }
-
 }
