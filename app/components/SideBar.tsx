@@ -1,42 +1,14 @@
 'use client'
 
-import { redirect } from 'next/navigation'
+import { useTheme } from 'next-themes'
 import {
-  IconButton,
-  Avatar,
-  Box,
-  CloseButton,
-  Flex,
-  HStack,
-  VStack,
-  Icon,
-  useColorModeValue,
-  Text,
-  Drawer,
-  DrawerContent,
-  useDisclosure,
-  BoxProps,
-  FlexProps,
-  Menu,
-  MenuButton,
-  MenuDivider,
+  MenuContent,
   MenuItem,
-  MenuList,
-  Image,
-  useColorMode,
-  Button,
-} from '@chakra-ui/react'
-import {
-  GiHighGrass,
-  GiHamburgerMenu,
-  GiCowboyBoot,
-  GiFallDown,
-  GiMoon,
-  GiSun
-} from 'react-icons/gi'
-import {FaCow} from 'react-icons/fa6'
-import {MdAgriculture} from 'react-icons/md'
-import { FiBell } from 'react-icons/fi'
+  MenuRoot,
+  MenuTrigger
+} from "@/components/ui/menu"
+import { CloseButton } from "@/components/ui/close-button"
+import { Avatar } from "@/components/ui/avatar"
 import { IconType } from 'react-icons'
 // import { FarmCard } from './FarmCard'
 // import { LivestockCards } from './LivestockCards'
@@ -46,13 +18,16 @@ import { ActiveLivestock } from '../basicDetails'
 // import { isUserAuthorizedQuery } from '../lib/queries'
 import { useEffect, useRef } from 'react'
 // import { AuthProviderNames } from '@prisma/client'
-
 import Loading from '../loading'
+import Link from 'next/link'
+import { Box, BoxProps, Flex, FlexProps, HStack, Image, Text, IconButton, Button, VStack, useDisclosure, StackSeparator} from '@chakra-ui/react'
+import { Icons } from '../lib/Icons'
 
 
 interface LinkItemProps {
   name: string
   icon: IconType
+  target: string
 }
 
 interface NavItemProps extends FlexProps {
@@ -69,20 +44,17 @@ interface SidebarProps extends BoxProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Farm', icon: MdAgriculture },
-  { name: 'Livestock', icon: FaCow },
-  { name: 'Pasture', icon: GiHighGrass },
-  // { name: '', icon: FiStar },
-  // { name: 'Settings', icon: FiSettings },
+  { name: 'Farm', icon: Icons.MdAgriculture, target: "farm" },
+  { name: 'Livestock', icon: Icons.FaCow, target: "livestock" },
+  { name: 'Pasture', icon: Icons.GiHighGrass, target: "pasture" },
+  { name: 'Settings', icon: Icons.FiSettings, target: "settings" },
 ]
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
     <Box
       transition="3s ease"
-      bg={useColorModeValue('white', 'gray.900')}
       borderRight="1px"
-      borderRightColor={useColorModeValue('gray.200', 'gray.700')}
       w={{ base: 'full', md: 60 }}
       pos="fixed"
       h="full"
@@ -100,23 +72,22 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         </HStack>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => ( 
-         <NavItem key={link.name} icon={link.icon}> 
-            {link.name} 
-          </NavItem> 
-       ))} 
+      <VStack separator={<StackSeparator />}>
+        {LinkItems.map((link) => ( 
+          <NavItem key={link.name} name={link.name} NavIcon={link.icon} target={link.target}/> 
+        ))} 
+      </VStack>
     </Box>
   )
 }
 
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+function NavItem(props: {NavIcon: IconType, name: string, target: string}) {
   return (
     <Box
-      as="a"
-      href="#"
       style={{ textDecoration: 'none' }}
-      _focus={{ boxShadow: 'none' }}>
-      <Flex
+      _focus={{ boxShadow: "md" }}
+      w={{ base: 'full', md: 60 }}> 
+      <HStack
         align="center"
         p="4"
         mx="4"
@@ -124,29 +95,19 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
         role="group"
         cursor="pointer"
         _hover={{
-          bg: 'cyan.400',
+          bg: 'teal',
           color: 'white',
         }}
-        {...rest}>
-        {icon && (
-          <Icon
-            mr="4"
-            fontSize="16"
-            _groupHover={{
-              color: 'white',
-            }}
-            as={icon}
-          />
-        )}
-        {children}
-      </Flex>
+        gap={4}>
+      <props.NavIcon/>
+      <Link href={props.target}>{props.name}</Link>
+    </HStack>
     </Box>
   )
 }
 
 const MobileNav = (props: any) => {
-  const { colorMode, toggleColorMode } = useColorMode()
-
+  const {theme, setTheme} = useTheme()
   let name = 'John Wayne'
   let image = 'https://cdn.britannica.com/82/136182-050-6BB308B7/John-Wayne.jpg'
   let email = ''
@@ -162,7 +123,6 @@ const MobileNav = (props: any) => {
       if (session.user.email) {
         email = session.user.email
       }
-
     }
   }
   return (
@@ -171,9 +131,7 @@ const MobileNav = (props: any) => {
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
-      bg={useColorModeValue('white', 'gray.900')}
       borderBottomWidth="1px"
-      borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
       justifyContent={{ base: 'space-between', md: 'flex-end' }}
       {...props.rest}>
       <IconButton
@@ -181,8 +139,10 @@ const MobileNav = (props: any) => {
         onClick={props.onOpen}
         variant="outline"
         aria-label="open menu"
-        icon={<GiHamburgerMenu />}
-      />
+      >
+        <Icons.GiHamburgerMenu />
+      </IconButton>
+      
 
       <Text
         display={{ base: 'flex', md: 'none' }}
@@ -191,14 +151,16 @@ const MobileNav = (props: any) => {
         fontWeight="bold">
       </Text>
 
-      <HStack spacing={{ base: '0', md: '6' }}>
-      <Button onClick={toggleColorMode}>
-        {colorMode === 'light' ? <GiMoon/> : <GiSun/>}
+      <HStack gap={{ base: '0', md: '6' }}>
+      <Button onClick={()=>setTheme(theme === 'light' ? 'dark' : 'light')}>
+        {theme === 'light' ? <Icons.GiMoon/> : <Icons.GiSun/>}
       </Button>
-        <IconButton size="lg" variant="ghost" aria-label="open menu" icon={<FiBell />} />
+        <IconButton size="lg" variant="ghost" aria-label="open menu" >
+          <Icons.FiBell/>
+        </IconButton>
         <Flex alignItems={'center'}>
-          <Menu>
-            <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
+          <MenuRoot>
+            <MenuTrigger py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
               <HStack>
                 <Avatar
                   size={'sm'}
@@ -207,7 +169,7 @@ const MobileNav = (props: any) => {
                 <VStack
                   display={{ base: 'none', md: 'flex' }}
                   alignItems="flex-start"
-                  spacing="1px"
+                  gap="1px"
                   ml="2">
                   <Text fontSize="sm">{name}</Text>
                   <Text fontSize="xs" color="gray.600">
@@ -215,20 +177,17 @@ const MobileNav = (props: any) => {
                   </Text>
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>
-                  <GiFallDown />
+                  <Icons.GiFallDown />
                 </Box>
               </HStack>
-            </MenuButton>
-            <MenuList
-              bg={useColorModeValue('white', 'gray.900')}
-              borderColor={useColorModeValue('gray.200', 'gray.700')}>
-              <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
-              <MenuDivider />
+            </MenuTrigger>
+            <MenuContent>
+              <MenuItem value="Profile"/>
+              <MenuItem value="Settings"/>
+              <MenuItem value="Billing"/>
               {/* <MenuItem onClick={()=>(signOut())}>Sign out</MenuItem> */}
-            </MenuList>
-          </Menu>
+            </MenuContent>
+          </MenuRoot>
         </Flex>
       </HStack>
     </Flex>
@@ -236,11 +195,9 @@ const MobileNav = (props: any) => {
 }
 
 const SidebarWithHeader = (props: any) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  // const { data: session, status: status } = useSession()
-  const { colorMode, toggleColorMode } = useColorMode()
+  const { open, onOpen, onClose } = useDisclosure()
 
-  // const colorMode = useColorModeValue('gray.100', 'gray.900')
+  // const colorMode = useTheme('gray.100', 'gray.900')
   // let providerName = AuthProviderNames.GITHUB
   let email = ''
   let userName = ''
