@@ -19,7 +19,7 @@ export async function LivestockCards() {
   const livestocks: LivestockUnit[] = await getActiveLivestock()
   return (
     <HStack wrap={"wrap"}>
-      {livestocks.map(function(stock: LivestockUnit, index){
+      {livestocks.map(function(stock: any, index){
         return (
           <div key={index}>
             <Card.Root key={"stockCard" + index}>
