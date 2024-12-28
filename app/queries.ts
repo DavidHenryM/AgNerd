@@ -1,16 +1,13 @@
 'use server'
 
-import { LivestockUnit, WeighMethod } from "@prisma/client"
+import { LivestockUnit, WeighMethod, Prisma } from "@prisma/client"
 import prisma from './lib/prisma'
-import { IoContrastOutline } from "react-icons/io5"
 
-export async function getLivestock(whereFilter: string): Promise<LivestockUnit[]> {
-  const parsedWhereFilter = JSON.parse(whereFilter)
-  console.log(`Fetching livestock records with the filter: ${whereFilter}`)
-
+export async function getLivestock(whereFilter: Prisma.LivestockUnitWhereInput) {
+  console.log(`Fetching livestock records with the filter: ${JSON.stringify(whereFilter)}`)
   const livestockActive = await prisma.livestockUnit.findMany(
     {
-      where: parsedWhereFilter,
+      where: whereFilter,
       select: {
         id: true,
         name: true,
@@ -42,7 +39,7 @@ export async function getLivestock(whereFilter: string): Promise<LivestockUnit[]
 }
 
 export async function getActiveLivestock(): Promise<LivestockUnit[]>{
-  return getLivestock(JSON.stringify({active: {equals: true}}))
+  return getLivestock({active: {equals: true}})
 }
 
 export async function getLivestockUnit(id: string): Promise<LivestockUnit | null> {
