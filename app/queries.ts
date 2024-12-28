@@ -1,11 +1,13 @@
 'use server'
 
-import { WeighMethod } from "@prisma/client"
+import { LivestockUnit, WeighMethod } from "@prisma/client"
 import prisma from './lib/prisma'
 import { IoContrastOutline } from "react-icons/io5"
 
-export async function getLivestock(whereFilter: string): Promise<any> {
+export async function getLivestock(whereFilter: string): Promise<LivestockUnit[]> {
   const parsedWhereFilter = JSON.parse(whereFilter)
+  console.log(`Fetching livestock records with the filter: ${whereFilter}`)
+
   const livestockActive = await prisma.livestockUnit.findMany(
     {
       where: parsedWhereFilter,
@@ -26,14 +28,24 @@ export async function getLivestock(whereFilter: string): Promise<any> {
         active: true,
         weights: true,
         drySheepEquivalent: true,
-        commercialClass: true
+        commercialClass: true,
+        comment: true,
+        sireId: true,
+        damId: true,
+        mobRef: true,
+        pregnancyId: true,
+        purchasePrice: true, 
+        purchaseDate: true,
       }
     })
-
   return livestockActive 
 }
 
-export async function getLivestockUnit(id: string): Promise<any> {
+export async function getActiveLivestock(): Promise<LivestockUnit[]>{
+  return getLivestock(JSON.stringify({active: {equals: true}}))
+}
+
+export async function getLivestockUnit(id: string): Promise<LivestockUnit | null> {
   const livestockUnit = await prisma.livestockUnit.findFirst(
     {
       where: {id: {equals: id}},
@@ -54,10 +66,18 @@ export async function getLivestockUnit(id: string): Promise<any> {
         active: true,
         weights: true,
         drySheepEquivalent: true,
-        commercialClass: true
+        commercialClass: true,
+        comment: true,
+        sireId: true,
+        damId: true,
+        mobRef: true,
+        pregnancyId: true,
+        purchasePrice: true, 
+        purchaseDate: true,
       }
-    })
-  console.log('livestock unit retrieved: ',livestockUnit)
+    }
+  )
+  console.log('livestock unit retrieved: ', livestockUnit)
   return livestockUnit
 }
 
@@ -114,4 +134,13 @@ export async function getActiveLivestockCount(): Promise<number> {
     }
   )
   return livestockActiveCount
+}
+
+export async function getFarmName(): Promise<string> {
+  const farm = await prisma.farm.findFirst()
+  if (farm){
+    return farm.name
+  } else {
+    return 'My Farm'
+  }
 }
