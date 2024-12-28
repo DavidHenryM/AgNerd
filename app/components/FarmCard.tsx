@@ -1,88 +1,67 @@
-import { LivestockCount, FarmName, ActiveLivestock, ActiveDrySheepEquivalent } from "../basicDetails"
-import { GiCow } from 'react-icons/gi';
+import { LiveStockCountStat } from "./Stats"
 import { LivestockCards } from "./LivestockCards"
+import { Tabs, Card } from "@chakra-ui/react"
 import { 
-  Card, 
-  CardHeader, 
-  CardBody, 
-  CardFooter, 
-  Text,  
-  Tabs, 
-  TabList, 
-  TabPanels, 
-  Tab, 
-  TabPanel,
-  Stat,
-  StatArrow,
+  StatLabel, 
+  StatRoot, 
+  StatValueText,
+  StatValueUnit,
   StatHelpText,
-  StatLabel,
-  StatNumber, 
-  StatGroup,
-  HStack
- } from '../chakraShim'
+  StatDownTrend,
+  StatUpTrend
+} from "@/components/ui/stat"
+import { getActiveLivestockCount, getFarmName, getActiveLivestock } from "../queries"
 
-const livestocks = await ActiveLivestock()
 
-export function FarmCard(){
+export async function FarmCard(){
+  const liveStockCount = Number(await getActiveLivestockCount())
+  const farmName = await getFarmName()
+  const activeLivestock = await getActiveLivestock()
   return (
-    <Tabs isFitted variant='enclosed'>
-      <TabList mb='1em'>
-        <Tab>Farm</Tab>
-        <Tab>Livestock</Tab>
-      </TabList>
-      <TabPanels>
-        <TabPanel>
-          <Card>
-            <CardHeader>
-              <Text>{FarmName()}</Text> 
-            </CardHeader>
-            <CardBody>
-            <StatGroup>
-              <Stat>
-                <StatLabel>Livestock</StatLabel>
-                <StatNumber>{LivestockCount()}</StatNumber>
-              </Stat>
-
-              <Stat>
-                <StatLabel>Dry sheep equivalent</StatLabel>
-                <StatNumber>{ActiveDrySheepEquivalent()}</StatNumber>
-              </Stat>
-
-              <Stat>
-                <StatLabel>Days to next birth</StatLabel>
-                <StatNumber>2</StatNumber>
-              </Stat>
-
-              <Stat>
-                <StatLabel>Livestock market value</StatLabel>
-                <StatNumber>$???</StatNumber>
-                <StatHelpText>
-                  <StatArrow type='increase' />
-                  23.36%
-                </StatHelpText>
-              </Stat>
-
-              <Stat>
-                <StatLabel>Rainfall 30 days</StatLabel>
-                <StatNumber>$???</StatNumber>
-                <StatHelpText>
-                  <StatArrow type='increase' />
-                  23.36% from last year
-                </StatHelpText>
-              </Stat>
-            </StatGroup>
-          </CardBody>
-          <CardFooter>
-            <Text>
-              Farm Statistics
-            </Text>
-          </CardFooter>
-        </Card>
-        </TabPanel>
-        <TabPanel>
-           <LivestockCards />
-         </TabPanel>
-      </TabPanels>
-    </Tabs>
+    <Tabs.Root fitted variant='enclosed'>
+      <Tabs.List mb='1em'>
+        <Tabs.Trigger value="farm">Farm</Tabs.Trigger>
+        <Tabs.Trigger value="livestock">Livestock</Tabs.Trigger>
+      </Tabs.List>
+      <Tabs.Content value="farm">
+        <Card.Root>
+          <Card.Header>
+            {farmName} 
+          </Card.Header>
+          <Card.Body>
+            <LiveStockCountStat currentCount={1} priorCount={undefined} trendLabel={undefined}/>
+            <StatRoot>
+              <StatLabel>Dry sheep equivalent</StatLabel>
+              <StatValueText>{"547?"}</StatValueText>
+            </StatRoot>
+            <StatRoot>
+              <StatLabel>Days to next birth</StatLabel>
+              <StatValueText>2</StatValueText>
+            </StatRoot>
+            <StatRoot>
+              <StatLabel>Livestock market value</StatLabel>
+              <StatValueText value={99999} formatOptions={{style: "currency", currency: "AUD"}}></StatValueText>
+              <StatUpTrend>"23.36%"</StatUpTrend>
+              <StatHelpText>
+              </StatHelpText>
+            </StatRoot>
+            <StatRoot>
+              <StatLabel>Rainfall 30 days</StatLabel>
+              <StatValueText>??? mm</StatValueText>
+              <StatUpTrend>23.36%</StatUpTrend>
+              <StatHelpText>
+                from last the same period last year
+              </StatHelpText>
+            </StatRoot>
+          </Card.Body>
+          <Card.Footer>
+            Farm Statistics
+          </Card.Footer>
+        </Card.Root>
+      </Tabs.Content>
+    <Tabs.Content value="livestock">
+      <LivestockCards />
+    </Tabs.Content>
+    </Tabs.Root>
   )
 }
