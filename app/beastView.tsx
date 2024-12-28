@@ -1,12 +1,23 @@
 "use-client"
 
 // import { DocumentNode, gql, useMutation } from "@apollo/client";
-import { Spacer, Card, Button, Text, Table, Tbody, Td, Tr, ButtonGroup, Editable, EditablePreview, EditableInput, Modal, ModalOverlay, ModalHeader, ModalBody, ModalContent, ModalFooter, VStack, HStack, Wrap, WrapItem, Switch, CardHeader, CloseButton, Flex } from "@chakra-ui/react"
+import { Spacer, Card, Button, Text, Table, Group, Editable, HStack, Flex } from "@chakra-ui/react"
+import { Switch } from "@/components/ui/switch"
+import {
+  DialogBackdrop,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { useState } from "react";
-import { GiCancel, GiCorkedTube, GiIceCube, GiMedicines, GiPadlockOpen, GiPencil, GiReceiveMoney, GiWeight } from "react-icons/gi";
 import { setLivestockUnitInactive } from "./queries";
 import { LivestockUnit } from "@prisma/client";
-
+import { Icons } from "./lib/Icons";
 
 function placeHolder(text: string | undefined | null, editable: boolean): string {
   if (text){
@@ -25,18 +36,20 @@ function placeHolder(text: string | undefined | null, editable: boolean): string
 function EditableRowItem(props: {title: string, value: any | undefined, editable: boolean}){
   if(props.value || props.editable) {
     return (
-      <Tr>
-        <Td>{props.title}</Td>
-        <Td>
-          <Editable
+      <Table.Root>
+      <Table.Row>
+        <Table.ColumnHeader>{props.title}</Table.ColumnHeader>
+        <Table.Column>
+          <Editable.Root
             defaultValue={props.value ? props.value : ''}
-            isPreviewFocusable={props.editable}
+            // isPreviewFocusable={props.editable}
           >
-            <EditablePreview />
-            <EditableInput />
-          </Editable>
-        </Td>
-      </Tr>
+            <Editable.Preview />
+            <Editable.Input />
+          </Editable.Root>
+        </Table.Column>
+      </Table.Row>
+      </Table.Root>
     )
   } else {
     return (<></>)
@@ -88,19 +101,19 @@ export function BeastView(props: {stock: LivestockUnit, close: ()=>void, edit: (
 
   return (
     <>
-      <Card>
-        <CardHeader>
+      <Card.Root>
+        <Card.Header>
           <Flex>
             <HStack>
-              <GiPadlockOpen/>
-              <Switch onChange={(event) => {setEditable(event.target.checked)}}/>
+              <Icons.GiPadlockOpen/>
+              <Switch checked={editable} onCheckedChange={(event) => {setEditable(event.checked)}}/>
             </HStack>
             <Spacer/>
-            <CloseButton onClick={props.close}/>
+            <Button onClick={props.close}/>
           </Flex>
-        </CardHeader>
-        <Table size={'sm'}>
-          <Tbody >
+        </Card.Header>
+        <Table.Root size={'sm'}>
+          <Table.Body >
             <EditableRowItem title={'Name'} value={placeHolder(props.stock.name, editable)} editable={editable}/>
             <EditableRowItem title={'Angus Tech Id'} value={placeHolder(props.stock.angusTechId, editable)} editable={editable}/>
             <EditableRowItem title={'NLIS#'} value={placeHolder(props.stock.nlisId, editable)} editable={editable}/>
@@ -108,63 +121,51 @@ export function BeastView(props: {stock: LivestockUnit, close: ()=>void, edit: (
             <EditableRowItem title={'DSE'} value={placeHolder(`${props.stock.drySheepEquivalent}`, editable)} editable={editable}/>
             <EditableRowItem title={'Desexed'} value={placeHolder(`${props.stock.desexed}`, editable)} editable={editable}/>
             <EditableRowItem title={'Purchase date'} value={props.stock.purchaseDate ? props.stock.purchaseDate.toLocaleDateString() : null} editable={editable}/>
-          </Tbody>
-        </Table>
-        <ButtonGroup spacing='2' justifyContent={'center'} size={'lg'}>
+          </Table.Body>
+        </Table.Root>
+        <Group gap='2' justifyContent={'center'}>
 
-        <Wrap>
-          <WrapItem>
+        <HStack wrap={"wrap"}>
           <Button onClick={() => {}} >
             <HStack>
-              <GiMedicines size={30}/>  
+              <Icons.GiMedicines size={30}/>  
               <Text>Treat</Text>
             </HStack>
           </Button>
-          </WrapItem>
-          <WrapItem>
           <Button onClick={() => {}}>
             <HStack>
-              <GiReceiveMoney size={30}/>
+              <Icons.GiReceiveMoney size={30}/>
               <Text>Sell</Text>
             </HStack>
           </Button>
-          </WrapItem>
-          <WrapItem>
           <Button onClick={() => {}}>
             <HStack>
-              <GiCorkedTube size={30}/>
+              <Icons.GiCorkedTube size={30}/>
               <Text>Sample</Text>
             </HStack>
           </Button>
-          </WrapItem>
-          <WrapItem>
           <Button onClick={() => {}}>
             <HStack>
-              <GiIceCube size={30}/>
+              <Icons.GiIceCube size={30}/>
               <Text>A.I.</Text>
             </HStack>
           </Button>
-          </WrapItem>
-          <WrapItem>
           <Button onClick={() => {}}>
             <HStack>
-              <GiWeight size={30}/>
+              <Icons.GiWeight size={30}/>
               <Text>Weigh</Text>
             </HStack>
           </Button>
-          </WrapItem>
-          <WrapItem>
           <Button onClick={() => {setConfirmOpen(true)}}>
             <HStack>
-              <GiCancel size={30}/>
+              <Icons.GiCancel size={30}/>
               <Text>Deactivate</Text>
           </HStack>
           </Button>
-          </WrapItem>
-        </Wrap>
-        </ButtonGroup>
+        </HStack>
+        </Group>
 
-      </Card>
+      </Card.Root>
       <ConfirmDialog 
         open={confirmOpen} 
         handleYes={handleYes}
@@ -176,31 +177,34 @@ export function BeastView(props: {stock: LivestockUnit, close: ()=>void, edit: (
 
 function ConfirmDialog(props: any) {
   return(
-      <Modal
-        isOpen={props.open}
-        onClose={props.handleNo}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <ModalOverlay />
-        <ModalContent>
-
-      <ModalHeader id="alert-dialog-title">
-        {props.question}
-      </ModalHeader>
-        <ModalBody id="alert-dialog-description">
+    <DialogRoot
+      open={props.open}
+      onOpenChange={props.handleNo}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogBackdrop/>
+      <DialogTrigger/>
+      <DialogContent>
+        <DialogCloseTrigger />
+        <DialogHeader id="alert-dialog-title">
+          <DialogTitle>{props.question}</DialogTitle>
+        </DialogHeader>
+        <DialogBody id="alert-dialog-description">
           {props.text}
-        </ModalBody>
-      <ModalFooter>
-        <HStack spacing={2}>
-          <Button onClick={props.handleYes} autoFocus>
-            Yes
-          </Button>
-          <Button onClick={props.handleNo}>No</Button>
-        </HStack>
-      </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+        <DialogFooter>
+          <HStack gap={2}>
+            <Button onClick={props.handleYes} autoFocus>
+              Yes
+            </Button>
+            <Button onClick={props.handleNo}>
+              No
+            </Button>
+          </HStack>
+        </DialogFooter>
+      </DialogContent>
+    </DialogRoot>
   )
 }
 
