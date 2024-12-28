@@ -1,11 +1,14 @@
 'use client'
-import { CircularProgress } from "@chakra-ui/react"
+import {
+  ProgressCircleRing,
+  ProgressCircleRoot,
+} from "@/components/ui/progress-circle"
+
 export function Loading() {
-  // Or a custom loading skeleton component
   return (
-    <>
-      <CircularProgress isIndeterminate/>
-    </>
+    <ProgressCircleRoot value={null} size="lg" colorPalette={"teal"}>
+      <ProgressCircleRing cap="round" />
+    </ProgressCircleRoot>
   )
 }
 
