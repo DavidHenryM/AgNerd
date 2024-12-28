@@ -39,55 +39,17 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { $Enums, LivestockUnit, Prisma } from '@prisma/client'
+import prisma from "./lib/prisma"
 import { BeastView } from './beastView';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import React from 'react';
-import SuccessAlert from './components/SuccessAlert';
 import AddWeightDrawer from './components/AddWeightDrawer';
 import Loading from './loading';
-import { getActiveLivestock, getLivestock } from './queries';
+import { getLivestock } from './queries';
 import { getAge, parseColour, sortWeightsByDate } from "./utils/utils";
 import { WeightStats } from "./components/Stats";
 import { CommercialClassTag, DesexedTag, SexTag, StockClassTag } from "./components/Tags";
 import { DesexButton } from "./components/Buttons";
-import prisma from "./lib/prisma";
-// import ActiveBeastCount from './lib';
-
-
-// export function LivestockCount(): Promise<String> {
-//   const query = gql`
-//   query Query($where: LivestockUnitWhereInput) {
-//     aggregateLivestockUnit(where: $where) {
-//       _count {
-//         _all
-//       }
-//     }
-//   }`;
-
-//   const variables = {
-//     "where": {
-//       "active": {
-//         "equals": true
-//       }
-//     }
-//   }
-//   const { data } = useQuery(query, {variables})
-//   // const { data } = await getClient().query({ query: query, variables: variables });
-  
-//   return data.aggregateLivestockUnit._count._all
-// }
-
-// export async function FarmName(): Promise<String> {
-//   const query = gql`
-//   query FindFirstFarm {
-//     findFirstFarm {
-//       name
-//     }
-//   }` 
-//   const { data } = useQuery(query)  
-//   return data.findFirstFarm.name
-// }
-
 
 
 export function StockPreviewCard(props: {stock: LivestockUnit, index: Number, onClick: ()=>{}}) {
@@ -95,13 +57,12 @@ export function StockPreviewCard(props: {stock: LivestockUnit, index: Number, on
   const pregDisclosure = useDisclosure()
   const treatDisclosure = useDisclosure()
   const [confirmOpen, setConfirmOpen] = useState(false)
-  const [stock, setStock] = useState(props.stock)
-
+  const [stock, setStock] = useState<any>(props.stock)
   const age = getAge(props.stock.birthDate)
   let weightNumber
   let weightString = "?"
   let sortedWeights 
-  if (stock.weights) {
+  if (stock.weights) { 
     sortedWeights = sortWeightsByDate(stock.weights)
     if (sortedWeights.at(-1)) {
       weightNumber = sortedWeights.at(-1)?.weight
@@ -485,21 +446,19 @@ export function ControlBar(props: {setFilter: Dispatch<SetStateAction<string>>})
   )
 }
 
-
-
 export function ActiveLivestock() {
   let livestockUnits = useRef<LivestockUnit[]>([])
   let [stockFocus, setStockFocus] = useState<LivestockUnit>()
   let [loading, setLoading] = useState(true)
-  let [filter, setFilter] = useState(JSON.stringify({active: {equals: true}}))
+  let [whereFilter, setWhereFilter] = useState({active: {equals: true}})
   useEffect(() => {
-    getLivestock(filter)
+    getLivestock(whereFilter)
       .then((livestock: LivestockUnit[]) => {
         console.log(livestock)
         livestockUnits.current = livestock
         setLoading(false)
       })
-  }, [filter])
+  }, [whereFilter])
 
   if (loading){
     return (<Loading/>)
