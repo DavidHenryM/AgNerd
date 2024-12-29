@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/stat"
 import { WeightRecord } from "@prisma/client"
 import { daysBetween } from "../utils/utils"
-import { HStack } from "@chakra-ui/react"
+import { HStack, VStack } from "@chakra-ui/react"
 
 export function WeightStats(props: {weights: WeightRecord[]}){
   if (props.weights.length > 0){
@@ -76,14 +76,15 @@ export function CountStat(
       <NumberStat 
         label={props.label} 
         value={props.currentCount} 
-        style={"unit"} 
+        style={undefined} 
+        currency={undefined}
         unit={undefined} 
         trend={
           {
             direction: props.currentCount >= props.priorCount ? "up" : "down",
             label: props.trendLabel,
             value: String(props.priorCount - props.currentCount),
-            unit: "count"
+            unit: undefined
           }
         }
       >
@@ -94,7 +95,8 @@ export function CountStat(
       <NumberStat 
         label={props.label} 
         value={props.currentCount} 
-        style={"unit"} 
+        style={undefined}
+        currency={undefined}
         unit={undefined} 
         trend={undefined}
       >
@@ -119,6 +121,7 @@ export function WeightKgStat(
       label={props.label} 
       value={props.value} 
       style={undefined} 
+      currency={undefined}
       unit={"kg"} 
       trend={
         {
@@ -133,11 +136,43 @@ export function WeightKgStat(
   )
 }
 
-function NumberStat(
+export function CurrencyStat(
+  props: {
+    label: string, 
+    value: number, 
+    trend: {
+      direction: "up" | "down" | undefined,
+      value: string | undefined,
+      label: string | undefined
+    } | undefined
+  }
+){
+  return (
+    <NumberStat 
+      label={props.label} 
+      value={props.value} 
+      style={"currency"} 
+      currency={"AUD"}
+      unit={undefined} 
+      trend={
+        {
+          direction: props.trend?.direction,
+          value: props.trend?.value,
+          unit: "AUD",
+          label: props.trend?.label
+        }
+      }
+    >
+    </NumberStat>
+  )
+}
+
+export function NumberStat(
   props: {
     label: string, 
     value: number, 
     style: "unit" | "currency" | undefined, 
+    currency: string | undefined,
     unit: string | undefined,
     trend: {
       direction: "up" | "down" | undefined,
@@ -171,16 +206,22 @@ function NumberStat(
     }
     return (
       <StatRoot>
-        <StatLabel>{props.label}</StatLabel>
+      <StatLabel>{props.label}</StatLabel>
+      <VStack>
         <HStack>
-        <StatValueText
-          value={props.value}
-          formatOptions={{style: props.style}}>
-        </StatValueText>
+          <StatValueText
+            value={props.value}
+            formatOptions={{style: props.style, currency: props.currency }}>
+          </StatValueText>
           {props.unit ? <StatValueUnit>{props.unit}</StatValueUnit>:<></>}
-          </HStack>
-        <StatTrend/>
-        {props.trend?.label ? <StatLabel>{props.trend.label}</StatLabel> : <></>}
-      </StatRoot>
+        </HStack>
+        <HStack>
+          <StatTrend/>
+          {props.trend?.label ? <StatLabel>{props.trend.label}</StatLabel> : <></>}
+        </HStack>
+      </VStack>
+      
+    </StatRoot>
+
     )
 }
