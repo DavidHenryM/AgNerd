@@ -194,7 +194,7 @@ const MobileNav = (props: any) => {
   )
 }
 
-const SidebarWithHeader = (props: any) => {
+const SidebarWithHeader = (props: {Content: any}) => {
   const { open, onOpen, onClose } = useDisclosure()
 
   // const colorMode = useTheme('gray.100', 'gray.900')
@@ -231,14 +231,14 @@ const SidebarWithHeader = (props: any) => {
       // redirect('/error')
     // } else if (data) {
       // console.log(data)
-    
+    const Content = props.Content
     return (
       <Box minH="100vh" >
         <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
         {/* mobilenav */}
         <MobileNav onOpen={()=>{}} session={session}/>
         <Box ml={{ base: 0, md: 60 }} p="4">
-          <ActiveLivestock/>
+          <Content/>
         </Box>
       </Box>
     )

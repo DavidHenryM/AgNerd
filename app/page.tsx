@@ -1,7 +1,8 @@
 import SidebarWithHeader from "./components/SideBar";
+import { LoadingBar } from "./loading";
 
 export default function Home() {
   return (
-    <SidebarWithHeader/>
+    <SidebarWithHeader Content={LoadingBar}></SidebarWithHeader>
   );
 }
