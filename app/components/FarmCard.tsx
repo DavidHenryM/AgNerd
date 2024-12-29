@@ -1,8 +1,8 @@
 'use client'
 
-import { CurrencyStat, LiveStockCountStat } from "./Stats"
+import { CurrencyStat, LiveStockCountStat, NumberStat } from "./Stats"
 import { LivestockCards } from "./LivestockCards"
-import { Tabs, Card } from "@chakra-ui/react"
+import { Tabs, Card, HStack, Heading, VStack, Flex, StackSeparator, Separator } from "@chakra-ui/react"
 import { 
   StatLabel, 
   StatRoot, 
@@ -12,17 +12,21 @@ import {
   StatDownTrend,
   StatUpTrend
 } from "@/components/ui/stat"
-import { getActiveLivestockCount, getFarmName, getActiveLivestock } from "../queries"
+import { getActiveLivestockCount, getFarmName, getActiveLivestock, getTotalActiveDSE } from "../queries"
 import { useEffect, useState } from "react"
 import Loading, { LoadingBar } from "../loading"
+import { StockingRateCard } from "./Cards"
 
 
 export function FarmCard(){
   let [livestockCount, setLivestockCount] = useState<number>(0)
-  let [farmName, setFarmName] = useState<string>("")
-  let [loadingFarmName, setLoadingFarmName] = useState<boolean>(true)
   let [loadingLivestockCount, setLoadingLivestockCount] = useState<boolean>(true)
 
+  let [farmName, setFarmName] = useState<string>("")
+  let [loadingFarmName, setLoadingFarmName] = useState<boolean>(true)
+    
+  let [totalActiveDSE, setTotalActiveDSE] = useState<number>(0)
+  let [loadingTotalActiveDSE, setLoadingTotalActiveDSE] = useState<boolean>(true)
 
   useEffect(() => {
     setLoadingFarmName(true)
@@ -43,43 +47,53 @@ export function FarmCard(){
       })
   }, [])
 
+  useEffect(() => {
+    setLoadingTotalActiveDSE(true)
+    getTotalActiveDSE()
+      .then((count: number) => {
+        setTotalActiveDSE(count)
+        console.log(totalActiveDSE)
+        setLoadingTotalActiveDSE(false)
+      })
+  }, [])
+
 
   return (
-    <Card.Root>
+    <Card.Root variant={"subtle"} gap={"6"} padding={"6"} maxW={"1040px"}>
       <Card.Header>
-        {loadingFarmName ? <LoadingBar/>: farmName} 
+        <VStack>
+          <Heading>
+            {loadingFarmName ? <LoadingBar/>: farmName} 
+          </Heading>
+          <Heading>
+            Farm Statistics
+          </Heading>
+        </VStack>
       </Card.Header>
-      <Card.Body>
-        {loadingLivestockCount ? <LoadingBar/> : 
-        <LiveStockCountStat currentCount={livestockCount} priorCount={10} trendLabel={undefined}/>}
-        <StatRoot>
-          <StatLabel>Dry sheep equivalent</StatLabel>
-          <StatValueText>{"547?"}</StatValueText>
-        </StatRoot>
-        <StatRoot>
-          <StatLabel>Days to next birth</StatLabel>
-          <StatValueText>2</StatValueText>
-        </StatRoot>
-        <CurrencyStat label={"Livestock market value"} value={99999} trend={{direction: "up", value: "$10", label:"since last week"}}/>
-        <StatRoot>
-          <StatLabel>Livestock market value</StatLabel>
-          <StatValueText value={99999} formatOptions={{style: "currency", currency: "AUD"}}></StatValueText>
-          <StatUpTrend>"23.36%"</StatUpTrend>
-          <StatHelpText>
-          </StatHelpText>
-        </StatRoot>
-        <StatRoot>
-          <StatLabel>Rainfall 30 days</StatLabel>
-          <StatValueText>??? mm</StatValueText>
-          <StatUpTrend>23.36%</StatUpTrend>
-          <StatHelpText>
-            from last the same period last year
-          </StatHelpText>
-        </StatRoot>
-      </Card.Body>
-      <Card.Footer>
-        Farm Statistics
-      </Card.Footer>
+      <Flex justifyContent={"center"} gap="6">
+        <StockingRateCard 
+          livestockCount={livestockCount} 
+          loadingLivestockCount={loadingLivestockCount} 
+          totalActiveDSE={totalActiveDSE} 
+          loadingTotalActiveDSE={loadingTotalActiveDSE} 
+        />
+        <Card.Root variant={"elevated"}>
+        </Card.Root>
+        <Card.Root variant={"elevated"}>
+          <Card.Header>
+            Livestock Value
+          </Card.Header>
+          <Card.Body>
+            <CurrencyStat label={"total market value"} value={99999} trend={{direction: "up", value: "$10", label:"since last week"}}/>
+          </Card.Body>
+        </Card.Root>
+        <Card.Root variant={"elevated"}>
+          <Card.Header>Rainfall</Card.Header>
+          <Card.Body>
+            <NumberStat label={"last 30 days"} value={20.5} style={undefined} currency={undefined} unit={"mm"} trend={{direction: "down", value:"23.36%", unit: undefined, label:"from last year" }}/>
+          </Card.Body>
+        </Card.Root>
+      </Flex>
     </Card.Root>
   )
 }
