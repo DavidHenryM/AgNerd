@@ -141,3 +141,15 @@ export async function getFarmName(): Promise<string> {
     return 'My Farm'
   }
 }
+
+export async function getTotalActiveDSE(): Promise<number> {
+  const totalActiveDSE = await prisma.livestockUnit.aggregate({
+    _sum: {
+      drySheepEquivalent: true
+    },
+    where: {
+      active: true
+    }
+  })
+  return totalActiveDSE._sum.drySheepEquivalent ? totalActiveDSE._sum.drySheepEquivalent : 0
+}
