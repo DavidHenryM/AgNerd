@@ -1,8 +1,8 @@
 import SidebarWithHeader from "../components/SideBar";
-import { LoadingBar } from "../loading";
+import { LoadingCard } from "../loading";
 
 export default function Pasture(){
   return (
-    <SidebarWithHeader Content={LoadingBar}></SidebarWithHeader>
+    <SidebarWithHeader Content={LoadingCard}></SidebarWithHeader>
   )
 }
