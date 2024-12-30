@@ -32,7 +32,8 @@ export function LoadingCard() {
         </Card.Body>
         <Card.Footer/>
       </Card.Root>
-</AbsoluteCenter>  )
+    </AbsoluteCenter>  
+  )
 }
 
 export function LoadingPage(){
