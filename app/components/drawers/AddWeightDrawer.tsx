@@ -21,44 +21,44 @@ import {
   VStack, 
   Input, 
 } from "@chakra-ui/react";
-import SuccessAlert from "./SuccessAlert";
+import SuccessAlert from "../SuccessAlert";
 import { WeighMethod, LivestockUnit } from '@prisma/client'
-import { SetStateAction, useState } from "react";
-import { addWeightRecord, getLivestockUnit, setLivestockUnitActive } from "../queries";
+import { Dispatch, SetStateAction, useState, ChangeEvent, DialogHTMLAttributes } from "react";
+import { addWeightRecord, getLivestockUnit, setLivestockUnitActive } from "../../queries";
 import { Field } from "@/components/ui/field";
-import { formatAsInputFieldDate, sortWeightsByDate } from "../utils/utils"
+import { formatAsInputFieldDate, sortWeightsByDate } from "../../utils/utils"
 
 
-export default function AddWeightDrawer(props: {stock: any, setStock: SetStateAction<any>, open: boolean, onOpenChange: ()=>void}){
+export default function AddWeightDrawer(
+  props: {
+    stock: any, 
+    setStock: Dispatch<SetStateAction<any>>, 
+    open: boolean, 
+    setOpen: Dispatch<SetStateAction<boolean>>
+  }
+){
   const sortedWeights = sortWeightsByDate(props.stock.weights)
   const latestWeight = sortedWeights[sortedWeights.length -1]
   const [weighMethod, setWeighMethod] = useState(WeighMethod.SCALES)
   const [newWeight, setNewWeight] = useState(0)
-  const [loading, setLoading] = useState(false)
   const [invalidDate, setInvalidDate] = useState(false)
   const [weightEdit, setWeightEdit] = useState(String(latestWeight.weight))
   const [weightDateEdit, setWeightDateEdit] = useState(formatAsInputFieldDate(new Date))
   
   function handleSubmit(){
-    setLoading(true)
+    // setLoading(true)
+    
     addWeightRecord(
       props.stock.id, 
       Number(weightEdit),
       weighMethod,
       new Date(weightDateEdit).toISOString()
       )
-      .then(()=>getLivestockUnit(props.stock.id)).then((livestockUnit)=>props.setStock(livestockUnit))
-      .catch(e => {
-        toaster.create({
-          title: 'Weight record error',
-          description: e,
-          type: 'error',
-          duration: 5000,
-        })
-        console.error(`Error whilst writing weight record: `, e)
-      })
-      .then(()=> {
-        setLoading(false)
+      .then(()=>{
+        const livestockUnit = getLivestockUnit(props.stock.id)
+        props.setStock(livestockUnit)
+        // toaster.dismiss()
+        // setLoading(false)
         toaster.create({
           title: 'Weight record added',
           description: `Recorded new weight of ${newWeight}kg for ${props.stock.visualIdLine1} ${props.stock.visualIdLine2}${props.stock.visualIdLine3}`,
@@ -67,6 +67,7 @@ export default function AddWeightDrawer(props: {stock: any, setStock: SetStateAc
         })
       })
       .catch(e => {
+        // toaster.dismiss()
         toaster.create({
           title: 'Weight record error',
           description: e,
@@ -75,19 +76,19 @@ export default function AddWeightDrawer(props: {stock: any, setStock: SetStateAc
         })
         console.error(`Error whilst writing weight record: `, e)
       })
-      .finally(()=>{
-        props.onOpenChange()
-      })
+      // .finally(()=>{
+      //   props.onOpenChange()
+      // })
   }
 
   return (
     <DrawerRoot
       open={props.open}
-      onOpenChange={props.onOpenChange}
+      onOpenChange={(event: any) => props.setOpen(event.open)}
       placement='end'>
       <DrawerBackdrop/>
       <DrawerContent bg='blackAlpha.900'>
-        <DrawerCloseTrigger />
+        
         <DrawerHeader>Record weight</DrawerHeader>
         <DrawerBody>
           <VStack>
@@ -105,10 +106,8 @@ export default function AddWeightDrawer(props: {stock: any, setStock: SetStateAc
                 type="date"
                 value={weightDateEdit}
                 onChange={(event: any) => {
-                  console.log(event.target.value)
                   const enteredDate = new Date(event.target.value)
                   const now = new Date()
-                  console.log(enteredDate)
                   if(enteredDate > now) {
                     setInvalidDate(true)
                   } else {
@@ -130,7 +129,8 @@ export default function AddWeightDrawer(props: {stock: any, setStock: SetStateAc
           </VStack>
           {/* <SuccessAlert operation={`Adding a weight record`} loading={loading} data={data} error={error}/> */}
         </DrawerBody>
+        <DrawerCloseTrigger />
       </DrawerContent>
-  </DrawerRoot>
+    </DrawerRoot>
   )
 }
