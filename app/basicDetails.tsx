@@ -35,7 +35,7 @@ import prisma from "./lib/prisma"
 import { BeastView } from './beastView';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import React from 'react';
-import AddWeightDrawer from './components/AddWeightDrawer';
+import AddWeightDrawer from './components/drawers/AddWeightDrawer';
 import Loading from './loading';
 import { getLivestock } from './queries';
 import { getAge, parseColour, sortWeightsByDate } from "./utils/utils";
@@ -53,11 +53,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Toaster } from "@/components/ui/toaster";
+import TreatmentDrawer from "./components/drawers/TreatmentDrawer";
+import PregDrawer from "./components/drawers/PregDrawer";
 
 export function StockPreviewCard(props: {stock: LivestockUnit, index: Number, onClick: ()=>{}}) {
-  const weightDisclosure = useDisclosure()
-  const pregDisclosure = useDisclosure()
-  const treatDisclosure = useDisclosure()
+  const [openWeight, setOpenWeight] = useState(false)
+  const [openPreg, setOpenPreg] = useState(false)
+  const [openTreat, setOpenTreat] = useState(false)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [stock, setStock] = useState<any>(props.stock)
   const age = getAge(props.stock.birthDate)
@@ -72,146 +75,125 @@ export function StockPreviewCard(props: {stock: LivestockUnit, index: Number, on
     }
   return (  
     <>
-    <Card.Root key={"stockCard" + props.index}>
-      <DialogRoot>
-        <Group gap='2' justifyContent={'right'}>
-          <DialogTrigger>
-            {/* <IconButton
-              // onClick={props.onClick}
-              aria-label='Open details'
-            > */}
-              <Icons.GiCardboardBox/>
-            {/* </IconButton> */}
-          </DialogTrigger>
-        </Group>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Beast Details</DialogTitle>
-          </DialogHeader>
-          <DialogBody>
-            <BeastView stock={stock} close={function (): void {
-                throw new Error("Function not implemented.");
-              } } edit={function (): void {
-                throw new Error("Function not implemented.");
-              } }/>
-          </DialogBody>
-          <DialogFooter>
-            <DialogActionTrigger asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogActionTrigger>
-            <Button>Save</Button>
-          </DialogFooter>
-          <DialogCloseTrigger />
-        </DialogContent>
-      </DialogRoot>
-      <Card.Body>
-        <HStack>
-          <EarTagGraphic 
-            tagColour={parseColour(stock.visualIdBackgroundColour)} 
-            text={
-              {
-                colour: stock.visualIdTextColour,
-                line1: stock.visualIdLine1, 
-                line2: stock.visualIdLine2, 
-                line3: stock.visualIdLine3
-              }
-            }
-          />
-            <VStack>
-              <Text fontSize='2xl'>{stock.name}</Text>
-              <Link href={`https://angus.tech/enquiry/animal/result?page=1&tql=id%20is%20%27${props.stock.angusTechId}%27&title=`}>
-                <Text>{stock.angusTechId}</Text>
-              </Link>
-              <Text>{stock.nlisId}</Text>
-              <Text>{`${age.ageYears} ${age.yearSuffix} ${age.ageMonths} ${age.monthSuffix}`}</Text>
-              <WeightStats weights={stock.weights}/>
-            </VStack>
-        </HStack>
-      </Card.Body>
-      <Card.Footer>
-        <VStack>
+      <Card.Root key={"stockCard" + props.index}>
+        <DialogRoot>
+          <Group gap='2' justifyContent={'right'}>
+            <DialogTrigger>
+              {/* <IconButton
+                // onClick={props.onClick}
+                aria-label='Open details'
+              > */}
+                <Icons.GiCardboardBox/>
+              {/* </IconButton> */}
+            </DialogTrigger>
+          </Group>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Beast Details</DialogTitle>
+            </DialogHeader>
+            <DialogBody>
+              <BeastView stock={stock} close={function (): void {
+                  throw new Error("Function not implemented.");
+                } } edit={function (): void {
+                  throw new Error("Function not implemented.");
+                } }/>
+            </DialogBody>
+            <DialogFooter>
+              <DialogActionTrigger asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogActionTrigger>
+              <Button>Save</Button>
+            </DialogFooter>
+            <DialogCloseTrigger />
+          </DialogContent>
+        </DialogRoot>
+        <Card.Body>
           <HStack>
-            <StockClassTag stockClass={stock.class}/>
-            <SexTag sex={stock.sex}/>
-            <DesexedTag desexed={stock.desexed} sex={stock.sex}/>
-            <CommercialClassTag commercialClass={stock.commercialClass!}/>
+            <EarTagGraphic 
+              tagColour={parseColour(stock.visualIdBackgroundColour)} 
+              text={
+                {
+                  colour: stock.visualIdTextColour,
+                  line1: stock.visualIdLine1, 
+                  line2: stock.visualIdLine2, 
+                  line3: stock.visualIdLine3
+                }
+              }
+            />
+              <VStack>
+                <Text fontSize='2xl'>{stock.name}</Text>
+                <Link href={`https://angus.tech/enquiry/animal/result?page=1&tql=id%20is%20%27${props.stock.angusTechId}%27&title=`}>
+                  <Text>{stock.angusTechId}</Text>
+                </Link>
+                <Text>{stock.nlisId}</Text>
+                <Text>{`${age.ageYears} ${age.yearSuffix} ${age.ageMonths} ${age.monthSuffix}`}</Text>
+                <WeightStats weights={stock.weights}/>
+              </VStack>
           </HStack>
-          <Accordion.Root multiple={false}>
-            <Accordion.Item key={"opsAccordian" + props.index} value="opsAccordian">
-              <h2>
-                <Accordion.ItemTrigger>
-                  <Box as="span" flex='1' textAlign='left'>
-                    Operations
-                  </Box>                  
-                </Accordion.ItemTrigger>
-              </h2>
-              {/* <Accordion.Panel pb={4}> */}
-                <Group gap='2' justifyContent={'right'}>
-                  <Button onClick={treatDisclosure.onOpen} style={{width:70, height:90}}>
-                    <VStack>
-                      <Icons.GiSyringe style={{width:50, height:50}}/>  
-                      <Text>Treat</Text>
-                    </VStack>
+        </Card.Body>
+        <Card.Footer>
+          <VStack>
+            <HStack>
+              <StockClassTag stockClass={stock.class}/>
+              <SexTag sex={stock.sex}/>
+              <DesexedTag desexed={stock.desexed} sex={stock.sex}/>
+              <CommercialClassTag commercialClass={stock.commercialClass!}/>
+            </HStack>
+            <Accordion.Root multiple={false}>
+              <Accordion.Item key={"opsAccordian" + props.index} value="opsAccordian">
+                <h2>
+                  <Accordion.ItemTrigger>
+                    <Box as="span" flex='1' textAlign='left'>
+                      Operations
+                    </Box>                  
+                  </Accordion.ItemTrigger>
+                </h2>
+                {/* <Accordion.Panel pb={4}> */}
+                  <Group gap='2' justifyContent={'right'}>
+                    <Button onClick={()=>setOpenTreat(true)} style={{width:70, height:90}}>
+                      <VStack>
+                        <Icons.GiSyringe style={{width:50, height:50}}/>  
+                        <Text>Treat</Text>
+                      </VStack>
+                    </Button>
+                    <DesexButton desexed={props.stock.desexed} sex={props.stock.sex}/>
+                    <Button onClick={()=>setOpenPreg(true)}  style={{width:70, height:90}}>
+                      <VStack>
+                        <Icons.GiEmbryo style={{width:50, height:50}}/>
+                        <Text>Preg</Text>
+                      </VStack>
+                    </Button>                  
+                    <Button onClick={()=>(setOpenWeight(true))}  style={{width:70, height:90}}>
+                      <VStack>
+                        <Icons.GiWeight style={{width:50, height:50}}/>
+                        <Text>Weigh</Text>
+                      </VStack>
+                    </Button>
+                  </Group>
+                {/* </AccordionPanel> */}
+              </Accordion.Item>
+              <Accordion.Item key={"adminAccordian" + props.index} value="adminAccordian">
+                <h2>
+                  <Button>
+                    <Box as="span" flex='1' textAlign='left'>
+                      Admin
+                    </Box>
                   </Button>
-                  <DesexButton desexed={props.stock.desexed} sex={props.stock.sex}/>
-                  <Button onClick={pregDisclosure.onOpen}  style={{width:70, height:90}}>
-                    <VStack>
-                      <Icons.GiEmbryo style={{width:50, height:50}}/>
-                      <Text>Preg</Text>
-                    </VStack>
-                  </Button>                  
-                  <Button onClick={weightDisclosure.onOpen}  style={{width:70, height:90}}>
-                    <VStack>
-                      <Icons.GiWeight style={{width:50, height:50}}/>
-                      <Text>Weigh</Text>
-                    </VStack>
+                </h2>
+                {/* <AccordionPanel pb={4}> */}
+                  <Button onClick={() => {setConfirmOpen(true)}}>
+                    Deactivate
                   </Button>
-                </Group>
-              {/* </AccordionPanel> */}
-            </Accordion.Item>
-            <Accordion.Item key={"adminAccordian" + props.index} value="adminAccordian">
-              <h2>
-                <Button>
-                  <Box as="span" flex='1' textAlign='left'>
-                    Admin
-                  </Box>
-                </Button>
-              </h2>
-              {/* <AccordionPanel pb={4}> */}
-                <Button onClick={() => {setConfirmOpen(true)}}>
-                  Deactivate
-                </Button>
-              {/* </AccordionPanel> */}
-            </Accordion.Item>
-          </Accordion.Root>
-        </VStack>
-      </Card.Footer>
-    </Card.Root>
-      <AddWeightDrawer stock={stock} setStock={setStock} open={weightDisclosure.open} onOpenChange={weightDisclosure.onClose}/>
-      <DrawerRoot
-        open={treatDisclosure.open}
-        onOpenChange ={treatDisclosure.onClose}
-        >
-          <DrawerBackdrop/>
-          <DrawerContent bg='blackAlpha.900'>
-            <DrawerCloseTrigger />
-            <DrawerHeader>Record treatment</DrawerHeader>
-            <DrawerBody>
-            </DrawerBody>
-          </DrawerContent>
-      </DrawerRoot>
-      <DrawerRoot
-        open={pregDisclosure.open}
-        onOpenChange ={pregDisclosure.onClose}
-        >
-          <DrawerBackdrop/>
-          <DrawerContent bg='blackAlpha.900'>
-            <DrawerCloseTrigger />
-            <DrawerHeader>Record reproductive event</DrawerHeader>
-            <DrawerBody>
-            </DrawerBody>
-          </DrawerContent>
-      </DrawerRoot>
+                {/* </AccordionPanel> */}
+              </Accordion.Item>
+            </Accordion.Root>
+          </VStack>
+        </Card.Footer>
+      </Card.Root>
+      <Toaster/>
+      <AddWeightDrawer stock={stock} setStock={setStock} open={openWeight} setOpen={setOpenWeight}/>
+      <TreatmentDrawer open={openTreat} setOpen={setOpenTreat}/>
+      <PregDrawer open={openPreg} setOpen={setOpenPreg}/>
     </>
   )
 } else {
