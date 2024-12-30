@@ -1,20 +1,10 @@
 'use client'
 
-import { CurrencyStat, LiveStockCountStat, NumberStat } from "./Stats"
-import { LivestockCards } from "./LivestockCards"
-import { Tabs, Card, HStack, Heading, VStack, Flex, StackSeparator, Separator } from "@chakra-ui/react"
-import { 
-  StatLabel, 
-  StatRoot, 
-  StatValueText,
-  StatValueUnit,
-  StatHelpText,
-  StatDownTrend,
-  StatUpTrend
-} from "@/components/ui/stat"
-import { getActiveLivestockCount, getFarmName, getActiveLivestock, getTotalActiveDSE } from "../queries"
+import { CurrencyStat, NumberStat } from "./Stats"
+import {  Card, Heading, VStack, Flex } from "@chakra-ui/react"
+import { getActiveLivestockCount, getFarmName, getTotalActiveDSE } from "../queries"
 import { useEffect, useState } from "react"
-import Loading, { LoadingBar } from "../loading"
+import { LoadingBar } from "../loading"
 import { StockingRateCard } from "./Cards"
 
 
