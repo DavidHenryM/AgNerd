@@ -6,9 +6,8 @@ import {
   MenuItem,
   MenuRoot,
   MenuTrigger
-} from "@/components/ui/menu"
-import { CloseButton } from "@/components/ui/close-button"
-import { Avatar } from "@/components/ui/avatar"
+} from "@chakra-ui/react/menu"
+import { Avatar, AvatarFallback } from "@chakra-ui/react/avatar"
 import { IconType } from 'react-icons'
 // import { FarmCard } from './FarmCard'
 // import { LivestockCards } from './LivestockCards'
@@ -70,7 +69,9 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             AgNerd
           </Text>
         </HStack>
-        <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
+        <IconButton display={{ base: 'flex', md: 'none' }} onClick={onClose}>
+          <Icons.LuX />
+        </IconButton>
       </Flex>
       <VStack separator={<StackSeparator />}>
         {LinkItems.map((link) => ( 
@@ -162,10 +163,10 @@ const MobileNav = (props: any) => {
           <MenuRoot>
             <MenuTrigger py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
               <HStack>
-                <Avatar
-                  size={'sm'}
-                  src={image}
-                />
+                <Avatar.Root size={'sm'}>
+                  <Avatar.Image src={image}/>
+                  <AvatarFallback>AN</AvatarFallback>
+                </Avatar.Root>
                 <VStack
                   display={{ base: 'none', md: 'flex' }}
                   alignItems="flex-start"
