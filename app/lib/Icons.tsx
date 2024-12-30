@@ -33,6 +33,7 @@ import {
 import { FaCow } from 'react-icons/fa6'
 import { MdAgriculture } from 'react-icons/md'
 import { FiBell, FiSettings } from 'react-icons/fi'
+import { LuX } from "react-icons/lu"
 
 export const Icons = { 
   HiFilter, 
@@ -68,4 +69,5 @@ export const Icons = {
   MdAgriculture,
   FiBell,
   FiSettings,
+  LuX,
 }
