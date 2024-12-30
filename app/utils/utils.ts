@@ -56,3 +56,9 @@ export function parseColour(tagColour: LivestockUnit["visualIdBackgroundColour"]
 export function sortWeightsByDate(weights: WeightRecord[]){
   return weights.sort((a,b) => a.dateMeasured.getTime() - b.dateMeasured.getTime())
 }
+
+export function formatAsInputFieldDate(date: Date): string {
+  const dateArray = date.toLocaleDateString('en-AU', { year: "numeric", month: '2-digit', day: '2-digit' }).split('/')
+  const dateString = `${dateArray[2]}-${dateArray[1]}-${dateArray[0]}`
+  return dateString
+}
