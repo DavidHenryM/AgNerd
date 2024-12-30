@@ -27,15 +27,11 @@ import { SetStateAction, useState } from "react";
 import { addWeightRecord, getLivestockUnit, setLivestockUnitActive } from "../queries";
 import { Field } from "@/components/ui/field";
 import { formatAsInputFieldDate, sortWeightsByDate } from "../utils/utils"
-// import { useMutation, gql } from "@apollo/client";
-// import { createWeightRecordMutation } from "../lib/mutations";
-  
 
 
 export default function AddWeightDrawer(props: {stock: any, setStock: SetStateAction<any>, open: boolean, onOpenChange: ()=>void}){
   const sortedWeights = sortWeightsByDate(props.stock.weights)
   const latestWeight = sortedWeights[sortedWeights.length -1]
-  const [weighDateString, setWeighDateString] = useState('')
   const [weighMethod, setWeighMethod] = useState(WeighMethod.SCALES)
   const [newWeight, setNewWeight] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -45,12 +41,11 @@ export default function AddWeightDrawer(props: {stock: any, setStock: SetStateAc
   
   function handleSubmit(){
     setLoading(true)
-    const weighDate = new Date(weighDateString)
     addWeightRecord(
       props.stock.id, 
-      newWeight,
+      Number(weightEdit),
       weighMethod,
-      weighDate
+      new Date(weightDateEdit).toISOString()
       )
       .then(()=>getLivestockUnit(props.stock.id)).then((livestockUnit)=>props.setStock(livestockUnit))
       .catch(e => {

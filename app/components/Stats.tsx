@@ -28,7 +28,7 @@ export function WeightStats(props: {weights: WeightRecord[]}){
           trend={ 
             {
               direction: statChange >= 0 ? "up":"down",
-              label: `since ${String(lastWeightDate.toLocaleDateString())}`,
+              label: `in ${weighDeltaDays} days`,
               value: statChangeString
             }
           }>

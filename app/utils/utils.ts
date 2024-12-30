@@ -37,8 +37,8 @@ function treatAsUTC(date: Date): Date {
 }
 
 export function daysBetween(startDate: Date, endDate: Date): number {
-  let secondsPerDay = 24 * 60 * 60;
-  return Math.floor((treatAsUTC(endDate).getTime() - treatAsUTC(startDate).getTime()) / secondsPerDay)
+  let milliSecondsPerDay = 24 * 60 * 60 * 1000;
+  return Math.abs(Math.floor((treatAsUTC(endDate).getTime() - treatAsUTC(startDate).getTime()) / milliSecondsPerDay))
 }
 
 
