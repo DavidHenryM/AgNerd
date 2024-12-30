@@ -1,9 +1,9 @@
 import { Heading } from "@chakra-ui/react";
 import SidebarWithHeader from "../components/SideBar";
-import { LoadingBar } from "../loading";
+import { LoadingCard } from "../loading";
 
 export default function Settings(){
   return (
-    <SidebarWithHeader Content={LoadingBar}></SidebarWithHeader>
+    <SidebarWithHeader Content={LoadingCard}></SidebarWithHeader>
   )
 }
