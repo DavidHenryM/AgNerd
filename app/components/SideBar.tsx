@@ -9,18 +9,10 @@ import {
 } from "@chakra-ui/react/menu"
 import { Avatar, AvatarFallback } from "@chakra-ui/react/avatar"
 import { IconType } from 'react-icons'
-// import { FarmCard } from './FarmCard'
-// import { LivestockCards } from './LivestockCards'
-import { ActiveLivestock } from '../basicDetails'
-// import { useSession, signIn, signOut } from "next-auth/react"
-// import { useQuery } from '@apollo/client'
-// import { isUserAuthorizedQuery } from '../lib/queries'
-import { useEffect, useRef } from 'react'
-// import { AuthProviderNames } from '@prisma/client'
-import Loading from '../loading'
 import Link from 'next/link'
-import { Box, BoxProps, Flex, FlexProps, HStack, Image, Text, IconButton, Button, VStack, useDisclosure, StackSeparator} from '@chakra-ui/react'
+import { Box, BoxProps, Flex, FlexProps, HStack, Text, IconButton, Button, VStack, useDisclosure, StackSeparator} from '@chakra-ui/react'
 import { Icons } from '../lib/Icons'
+import { NerdCowboy } from './Images'
 
 
 interface LinkItemProps {
@@ -60,11 +52,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       {...rest}>
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <HStack>
-          <Image 
-            src='https://slackmojis.com/emojis/10902-nerdy_cowboy/download'
-            alt='AgNerd'
-            boxSize='40px'
-          />
+          <NerdCowboy size={40}/>
           <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
             AgNerd
           </Text>
