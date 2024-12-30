@@ -1,11 +1,8 @@
 'use client'
-import {
-  ProgressCircleRing,
-  ProgressCircleRoot,
-} from "@/components/ui/progress-circle"
+
 import { ProgressBar, ProgressRoot } from "@/components/ui/progress"
 import SidebarWithHeader from "./components/SideBar"
-import { AbsoluteCenter, Card, Center, Heading, VStack } from "@chakra-ui/react"
+import { AbsoluteCenter, Card, Heading, VStack } from "@chakra-ui/react"
 import { NerdCowboy } from "./components/Images"
 
 export function Loading() {
