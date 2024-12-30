@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+.yarn/install-state.gz
 
 # testing
 /coverage
@@ -33,12 +34,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-
-#prisma
-app/prisma/generated/**
 .env
-local.env
-app/admin/data-tables.tsx
-app/admin/nft-marketplace.tsx
-public/tag.svg
+
+# chakra
+components/ui/

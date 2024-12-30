@@ -1,53 +1,33 @@
 'use client'
 
+import { useTheme } from 'next-themes'
 import {
-  IconButton,
-  Avatar,
-  Box,
-  CloseButton,
-  Flex,
-  HStack,
-  VStack,
-  Icon,
-  useColorModeValue,
-  Text,
-  Drawer,
-  DrawerContent,
-  useDisclosure,
-  BoxProps,
-  FlexProps,
-  Menu,
-  MenuButton,
-  MenuDivider,
+  MenuContent,
   MenuItem,
-  MenuList,
-  Tab,
-  Image,
-} from '@chakra-ui/react'
-import {
-  GiHighGrass,
-  GiHamburgerMenu,
-  GiCowboyBoot,
-  GiFallDown
-  // FiTrendingUp,
-  // FiCompass,
-  // FiStar,
-  // FiSettings,
-  // FiMenu,
-  // FiBell,
-  // FiChevronDown,
-} from 'react-icons/gi'
-import {FaCow} from 'react-icons/fa6'
-import {MdAgriculture} from 'react-icons/md'
-import { FiBell } from 'react-icons/fi'
+  MenuRoot,
+  MenuTrigger
+} from "@/components/ui/menu"
+import { CloseButton } from "@/components/ui/close-button"
+import { Avatar } from "@/components/ui/avatar"
 import { IconType } from 'react-icons'
-import { FarmCard } from './FarmCard'
-import { LivestockCards } from './LivestockCards'
+// import { FarmCard } from './FarmCard'
+// import { LivestockCards } from './LivestockCards'
 import { ActiveLivestock } from '../basicDetails'
+// import { useSession, signIn, signOut } from "next-auth/react"
+// import { useQuery } from '@apollo/client'
+// import { isUserAuthorizedQuery } from '../lib/queries'
+import { useEffect, useRef } from 'react'
+// import { AuthProviderNames } from '@prisma/client'
+import Loading from '../loading'
+import Link from 'next/link'
+import { Box, BoxProps, Flex, FlexProps, HStack, Image, Text, IconButton, Button, VStack, useDisclosure, StackSeparator} from '@chakra-ui/react'
+import { Icons } from '../lib/Icons'
+
 
 interface LinkItemProps {
   name: string
   icon: IconType
+  target: string
 }
 
 interface NavItemProps extends FlexProps {
@@ -64,20 +44,17 @@ interface SidebarProps extends BoxProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Farm', icon: MdAgriculture },
-  { name: 'Livestock', icon: FaCow },
-  { name: 'Pasture', icon: GiHighGrass },
-  // { name: '', icon: FiStar },
-  // { name: 'Settings', icon: FiSettings },
+  { name: 'Farm', icon: Icons.MdAgriculture, target: "farm" },
+  { name: 'Livestock', icon: Icons.FaCow, target: "livestock" },
+  { name: 'Pasture', icon: Icons.GiHighGrass, target: "pasture" },
+  { name: 'Settings', icon: Icons.FiSettings, target: "settings" },
 ]
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
     <Box
       transition="3s ease"
-      bg={useColorModeValue('white', 'gray.900')}
       borderRight="1px"
-      borderRightColor={useColorModeValue('gray.200', 'gray.700')}
       w={{ base: 'full', md: 60 }}
       pos="fixed"
       h="full"
@@ -95,23 +72,22 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         </HStack>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
-          {link.name}
-        </NavItem>
-      ))}
+      <VStack separator={<StackSeparator />}>
+        {LinkItems.map((link) => ( 
+          <NavItem key={link.name} name={link.name} NavIcon={link.icon} target={link.target}/> 
+        ))} 
+      </VStack>
     </Box>
   )
 }
 
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+function NavItem(props: {NavIcon: IconType, name: string, target: string}) {
   return (
     <Box
-      as="a"
-      href="#"
       style={{ textDecoration: 'none' }}
-      _focus={{ boxShadow: 'none' }}>
-      <Flex
+      _focus={{ boxShadow: "md" }}
+      w={{ base: 'full', md: 60 }}> 
+      <HStack
         align="center"
         p="4"
         mx="4"
@@ -119,121 +95,155 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
         role="group"
         cursor="pointer"
         _hover={{
-          bg: 'cyan.400',
+          bg: 'teal',
           color: 'white',
         }}
-        {...rest}>
-        {icon && (
-          <Icon
-            mr="4"
-            fontSize="16"
-            _groupHover={{
-              color: 'white',
-            }}
-            as={icon}
-          />
-        )}
-        {children}
-      </Flex>
+        gap={4}>
+      <props.NavIcon/>
+      <Link href={props.target}>{props.name}</Link>
+    </HStack>
     </Box>
   )
 }
 
-const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+const MobileNav = (props: any) => {
+  const {theme, setTheme} = useTheme()
+  let name = 'John Wayne'
+  let image = 'https://cdn.britannica.com/82/136182-050-6BB308B7/John-Wayne.jpg'
+  let email = ''
+  const session = props.session
+  if (session) {
+    if (session.user) {
+      if (session.user.name) {
+        name = session.user.name
+      }
+      if (session.user.image) {
+        image = session.user.image
+      }
+      if (session.user.email) {
+        email = session.user.email
+      }
+    }
+  }
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
-      bg={useColorModeValue('white', 'gray.900')}
       borderBottomWidth="1px"
-      borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
       justifyContent={{ base: 'space-between', md: 'flex-end' }}
-      {...rest}>
+      {...props.rest}>
       <IconButton
         display={{ base: 'flex', md: 'none' }}
-        onClick={onOpen}
+        onClick={props.onOpen}
         variant="outline"
         aria-label="open menu"
-        icon={<GiHamburgerMenu />}
-      />
+      >
+        <Icons.GiHamburgerMenu />
+      </IconButton>
+      
 
       <Text
         display={{ base: 'flex', md: 'none' }}
         fontSize="2xl"
         fontFamily="monospace"
         fontWeight="bold">
-        Logo
       </Text>
 
-      <HStack spacing={{ base: '0', md: '6' }}>
-        <IconButton size="lg" variant="ghost" aria-label="open menu" icon={<FiBell />} />
+      <HStack gap={{ base: '0', md: '6' }}>
+      <Button onClick={()=>setTheme(theme === 'light' ? 'dark' : 'light')}>
+        {theme === 'light' ? <Icons.GiMoon/> : <Icons.GiSun/>}
+      </Button>
+        <IconButton size="lg" variant="ghost" aria-label="open menu" >
+          <Icons.FiBell/>
+        </IconButton>
         <Flex alignItems={'center'}>
-          <Menu>
-            <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
+          <MenuRoot>
+            <MenuTrigger py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
               <HStack>
                 <Avatar
                   size={'sm'}
-                  src={
-                    'https://cdn.britannica.com/82/136182-050-6BB308B7/John-Wayne.jpg'
-                  }
+                  src={image}
                 />
                 <VStack
                   display={{ base: 'none', md: 'flex' }}
                   alignItems="flex-start"
-                  spacing="1px"
+                  gap="1px"
                   ml="2">
-                  <Text fontSize="sm">John Wayne</Text>
+                  <Text fontSize="sm">{name}</Text>
                   <Text fontSize="xs" color="gray.600">
                     Cowboy
                   </Text>
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>
-                  <GiFallDown />
+                  <Icons.GiFallDown />
                 </Box>
               </HStack>
-            </MenuButton>
-            <MenuList
-              bg={useColorModeValue('white', 'gray.900')}
-              borderColor={useColorModeValue('gray.200', 'gray.700')}>
-              <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
-              <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
-            </MenuList>
-          </Menu>
+            </MenuTrigger>
+            <MenuContent>
+              <MenuItem value="Profile"/>
+              <MenuItem value="Settings"/>
+              <MenuItem value="Billing"/>
+              {/* <MenuItem onClick={()=>(signOut())}>Sign out</MenuItem> */}
+            </MenuContent>
+          </MenuRoot>
         </Flex>
       </HStack>
     </Flex>
   )
 }
 
-const SidebarWithHeader = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+const SidebarWithHeader = (props: {Content: any}) => {
+  const { open, onOpen, onClose } = useDisclosure()
 
-  return (
-    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
-      <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
-      <Drawer
-        isOpen={isOpen}
-        placement="left"
-        onClose={onClose}
-        returnFocusOnClose={false}
-        onOverlayClick={onClose}
-        size="full">
-        <DrawerContent>
-          <SidebarContent onClose={onClose} />
-        </DrawerContent>
-      </Drawer>
-      {/* mobilenav */}
-      <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
-        <ActiveLivestock/>
+  // const colorMode = useTheme('gray.100', 'gray.900')
+  // let providerName = AuthProviderNames.GITHUB
+  let email = ''
+  let userName = ''
+  // const userAuthQuery = useRef(isUserAuthorizedQuery(providerName, email, userName))
+  // let variables: OperationVariables = {}
+  // useEffect(() => {  
+  //   userAuthQuery.current = isUserAuthorizedQuery(providerName, email, userName)
+
+  // }, [providerName, email, userName])
+  // const variables = userAuthQuery.current.variables
+  // const { loading, error, data } = useQuery(userAuthQuery.current.query, {variables})
+  const loading = false
+  const error = false
+  const status = 'authenticated'
+  const data = false
+  const session = {name: "test", email: "test@test.test"}
+
+  // if (status == 'loading') {
+    // return (
+      // <Loading/>
+    // )
+  // } else if(status == 'unauthenticated') {
+    // TODO: add error alert
+    // signIn() 
+  // } else if (status == 'authenticated') { 
+    // if (loading) {
+      // return (
+        // <Loading/>
+      // )
+    // } else if (error) {
+      // redirect('/error')
+    // } else if (data) {
+      // console.log(data)
+    const Content = props.Content
+    return (
+      <Box minH="100vh" >
+        <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
+        {/* mobilenav */}
+        <MobileNav onOpen={()=>{}} session={session}/>
+        <Box ml={{ base: 0, md: 60 }} p="4">
+          <Content/>
+        </Box>
       </Box>
-    </Box>
-  )
-}
+    )
+  }
+
+
 
 export default SidebarWithHeader

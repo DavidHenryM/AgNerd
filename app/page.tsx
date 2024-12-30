@@ -1,14 +1,8 @@
-import { FarmCard } from "./components/FarmCard"
-import SidebarWithHeader from "./components/SideBar"
+import SidebarWithHeader from "./components/SideBar";
+import { LoadingBar } from "./loading";
 
-export function Page() {
-  
-  // console.log(data)
+export default function Home() {
   return (
-    <div>
-      <SidebarWithHeader />
-    </div>
-  )
+    <SidebarWithHeader Content={LoadingBar}></SidebarWithHeader>
+  );
 }
- 
-export default Page

@@ -1,88 +1,99 @@
-import { LivestockCount, FarmName, ActiveLivestock, ActiveDrySheepEquivalent } from "../basicDetails"
-import { GiCow } from 'react-icons/gi';
-import { LivestockCards } from "./LivestockCards"
-import { 
-  Card, 
-  CardHeader, 
-  CardBody, 
-  CardFooter, 
-  Text,  
-  Tabs, 
-  TabList, 
-  TabPanels, 
-  Tab, 
-  TabPanel,
-  Stat,
-  StatArrow,
-  StatHelpText,
-  StatLabel,
-  StatNumber, 
-  StatGroup,
-  HStack
- } from '../chakraShim'
+'use client'
 
-const livestocks = await ActiveLivestock()
+import { CurrencyStat, LiveStockCountStat, NumberStat } from "./Stats"
+import { LivestockCards } from "./LivestockCards"
+import { Tabs, Card, HStack, Heading, VStack, Flex, StackSeparator, Separator } from "@chakra-ui/react"
+import { 
+  StatLabel, 
+  StatRoot, 
+  StatValueText,
+  StatValueUnit,
+  StatHelpText,
+  StatDownTrend,
+  StatUpTrend
+} from "@/components/ui/stat"
+import { getActiveLivestockCount, getFarmName, getActiveLivestock, getTotalActiveDSE } from "../queries"
+import { useEffect, useState } from "react"
+import Loading, { LoadingBar } from "../loading"
+import { StockingRateCard } from "./Cards"
+
 
 export function FarmCard(){
+  let [livestockCount, setLivestockCount] = useState<number>(0)
+  let [loadingLivestockCount, setLoadingLivestockCount] = useState<boolean>(true)
+
+  let [farmName, setFarmName] = useState<string>("")
+  let [loadingFarmName, setLoadingFarmName] = useState<boolean>(true)
+    
+  let [totalActiveDSE, setTotalActiveDSE] = useState<number>(0)
+  let [loadingTotalActiveDSE, setLoadingTotalActiveDSE] = useState<boolean>(true)
+
+  useEffect(() => {
+    setLoadingFarmName(true)
+    getFarmName()
+      .then((name: string) => {
+        setFarmName(name)
+        setLoadingFarmName(false)
+      })
+  }, [])
+
+  useEffect(() => {
+    setLoadingLivestockCount(true)
+    getActiveLivestockCount()
+      .then((count: number) => {
+        setLivestockCount(count)
+        console.log(livestockCount)
+        setLoadingLivestockCount(false)
+      })
+  }, [])
+
+  useEffect(() => {
+    setLoadingTotalActiveDSE(true)
+    getTotalActiveDSE()
+      .then((count: number) => {
+        setTotalActiveDSE(count)
+        console.log(totalActiveDSE)
+        setLoadingTotalActiveDSE(false)
+      })
+  }, [])
+
+
   return (
-    <Tabs isFitted variant='enclosed'>
-      <TabList mb='1em'>
-        <Tab>Farm</Tab>
-        <Tab>Livestock</Tab>
-      </TabList>
-      <TabPanels>
-        <TabPanel>
-          <Card>
-            <CardHeader>
-              <Text>{FarmName()}</Text> 
-            </CardHeader>
-            <CardBody>
-            <StatGroup>
-              <Stat>
-                <StatLabel>Livestock</StatLabel>
-                <StatNumber>{LivestockCount()}</StatNumber>
-              </Stat>
-
-              <Stat>
-                <StatLabel>Dry sheep equivalent</StatLabel>
-                <StatNumber>{ActiveDrySheepEquivalent()}</StatNumber>
-              </Stat>
-
-              <Stat>
-                <StatLabel>Days to next birth</StatLabel>
-                <StatNumber>2</StatNumber>
-              </Stat>
-
-              <Stat>
-                <StatLabel>Livestock market value</StatLabel>
-                <StatNumber>$???</StatNumber>
-                <StatHelpText>
-                  <StatArrow type='increase' />
-                  23.36%
-                </StatHelpText>
-              </Stat>
-
-              <Stat>
-                <StatLabel>Rainfall 30 days</StatLabel>
-                <StatNumber>$???</StatNumber>
-                <StatHelpText>
-                  <StatArrow type='increase' />
-                  23.36% from last year
-                </StatHelpText>
-              </Stat>
-            </StatGroup>
-          </CardBody>
-          <CardFooter>
-            <Text>
-              Farm Statistics
-            </Text>
-          </CardFooter>
-        </Card>
-        </TabPanel>
-        <TabPanel>
-           <LivestockCards />
-         </TabPanel>
-      </TabPanels>
-    </Tabs>
+    <Card.Root variant={"subtle"} gap={"6"} padding={"6"} maxW={"1040px"}>
+      <Card.Header>
+        <VStack>
+          <Heading>
+            {loadingFarmName ? <LoadingBar/>: farmName} 
+          </Heading>
+          <Heading>
+            Farm Statistics
+          </Heading>
+        </VStack>
+      </Card.Header>
+      <Flex justifyContent={"center"} gap="6">
+        <StockingRateCard 
+          livestockCount={livestockCount} 
+          loadingLivestockCount={loadingLivestockCount} 
+          totalActiveDSE={totalActiveDSE} 
+          loadingTotalActiveDSE={loadingTotalActiveDSE} 
+        />
+        <Card.Root variant={"elevated"}>
+        </Card.Root>
+        <Card.Root variant={"elevated"}>
+          <Card.Header>
+            Livestock Value
+          </Card.Header>
+          <Card.Body>
+            <CurrencyStat label={"total market value"} value={99999} trend={{direction: "up", value: "$10", label:"since last week"}}/>
+          </Card.Body>
+        </Card.Root>
+        <Card.Root variant={"elevated"}>
+          <Card.Header>Rainfall</Card.Header>
+          <Card.Body>
+            <NumberStat label={"last 30 days"} value={20.5} style={undefined} currency={undefined} unit={"mm"} trend={{direction: "down", value:"23.36%", unit: undefined, label:"from last year" }}/>
+          </Card.Body>
+        </Card.Root>
+      </Flex>
+    </Card.Root>
   )
 }

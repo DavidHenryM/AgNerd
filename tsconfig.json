@@ -1,23 +1,17 @@
 {
   "compilerOptions": {
-    "target": "es2018",
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext",
-      "es2018",
-      "esnext.asynciterable"
+      "esnext"
     ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -29,17 +23,16 @@
     ],
     "paths": {
       "@/*": [
-        "./src/*"
+        "./*"
       ]
-    }
+    },
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "src/**/*.ts",
-    "app/admin/page.tsx.bkp"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

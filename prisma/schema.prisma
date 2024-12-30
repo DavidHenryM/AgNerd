@@ -1,0 +1,383 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// generator typegraphql {
+//   provider            = "typegraphql-prisma"
+//   output              = "generated/"
+//   formatGeneratedCode = "prettier"
+// }
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Farm {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  businessName   String?
+  lotSectionPlan String[]
+  abn            String?
+  acn            String?
+  pic            String?
+  // livestockUnits LivestockUnit[]
+  // paddocks       Paddock[]
+  users          User[]
+}
+
+model User {
+  id            String                @id @default(auto()) @map("_id") @db.ObjectId
+  firstName     String
+  preferredName String?
+  lastName      String
+  authProviders AuthProviderDetails[]
+  farm          Farm                  @relation(fields: [farmId], references: [id])
+  farmId        String                @db.ObjectId
+}
+
+enum AuthProviderNames {
+  GITHUB
+  GOOGLE
+  EMAIL
+}
+
+model AuthProviderDetails {
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  user         User              @relation(fields: [userId], references: [id])
+  providerName AuthProviderNames
+  email        String
+  userName     String?
+  userId       String            @db.ObjectId
+}
+
+model Graze {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  startDatetime     DateTime
+  endDateTime       DateTime?
+  paddock           Paddock   @relation(fields: [paddockId], references: [id])
+  paddockId         String    @unique @db.ObjectId
+  mobIds            String[]  @db.ObjectId
+  mob               Mob[]     @relation(fields: [mobIds], references: [id])
+  dseDaysPerHectare Float?
+}
+
+model Breed {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  class           StockClass
+  members         LivestockUnit? @relation(fields: [livestockUnitId], references: [id])
+  livestockUnitId String         @unique @db.ObjectId
+}
+
+model Mob {
+  id       String          @id @default(auto()) @map("_id") @db.ObjectId
+  name     String?
+  members  LivestockUnit[]
+  comment  String?
+  grazeIds String[]        @db.ObjectId
+  graze    Graze[]         @relation(fields: [grazeIds], references: [id])
+}
+
+model LivestockUnit {
+  id                           String                         @id @default(auto()) @map("_id") @db.ObjectId
+  nlisId                       String?
+  visualIdLine1                String?
+  visualIdLine2                String?
+  visualIdLine3                String?
+  visualIdBackgroundColour     VisualIdColour?
+  visualIdTextColour           VisualIdColour?
+  class                        StockClass
+  commercialClass              CommercialClass?
+  breed                        Breed?
+  name                         String?
+  comment                      String?
+  sex                          Sex
+  birthDate                    DateTime
+  desexed                      Boolean
+  sireId                       String?                        @db.ObjectId
+  sire                         LivestockUnit?                 @relation("SIRED", fields: [sireId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sired                        LivestockUnit[]                @relation("SIRED")
+  damId                        String?                        @db.ObjectId
+  dam                          LivestockUnit?                 @relation("BIRTHED", fields: [damId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  birthed                      LivestockUnit[]                @relation("BIRTHED")
+  mob                          Mob?                           @relation(fields: [mobRef], references: [id])
+  mobRef                       String?                        @db.ObjectId
+  pregnancy                    Pregnancy[]                    @relation(fields: [pregnancyId], references: [id])
+  pregnancyId                  String[]                       @db.ObjectId
+  weights                      WeightRecord[]
+  treatments                   ChemicalTreatment[]
+  drySheepEquivalent           Int                            @default(1)
+  purchasePrice                Float?
+  purchaseDate                 DateTime?
+  angusTechId                  String?
+  active                       Boolean                        @default(true)
+  estimatedBreedingValueResult EstimatedBreedingValueResult[]
+
+  // farm                         Farm                           @relation(fields: [farmId], references: [id])
+  // farmId                       String                         @unique @db.ObjectId
+}
+
+model Pregnancy {
+  id                         String          @id @default(auto()) @map("_id") @db.ObjectId
+  earliestPossibleConception DateTime?
+  latestPossibleConception   DateTime?
+  conception                 DateTime?
+  dueDate                    DateTime?
+  earliestPossibleBirth      DateTime?
+  latestPossibleBirth        DateTime?
+  parentId                   String[]        @unique @db.ObjectId
+  parents                    LivestockUnit[] @relation(fields: [parentId], references: [id])
+  pregnancySireId            String          @db.ObjectId
+  pregnancyTest              PregnancyTest[]
+}
+
+model PregnancyTest {
+  id          String              @id @default(auto()) @map("_id") @db.ObjectId
+  testDate    DateTime
+  testType    PregnancyTestType
+  resultDate  DateTime
+  result      PregnancyTestResult
+  pregnancyId String              @unique @db.ObjectId
+  pregnancy   Pregnancy           @relation(fields: [pregnancyId], references: [id])
+  cost        Float?
+}
+
+enum PregnancyTestResult {
+  PREGNANT
+  NOT_PREGNANT
+  INCONCLUSIVE
+}
+
+enum PregnancyTestType {
+  MANUAL_RECTAL_PALPATATION
+  ULTRASOUND
+  BIOPRYN
+}
+
+model ChemicalTreatment {
+  id                String            @id @default(auto()) @map("_id") @db.ObjectId
+  liveStockUnit     LivestockUnit     @relation(fields: [livestockUnitId], references: [id])
+  livestockUnitId   String            @db.ObjectId
+  treatmentDate     DateTime
+  applicationMethod ApplicationMethod
+  product           ChemicalProduct   @relation(fields: [chemicalProductId], references: [id])
+  chemicalProductId String            @db.ObjectId
+  volumeMl          Int
+}
+
+model ChemicalProduct {
+  id                   String               @id @default(auto()) @map("_id") @db.ObjectId
+  manufacturer         ChemicalManufacturer
+  productName          ChemicalProductName
+  serialNumber         String?
+  batchNumber          String?
+  volumeMl             Int?
+  cost                 Float?
+  type                 ChemicalType
+  witholdingPeriodDays Int                  @default(0)
+  activeIngredients    ActiveIngredient[]
+  ChemicalTreatment    ChemicalTreatment[]
+}
+
+model ActiveIngredient {
+  id         String          @id @default(auto()) @map("_id") @db.ObjectId
+  ingredient Ingredient
+  mgPermL    Float
+  product    ChemicalProduct @relation(fields: [productId], references: [id])
+  productId  String          @db.ObjectId
+}
+
+model EstimatedBreedingValueDefinition {
+  id                           String                         @id @default(auto()) @map("_id") @db.ObjectId
+  name                         String
+  code                         String
+  category                     EbvCategory
+  description                  String
+  higherIsBetter               Boolean
+  units                        Units
+  measurement                  Measurement
+  angusTechFieldNameValue      String?
+  angusTechFieldNamePercentile String?
+  angusTechFieldNameAccuracy   String?
+  results                      EstimatedBreedingValueResult[]
+}
+
+model EstimatedBreedingValueResult {
+  id                                 String                           @id @default(auto()) @map("_id") @db.ObjectId
+  ebv                                EstimatedBreedingValueDefinition @relation(fields: [estimatedBreedingValueDefinitionId], references: [id])
+  estimatedBreedingValueDefinitionId String                           @db.ObjectId
+  value                              Float
+  percentile                         Float
+  accuracy                           Float
+  livestockUnit                      LivestockUnit                    @relation(fields: [livestockUnitId], references: [id])
+  livestockUnitId                    String                           @db.ObjectId
+}
+
+enum Units {
+  KILOGRAMS
+  DAYS
+  PERCENTAGE
+  CENTIMETRES
+  SQUARE_CENTIMETRES
+  MILLIMETRES
+  KILOGRAMS_PER_DAY
+  STRUCTURAL_SCORE
+  DOLLARS_AUSTRALIAN
+}
+
+enum Measurement {
+  CARCASE_WEIGHT
+  LIVE_WEIGHT
+  CIRCUMFERENCE
+  CALVING_UNASSISTED
+  GESTATION
+  DOCILE_CALVES
+  MUSCLE_AREA
+  FAT_DEPTH
+  SALEABLE_BEEF
+  INTRAMUSCULAR_FAT
+  FEED_CONSUMED
+  CLAW_SET
+  FOOT_ANGLE
+  LEG_ANGLE
+  JOINING_TO_CALVING
+  NET_PROFITABILITY
+}
+
+enum EbvCategory {
+  CALVING_EASE
+  GROWTH
+  FERTILITY
+  TEMPERAMENT
+  CARCASE
+  FEED_EFFICIENCY
+  STRUCTURAL
+  SELECTION_INDEX
+}
+
+enum Ingredient {
+  TRICLABENDAZOLE
+  ABAMECTIN
+}
+
+enum ChemicalType {
+  DRENCH
+  VACCINE
+  SUPPLEMENT
+  ANTIBIOTICS
+}
+
+enum ApplicationMethod {
+  ORAL
+  TRANSDERMAL
+  SUB_CUT_INJECTION
+  INTRAVENUS_INJECTION
+}
+
+enum VisualIdColour {
+  WHITE
+  ORANGE
+  LIGHT_GREEN
+  PURPLE
+  YELLOW
+  RED
+  SKY_BLUE
+  BLACK
+}
+
+model Paddock {
+  id                      String                 @id @default(auto()) @map("_id") @db.ObjectId
+  name                    String
+  polygon                 GeoPoint[]
+  areaHa                  Float
+  graze                   Graze[]
+  livestockUnitPosition   LivestockUnitPosition? @relation(fields: [livestockUnitPositionId], references: [id])
+  livestockUnitPositionId String                 @unique @db.ObjectId
+  // farm                    Farm                   @relation(fields: [farmId], references: [id])
+  // farmId                  String                 @unique @db.ObjectId
+}
+
+model LivestockUnitPosition {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  date     DateTime
+  location GeoPoint?
+  paddock  Paddock?
+}
+
+model GeoPoint {
+  id                      String                 @id @default(auto()) @map("_id") @db.ObjectId
+  latitude                Float
+  longitude               Float
+  paddock                 Paddock                @relation(fields: [paddockId], references: [id])
+  paddockId               String                 @db.ObjectId
+  livestockUnitPosition   LivestockUnitPosition? @relation(fields: [livestockUnitPositionId], references: [id])
+  livestockUnitPositionId String                 @unique @db.ObjectId
+}
+
+model WeightRecord {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  weight          Float
+  dateMeasured    DateTime      @default(now())
+  method          WeighMethod   @default(SCALES)
+  livestockUnit   LivestockUnit @relation(fields: [livestockUnitId], references: [id])
+  livestockUnitId String        @db.ObjectId
+}
+
+model LoraDevice {
+  id               String               @id @default(auto()) @map("_id") @db.ObjectId
+  name             String?
+  deviceId         String
+  deviceEui        String
+  appEui           String
+  appKey           String
+  manufacturer     String?
+  partNumber       String?
+  activationMethod LoraActivationMethod @default(OTAA)
+}
+
+enum ChemicalManufacturer {
+  BOEHRINGER_INGLEHEIM
+}
+
+enum ChemicalProductName {
+  AVOMEC_PLUS_POUR_ON
+}
+
+enum LoraActivationMethod {
+  OTAA
+  ABP
+}
+
+enum StockClass {
+  CATTLE
+  SHEEP
+  GOAT
+  CAMEL
+  ALPACA
+  LLAMA
+  CHICKEN
+  DUCK
+  TURKEY
+}
+
+enum WeighMethod {
+  SCALES
+  IMAGE_ANALYSIS
+  VISUAL_ESTIMATE
+  MOB_AVERAGE
+}
+
+enum Sex {
+  MALE
+  FEMALE
+}
+
+enum CommercialClass {
+  COMMERCIAL
+  SEEDSTOCK
+  PET
+}
