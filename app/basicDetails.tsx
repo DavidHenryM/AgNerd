@@ -9,18 +9,10 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerRoot,
-  DrawerTitle,
-  DrawerTrigger,
 } from "@/components/ui/drawer"
-import { Alert } from "@/components/ui/alert"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Radio, RadioGroup } from "@/components/ui/radio"
-import {
-  AccordionItem,
-  AccordionItemContent,
-  AccordionItemTrigger,
-  AccordionRoot,
-} from "@/components/ui/accordion"
+
 
 import {
   Accordion,
@@ -371,7 +363,7 @@ export function ControlBar(props: {setFilter: Dispatch<SetStateAction<string>>})
                 <Text>Birthdate</Text>
                 <Input required={true} type="date" value={birthDate} onChange={(event: any) => setBirthDate(event.target.value)}/>
                 <Text>Sex</Text>
-                <RadioGroup defaultValue='FEMALE' value={sex} onValueChange={(e) => setSex(e.value)}>
+                <RadioGroup defaultValue='FEMALE' value={sex} onValueChange={(event: any) => setSex(event.value)}>
                   <HStack gap={5} direction='row'>
                     <Radio colorScheme='pink' value='FEMALE'>
                       Female
@@ -388,7 +380,7 @@ export function ControlBar(props: {setFilter: Dispatch<SetStateAction<string>>})
               <VStack>
                 <Text fontSize={'lg'}>Visual tag</Text>
                 <Text>Background colour</Text>
-                <RadioGroup defaultValue='YELLOW' value={visualIdBackgroundColour} onValueChange={(e) => setVisualIdBackgroundColour(e.value)}>
+                <RadioGroup defaultValue='YELLOW' value={visualIdBackgroundColour} onValueChange={(event: any) => setVisualIdBackgroundColour(event.value)}>
                   <HStack gap={5} direction='row'>
                     <Radio colorScheme='yellow' value='YELLOW'>
                       Yellow
@@ -399,7 +391,7 @@ export function ControlBar(props: {setFilter: Dispatch<SetStateAction<string>>})
                   </HStack>
                 </RadioGroup>
                 <Text>Text colour</Text>
-                <RadioGroup defaultValue='BLACK' value={visualIdTextColour} onValueChange={(e) => setVisualIdBackgroundColour(e.value)}>
+                <RadioGroup defaultValue='BLACK' value={visualIdTextColour} onValueChange={(event: any) => setVisualIdBackgroundColour(event.value)}>
                   <HStack gap={5} direction='row'>
                     <Radio colorScheme='black' value='BLACK'>
                       Black
