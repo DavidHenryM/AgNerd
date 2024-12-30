@@ -10,7 +10,7 @@ import {
 import { Avatar, AvatarFallback } from "@chakra-ui/react/avatar"
 import { IconType } from 'react-icons'
 import Link from 'next/link'
-import { Box, BoxProps, Flex, FlexProps, HStack, Text, IconButton, Button, VStack, useDisclosure, StackSeparator} from '@chakra-ui/react'
+import { Box, BoxProps, Flex, FlexProps, HStack, Text, IconButton, Button, VStack, useDisclosure, StackSeparator, LinkBox, LinkOverlay} from '@chakra-ui/react'
 import { Icons } from '../lib/Icons'
 import { NerdCowboy } from './Images'
 
@@ -72,7 +72,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 
 function NavItem(props: {NavIcon: IconType, name: string, target: string}) {
   return (
-    <Box
+    <LinkBox
       style={{ textDecoration: 'none' }}
       _focus={{ boxShadow: "md" }}
       w={{ base: 'full', md: 60 }}> 
@@ -89,9 +89,9 @@ function NavItem(props: {NavIcon: IconType, name: string, target: string}) {
         }}
         gap={4}>
       <props.NavIcon/>
-      <Link href={props.target}>{props.name}</Link>
+      <LinkOverlay href={props.target}>{props.name}</LinkOverlay>
     </HStack>
-    </Box>
+    </LinkBox>
   )
 }
 
@@ -190,14 +190,7 @@ const SidebarWithHeader = (props: {Content: any}) => {
   // let providerName = AuthProviderNames.GITHUB
   let email = ''
   let userName = ''
-  // const userAuthQuery = useRef(isUserAuthorizedQuery(providerName, email, userName))
-  // let variables: OperationVariables = {}
-  // useEffect(() => {  
-  //   userAuthQuery.current = isUserAuthorizedQuery(providerName, email, userName)
-
-  // }, [providerName, email, userName])
-  // const variables = userAuthQuery.current.variables
-  // const { loading, error, data } = useQuery(userAuthQuery.current.query, {variables})
+ 
   const loading = false
   const error = false
   const status = 'authenticated'
