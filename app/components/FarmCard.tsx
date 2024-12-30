@@ -42,7 +42,6 @@ export function FarmCard(){
     getActiveLivestockCount()
       .then((count: number) => {
         setLivestockCount(count)
-        console.log(livestockCount)
         setLoadingLivestockCount(false)
       })
   }, [])
@@ -52,7 +51,6 @@ export function FarmCard(){
     getTotalActiveDSE()
       .then((count: number) => {
         setTotalActiveDSE(count)
-        console.log(totalActiveDSE)
         setLoadingTotalActiveDSE(false)
       })
   }, [])
