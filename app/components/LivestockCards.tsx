@@ -13,10 +13,6 @@ import { useEffect, useState } from 'react'
 import Loading from '../loading'
 
 
-
-
-
-
 export function LivestockCards() {
   let [livestocks, setLivestocks] = useState<any[]>([])
   let [loading, setLoading] = useState<boolean>(true)
@@ -24,10 +20,8 @@ export function LivestockCards() {
     getActiveLivestock()
       .then((livestocks: LivestockUnit[]) => {
         setLivestocks(livestocks)
-        console.log(livestocks)
         setLoading(false)
       })
-      // })
   }, [])
   if (loading){
     return(<Loading></Loading>)
