@@ -42,7 +42,17 @@ import { getAge, parseColour, sortWeightsByDate } from "./utils/utils";
 import { WeightStats } from "./components/Stats";
 import { CommercialClassTag, DesexedTag, SexTag, StockClassTag } from "./components/Tags";
 import { DesexButton } from "./components/Buttons";
-
+import {
+  DialogActionTrigger,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 export function StockPreviewCard(props: {stock: LivestockUnit, index: Number, onClick: ()=>{}}) {
   const weightDisclosure = useDisclosure()
@@ -63,14 +73,37 @@ export function StockPreviewCard(props: {stock: LivestockUnit, index: Number, on
   return (  
     <>
     <Card.Root key={"stockCard" + props.index}>
-      <Group gap='2' justifyContent={'right'}>
-        <IconButton
-          onClick={props.onClick}
-          aria-label='Open details'
-        >
-          <Icons.GiCardboardBox/>
-        </IconButton>
-      </Group>
+      <DialogRoot>
+        <Group gap='2' justifyContent={'right'}>
+          <DialogTrigger>
+            {/* <IconButton
+              // onClick={props.onClick}
+              aria-label='Open details'
+            > */}
+              <Icons.GiCardboardBox/>
+            {/* </IconButton> */}
+          </DialogTrigger>
+        </Group>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Beast Details</DialogTitle>
+          </DialogHeader>
+          <DialogBody>
+            <BeastView stock={stock} close={function (): void {
+                throw new Error("Function not implemented.");
+              } } edit={function (): void {
+                throw new Error("Function not implemented.");
+              } }/>
+          </DialogBody>
+          <DialogFooter>
+            <DialogActionTrigger asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogActionTrigger>
+            <Button>Save</Button>
+          </DialogFooter>
+          <DialogCloseTrigger />
+        </DialogContent>
+      </DialogRoot>
       <Card.Body>
         <HStack>
           <EarTagGraphic 
