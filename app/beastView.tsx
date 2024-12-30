@@ -1,7 +1,7 @@
 "use-client"
 
 // import { DocumentNode, gql, useMutation } from "@apollo/client";
-import { Spacer, Card, Button, Text, Table, Group, Editable, HStack, Flex } from "@chakra-ui/react"
+import { Spacer, Card, Button, Text, Table, Group, Editable, HStack, Flex, IconButton } from "@chakra-ui/react"
 import { Switch } from "@/components/ui/switch"
 import {
   DialogBackdrop,
@@ -36,27 +36,36 @@ function placeHolder(text: string | undefined | null, editable: boolean): string
 function EditableRowItem(props: {title: string, value: any | undefined, editable: boolean}){
   if(props.value || props.editable) {
     return (
-      <Table.Root>
       <Table.Row>
-        <Table.ColumnHeader>{props.title}</Table.ColumnHeader>
-        <Table.Column>
+        <Table.Cell>{props.title}</Table.Cell>
+        <Table.Cell>
           <Editable.Root
-            defaultValue={props.value ? props.value : ''}
-            // isPreviewFocusable={props.editable}
-          >
+             defaultValue={props.value ? props.value : ''} 
+             disabled={!props.editable}>
             <Editable.Preview />
             <Editable.Input />
+            <Editable.Control>
+              <Editable.CancelTrigger asChild>
+                <IconButton variant="outline" size="xs">
+                  <Icons.LuX />
+                </IconButton>
+              </Editable.CancelTrigger>
+              <Editable.SubmitTrigger asChild>
+                <IconButton variant="outline" size="xs">
+                  <Icons.LuCheck />
+                </IconButton>
+              </Editable.SubmitTrigger>
+            </Editable.Control>
           </Editable.Root>
-        </Table.Column>
+        </Table.Cell>
       </Table.Row>
-      </Table.Root>
     )
   } else {
     return (<></>)
   }
 }
 
-export function BeastView(props: {stock: LivestockUnit, close: ()=>void, edit: ()=>void}){
+export function BeastView(props: {stock: LivestockUnit}){
   const [open, setOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [deactivateOk, setDeactivateOk] = useState(false)
@@ -69,7 +78,7 @@ export function BeastView(props: {stock: LivestockUnit, close: ()=>void, edit: (
  
   const handleYes = () => {
     setConfirmOpen(false)
-      props.close()
+      // props.close()
       try {
         setLivestockUnitInactive(props.stock.id)
         setDeactivateOk(true)
@@ -109,10 +118,9 @@ export function BeastView(props: {stock: LivestockUnit, close: ()=>void, edit: (
               <Switch checked={editable} onCheckedChange={(event) => {setEditable(event.checked)}}/>
             </HStack>
             <Spacer/>
-            <Button onClick={props.close}/>
           </Flex>
         </Card.Header>
-        <Table.Root size={'sm'}>
+        <Table.Root size={'sm'} showColumnBorder={true} striped={true} variant={"outline"}>
           <Table.Body >
             <EditableRowItem title={'Name'} value={placeHolder(props.stock.name, editable)} editable={editable}/>
             <EditableRowItem title={'Angus Tech Id'} value={placeHolder(props.stock.angusTechId, editable)} editable={editable}/>
@@ -124,45 +132,44 @@ export function BeastView(props: {stock: LivestockUnit, close: ()=>void, edit: (
           </Table.Body>
         </Table.Root>
         <Group gap='2' justifyContent={'center'}>
-
-        <HStack wrap={"wrap"}>
-          <Button onClick={() => {}} >
-            <HStack>
-              <Icons.GiMedicines size={30}/>  
-              <Text>Treat</Text>
+          <HStack wrap={"wrap"}>
+            <Button onClick={() => {}} >
+              <HStack>
+                <Icons.GiMedicines size={30}/>  
+                <Text>Treat</Text>
+              </HStack>
+            </Button>
+            <Button onClick={() => {}}>
+              <HStack>
+                <Icons.GiReceiveMoney size={30}/>
+                <Text>Sell</Text>
+              </HStack>
+            </Button>
+            <Button onClick={() => {}}>
+              <HStack>
+                <Icons.GiCorkedTube size={30}/>
+                <Text>Sample</Text>
+              </HStack>
+            </Button>
+            <Button onClick={() => {}}>
+              <HStack>
+                <Icons.GiIceCube size={30}/>
+                <Text>A.I.</Text>
+              </HStack>
+            </Button>
+            <Button onClick={() => {}}>
+              <HStack>
+                <Icons.GiWeight size={30}/>
+                <Text>Weigh</Text>
+              </HStack>
+            </Button>
+            <Button onClick={() => {setConfirmOpen(true)}}>
+              <HStack>
+                <Icons.GiCancel size={30}/>
+                <Text>Deactivate</Text>
             </HStack>
-          </Button>
-          <Button onClick={() => {}}>
-            <HStack>
-              <Icons.GiReceiveMoney size={30}/>
-              <Text>Sell</Text>
-            </HStack>
-          </Button>
-          <Button onClick={() => {}}>
-            <HStack>
-              <Icons.GiCorkedTube size={30}/>
-              <Text>Sample</Text>
-            </HStack>
-          </Button>
-          <Button onClick={() => {}}>
-            <HStack>
-              <Icons.GiIceCube size={30}/>
-              <Text>A.I.</Text>
-            </HStack>
-          </Button>
-          <Button onClick={() => {}}>
-            <HStack>
-              <Icons.GiWeight size={30}/>
-              <Text>Weigh</Text>
-            </HStack>
-          </Button>
-          <Button onClick={() => {setConfirmOpen(true)}}>
-            <HStack>
-              <Icons.GiCancel size={30}/>
-              <Text>Deactivate</Text>
+            </Button>
           </HStack>
-          </Button>
-        </HStack>
         </Group>
 
       </Card.Root>
