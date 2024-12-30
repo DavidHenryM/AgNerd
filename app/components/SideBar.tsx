@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react/menu"
 import { Avatar, AvatarFallback } from "@chakra-ui/react/avatar"
 import { IconType } from 'react-icons'
-import Link from 'next/link'
 import { Box, BoxProps, Flex, FlexProps, HStack, Text, IconButton, Button, VStack, useDisclosure, StackSeparator, LinkBox, LinkOverlay} from '@chakra-ui/react'
 import { Icons } from '../lib/Icons'
 import { NerdCowboy } from './Images'
