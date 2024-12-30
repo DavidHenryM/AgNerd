@@ -26,20 +26,22 @@ import { WeighMethod, LivestockUnit } from '@prisma/client'
 import { SetStateAction, useState } from "react";
 import { addWeightRecord, getLivestockUnit, setLivestockUnitActive } from "../queries";
 import { Field } from "@/components/ui/field";
-import { sortWeightsByDate } from "../utils/utils"
+import { formatAsInputFieldDate, sortWeightsByDate } from "../utils/utils"
 // import { useMutation, gql } from "@apollo/client";
 // import { createWeightRecordMutation } from "../lib/mutations";
   
 
 
 export default function AddWeightDrawer(props: {stock: any, setStock: SetStateAction<any>, open: boolean, onOpenChange: ()=>void}){
+  const sortedWeights = sortWeightsByDate(props.stock.weights)
+  const latestWeight = sortedWeights[sortedWeights.length -1]
   const [weighDateString, setWeighDateString] = useState('')
   const [weighMethod, setWeighMethod] = useState(WeighMethod.SCALES)
   const [newWeight, setNewWeight] = useState(0)
   const [loading, setLoading] = useState(false)
   const [invalidDate, setInvalidDate] = useState(false)
-
-
+  const [weightEdit, setWeightEdit] = useState(String(latestWeight.weight))
+  const [weightDateEdit, setWeightDateEdit] = useState(formatAsInputFieldDate(new Date))
   
   function handleSubmit(){
     setLoading(true)
@@ -82,13 +84,6 @@ export default function AddWeightDrawer(props: {stock: any, setStock: SetStateAc
         props.onOpenChange()
       })
   }
-  let lastWeight = null
-  if (props.stock.weights) {
-    const sortedWeights = sortWeightsByDate(props.stock.weights)
-    if (sortedWeights.at(-1)) {
-      lastWeight = sortedWeights.at(-1)?.weight
-    }
-  }
 
   return (
     <DrawerRoot
@@ -102,10 +97,10 @@ export default function AddWeightDrawer(props: {stock: any, setStock: SetStateAc
         <DrawerBody>
           <VStack>
             <NumberInputRoot 
-              defaultValue={String(lastWeight)} 
+              value={weightEdit} 
               min={10} 
               max={5000} 
-              onChange={(newWeightString) => setNewWeight(Number(newWeightString))}
+              onValueChange={(event: any) => setWeightEdit(event.value)}
             >
               <NumberInputField />
             </NumberInputRoot>
@@ -113,8 +108,7 @@ export default function AddWeightDrawer(props: {stock: any, setStock: SetStateAc
               <Input
                 required={true}
                 type="date"
-                defaultValue={String(lastWeight)}
-                value={weighDateString}
+                value={weightDateEdit}
                 onChange={(event: any) => {
                   console.log(event.target.value)
                   const enteredDate = new Date(event.target.value)
@@ -125,7 +119,7 @@ export default function AddWeightDrawer(props: {stock: any, setStock: SetStateAc
                   } else {
                     setInvalidDate(false)
                   }
-                  setWeighDateString(event.target.value)
+                  setWeightDateEdit(event.target.value)
                   }}
                 />
               </Field>
