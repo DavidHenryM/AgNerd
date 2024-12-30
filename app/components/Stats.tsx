@@ -8,21 +8,23 @@ import {
   StatUpTrend
 } from "@/components/ui/stat"
 import { WeightRecord } from "@prisma/client"
-import { daysBetween } from "../utils/utils"
+import { daysBetween, sortWeightsByDate } from "../utils/utils"
 import { HStack, VStack } from "@chakra-ui/react"
 
 export function WeightStats(props: {weights: WeightRecord[]}){
   if (props.weights.length > 0){
-    let statArrow: "increase" | "decrease" | undefined
     if (props.weights.length > 1){
-      const statChange = Number(props.weights[props.weights.length-1].weight) - Number(props.weights[props.weights.length-2].weight)
+      const sortedWeights = sortWeightsByDate(props.weights)
+      const latestWeight = sortedWeights[sortedWeights.length-1]
+      const secondLatestWeight = sortedWeights[sortedWeights.length-2]
+      const statChange = latestWeight.weight - secondLatestWeight.weight
       const statChangeString = String(statChange) + "kg"
-      const lastWeightDate = props.weights[props.weights.length-1].dateMeasured
-      const weighDeltaDays = daysBetween(props.weights[props.weights.length-1].dateMeasured, props.weights[props.weights.length-2].dateMeasured)
+      const lastWeightDate = latestWeight.dateMeasured
+      const weighDeltaDays = daysBetween(latestWeight.dateMeasured, secondLatestWeight.dateMeasured)
       return (
         <WeightKgStat 
           label={`Last weight ${lastWeightDate.toLocaleDateString()}`} 
-          value={props.weights[0].weight} 
+          value={latestWeight.weight} 
           trend={ 
             {
               direction: statChange >= 0 ? "up":"down",
