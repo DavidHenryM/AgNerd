@@ -32,7 +32,7 @@ import { sortWeightsByDate } from "../utils/utils"
   
 
 
-export default function AddWeightDrawer(props: {stock: LivestockUnit, setStock: SetStateAction<any>, open: boolean, onOpenChange: ()=>void}){
+export default function AddWeightDrawer(props: {stock: any, setStock: SetStateAction<any>, open: boolean, onOpenChange: ()=>void}){
   const [weighDateString, setWeighDateString] = useState('')
   const [weighMethod, setWeighMethod] = useState(WeighMethod.SCALES)
   const [newWeight, setNewWeight] = useState(0)
@@ -89,24 +89,7 @@ export default function AddWeightDrawer(props: {stock: LivestockUnit, setStock: 
       lastWeight = sortedWeights.at(-1)?.weight
     }
   }
-  // const [weightMutation, setWeightMutation] = useState(
-  //   {
-  //     mutation: gql`mutation Mutation($data: LivestockUnitUpdateInput!, $where: LivestockUnitWhereUniqueInput!) {
-  //     updateOneLivestockUnit(data: $data, where: $where) {
-  //       class
-  //       id
-  //     }
-  //   }`, 
-  //     variables: {
-  //       "data": {
-  //         "class": {
-  //           "set": "CATTLE"
-  //         }
-  //       },
-  //       "where": {
-  //         "id": props.stock.id
-  //       },
-  //   }})
+
   return (
     <DrawerRoot
       open={props.open}
