@@ -3,7 +3,6 @@ import {
   StatRoot, 
   StatValueText,
   StatValueUnit,
-  StatHelpText,
   StatDownTrend,
   StatUpTrend
 } from "@/components/ui/stat"
@@ -13,17 +12,17 @@ import { HStack, VStack } from "@chakra-ui/react"
 
 export function WeightStats(props: {weights: WeightRecord[]}){
   if (props.weights.length > 0){
+    const sortedWeights = sortWeightsByDate(props.weights)
+    const latestWeight = sortedWeights[sortedWeights.length-1]
+    const lastWeightDate = latestWeight.dateMeasured
     if (props.weights.length > 1){
-      const sortedWeights = sortWeightsByDate(props.weights)
-      const latestWeight = sortedWeights[sortedWeights.length-1]
       const secondLatestWeight = sortedWeights[sortedWeights.length-2]
       const statChange = latestWeight.weight - secondLatestWeight.weight
       const statChangeString = String(statChange) + "kg"
-      const lastWeightDate = latestWeight.dateMeasured
       const weighDeltaDays = daysBetween(latestWeight.dateMeasured, secondLatestWeight.dateMeasured)
       return (
         <WeightKgStat 
-          label={`Last weight ${lastWeightDate.toLocaleDateString()}`} 
+          label={`Last weighed ${lastWeightDate.toLocaleDateString()}`} 
           value={latestWeight.weight} 
           trend={ 
             {
@@ -37,8 +36,8 @@ export function WeightStats(props: {weights: WeightRecord[]}){
     } else {
       return (
         <WeightKgStat 
-          label={"Live weight"} 
-          value={props.weights[0].weight}
+          label={`Weighed ${lastWeightDate.toLocaleDateString()}`} 
+          value={latestWeight.weight} 
           trend={undefined}
         >
         </WeightKgStat>
@@ -222,8 +221,6 @@ export function NumberStat(
           {props.trend?.label ? <StatLabel>{props.trend.label}</StatLabel> : <></>}
         </HStack>
       </VStack>
-      
     </StatRoot>
-
     )
 }
