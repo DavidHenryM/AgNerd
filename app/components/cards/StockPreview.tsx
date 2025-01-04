@@ -52,9 +52,9 @@ export default function StockPreviewCard(props: {stock: LivestockUnit, index: Nu
     <>
       <Card.Root key={"stockCard" + props.index}>
         <DialogRoot>
-          <Group gap='2' justifyContent={'right'}>
+          <Group justifyContent={'right'} padding="2">
             <DialogTrigger>
-              <Box>
+              <Box outline="Menu" padding="2" outlineStyle={"solid"} bg={"teal.900"} borderRadius={"md"}>
                 <Icons.GiCardboardBox/>
               </Box>
             </DialogTrigger>
