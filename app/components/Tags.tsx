@@ -9,17 +9,17 @@ export function SexTag(props: {sex: Sex}) {
   let sexColour: string
   if(props.sex == 'FEMALE'){
       SexIcon = Icons.GiFemale
-      sexColour = 'pink'
+      sexColour = 'pink.300'
   } else if (props.sex == 'MALE') {
       SexIcon = Icons.GiMale
-      sexColour = 'blue'
+      sexColour = 'blue.400'
   } else {
       SexIcon = Icons.GiHelp
-      sexColour = 'white'
+      sexColour = 'gray.50'
   }
   return (
     <Tag 
-      colorScheme={sexColour}
+      color={sexColour}
       startElement={<SexIcon />}>
         {props.sex}
     </Tag>
@@ -42,8 +42,9 @@ export function DesexedTag(props: {desexed: boolean, sex: Sex}) {
   }
   return (
     <Tag 
-      colorScheme='green'
+      color='purple.400'
       startElement={<DesexedIcon />}>
+        {desexedText}
     </Tag>
   )
 }
@@ -70,7 +71,7 @@ export function CommercialClassTag(props: {commercialClass: CommercialClass}) {
   if(props.commercialClass == "COMMERCIAL"){
     return (
       <Tag 
-        colorScheme={'yellow'} 
+        color='yellow.200' 
         startElement={<Icons.GiMoneyStack/>}
       >
         {props.commercialClass} 
@@ -79,7 +80,7 @@ export function CommercialClassTag(props: {commercialClass: CommercialClass}) {
   } else if(props.commercialClass == "SEEDSTOCK"){
     return (
       <Tag 
-        colorScheme={'teal'} 
+        color={'green.300'} 
         startElement={<Icons.GiSeedling/>}
       >
         {props.commercialClass} 
@@ -88,7 +89,7 @@ export function CommercialClassTag(props: {commercialClass: CommercialClass}) {
   } else if(props.commercialClass == "PET"){
     return (
       <Tag 
-        colorScheme={'red'} 
+        color={'red'} 
         startElement={<Icons.GiPawHeart/>}
       >
         {props.commercialClass}
