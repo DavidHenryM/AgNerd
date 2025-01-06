@@ -1,16 +1,16 @@
 // "use client"
 
-import { getActiveLivestock } from '../queries'
+import { getActiveLivestock } from '../../queries'
 import { 
   HStack,
   Text,
   Card
 } from "@chakra-ui/react"
-import { DesexedTag, SexTag, StockClassTag } from './Tags'
-import { WeightStats } from './Stats'
+import { DesexedTag, SexTag, StockClassTag } from '../Tags'
+import { WeightStats } from '../Stats'
 import { LivestockUnit } from '@prisma/client'
 import { useEffect, useState } from 'react'
-import Loading from '../loading'
+import Loading from '../../loading'
 
 
 export function LivestockCards() {

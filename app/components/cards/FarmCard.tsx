@@ -1,11 +1,11 @@
 'use client'
 
-import { CurrencyStat, NumberStat } from "./Stats"
+import { CurrencyStat, NumberStat } from "../Stats"
 import {  Card, Heading, VStack, Flex } from "@chakra-ui/react"
-import { getActiveLivestockCount, getFarmName, getTotalActiveDSE } from "../queries"
+import { getActiveLivestockCount, getFarmName, getTotalActiveDSE } from "../../queries"
 import { useEffect, useState } from "react"
-import { LoadingBar } from "../loading"
-import { StockingRateCard } from "./Cards"
+import { LoadingBar } from "../../loading"
+import StockingRateCard from "./StockingRateCard"
 
 
 export function FarmCard(){

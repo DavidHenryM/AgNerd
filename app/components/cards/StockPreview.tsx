@@ -32,7 +32,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-export default function StockPreviewCard(props: {stock: LivestockUnit, index: Number, onClick: ()=>{}}) {
+export default function StockPreviewCard(props: {stock: LivestockUnit, index: Number, onClick: any}) {
   const [openWeight, setOpenWeight] = useState(false)
   const [openPreg, setOpenPreg] = useState(false)
   const [openTreat, setOpenTreat] = useState(false)
@@ -64,11 +64,7 @@ export default function StockPreviewCard(props: {stock: LivestockUnit, index: Nu
               <DialogTitle>Beast Details</DialogTitle>
             </DialogHeader>
             <DialogBody>
-              <BeastView stock={stock} close={function (): void {
-                  throw new Error("Function not implemented.");
-                } } edit={function (): void {
-                  throw new Error("Function not implemented.");
-                } }/>
+              <BeastView stock={stock}/>
             </DialogBody>
             <DialogFooter>
               <DialogActionTrigger asChild>

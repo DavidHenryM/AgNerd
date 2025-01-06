@@ -1,8 +1,8 @@
 import { Card, Flex } from "@chakra-ui/react";
-import { LoadingBar } from "../loading";
-import { LiveStockCountStat, NumberStat } from "./Stats";
+import { LoadingBar } from "../../loading";
+import { LiveStockCountStat, NumberStat } from "../Stats";
 
-export function StockingRateCard(
+export default function StockingRateCard(
   props: {
     livestockCount: number,
     loadingLivestockCount: boolean,
