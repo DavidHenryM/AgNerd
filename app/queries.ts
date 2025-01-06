@@ -4,36 +4,37 @@ import { LivestockUnit, WeighMethod, Prisma } from "@prisma/client"
 import prisma from './lib/prisma'
 
 export async function getLivestock(whereFilter: Prisma.LivestockUnitWhereInput) {
-  const livestockActive = await prisma.livestockUnit.findMany(
-    {
-      where: whereFilter,
-      select: {
-        id: true,
-        name: true,
-        class: true,
-        sex: true,
-        desexed: true,
-        visualIdLine1: true,
-        visualIdLine2: true,
-        visualIdLine3: true,
-        visualIdBackgroundColour: true,
-        visualIdTextColour: true,
-        nlisId: true,
-        birthDate: true,
-        angusTechId: true,
-        active: true,
-        weights: true,
-        drySheepEquivalent: true,
-        commercialClass: true,
-        comment: true,
-        sireId: true,
-        damId: true,
-        mobRef: true,
-        pregnancyId: true,
-        purchasePrice: true, 
-        purchaseDate: true,
-      }
-    })
+  const query = {
+    where: whereFilter,
+    select: {
+      id: true,
+      name: true,
+      class: true,
+      sex: true,
+      desexed: true,
+      visualIdLine1: true,
+      visualIdLine2: true,
+      visualIdLine3: true,
+      visualIdBackgroundColour: true,
+      visualIdTextColour: true,
+      nlisId: true,
+      birthDate: true,
+      angusTechId: true,
+      active: true,
+      weights: true,
+      drySheepEquivalent: true,
+      commercialClass: true,
+      comment: true,
+      sireId: true,
+      damId: true,
+      mobRef: true,
+      pregnancyId: true,
+      purchasePrice: true, 
+      purchaseDate: true,
+    }
+  }
+  console.log(query)
+  const livestockActive = await prisma.livestockUnit.findMany(query)
   return livestockActive 
 }
 

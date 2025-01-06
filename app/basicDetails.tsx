@@ -1,11 +1,12 @@
 "use client"
 
 import {
+  For,
   HStack, 
   VStack,
 } from '@chakra-ui/react';
 
-import { LivestockUnit } from '@prisma/client'
+import { $Enums, LivestockUnit } from '@prisma/client'
 import { BeastView } from './beastView';
 import { useEffect, useRef, useState } from 'react';
 import React from 'react';
@@ -13,6 +14,7 @@ import Loading from './loading';
 import { getLivestock } from './queries';
 import ControlBar from "./components/ControlBar";
 import StockPreviewCard from "./components/cards/StockPreview";
+import { getArrayTrues } from './utils/utils';
 
 
 
@@ -79,18 +81,37 @@ import StockPreviewCard from "./components/cards/StockPreview";
 
 
 export function ActiveLivestock() {
+  const commercialClasses = Object.keys($Enums.CommercialClass)
   let livestockUnits = useRef<LivestockUnit[]>([])
-  let [stockFocus, setStockFocus] = useState<LivestockUnit>()
-  let [loading, setLoading] = useState(true)
-  let [whereFilter, setWhereFilter] = useState({active: {equals: true}})
+  const [livestockDisplay, setLivestockDisplay] = useState<LivestockUnit[]>([])
+  const [stockFocus, setStockFocus] = useState<LivestockUnit>()
+  const [loading, setLoading] = useState(true)
+  const [whereFilter, setWhereFilter] = useState<any>({active: {equals: true}, commercialClass: {in: commercialClasses}})
+  const [filterChecked, setFilterChecked] = useState(new Array<boolean>(commercialClasses.length).fill(true))
+  const [openFilter, setOpenFilter] = useState(false)
+
   useEffect(() => {
+    const checkedClasses: Array<string> = getArrayTrues(commercialClasses, filterChecked)
+    const livestockToDisplay: Array<LivestockUnit> = []
+    livestockUnits.current.map((livestockUnit: LivestockUnit)=>{
+      if(livestockUnit.commercialClass != null){
+        if(checkedClasses.includes(livestockUnit.commercialClass)){
+          livestockToDisplay.push(livestockUnit)
+        }
+      }
+    })
+    setLivestockDisplay(livestockToDisplay)
+  }, [openFilter])
+
+  useEffect(() => {
+    setLoading(true)
     getLivestock(whereFilter)
       .then((livestock: LivestockUnit[]) => {
-        console.log(livestock)
         livestockUnits.current = livestock
+        setLivestockDisplay(livestockUnits.current)
         setLoading(false)
       })
-  }, [whereFilter])
+  },[])
 
   if (loading){
     return (<Loading/>)
@@ -98,19 +119,15 @@ export function ActiveLivestock() {
     if (!stockFocus){
       return (
         <VStack>
-          <ControlBar/>
+          <ControlBar filterChecked={filterChecked} setFilterChecked={setFilterChecked} openFilter={openFilter} setOpenFilter={setOpenFilter}/>
           <HStack wrap={"wrap"}>
-            {
-              livestockUnits.current.map(
-                function(stock: LivestockUnit, index: number){
-                  return (
-                    <div key={index}>
-                      <StockPreviewCard stock={stock} index={index} onClick={async () => setStockFocus(stock)}/>
-                    </div>
-                  )
-                }
-              )
-            }
+            <For each={livestockDisplay}>
+              {
+                (stock: LivestockUnit, index: number)=>(
+                  <StockPreviewCard key={stock.id} stock={stock} index={index} onClick={() => setStockFocus(stock)}/>
+                )
+              }
+            </For>
           </HStack>
         </VStack>
       )
@@ -118,9 +135,7 @@ export function ActiveLivestock() {
       return (
         <BeastView 
           stock={stockFocus}
-          close={() => setStockFocus(undefined)} edit={function (): void {
-            throw new Error("Function not implemented.");
-          } } />
+        />
       )
     }
   }
