@@ -62,3 +62,19 @@ export function formatAsInputFieldDate(date: Date): string {
   const dateString = `${dateArray[2]}-${dateArray[1]}-${dateArray[0]}`
   return dateString
 }
+
+export function getArrayTrues(array: Array<any>, truthArray: Array<boolean>): Array<any> {
+  assert(array.length == truthArray.length, "the two arrays have different lengths.")
+  const result: Array<any> = []
+  array.map((element: string, index: number) => {
+    if(truthArray.at(index)){
+      result.push(element)
+    }
+  })
+  return result
+}
+
+function assert(condition: boolean, message: string) {
+  if (!condition)
+      throw Error('Assert failed: ' + (message || ''));
+};
