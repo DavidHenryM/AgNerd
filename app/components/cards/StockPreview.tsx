@@ -2,7 +2,7 @@ import { BeastView } from "@/app/beastView"
 import { Icons } from "@/app/lib/Icons"
 import Loading from "@/app/loading"
 import { getAge, sortWeightsByDate, parseColour } from "@/app/utils/utils"
-import { Card, Group,  Box, Button, HStack, VStack, Flex, Text, } from "@chakra-ui/react"
+import { Card, Group,  Box, Button, HStack, VStack, Flex, Text, Stack, } from "@chakra-ui/react"
 import { LivestockUnit } from "@prisma/client"
 import Link from "next/link"
 import { useState } from "react"
@@ -31,6 +31,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Skeleton, SkeletonCircle, SkeletonText } from "@/components/ui/skeleton"
 
 export default function StockPreviewCard(props: {stock: LivestockUnit, index: Number, onClick: any}) {
   const [openWeight, setOpenWeight] = useState(false)
@@ -158,4 +159,19 @@ export default function StockPreviewCard(props: {stock: LivestockUnit, index: Nu
 } else {
   return (<Loading/>)
 }
+}
+
+export function StockPreviewCardSkeleton(){
+  return (
+    <Stack gap="6" maxW="xs">
+      <HStack width="full" justifyContent={"end"}>
+        <SkeletonCircle size="10" />
+      </HStack>
+      <Flex width="full" gap="12" padding="6">
+        <Skeleton height="120px" width="100px"/>
+        <SkeletonText noOfLines={7} width="156px" /> 
+      </Flex>
+      <SkeletonText noOfLines={3} /> 
+    </Stack>
+  )
 }
