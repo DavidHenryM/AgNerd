@@ -182,7 +182,7 @@ const MobileNav = (props: any) => {
   )
 }
 
-const SidebarWithHeader = (props: {children?: any, Content?: any}) => {
+const SidebarWithHeader = (props: {children?: React.ReactNode, Content?: React.ComponentType}) => {
   const { open, onOpen, onClose } = useDisclosure()
 
   // const colorMode = useTheme('gray.100', 'gray.900')
