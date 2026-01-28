@@ -29,29 +29,75 @@ model Farm {
   users          User[]
 }
 
+// Better Auth Models
 model User {
-  id            String                @id @default(auto()) @map("_id") @db.ObjectId
-  firstName     String
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Better Auth relations
+  sessions      Session[]
+  accounts      Account[]
+  
+  // AgNerd specific fields
+  firstName     String?
   preferredName String?
-  lastName      String
-  authProviders AuthProviderDetails[]
-  farm          Farm                  @relation(fields: [farmId], references: [id])
-  farmId        String                @db.ObjectId
+  lastName      String?
+  farm          Farm?     @relation(fields: [farmId], references: [id])
+  farmId        String?   @db.ObjectId
+
+  @@map("user")
 }
 
-enum AuthProviderNames {
-  GITHUB
-  GOOGLE
-  EMAIL
+model Session {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
 }
 
-model AuthProviderDetails {
-  id           String            @id @default(auto()) @map("_id") @db.ObjectId
-  user         User              @relation(fields: [userId], references: [id])
-  providerName AuthProviderNames
-  email        String
-  userName     String?
-  userId       String            @db.ObjectId
+model Account {
+  id                    String    @id @default(auto()) @map("_id") @db.ObjectId
+  accountId             String
+  providerId            String
+  userId                String    @db.ObjectId
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
 }
 
 model Graze {
