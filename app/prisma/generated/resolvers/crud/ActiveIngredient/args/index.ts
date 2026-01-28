@@ -1,0 +1,14 @@
+export { AggregateActiveIngredientArgs } from "./AggregateActiveIngredientArgs";
+export { CreateManyActiveIngredientArgs } from "./CreateManyActiveIngredientArgs";
+export { CreateOneActiveIngredientArgs } from "./CreateOneActiveIngredientArgs";
+export { DeleteManyActiveIngredientArgs } from "./DeleteManyActiveIngredientArgs";
+export { DeleteOneActiveIngredientArgs } from "./DeleteOneActiveIngredientArgs";
+export { FindFirstActiveIngredientArgs } from "./FindFirstActiveIngredientArgs";
+export { FindFirstActiveIngredientOrThrowArgs } from "./FindFirstActiveIngredientOrThrowArgs";
+export { FindManyActiveIngredientArgs } from "./FindManyActiveIngredientArgs";
+export { FindUniqueActiveIngredientArgs } from "./FindUniqueActiveIngredientArgs";
+export { FindUniqueActiveIngredientOrThrowArgs } from "./FindUniqueActiveIngredientOrThrowArgs";
+export { GroupByActiveIngredientArgs } from "./GroupByActiveIngredientArgs";
+export { UpdateManyActiveIngredientArgs } from "./UpdateManyActiveIngredientArgs";
+export { UpdateOneActiveIngredientArgs } from "./UpdateOneActiveIngredientArgs";
+export { UpsertOneActiveIngredientArgs } from "./UpsertOneActiveIngredientArgs";

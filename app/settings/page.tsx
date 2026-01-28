@@ -4,6 +4,8 @@ import { LoadingCard } from "../loading";
 
 export default function Settings(){
   return (
-    <SidebarWithHeader Content={LoadingCard}></SidebarWithHeader>
+    <SidebarWithHeader>
+      <LoadingCard />
+    </SidebarWithHeader>
   )
 }

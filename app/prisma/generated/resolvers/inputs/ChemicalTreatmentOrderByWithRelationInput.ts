@@ -1,0 +1,50 @@
+import * as TypeGraphQL from "type-graphql";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "@prisma/client";
+import { DecimalJSScalar } from "../../scalars";
+import { ChemicalProductOrderByWithRelationInput } from "../inputs/ChemicalProductOrderByWithRelationInput";
+import { LivestockUnitOrderByWithRelationInput } from "../inputs/LivestockUnitOrderByWithRelationInput";
+import { SortOrder } from "../../enums/SortOrder";
+
+@TypeGraphQL.InputType("ChemicalTreatmentOrderByWithRelationInput", {})
+export class ChemicalTreatmentOrderByWithRelationInput {
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
+  })
+  id?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
+  })
+  livestockUnitId?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
+  })
+  treatmentDate?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
+  })
+  applicationMethod?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
+  })
+  chemicalProductId?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field((_type) => SortOrder, {
+    nullable: true,
+  })
+  volumeMl?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field((_type) => LivestockUnitOrderByWithRelationInput, {
+    nullable: true,
+  })
+  liveStockUnit?: LivestockUnitOrderByWithRelationInput | undefined;
+
+  @TypeGraphQL.Field((_type) => ChemicalProductOrderByWithRelationInput, {
+    nullable: true,
+  })
+  product?: ChemicalProductOrderByWithRelationInput | undefined;
+}

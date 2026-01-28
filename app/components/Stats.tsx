@@ -183,20 +183,15 @@ export function NumberStat(
     } | undefined
   }
   ){
-    let StatTrend = function (){
-      return (<></>)
-    }
-    if (props.trend){ 
-      if(props.trend.direction == "up" && props.trend.value){
-        StatTrend = function (){
+    const StatTrendComponent = () => {
+      if (props.trend){ 
+        if(props.trend.direction == "up" && props.trend.value){
           return (
             <StatUpTrend>
               {props.trend?.value}
             </StatUpTrend>
           )
-        }
-      } else if (props.trend.direction == "down" && props.trend.value){
-        StatTrend = function (){
+        } else if (props.trend.direction == "down" && props.trend.value){
           return (
             <StatDownTrend>
               {props.trend?.value}
@@ -204,7 +199,9 @@ export function NumberStat(
           )
         }
       }
+      return <></>
     }
+    
     return (
       <StatRoot>
       <StatLabel>{props.label}</StatLabel>
@@ -217,7 +214,7 @@ export function NumberStat(
           {props.unit ? <StatValueUnit>{props.unit}</StatValueUnit>:<></>}
         </HStack>
         <HStack>
-          <StatTrend/>
+          <StatTrendComponent/>
           {props.trend?.label ? <StatLabel>{props.trend.label}</StatLabel> : <></>}
         </HStack>
       </VStack>

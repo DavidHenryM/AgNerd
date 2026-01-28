@@ -3,6 +3,8 @@ import { LoadingCard } from "../loading";
 
 export default function Pasture(){
   return (
-    <SidebarWithHeader Content={LoadingCard}></SidebarWithHeader>
+    <SidebarWithHeader>
+      <LoadingCard />
+    </SidebarWithHeader>
   )
 }

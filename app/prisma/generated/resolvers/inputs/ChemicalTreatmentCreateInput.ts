@@ -1,0 +1,50 @@
+import * as TypeGraphQL from "type-graphql";
+import * as GraphQLScalars from "graphql-scalars";
+import { Prisma } from "@prisma/client";
+import { DecimalJSScalar } from "../../scalars";
+import { ChemicalProductCreateNestedOneWithoutChemicalTreatmentInput } from "../inputs/ChemicalProductCreateNestedOneWithoutChemicalTreatmentInput";
+import { LivestockUnitCreateNestedOneWithoutTreatmentsInput } from "../inputs/LivestockUnitCreateNestedOneWithoutTreatmentsInput";
+import { ApplicationMethod } from "../../enums/ApplicationMethod";
+
+@TypeGraphQL.InputType("ChemicalTreatmentCreateInput", {})
+export class ChemicalTreatmentCreateInput {
+  @TypeGraphQL.Field((_type) => String, {
+    nullable: true,
+  })
+  id?: string | undefined;
+
+  @TypeGraphQL.Field((_type) => Date, {
+    nullable: false,
+  })
+  treatmentDate!: Date;
+
+  @TypeGraphQL.Field((_type) => ApplicationMethod, {
+    nullable: false,
+  })
+  applicationMethod!:
+    | "ORAL"
+    | "TRANSDERMAL"
+    | "SUB_CUT_INJECTION"
+    | "INTRAVENUS_INJECTION";
+
+  @TypeGraphQL.Field((_type) => TypeGraphQL.Int, {
+    nullable: false,
+  })
+  volumeMl!: number;
+
+  @TypeGraphQL.Field(
+    (_type) => LivestockUnitCreateNestedOneWithoutTreatmentsInput,
+    {
+      nullable: false,
+    },
+  )
+  liveStockUnit!: LivestockUnitCreateNestedOneWithoutTreatmentsInput;
+
+  @TypeGraphQL.Field(
+    (_type) => ChemicalProductCreateNestedOneWithoutChemicalTreatmentInput,
+    {
+      nullable: false,
+    },
+  )
+  product!: ChemicalProductCreateNestedOneWithoutChemicalTreatmentInput;
+}

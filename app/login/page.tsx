@@ -106,7 +106,7 @@ export default function LoginPage() {
                 />
               </Field>
 
-              <Button type="submit" colorScheme="teal" w="full" loading={loading}>
+              <Button type="submit" colorScheme="teal" w="full" disabled={loading}>
                 {isSignUp ? "Sign Up" : "Sign In"}
               </Button>
             </VStack>
@@ -125,7 +125,7 @@ export default function LoginPage() {
               w="full"
               variant="outline"
               onClick={() => handleOAuthSignIn("github")}
-              loading={loading}
+              disabled={loading}
             >
               Continue with GitHub
             </Button>
@@ -133,7 +133,7 @@ export default function LoginPage() {
               w="full"
               variant="outline"
               onClick={() => handleOAuthSignIn("google")}
-              loading={loading}
+              disabled={loading}
             >
               Continue with Google
             </Button>
@@ -142,7 +142,7 @@ export default function LoginPage() {
           <Text textAlign="center" fontSize="sm">
             {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
             <Button
-              variant="link"
+              variant="ghost"
               colorScheme="teal"
               onClick={() => setIsSignUp(!isSignUp)}
             >

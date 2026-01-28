@@ -5,6 +5,8 @@ import SidebarWithHeader from "../components/SideBar";
 
 export default function Farm(){
   return (
-    <SidebarWithHeader Content={FarmCard}></SidebarWithHeader>
+    <SidebarWithHeader>
+      <FarmCard />
+    </SidebarWithHeader>
   )
 }

@@ -5,13 +5,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// TypeGraphQL generator commented out due to Prisma version incompatibility
-// Will need to update Prisma to v5.18.0 or use a compatible typegraphql-prisma version
-// generator typegraphql {
-//   provider            = "typegraphql-prisma"
-//   output              = "generated/"
-//   formatGeneratedCode = "prettier"
-// }
+generator typegraphql {
+  provider            = "typegraphql-prisma"
+  output              = "generated/"
+  formatGeneratedCode = "prettier"
+}
 
 datasource db {
   provider = "mongodb"

@@ -38,7 +38,9 @@ export function LoadingCard() {
 
 export function LoadingPage(){
   return (
-    <SidebarWithHeader Content={LoadingCard}></SidebarWithHeader>
+    <SidebarWithHeader>
+      <LoadingCard />
+    </SidebarWithHeader>
   )
 }
 
