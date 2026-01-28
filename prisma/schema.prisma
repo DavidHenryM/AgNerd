@@ -49,13 +49,12 @@ model AuthProviderDetails {
 }
 
 model Graze {
-  id                Int       @id @default(autoincrement())
+  id                Int        @id @default(autoincrement())
   startDatetime     DateTime
   endDateTime       DateTime?
-  paddock           Paddock   @relation(fields: [paddockId], references: [id])
-  paddockId         Int       @unique
-  mobIds            Int[]
-  mob               Mob[]     @relation(fields: [mobIds], references: [id])
+  paddock           Paddock    @relation(fields: [paddockId], references: [id])
+  paddockId         Int        @unique
+  mobs              GrazeMob[]
   dseDaysPerHectare Float?
 }
 
@@ -68,12 +67,20 @@ model Breed {
 }
 
 model Mob {
-  id       Int             @id @default(autoincrement())
-  name     String?
-  members  LivestockUnit[]
-  comment  String?
-  grazeIds Int[]
-  graze    Graze[]         @relation(fields: [grazeIds], references: [id])
+  id      Int             @id @default(autoincrement())
+  name    String?
+  members LivestockUnit[]
+  comment String?
+  grazes  GrazeMob[]
+}
+
+model GrazeMob {
+  graze   Graze @relation(fields: [grazeId], references: [id])
+  grazeId Int
+  mob     Mob   @relation(fields: [mobId], references: [id])
+  mobId   Int
+
+  @@id([grazeId, mobId])
 }
 
 model LivestockUnit {
@@ -100,8 +107,7 @@ model LivestockUnit {
   birthed                      LivestockUnit[]                @relation("BIRTHED")
   mob                          Mob?                           @relation(fields: [mobRef], references: [id])
   mobRef                       Int?
-  pregnancy                    Pregnancy[]                    @relation(fields: [pregnancyId], references: [id])
-  pregnancyId                  Int[]
+  pregnancies                  LivestockUnitPregnancy[]
   weights                      WeightRecord[]
   treatments                   ChemicalTreatment[]
   drySheepEquivalent           Int                            @default(1)
@@ -116,17 +122,25 @@ model LivestockUnit {
 }
 
 model Pregnancy {
-  id                         Int             @id @default(autoincrement())
+  id                         Int                      @id @default(autoincrement())
   earliestPossibleConception DateTime?
   latestPossibleConception   DateTime?
   conception                 DateTime?
   dueDate                    DateTime?
   earliestPossibleBirth      DateTime?
   latestPossibleBirth        DateTime?
-  parentId                   Int[]           @unique
-  parents                    LivestockUnit[] @relation(fields: [parentId], references: [id])
+  parents                    LivestockUnitPregnancy[]
   pregnancySireId            Int
   pregnancyTest              PregnancyTest[]
+}
+
+model LivestockUnitPregnancy {
+  livestockUnit   LivestockUnit @relation(fields: [livestockUnitId], references: [id])
+  livestockUnitId Int
+  pregnancy       Pregnancy     @relation(fields: [pregnancyId], references: [id])
+  pregnancyId     Int
+
+  @@id([livestockUnitId, pregnancyId])
 }
 
 model PregnancyTest {
