@@ -19,9 +19,7 @@ import {
 const ANGUS_TECH_BASE_URL = 'https://angus.tech/api/animal-enq';
 const prisma = new PrismaClient();
 
-@TypeGraphQL.InputType("LivestockUnitIdInput", {
-  isAbstract: true,
-})
+@TypeGraphQL.InputType("LivestockUnitIdInput")
 export class LivestockUnitIdInput {
 @TypeGraphQL.Field((_type) => String, {
   nullable: false,
@@ -37,9 +35,7 @@ export class LivestockUnitIdArgs {
   data!: LivestockUnitIdInput
 }
 
-@TypeGraphQL.InputType("AngusTechIdInput", {
-  isAbstract: true,
-})
+@TypeGraphQL.InputType("AngusTechIdInput")
 export class AngusTechIdInput {
 @TypeGraphQL.Field((_type) => String, {
   nullable: false,
@@ -71,7 +67,7 @@ async function getAngusTechBeastData(angusTechId: string | undefined) {
       },
     }
     const response = await fetch(url, options);
-    const responseJson : AngusTechResponse = await response.json(); 
+    const responseJson = await response.json() as AngusTechResponse; 
     if (responseJson.result.tql.isValid) {
       console.log('data valid');
       const data: AngusTechBeastData = responseJson.result.rows[0];

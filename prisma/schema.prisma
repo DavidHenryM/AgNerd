@@ -5,11 +5,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// generator typegraphql {
-//   provider            = "typegraphql-prisma"
-//   output              = "generated/"
-//   formatGeneratedCode = "prettier"
-// }
+generator typegraphql {
+  provider            = "typegraphql-prisma"
+  output              = "generated/"
+  formatGeneratedCode = "prettier"
+}
 
 datasource db {
   provider = "mongodb"

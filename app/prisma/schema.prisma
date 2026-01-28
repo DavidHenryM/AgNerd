@@ -30,12 +30,28 @@ model Farm {
 }
 
 model User {
-  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  id            String                @id @default(auto()) @map("_id") @db.ObjectId
   firstName     String
   preferredName String?
   lastName      String
-  farm          Farm    @relation(fields: [farmId], references: [id])
-  farmId        String  @unique @db.ObjectId
+  authProviders AuthProviderDetails[]
+  farm          Farm                  @relation(fields: [farmId], references: [id])
+  farmId        String                @db.ObjectId
+}
+
+enum AuthProviderNames {
+  GITHUB
+  GOOGLE
+  EMAIL
+}
+
+model AuthProviderDetails {
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  user         User              @relation(fields: [userId], references: [id])
+  providerName AuthProviderNames
+  email        String
+  userName     String?
+  userId       String            @db.ObjectId
 }
 
 model Graze {
@@ -54,7 +70,7 @@ model Breed {
   name            String
   class           StockClass
   members         LivestockUnit? @relation(fields: [livestockUnitId], references: [id])
-  livestockUnitId String?        @unique @db.ObjectId
+  livestockUnitId String         @unique @db.ObjectId
 }
 
 model Mob {
@@ -68,23 +84,24 @@ model Mob {
 
 model LivestockUnit {
   id                           String                         @id @default(auto()) @map("_id") @db.ObjectId
-  nlisId                       String?                        @unique
+  nlisId                       String?
   visualIdLine1                String?
   visualIdLine2                String?
   visualIdLine3                String?
   visualIdBackgroundColour     VisualIdColour?
   visualIdTextColour           VisualIdColour?
   class                        StockClass
+  commercialClass              CommercialClass?
   breed                        Breed?
   name                         String?
   comment                      String?
   sex                          Sex
   birthDate                    DateTime
   desexed                      Boolean
-  sireId                       String?                        @unique @db.ObjectId
+  sireId                       String?                        @db.ObjectId
   sire                         LivestockUnit?                 @relation("SIRED", fields: [sireId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   sired                        LivestockUnit[]                @relation("SIRED")
-  damId                        String?                        @unique @db.ObjectId
+  damId                        String?                        @db.ObjectId
   dam                          LivestockUnit?                 @relation("BIRTHED", fields: [damId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   birthed                      LivestockUnit[]                @relation("BIRTHED")
   mob                          Mob?                           @relation(fields: [mobRef], references: [id])
@@ -99,6 +116,7 @@ model LivestockUnit {
   angusTechId                  String?
   active                       Boolean                        @default(true)
   estimatedBreedingValueResult EstimatedBreedingValueResult[]
+
   // farm                         Farm                           @relation(fields: [farmId], references: [id])
   // farmId                       String                         @unique @db.ObjectId
 }
@@ -143,11 +161,11 @@ enum PregnancyTestType {
 model ChemicalTreatment {
   id                String            @id @default(auto()) @map("_id") @db.ObjectId
   liveStockUnit     LivestockUnit     @relation(fields: [livestockUnitId], references: [id])
-  livestockUnitId   String            @unique @db.ObjectId
+  livestockUnitId   String            @db.ObjectId
   treatmentDate     DateTime
   applicationMethod ApplicationMethod
   product           ChemicalProduct   @relation(fields: [chemicalProductId], references: [id])
-  chemicalProductId String            @unique @db.ObjectId
+  chemicalProductId String            @db.ObjectId
   volumeMl          Int
 }
 
@@ -155,7 +173,7 @@ model ChemicalProduct {
   id                   String               @id @default(auto()) @map("_id") @db.ObjectId
   manufacturer         ChemicalManufacturer
   productName          ChemicalProductName
-  serialNumber         String?              @unique
+  serialNumber         String?
   batchNumber          String?
   volumeMl             Int?
   cost                 Float?
@@ -278,7 +296,7 @@ model Paddock {
   areaHa                  Float
   graze                   Graze[]
   livestockUnitPosition   LivestockUnitPosition? @relation(fields: [livestockUnitPositionId], references: [id])
-  livestockUnitPositionId String?                @unique @db.ObjectId
+  livestockUnitPositionId String                 @unique @db.ObjectId
   // farm                    Farm                   @relation(fields: [farmId], references: [id])
   // farmId                  String                 @unique @db.ObjectId
 }
@@ -295,9 +313,9 @@ model GeoPoint {
   latitude                Float
   longitude               Float
   paddock                 Paddock                @relation(fields: [paddockId], references: [id])
-  paddockId               String                 @unique @db.ObjectId
+  paddockId               String                 @db.ObjectId
   livestockUnitPosition   LivestockUnitPosition? @relation(fields: [livestockUnitPositionId], references: [id])
-  livestockUnitPositionId String?                @unique @db.ObjectId
+  livestockUnitPositionId String                 @unique @db.ObjectId
 }
 
 model WeightRecord {
@@ -306,7 +324,7 @@ model WeightRecord {
   dateMeasured    DateTime      @default(now())
   method          WeighMethod   @default(SCALES)
   livestockUnit   LivestockUnit @relation(fields: [livestockUnitId], references: [id])
-  livestockUnitId String        @unique @db.ObjectId
+  livestockUnitId String        @db.ObjectId
 }
 
 model LoraDevice {
@@ -356,4 +374,10 @@ enum WeighMethod {
 enum Sex {
   MALE
   FEMALE
+}
+
+enum CommercialClass {
+  COMMERCIAL
+  SEEDSTOCK
+  PET
 }

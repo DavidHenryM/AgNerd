@@ -182,7 +182,7 @@ const MobileNav = (props: any) => {
   )
 }
 
-const SidebarWithHeader = (props: {children: any}) => {
+const SidebarWithHeader = (props: {children?: any, Content?: any}) => {
   const { open, onOpen, onClose } = useDisclosure()
 
   // const colorMode = useTheme('gray.100', 'gray.900')
@@ -195,6 +195,10 @@ const SidebarWithHeader = (props: {children: any}) => {
   const status = 'authenticated'
   const data = false
   const session = {name: "test", email: "test@test.test"}
+
+  // Support both old Content prop and new children prop
+  const Content = props.Content
+  const content = Content ? <Content /> : props.children
 
   // if (status == 'loading') {
     // return (
@@ -219,7 +223,7 @@ const SidebarWithHeader = (props: {children: any}) => {
         {/* mobilenav */}
         <MobileNav onOpen={()=>{}} session={session}/>
         <Box ml={{ base: 0, md: 60 }} p="4">
-          {props.children}
+          {content}
         </Box>
       </Box>
     )
