@@ -1,6 +1,7 @@
 'use client'
 
 import { useTheme } from 'next-themes'
+import { useSession, signOut } from '@/app/lib/auth-client'
 import {
   MenuContent,
   MenuItem,
@@ -96,23 +97,24 @@ function NavItem(props: {NavIcon: IconType, name: string, target: string}) {
 
 const MobileNav = (props: any) => {
   const {theme, setTheme} = useTheme()
+  const { data: session } = useSession()
+  
   let name = 'John Wayne'
   let image = 'https://cdn.britannica.com/82/136182-050-6BB308B7/John-Wayne.jpg'
   let email = ''
-  const session = props.session
-  if (session) {
-    if (session.user) {
-      if (session.user.name) {
-        name = session.user.name
-      }
-      if (session.user.image) {
-        image = session.user.image
-      }
-      if (session.user.email) {
-        email = session.user.email
-      }
+  
+  if (session?.user) {
+    if (session.user.name) {
+      name = session.user.name
+    }
+    if (session.user.image) {
+      image = session.user.image
+    }
+    if (session.user.email) {
+      email = session.user.email
     }
   }
+  
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -173,7 +175,7 @@ const MobileNav = (props: any) => {
               <MenuItem value="Profile"/>
               <MenuItem value="Settings"/>
               <MenuItem value="Billing"/>
-              {/* <MenuItem onClick={()=>(signOut())}>Sign out</MenuItem> */}
+              <MenuItem value="signout" onClick={() => signOut()}>Sign out</MenuItem>
             </MenuContent>
           </MenuRoot>
         </Flex>
@@ -185,45 +187,17 @@ const MobileNav = (props: any) => {
 const SidebarWithHeader = (props: {children: any}) => {
   const { open, onOpen, onClose } = useDisclosure()
 
-  // const colorMode = useTheme('gray.100', 'gray.900')
-  // let providerName = AuthProviderNames.GITHUB
-  let email = ''
-  let userName = ''
- 
-  const loading = false
-  const error = false
-  const status = 'authenticated'
-  const data = false
-  const session = {name: "test", email: "test@test.test"}
-
-  // if (status == 'loading') {
-    // return (
-      // <Loading/>
-    // )
-  // } else if(status == 'unauthenticated') {
-    // TODO: add error alert
-    // signIn() 
-  // } else if (status == 'authenticated') { 
-    // if (loading) {
-      // return (
-        // <Loading/>
-      // )
-    // } else if (error) {
-      // redirect('/error')
-    // } else if (data) {
-      // console.log(data)
-    // const Content = props.Content
-    return (
-      <Box minH="100vh" >
-        <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
-        {/* mobilenav */}
-        <MobileNav onOpen={()=>{}} session={session}/>
-        <Box ml={{ base: 0, md: 60 }} p="4">
-          {props.children}
-        </Box>
+  return (
+    <Box minH="100vh" >
+      <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
+      {/* mobilenav */}
+      <MobileNav onOpen={onOpen}/>
+      <Box ml={{ base: 0, md: 60 }} p="4">
+        {props.children}
       </Box>
-    )
-  }
+    </Box>
+  )
+}
 
 
 
