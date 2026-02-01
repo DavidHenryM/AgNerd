@@ -2,7 +2,7 @@ export function Tag() {
   return (
     <div>
       <svg xmlns="http://www.w3.org/2000/svg"  width="400" height="110">
-        <rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
+        <rect width="300" height="100" style={{fill:"rgb(0,0,255)", strokeWidth:3, stroke:"rgb(0,0,0)"}} />
       </svg>
     </div>
   )
