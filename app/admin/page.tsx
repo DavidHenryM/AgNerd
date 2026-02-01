@@ -1,10 +1,10 @@
 import { Typography } from "@mui/material";
 import Content from "../components/Content";
 
-export default function Pasture(){
+export default function Admin() {
   return (
     <Content>
-      <Typography>Pasture Page Coming Soon...</Typography>
+      <Typography>Admin Page Coming Soon...</Typography>
     </Content>
-  )
+  );
 }
