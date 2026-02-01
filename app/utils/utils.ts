@@ -1,6 +1,6 @@
-import { LivestockUnit, WeightRecord } from "@prisma/client"
+import { LivestockUnit, WeightRecord } from "@generated/client"
 
-export function getAge(birth: any): {
+export function getAge(birth: string | Date): {
   ageYears: number,
   ageMonths: number
   yearSuffix: string,
@@ -9,7 +9,7 @@ export function getAge(birth: any): {
   const yearMilliseconds = 3.154e+10
   const monthMilliseconds = yearMilliseconds/12.0
   const now = new Date()
-  const birthDate = Date.parse(birth)
+  const birthDate = birth instanceof Date ? birth : new Date(birth)
   const ageMilliseconds = now.valueOf() - birthDate.valueOf()
   const ageMonthsTotal = Math.floor(ageMilliseconds / monthMilliseconds);
   const ageYears = Math.floor(ageMonthsTotal / 12.0)
@@ -31,13 +31,13 @@ export function getAge(birth: any): {
 }
 
 function treatAsUTC(date: Date): Date {
-  let result = new Date(date)
+  const result = new Date(date)
   result.setMinutes(result.getMinutes() - result.getTimezoneOffset())
   return result
 }
 
 export function daysBetween(startDate: Date, endDate: Date): number {
-  let milliSecondsPerDay = 24 * 60 * 60 * 1000;
+  const milliSecondsPerDay = 24 * 60 * 60 * 1000;
   return Math.abs(Math.floor((treatAsUTC(endDate).getTime() - treatAsUTC(startDate).getTime()) / milliSecondsPerDay))
 }
 
@@ -63,9 +63,9 @@ export function formatAsInputFieldDate(date: Date): string {
   return dateString
 }
 
-export function getArrayTrues(array: Array<any>, truthArray: Array<boolean>): Array<any> {
+export function getArrayTrues(array: Array<string>, truthArray: Array<boolean>): Array<string> {
   assert(array.length == truthArray.length, "the two arrays have different lengths.")
-  const result: Array<any> = []
+  const result: Array<string> = []
   array.map((element: string, index: number) => {
     if(truthArray.at(index)){
       result.push(element)
