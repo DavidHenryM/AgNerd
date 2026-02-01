@@ -36,7 +36,7 @@ export function ActiveLivestock() {
       setLivestockDisplay(livestockToDisplay)
     }
     filterLivestock()
-  }, [openFilter, filterChecked, commercialClasses])
+  }, [filterChecked])
 
   useEffect(() => {
     async function updateWhereFilter() {
@@ -53,7 +53,11 @@ export function ActiveLivestock() {
   },[whereFilter])
 
   if (loading){
-    return (<Loading/>)
+    return (
+      <Content backgroundImageIndex={1}>
+        <Loading/>
+      </Content>
+    )
   } else {
     if (!stockFocus){
       return (
