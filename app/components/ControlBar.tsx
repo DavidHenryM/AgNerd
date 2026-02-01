@@ -1,16 +1,12 @@
 import {  Dispatch, SetStateAction, useState } from "react"
-import { Group } from "@chakra-ui/react"
-import { Button } from "@/components/ui/button"
-import { Icons } from "../lib/Icons"
-import {
-  ActionBarContent,
-  ActionBarRoot,
-  ActionBarSelectionTrigger,
-  ActionBarSeparator,
-} from "@/components/ui/action-bar"
-import CreateNewBeastDrawer from "./drawers/CreateNewBeastDrawer"
-import FilterBeastsDrawer from "./drawers/FilterBeastsDrawer"
-import SortBeastsDrawer from "./drawers/SortBeastsDrawer"
+import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material"
+import { Icons } from "@lib/Icons"
+import CreateNewBeastDialogue from "@components/dialogues/CreateNewBeastDialogue"
+import FilterBeastsDialogue from "@components/dialogues/FilterBeastsDialogue"
+import SortBeastsDialogue from "@components/dialogues/SortBeastsDialogue"
+
+
+
 
 export default function ControlBar(
   props: {
@@ -22,28 +18,59 @@ export default function ControlBar(
   const [openCreateNew, setOpenCreateNew] = useState(false)
   
   const [openSort, setOpenSort] = useState(false)
-
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
-    <ActionBarRoot open={true} >
-      <ActionBarContent bg="teal.900">
-        <Group gap={'20px'}>
-          <Button onClick={()=>setOpenCreateNew(true)}>
-            <Icons.HiPlus/>
-          </Button>
-          <ActionBarSeparator />
-          <Button onClick={()=>props.setOpenFilter(true)}>
-            <Icons.HiFilter/>
-          </Button>
-          <ActionBarSeparator />
-          <Button onClick={()=>setOpenSort(true)}>
-            <Icons.HiSwitchVertical/>
-          </Button>
-        </Group>
-      </ActionBarContent>
-      <SortBeastsDrawer open={openSort} setOpen={setOpenSort}/>
-      <FilterBeastsDrawer open={props.openFilter} setOpen={props.setOpenFilter} checked={props.filterChecked} setChecked={props.setFilterChecked}/>
-      <CreateNewBeastDrawer open={openCreateNew} setOpen={setOpenCreateNew}/>
-      </ActionBarRoot>
+    <>
+      <Box sx={{ height: 320, transform: 'translateZ(0px)', flexGrow: 1 }}>
+        <SpeedDial
+          ariaLabel="SpeedDial controlled open example"
+          sx={{ position: 'absolute', bottom: 16, right: 16 }}
+          icon={<SpeedDialIcon />}
+          onClose={handleClose}
+          onOpen={handleOpen}
+          open={open}
+        >
+          <SpeedDialAction
+              key={"New"}
+              icon={<Icons.HiPlus/>}
+              slotProps={{
+                tooltip: {
+                  title: "New",
+                },
+              }}
+              onClick={()=>setOpenCreateNew(true)}
+            />
+            <SpeedDialAction
+              key={"Filter"}
+              icon={<Icons.HiFilter/>}
+              slotProps={{
+                tooltip: {
+                  title: "Filter",
+                },
+              }}
+              onClick={()=>props.setOpenFilter(true)}
+            />
+            <SpeedDialAction
+              key={"Sort"}
+              icon={<Icons.HiSwitchVertical/>}
+              slotProps={{
+                tooltip: {
+                  title: "Sort",
+                },
+              }}
+              onClick={()=>setOpenSort(true)}
+            />
+        </SpeedDial>
+      </Box>
+      <SortBeastsDialogue open={openSort} setOpen={setOpenSort}/>
+      <FilterBeastsDialogue open={props.openFilter} setOpen={props.setOpenFilter} checked={props.filterChecked} setChecked={props.setFilterChecked}/>
+      <CreateNewBeastDialogue open={openCreateNew} setOpen={setOpenCreateNew}/>
+    </>
   )
+
+
+
 }
