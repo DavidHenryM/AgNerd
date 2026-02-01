@@ -2,72 +2,107 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client"
+  output          = "../app/generated/prisma"
+  previewFeatures = ["relationJoins"]
+  engineType      = "client"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Farm {
-  id             Int      @id @default(autoincrement())
-  name           String
-  businessName   String?
-  lotSectionPlan String[]
-  abn            String?
-  acn            String?
-  pic            String?
+  id               String    @id @default(cuid())
+  name             String
+  businessName     String?
+  lotSectionPlan   String[]
+  abn              String?
+  acn              String?
+  pic              String?
   // livestockUnits LivestockUnit[]
   // paddocks       Paddock[]
-  users          User[]
+  locationCentre   GeoPoint? @relation(fields: [locationCentreId], references: [id])
+  locationCentreId String?
+  areaHa           Float?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
+  users            User[]
+
+  studs Stud[]
+
+  onFarms OnFarm[]
+
+  organizations Organization[] @relation("OrganizationFarms")
 }
 
 model User {
-  id            Int                   @id @default(autoincrement())
+  id            String    @id @default(cuid())
   firstName     String
   preferredName String?
   lastName      String
-  authProviders AuthProviderDetails[]
-  farm          Farm                  @relation(fields: [farmId], references: [id])
-  farmId        Int
+  farm          Farm      @relation(fields: [farmId], references: [id])
+  farmId        String
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  mobileNumber  String?
+  landlineNumber String?
+  members           Member[]
+  invitations       Invitation[]
+  billingAddresses  Address[]      @relation(name: "UserBillingAddress")
+  shippingAddresses Address[]      @relation(name: "UserShippingAddress")
+  organizations     Organization[]
+
+  @@unique([email])
+  @@map("user")
 }
 
-enum AuthProviderNames {
-  GITHUB
-  GOOGLE
-  EMAIL
-}
-
-model AuthProviderDetails {
-  id           Int               @id @default(autoincrement())
-  user         User              @relation(fields: [userId], references: [id])
-  providerName AuthProviderNames
-  email        String
-  userName     String?
-  userId       Int
+model Address {
+  id             String        @id @default(cuid())
+  unit           Int?
+  streetNumber   Int
+  streetName     String
+  streetType     String
+  suburb         String
+  state          State
+  country        String
+  postCode       Int
+  billingUser    User?         @relation(name: "UserBillingAddress", fields: [billingUserid], references: [id])
+  billingUserid  String?
+  shippingUser   User?         @relation(name: "UserShippingAddress", fields: [shippingUserid], references: [id])
+  shippingUserid String?
+  billingOrg     Organization? @relation(name: "OrgBillingAddress", fields: [billingOrgid], references: [id])
+  billingOrgid   String?
+  shippingOrg    Organization? @relation(name: "OrgShippingAddress", fields: [shippingOrgid], references: [id])
+  shippingOrgid  String?
 }
 
 model Graze {
-  id                Int        @id @default(autoincrement())
+  id                String     @id @default(cuid())
   startDatetime     DateTime
   endDateTime       DateTime?
   paddock           Paddock    @relation(fields: [paddockId], references: [id])
-  paddockId         Int        @unique
+  paddockId         String     @unique
   mobs              GrazeMob[]
   dseDaysPerHectare Float?
 }
 
 model Breed {
-  id              Int            @id @default(autoincrement())
+  id              String         @id @default(cuid())
   name            String
   class           StockClass
   members         LivestockUnit? @relation(fields: [livestockUnitId], references: [id])
-  livestockUnitId Int            @unique
+  livestockUnitId String         @unique
 }
 
 model Mob {
-  id      Int             @id @default(autoincrement())
+  id      String          @id @default(cuid())
   name    String?
   members LivestockUnit[]
   comment String?
@@ -75,16 +110,16 @@ model Mob {
 }
 
 model GrazeMob {
-  graze   Graze @relation(fields: [grazeId], references: [id])
-  grazeId Int
-  mob     Mob   @relation(fields: [mobId], references: [id])
-  mobId   Int
+  graze   Graze  @relation(fields: [grazeId], references: [id])
+  grazeId String
+  mob     Mob    @relation(fields: [mobId], references: [id])
+  mobId   String
 
   @@id([grazeId, mobId])
 }
 
 model LivestockUnit {
-  id                           Int                            @id @default(autoincrement())
+  id                           String                         @id @default(cuid())
   nlisId                       String?
   visualIdLine1                String?
   visualIdLine2                String?
@@ -99,14 +134,14 @@ model LivestockUnit {
   sex                          Sex
   birthDate                    DateTime
   desexed                      Boolean
-  sireId                       Int?
+  sireId                       String?
   sire                         LivestockUnit?                 @relation("SIRED", fields: [sireId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   sired                        LivestockUnit[]                @relation("SIRED")
-  damId                        Int?
+  damId                        String?
   dam                          LivestockUnit?                 @relation("BIRTHED", fields: [damId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   birthed                      LivestockUnit[]                @relation("BIRTHED")
   mob                          Mob?                           @relation(fields: [mobRef], references: [id])
-  mobRef                       Int?
+  mobRef                       String?
   pregnancies                  LivestockUnitPregnancy[]
   weights                      WeightRecord[]
   treatments                   ChemicalTreatment[]
@@ -116,13 +151,60 @@ model LivestockUnit {
   angusTechId                  String?
   active                       Boolean                        @default(true)
   estimatedBreedingValueResult EstimatedBreedingValueResult[]
+  onFarmHistory                OnFarm[]
+  birthStud                    Stud[]
+  ownershipHistory             Ownership[]
+}
 
-  // farm                         Farm                           @relation(fields: [farmId], references: [id])
-  // farmId                       Int                            @unique
+model OnFarm {
+  id              String        @id @default(cuid())
+  livestockUnit   LivestockUnit @relation(fields: [livestockUnitId], references: [id])
+  livestockUnitId String
+  farm            Farm          @relation(fields: [farmId], references: [id])
+  farmId          String
+  startDate       DateTime?
+  endDate         DateTime?
+}
+
+model Ownership {
+  id              String        @id @default(cuid())
+  livestockUnit   LivestockUnit @relation(fields: [livestockUnitId], references: [id])
+  livestockUnitId String
+  organization    Organization  @relation(fields: [organizationId], references: [id])
+  organizationId  String
+  startDate       DateTime
+  endDate         DateTime?
+}
+
+model Stud {
+  id                String                    @id @default(cuid())
+  name              String
+  description       String?
+  farms             Farm[]
+  registrations     StudSocietyRegistration[]
+  liveStockBornHere LivestockUnit[]
+}
+
+model StudSocietyRegistration {
+  id                     String      @id @default(cuid())
+  society                StudSociety @relation(fields: [societyId], references: [id])
+  societyId              String
+  studRegistrationNumber String?
+  studRegistrationName   String?
+  studRegistrationPrefix String?
+  stud                   Stud        @relation(fields: [studId], references: [id])
+  studId                 String
+}
+
+model StudSociety {
+  id          String                    @id @default(cuid())
+  name        String
+  description String?
+  studs       StudSocietyRegistration[]
 }
 
 model Pregnancy {
-  id                         Int                      @id @default(autoincrement())
+  id                         String                   @id @default(cuid())
   earliestPossibleConception DateTime?
   latestPossibleConception   DateTime?
   conception                 DateTime?
@@ -130,26 +212,26 @@ model Pregnancy {
   earliestPossibleBirth      DateTime?
   latestPossibleBirth        DateTime?
   parents                    LivestockUnitPregnancy[]
-  pregnancySireId            Int
+  pregnancySireId            String
   pregnancyTest              PregnancyTest[]
 }
 
 model LivestockUnitPregnancy {
   livestockUnit   LivestockUnit @relation(fields: [livestockUnitId], references: [id])
-  livestockUnitId Int
+  livestockUnitId String
   pregnancy       Pregnancy     @relation(fields: [pregnancyId], references: [id])
-  pregnancyId     Int
+  pregnancyId     String
 
   @@id([livestockUnitId, pregnancyId])
 }
 
 model PregnancyTest {
-  id          Int                 @id @default(autoincrement())
+  id          String              @id @default(cuid())
   testDate    DateTime
   testType    PregnancyTestType
   resultDate  DateTime
   result      PregnancyTestResult
-  pregnancyId Int                 @unique
+  pregnancyId String              @unique
   pregnancy   Pregnancy           @relation(fields: [pregnancyId], references: [id])
   cost        Float?
 }
@@ -167,18 +249,18 @@ enum PregnancyTestType {
 }
 
 model ChemicalTreatment {
-  id                Int               @id @default(autoincrement())
+  id                String            @id @default(cuid())
   liveStockUnit     LivestockUnit     @relation(fields: [livestockUnitId], references: [id])
-  livestockUnitId   Int
+  livestockUnitId   String
   treatmentDate     DateTime
   applicationMethod ApplicationMethod
   product           ChemicalProduct   @relation(fields: [chemicalProductId], references: [id])
-  chemicalProductId Int
+  chemicalProductId String
   volumeMl          Int
 }
 
 model ChemicalProduct {
-  id                   Int                  @id @default(autoincrement())
+  id                   String               @id @default(cuid())
   manufacturer         ChemicalManufacturer
   productName          ChemicalProductName
   serialNumber         String?
@@ -192,15 +274,15 @@ model ChemicalProduct {
 }
 
 model ActiveIngredient {
-  id         Int             @id @default(autoincrement())
+  id         String          @id @default(cuid())
   ingredient Ingredient
   mgPermL    Float
   product    ChemicalProduct @relation(fields: [productId], references: [id])
-  productId  Int
+  productId  String
 }
 
 model EstimatedBreedingValueDefinition {
-  id                           Int                            @id @default(autoincrement())
+  id                           String                         @id @default(cuid())
   name                         String
   code                         String
   category                     EbvCategory
@@ -215,14 +297,14 @@ model EstimatedBreedingValueDefinition {
 }
 
 model EstimatedBreedingValueResult {
-  id                                 Int                              @id @default(autoincrement())
+  id                                 String                           @id @default(cuid())
   ebv                                EstimatedBreedingValueDefinition @relation(fields: [estimatedBreedingValueDefinitionId], references: [id])
-  estimatedBreedingValueDefinitionId Int
+  estimatedBreedingValueDefinitionId String
   value                              Float
   percentile                         Float
   accuracy                           Float
   livestockUnit                      LivestockUnit                    @relation(fields: [livestockUnitId], references: [id])
-  livestockUnitId                    Int
+  livestockUnitId                    String
 }
 
 enum Units {
@@ -298,45 +380,48 @@ enum VisualIdColour {
 }
 
 model Paddock {
-  id                      Int                    @id @default(autoincrement())
+  id                      String                 @id @default(cuid())
   name                    String
   polygon                 GeoPoint[]
   areaHa                  Float
   graze                   Graze[]
   livestockUnitPosition   LivestockUnitPosition? @relation(fields: [livestockUnitPositionId], references: [id])
-  livestockUnitPositionId Int                    @unique
+  livestockUnitPositionId String?                @unique
   // farm                    Farm                   @relation(fields: [farmId], references: [id])
   // farmId                  Int                    @unique
 }
 
 model LivestockUnitPosition {
-  id       Int       @id @default(autoincrement())
+  id       String    @id @default(cuid())
   date     DateTime
   location GeoPoint?
   paddock  Paddock?
 }
 
 model GeoPoint {
-  id                      Int                    @id @default(autoincrement())
+  id                      String                 @id @default(cuid())
   latitude                Float
   longitude               Float
-  paddock                 Paddock                @relation(fields: [paddockId], references: [id])
-  paddockId               Int
+  heading                 Float?
+  paddock                 Paddock?               @relation(fields: [paddockId], references: [id])
+  paddockId               String?
   livestockUnitPosition   LivestockUnitPosition? @relation(fields: [livestockUnitPositionId], references: [id])
-  livestockUnitPositionId Int                    @unique
+  livestockUnitPositionId String?                @unique
+
+  farms Farm[]
 }
 
 model WeightRecord {
-  id              Int           @id @default(autoincrement())
+  id              String        @id @default(cuid())
   weight          Float
   dateMeasured    DateTime      @default(now())
   method          WeighMethod   @default(SCALES)
   livestockUnit   LivestockUnit @relation(fields: [livestockUnitId], references: [id])
-  livestockUnitId Int
+  livestockUnitId String
 }
 
 model LoraDevice {
-  id               Int                  @id @default(autoincrement())
+  id               String               @id @default(cuid())
   name             String?
   deviceId         String
   deviceEui        String
@@ -388,4 +473,113 @@ enum CommercialClass {
   COMMERCIAL
   SEEDSTOCK
   PET
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  activeOrganizationId String?
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model Organization {
+  id                String       @id
+  name              String
+  slug              String
+  logo              String?
+  createdAt         DateTime
+  metadata          String?
+  members           Member[]
+  contactPersonId   String
+  contactPerson     User         @relation(fields: [contactPersonId], references: [id], onDelete: Cascade)
+  invitations       Invitation[]
+  billingAddresses  Address[]    @relation(name: "OrgBillingAddress")
+  shippingAddresses Address[]    @relation(name: "OrgShippingAddress")
+  ownerships        Ownership[]
+  farms             Farm[]       @relation("OrganizationFarms")
+}
+
+model Member {
+  id             String       @id
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           String       @default("member")
+  createdAt      DateTime
+
+  @@index([organizationId])
+  @@index([userId])
+  @@map("member")
+}
+
+model Invitation {
+  id             String       @id
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           String?
+  status         String       @default("pending")
+  expiresAt      DateTime
+  createdAt      DateTime     @default(now())
+  inviterId      String
+  user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([email])
+  @@map("invitation")
+}
+
+enum State {
+  ACT
+  NSW
+  QLD
+  VIC
+  SA
+  NT
+  WA
+  TAS
 }
