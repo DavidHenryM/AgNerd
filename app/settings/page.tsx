@@ -1,9 +1,9 @@
-import { Heading } from "@chakra-ui/react";
-import SidebarWithHeader from "../components/SideBar";
-import { LoadingCard } from "../loading";
+import Loading from "@app/loading";
 
 export default function Settings(){
   return (
-    <SidebarWithHeader Content={LoadingCard}></SidebarWithHeader>
+    <>
+      <Loading />
+    </> 
   )
 }
