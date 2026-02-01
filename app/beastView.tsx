@@ -1,23 +1,11 @@
 "use-client"
 
-// import { DocumentNode, gql, useMutation } from "@apollo/client";
-import { Spacer, Card, Button, Text, Table, Group, Editable, HStack, Flex, IconButton } from "@chakra-ui/react"
-import { Switch } from "@/components/ui/switch"
-import {
-  DialogBackdrop,
-  DialogBody,
-  DialogCloseTrigger,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogRoot,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import { Divider, Card, Button, Typography, Table,  Stack, IconButton, Switch, TableContainer, TableBody, CardHeader, Paper, TableCell, Input, TableRow } from "@mui/material"
 import { useState } from "react";
-import { setLivestockUnitInactive } from "./queries";
-import { LivestockUnit } from "@prisma/client";
+import { setLivestockUnitInactive } from "@lib/queries";
+import { LivestockUnit } from "@generated/browser";
 import { Icons } from "./lib/Icons";
+import { ConfirmDialog } from "./components/dialogues/ConfirmDialogue";
 
 function placeHolder(text: string | undefined | null, editable: boolean): string {
   if (text){
@@ -33,32 +21,27 @@ function placeHolder(text: string | undefined | null, editable: boolean): string
 }
 
 
-function EditableRowItem(props: {title: string, value: any | undefined, editable: boolean}){
+function EditableRowItem(props: {title: string, value: unknown | undefined, editable: boolean}){
   if(props.value || props.editable) {
     return (
-      <Table.Row>
-        <Table.Cell>{props.title}</Table.Cell>
-        <Table.Cell>
-          <Editable.Root
-             defaultValue={props.value ? props.value : ''} 
-             disabled={!props.editable}>
-            <Editable.Preview />
-            <Editable.Input />
-            <Editable.Control>
-              <Editable.CancelTrigger asChild>
-                <IconButton variant="outline" size="xs">
-                  <Icons.LuX />
-                </IconButton>
-              </Editable.CancelTrigger>
-              <Editable.SubmitTrigger asChild>
-                <IconButton variant="outline" size="xs">
-                  <Icons.LuCheck />
-                </IconButton>
-              </Editable.SubmitTrigger>
-            </Editable.Control>
-          </Editable.Root>
-        </Table.Cell>
-      </Table.Row>
+      <TableContainer>
+        <Table>
+          <TableRow>
+            <TableCell>{props.title}</TableCell>
+            <TableCell>
+              <Input
+                defaultValue={props.value ? props.value : ''} 
+                disabled={!props.editable}/>
+                    <IconButton>
+                      <Icons.LuX />
+                    </IconButton>
+                    <IconButton>
+                      <Icons.LuCheck />
+                    </IconButton>
+            </TableCell>
+          </TableRow>
+        </Table>
+      </TableContainer>
     )
   } else {
     return (<></>)
@@ -69,11 +52,11 @@ export function BeastView(props: {stock: LivestockUnit}){
   const [open, setOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [deactivateOk, setDeactivateOk] = useState(false)
-  const [deactivateError, setDeactivateError] = useState<null | any>()
+  const [deactivateError, setDeactivateError] = useState<null | unknown>()
   const [editable, setEditable] = useState(false)
 
 
-  let severity: any = 'info'
+  let severity: string = 'info'
   let message: string = ''
  
   const handleYes = () => {
@@ -82,7 +65,7 @@ export function BeastView(props: {stock: LivestockUnit}){
       try {
         setLivestockUnitInactive(props.stock.id)
         setDeactivateOk(true)
-      } catch(error: any){
+      } catch(error: unknown){
         setDeactivateError(error)
       }
   }
@@ -110,110 +93,78 @@ export function BeastView(props: {stock: LivestockUnit}){
 
   return (
     <>
-      <Card.Root>
-        <Card.Header>
-          <Flex>
-            <HStack>
+      <Card>
+        <CardHeader>
+            <Stack direction="row">
               <Icons.GiPadlockOpen/>
-              <Switch checked={editable} onCheckedChange={(event) => {setEditable(event.checked)}}/>
-            </HStack>
-            <Spacer/>
-          </Flex>
-        </Card.Header>
-        <Table.Root size={'sm'} showColumnBorder={true} striped={true} variant={"outline"}>
-          <Table.Body >
-            <EditableRowItem title={'Name'} value={placeHolder(props.stock.name, editable)} editable={editable}/>
-            <EditableRowItem title={'Angus Tech Id'} value={placeHolder(props.stock.angusTechId, editable)} editable={editable}/>
-            <EditableRowItem title={'NLIS#'} value={placeHolder(props.stock.nlisId, editable)} editable={editable}/>
-            <EditableRowItem title={'Birth Date'} value={placeHolder(props.stock.birthDate ? props.stock.birthDate.toLocaleDateString() : null, editable)} editable={editable}/>
-            <EditableRowItem title={'DSE'} value={placeHolder(`${props.stock.drySheepEquivalent}`, editable)} editable={editable}/>
-            <EditableRowItem title={'Desexed'} value={placeHolder(`${props.stock.desexed}`, editable)} editable={editable}/>
-            <EditableRowItem title={'Purchase date'} value={props.stock.purchaseDate ? props.stock.purchaseDate.toLocaleDateString() : null} editable={editable}/>
-          </Table.Body>
-        </Table.Root>
-        <Group gap='2' justifyContent={'center'}>
-          <HStack wrap={"wrap"}>
+              <Switch checked={editable} onChange={(event) => {setEditable(event.target.checked)}}/>
+            </Stack>
+            <Divider/>
+        </CardHeader>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableBody>
+              <EditableRowItem title={'Name'} value={placeHolder(props.stock.name, editable)} editable={editable}/>
+              <EditableRowItem title={'Angus Tech Id'} value={placeHolder(props.stock.angusTechId, editable)} editable={editable}/>
+              <EditableRowItem title={'NLIS#'} value={placeHolder(props.stock.nlisId, editable)} editable={editable}/>
+              <EditableRowItem title={'Birth Date'} value={placeHolder(props.stock.birthDate ? props.stock.birthDate.toLocaleDateString() : null, editable)} editable={editable}/>
+              <EditableRowItem title={'DSE'} value={placeHolder(`${props.stock.drySheepEquivalent}`, editable)} editable={editable}/>
+              <EditableRowItem title={'Desexed'} value={placeHolder(`${props.stock.desexed}`, editable)} editable={editable}/>
+              <EditableRowItem title={'Purchase date'} value={props.stock.purchaseDate ? props.stock.purchaseDate.toLocaleDateString() : null} editable={editable}/>
+            </TableBody>
+          </Table>
+        </TableContainer>
+          <Stack direction="row">
             <Button onClick={() => {}} >
-              <HStack>
+              <Stack direction="row">
                 <Icons.GiMedicines size={30}/>  
-                <Text>Treat</Text>
-              </HStack>
+                <Typography>Treat</Typography>
+              </Stack>
             </Button>
             <Button onClick={() => {}}>
-              <HStack>
+              <Stack direction="row">
                 <Icons.GiReceiveMoney size={30}/>
-                <Text>Sell</Text>
-              </HStack>
+                <Typography>Sell</Typography>
+              </Stack>
             </Button>
             <Button onClick={() => {}}>
-              <HStack>
+              <Stack direction="row">
                 <Icons.GiCorkedTube size={30}/>
-                <Text>Sample</Text>
-              </HStack>
+                <Typography>Sample</Typography>
+              </Stack>
             </Button>
             <Button onClick={() => {}}>
-              <HStack>
+              <Stack direction="row">
                 <Icons.GiIceCube size={30}/>
-                <Text>A.I.</Text>
-              </HStack>
+                <Typography>A.I.</Typography>
+              </Stack>
             </Button>
             <Button onClick={() => {}}>
-              <HStack>
+              <Stack direction="row">
                 <Icons.GiWeight size={30}/>
-                <Text>Weigh</Text>
-              </HStack>
+                <Typography>Weigh</Typography>
+              </Stack>
             </Button>
             <Button onClick={() => {setConfirmOpen(true)}}>
-              <HStack>
+              <Stack direction="row">
                 <Icons.GiCancel size={30}/>
-                <Text>Deactivate</Text>
-            </HStack>
+                <Typography>Deactivate</Typography>
+            </Stack>
             </Button>
-          </HStack>
-        </Group>
+          </Stack>
 
-      </Card.Root>
+      </Card>
       <ConfirmDialog 
         open={confirmOpen} 
         handleYes={handleYes}
         handleNo={handleNo}
-        text='Do you want to mark this beast as NOT active?'/>
+        question='Do you want to mark this beast as NOT active?' 
+        text='This action will mark the beast as inactive. Are you sure you want to proceed?'/>
     </>
   )
 }
 
-function ConfirmDialog(props: any) {
-  return(
-    <DialogRoot
-      open={props.open}
-      onOpenChange={props.handleNo}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <DialogBackdrop/>
-      <DialogTrigger/>
-      <DialogContent>
-        <DialogCloseTrigger />
-        <DialogHeader id="alert-dialog-title">
-          <DialogTitle>{props.question}</DialogTitle>
-        </DialogHeader>
-        <DialogBody id="alert-dialog-description">
-          {props.text}
-        </DialogBody>
-        <DialogFooter>
-          <HStack gap={2}>
-            <Button onClick={props.handleYes} autoFocus>
-              Yes
-            </Button>
-            <Button onClick={props.handleNo}>
-              No
-            </Button>
-          </HStack>
-        </DialogFooter>
-      </DialogContent>
-    </DialogRoot>
-  )
-}
+
 
 
 // function DeactivateLivestockUnit(props: {stock: any} ) {  

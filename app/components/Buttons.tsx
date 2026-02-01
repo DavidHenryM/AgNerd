@@ -1,16 +1,15 @@
-import { Button } from "@/components/ui/button"
-import { VStack, Text } from "@chakra-ui/react"
+import { Stack, Typography, Button } from "@mui/material"
 import { Icons } from "../lib/Icons"
 
 
-export function DesexButton(props: any) {
+export function DesexButton(props: {desexed: boolean, sex: string}) {
   if (!props.desexed && props.sex == "MALE") {
     return (
       <Button onClick={() => {}}  style={{width:70, height:90}}>
-        <VStack>
+        <Stack direction="column" alignItems="center" justifyContent="center" spacing={1}>
           <Icons.GiScissors style={{width:50, height:50}}/>  
-          <Text>Desex</Text>
-        </VStack>
+          <Typography>Desex</Typography>
+        </Stack>
       </Button>
     )
   } else {
@@ -18,14 +17,14 @@ export function DesexButton(props: any) {
   }
 }
 
-export function PregButton(props: any) {
+export function PregButton(props: {sex: string, onOpen: () => void}) {
   if (props.sex == "FEMALE") {
     return (
       <Button onClick={props.onOpen}  style={{width:70, height:90}}>
-        <VStack>
+        <Stack direction="column" alignItems="center" justifyContent="center" spacing={1}>
           <Icons.GiEmbryo style={{width:50, height:50}}/>
-          <Text>Preg</Text>
-        </VStack>
+          <Typography>Preg</Typography>
+        </Stack>
       </Button>
     )
   } else {

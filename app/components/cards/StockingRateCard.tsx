@@ -1,5 +1,5 @@
-import { Card, Flex } from "@chakra-ui/react";
-import { LoadingBar } from "../../loading";
+import { Card, CardContent, CardHeader, Stack } from "@mui/material";
+import  LoadingBar  from "@app/loading";
 import { LiveStockCountStat, NumberStat } from "../Stats";
 
 export default function StockingRateCard(
@@ -11,10 +11,10 @@ export default function StockingRateCard(
   }
 ){
   return (
-    <Card.Root variant={"elevated"}>
-      <Card.Header>Stocking Rate</Card.Header>
-      <Card.Body>
-        <Flex gap={"6"}>
+    <Card>
+      <CardHeader>Stocking Rate</CardHeader>
+      <CardContent>
+        <Stack gap={"6"}>
           {
             props.loadingLivestockCount ? 
             <LoadingBar/> : 
@@ -31,8 +31,8 @@ export default function StockingRateCard(
               unit={"DSE"} 
               trend={undefined}/>
           }
-        </Flex>
-      </Card.Body>
-    </Card.Root>
+        </Stack>
+      </CardContent>
+    </Card>
   )
 }

@@ -1,135 +1,78 @@
 "use client"
 
-import {
-  For,
-  HStack, 
-  VStack,
-} from '@chakra-ui/react';
-
-import { $Enums, LivestockUnit } from '@prisma/client'
 import { BeastView } from './beastView';
 import { useEffect, useRef, useState } from 'react';
-import React from 'react';
 import Loading from './loading';
-import { getLivestock } from './queries';
+import { getLivestock } from '@lib/queries';
 import ControlBar from "./components/ControlBar";
 import StockPreviewCard from "./components/cards/StockPreview";
 import { getArrayTrues } from './utils/utils';
-
-
-
-// function SavingData(props: any) {
-//   const [save, { loading, error, data }] =  useMutation(props.mutation, {variables: props.variables})
-//   if (data) {
-//     return (
-//       <Alert
-//         status='success'
-//         variant='subtle'
-//         flexDirection='column'
-//         alignItems='center'
-//         justifyContent='center'
-//         textAlign='center'
-//         height='200px'
-//       >
-//         <AlertIcon boxSize='40px' mr={0} />
-//         <AlertTitle mt={4} mb={1} fontSize='lg'>New beast added</AlertTitle>
-//         <AlertDescription maxWidth='sm'>
-//           Thanks for submitting your application. Our team will get back to you soon.
-//         </AlertDescription>
-//       </Alert>
-//     )
-//   } else if (loading) {
-//     return (
-//       <Alert
-//         status='loading'
-//         variant='subtle'
-//         flexDirection='column'
-//         alignItems='center'
-//         justifyContent='center'
-//         textAlign='center'
-//         height='200px'
-//       >
-//         <AlertIcon boxSize='40px' mr={0} />
-//         <AlertTitle mt={4} mb={1} fontSize='lg'>Saving</AlertTitle>
-//         <AlertDescription maxWidth='sm'>
-//           <CircularProgress isIndeterminate/>
-//         </AlertDescription>
-//       </Alert>
-//     )
-//   } else if (error) {
-//     return (
-//       <Alert
-//         status='error'
-//         variant='subtle'
-//         flexDirection='column'
-//         alignItems='center'
-//         justifyContent='center'
-//         textAlign='center'
-//         height='200px'
-//       >
-//         <AlertIcon boxSize='40px' mr={0} />
-//         <AlertTitle mt={4} mb={1} fontSize='lg'>New beast NOT added</AlertTitle>
-//         <AlertDescription maxWidth='sm'>
-//           Thanks for submitting your application. Our team will get back to you soon.
-//         </AlertDescription>
-//       </Alert>
-//     )
-//   }
-  
-// }
-
-
+import { CommercialClass, LivestockUnit } from './generated/prisma/browser';
+import Content from './components/Content';
+import { Grid } from '@mui/material';
+import { LivestockUnitWhereInput } from './generated/prisma/models';
 
 export function ActiveLivestock() {
-  const commercialClasses = Object.keys($Enums.CommercialClass)
-  let livestockUnits = useRef<LivestockUnit[]>([])
+  const commercialClasses = Object.keys(CommercialClass)
+  const livestockUnits = useRef<LivestockUnit[]>([])
   const [livestockDisplay, setLivestockDisplay] = useState<LivestockUnit[]>([])
   const [stockFocus, setStockFocus] = useState<LivestockUnit>()
   const [loading, setLoading] = useState(true)
-  const [whereFilter, setWhereFilter] = useState<any>({active: {equals: true}, commercialClass: {in: commercialClasses}})
+  const [whereFilter, setWhereFilter] = useState<LivestockUnitWhereInput>({active: {equals: true}, commercialClass: {in: commercialClasses as CommercialClass[]}})
   const [filterChecked, setFilterChecked] = useState(new Array<boolean>(commercialClasses.length).fill(true))
   const [openFilter, setOpenFilter] = useState(false)
 
   useEffect(() => {
-    const checkedClasses: Array<string> = getArrayTrues(commercialClasses, filterChecked)
-    const livestockToDisplay: Array<LivestockUnit> = []
-    livestockUnits.current.map((livestockUnit: LivestockUnit)=>{
-      if(livestockUnit.commercialClass != null){
-        if(checkedClasses.includes(livestockUnit.commercialClass)){
-          livestockToDisplay.push(livestockUnit)
+    async function filterLivestock() {
+      const checkedClasses: Array<string> = getArrayTrues(commercialClasses, filterChecked)
+      const livestockToDisplay: Array<LivestockUnit> = []
+      livestockUnits.current.map((livestockUnit: LivestockUnit)=>{
+        if(livestockUnit.commercialClass != null){
+          if(checkedClasses.includes(livestockUnit.commercialClass)){
+            livestockToDisplay.push(livestockUnit)
+          }
         }
-      }
-    })
-    setLivestockDisplay(livestockToDisplay)
-  }, [openFilter])
+      })
+      setLivestockDisplay(livestockToDisplay)
+    }
+    filterLivestock()
+  }, [openFilter, filterChecked, commercialClasses])
 
   useEffect(() => {
-    setLoading(true)
-    getLivestock(whereFilter)
-      .then((livestock: LivestockUnit[]) => {
-        livestockUnits.current = livestock
-        setLivestockDisplay(livestockUnits.current)
-        setLoading(false)
-      })
-  },[])
+    async function updateWhereFilter() {
+      setLoading(true)
+      getLivestock(whereFilter)
+        .then((livestock: LivestockUnit[]) => {
+          console.log("Livestock fetched:", livestock)
+          livestockUnits.current = livestock
+          setLivestockDisplay(livestockUnits.current)
+          setLoading(false)
+        })
+      }
+    updateWhereFilter()
+  },[whereFilter])
 
   if (loading){
     return (<Loading/>)
   } else {
     if (!stockFocus){
       return (
-        <VStack>
-          <ControlBar filterChecked={filterChecked} setFilterChecked={setFilterChecked} openFilter={openFilter} setOpenFilter={setOpenFilter}/>
-          <HStack wrap={"wrap"}>
-            <For each={livestockDisplay}>
+        <Content backgroundImageIndex={1}>
+          {/* <Grid spacing={2} > */}
+            <ControlBar filterChecked={filterChecked} setFilterChecked={setFilterChecked} openFilter={openFilter} setOpenFilter={setOpenFilter}/>
+            {/* <Grid spacing={2}> */}
               {
-                (stock: LivestockUnit, index: number)=>(
-                  <StockPreviewCard key={stock.id} stock={stock} index={index} onClick={() => setStockFocus(stock)}/>
-                )
+                livestockDisplay.map((stock: LivestockUnit, index: number)=>{
+                  return (
+                    <Grid key={stock.id} spacing={2}>
+                      <StockPreviewCard key={stock.id} stock={stock} index={index} onClick={() => setStockFocus(stock)}/>
+                    </Grid>
+                  )
+                })
               }
-            </For>
-          </HStack>
-        </VStack>
+            {/* </Grid> */}
+          {/* </Grid> */}
+        </Content>
       )
     } else {
       return (

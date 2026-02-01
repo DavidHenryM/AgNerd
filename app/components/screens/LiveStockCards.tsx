@@ -1,18 +1,14 @@
-import { HStack, For, VStack, Stack, Flex } from "@chakra-ui/react"
-import { LivestockUnit } from "@prisma/client"
+import { Skeleton, Stack } from "@mui/material"
+import { LivestockUnit } from '@generated/browser'
 import { useRef, useState, useEffect } from "react"
 import { BeastView } from "../../beastView"
-import StockPreviewCard, { StockPreviewCardSkeleton } from "../cards/StockPreview"
-import Loading from "../../loading"
-import { getLivestock } from "../../queries"
-import {
-  Skeleton,
-  SkeletonCircle,
-  SkeletonText,
-} from "@/components/ui/skeleton"
+import StockPreviewCard from "@components/cards/StockPreview"
+import { getLivestock } from "@lib/queries"
+import { LivestockUnitWhereInput } from "@/app/generated/prisma/models"
 
-export default function LivestockCardsScreen(props: {whereFilter: any}) { 
-  let livestockUnits = useRef<LivestockUnit[]>([])
+
+export default function LivestockCardsScreen(props: {whereFilter: Partial<LivestockUnitWhereInput>}) { 
+  const livestockUnits = useRef<LivestockUnit[]>([])
   const [stockFocus, setStockFocus] = useState<LivestockUnit>()
   const [loading, setLoading] = useState(true)
 
@@ -23,31 +19,24 @@ export default function LivestockCardsScreen(props: {whereFilter: any}) {
         livestockUnits.current = livestock
         
       }).finally(()=>setLoading(false))
-  },[])
+  },[props])
 
   if (loading){
-    // return (<Loading/>)
     return (
-      <HStack wrap={"wrap"} gap="6">
-        <For each={Array.from(Array(12).keys())}>
-          {
-            (value: number)=>(<StockPreviewCardSkeleton key={`stockPreviewCardSkeleton_${value}`}/>)
-          }
-        </For>
-      </HStack>
+      <Stack direction="row" flexWrap="wrap" gap={6}>
+        {Array.from(Array(12).keys()).map((value: number) => (
+          <Skeleton key={`stockPreviewCardSkeleton_${value}`} variant="rectangular" width={210} height={118} />
+        ))}
+      </Stack>
     )
   } else {
     if (!stockFocus){
       return (
-        <HStack wrap={"wrap"}>
-          <For each={livestockUnits.current}>
-            {
-              (stock: LivestockUnit, index: number)=>(
-                <StockPreviewCard key={stock.id} stock={stock} index={index} onClick={() => setStockFocus(stock)}/>
-              )
-            }
-          </For>
-        </HStack>
+        <Stack direction="row" flexWrap="wrap" gap={6}>
+          {livestockUnits.current.map((stock: LivestockUnit, index: number) => (
+            <StockPreviewCard key={stock.id} stock={stock} index={index} onClick={() => setStockFocus(stock)}/>
+          ))}
+        </Stack>
       )
     } else {
       return (
