@@ -171,6 +171,56 @@ export async function getUsersFarm(userId: string): Promise<FarmAndLocation | nu
   return farm
 }
 
+export type FarmListItem = {
+  id: string
+  name: string
+  slug: string | null
+  businessName: string | null
+}
+
+export async function getUserFarms(userId: string): Promise<FarmListItem[]> {
+  const farms = await prisma.farm.findMany({
+    where: {
+      users: {
+        some: {
+          id: { equals: userId },
+        },
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      businessName: true,
+    },
+    orderBy: {
+      name: "asc",
+    },
+  })
+
+  return farms
+}
+
+export async function getFarmBySlug(slug: string) {
+  const farm = await prisma.farm.findFirst({
+    where: {
+      slug: { equals: slug },
+    },
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      businessName: true,
+      pic: true,
+      abn: true,
+      acn: true,
+      areaHa: true,
+    },
+  })
+
+  return farm
+}
+
 export async function getUserFromId(userId: string): Promise<User | null>{
   const user = await prisma.user.findFirst({
     where: {

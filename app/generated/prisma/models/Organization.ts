@@ -283,7 +283,7 @@ export type OrganizationCreateInput = {
   billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingOrgInput
   shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingOrgInput
   ownerships?: Prisma.OwnershipCreateNestedManyWithoutOrganizationInput
-  farms?: Prisma.FarmCreateNestedManyWithoutOrganizationsInput
+  farms?: Prisma.FarmCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateInput = {
@@ -299,7 +299,7 @@ export type OrganizationUncheckedCreateInput = {
   billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingOrgInput
   shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingOrgInput
   ownerships?: Prisma.OwnershipUncheckedCreateNestedManyWithoutOrganizationInput
-  farms?: Prisma.FarmUncheckedCreateNestedManyWithoutOrganizationsInput
+  farms?: Prisma.FarmUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUpdateInput = {
@@ -315,7 +315,7 @@ export type OrganizationUpdateInput = {
   billingAddresses?: Prisma.AddressUpdateManyWithoutBillingOrgNestedInput
   shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingOrgNestedInput
   ownerships?: Prisma.OwnershipUpdateManyWithoutOrganizationNestedInput
-  farms?: Prisma.FarmUpdateManyWithoutOrganizationsNestedInput
+  farms?: Prisma.FarmUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateInput = {
@@ -331,7 +331,7 @@ export type OrganizationUncheckedUpdateInput = {
   billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingOrgNestedInput
   shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingOrgNestedInput
   ownerships?: Prisma.OwnershipUncheckedUpdateManyWithoutOrganizationNestedInput
-  farms?: Prisma.FarmUncheckedUpdateManyWithoutOrganizationsNestedInput
+  farms?: Prisma.FarmUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateManyInput = {
@@ -363,6 +363,11 @@ export type OrganizationUncheckedUpdateManyInput = {
   contactPersonId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
+export type OrganizationNullableScalarRelationFilter = {
+  is?: Prisma.OrganizationWhereInput | null
+  isNot?: Prisma.OrganizationWhereInput | null
+}
+
 export type OrganizationListRelationFilter = {
   every?: Prisma.OrganizationWhereInput
   some?: Prisma.OrganizationWhereInput
@@ -371,11 +376,6 @@ export type OrganizationListRelationFilter = {
 
 export type OrganizationOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type OrganizationNullableScalarRelationFilter = {
-  is?: Prisma.OrganizationWhereInput | null
-  isNot?: Prisma.OrganizationWhereInput | null
 }
 
 export type OrganizationScalarRelationFilter = {
@@ -413,42 +413,20 @@ export type OrganizationMinOrderByAggregateInput = {
   contactPersonId?: Prisma.SortOrder
 }
 
-export type OrganizationCreateNestedManyWithoutFarmsInput = {
-  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutFarmsInput, Prisma.OrganizationUncheckedCreateWithoutFarmsInput> | Prisma.OrganizationCreateWithoutFarmsInput[] | Prisma.OrganizationUncheckedCreateWithoutFarmsInput[]
-  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutFarmsInput | Prisma.OrganizationCreateOrConnectWithoutFarmsInput[]
-  connect?: Prisma.OrganizationWhereUniqueInput | Prisma.OrganizationWhereUniqueInput[]
+export type OrganizationCreateNestedOneWithoutFarmsInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutFarmsInput, Prisma.OrganizationUncheckedCreateWithoutFarmsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutFarmsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
 }
 
-export type OrganizationUncheckedCreateNestedManyWithoutFarmsInput = {
-  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutFarmsInput, Prisma.OrganizationUncheckedCreateWithoutFarmsInput> | Prisma.OrganizationCreateWithoutFarmsInput[] | Prisma.OrganizationUncheckedCreateWithoutFarmsInput[]
-  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutFarmsInput | Prisma.OrganizationCreateOrConnectWithoutFarmsInput[]
-  connect?: Prisma.OrganizationWhereUniqueInput | Prisma.OrganizationWhereUniqueInput[]
-}
-
-export type OrganizationUpdateManyWithoutFarmsNestedInput = {
-  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutFarmsInput, Prisma.OrganizationUncheckedCreateWithoutFarmsInput> | Prisma.OrganizationCreateWithoutFarmsInput[] | Prisma.OrganizationUncheckedCreateWithoutFarmsInput[]
-  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutFarmsInput | Prisma.OrganizationCreateOrConnectWithoutFarmsInput[]
-  upsert?: Prisma.OrganizationUpsertWithWhereUniqueWithoutFarmsInput | Prisma.OrganizationUpsertWithWhereUniqueWithoutFarmsInput[]
-  set?: Prisma.OrganizationWhereUniqueInput | Prisma.OrganizationWhereUniqueInput[]
-  disconnect?: Prisma.OrganizationWhereUniqueInput | Prisma.OrganizationWhereUniqueInput[]
-  delete?: Prisma.OrganizationWhereUniqueInput | Prisma.OrganizationWhereUniqueInput[]
-  connect?: Prisma.OrganizationWhereUniqueInput | Prisma.OrganizationWhereUniqueInput[]
-  update?: Prisma.OrganizationUpdateWithWhereUniqueWithoutFarmsInput | Prisma.OrganizationUpdateWithWhereUniqueWithoutFarmsInput[]
-  updateMany?: Prisma.OrganizationUpdateManyWithWhereWithoutFarmsInput | Prisma.OrganizationUpdateManyWithWhereWithoutFarmsInput[]
-  deleteMany?: Prisma.OrganizationScalarWhereInput | Prisma.OrganizationScalarWhereInput[]
-}
-
-export type OrganizationUncheckedUpdateManyWithoutFarmsNestedInput = {
-  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutFarmsInput, Prisma.OrganizationUncheckedCreateWithoutFarmsInput> | Prisma.OrganizationCreateWithoutFarmsInput[] | Prisma.OrganizationUncheckedCreateWithoutFarmsInput[]
-  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutFarmsInput | Prisma.OrganizationCreateOrConnectWithoutFarmsInput[]
-  upsert?: Prisma.OrganizationUpsertWithWhereUniqueWithoutFarmsInput | Prisma.OrganizationUpsertWithWhereUniqueWithoutFarmsInput[]
-  set?: Prisma.OrganizationWhereUniqueInput | Prisma.OrganizationWhereUniqueInput[]
-  disconnect?: Prisma.OrganizationWhereUniqueInput | Prisma.OrganizationWhereUniqueInput[]
-  delete?: Prisma.OrganizationWhereUniqueInput | Prisma.OrganizationWhereUniqueInput[]
-  connect?: Prisma.OrganizationWhereUniqueInput | Prisma.OrganizationWhereUniqueInput[]
-  update?: Prisma.OrganizationUpdateWithWhereUniqueWithoutFarmsInput | Prisma.OrganizationUpdateWithWhereUniqueWithoutFarmsInput[]
-  updateMany?: Prisma.OrganizationUpdateManyWithWhereWithoutFarmsInput | Prisma.OrganizationUpdateManyWithWhereWithoutFarmsInput[]
-  deleteMany?: Prisma.OrganizationScalarWhereInput | Prisma.OrganizationScalarWhereInput[]
+export type OrganizationUpdateOneWithoutFarmsNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutFarmsInput, Prisma.OrganizationUncheckedCreateWithoutFarmsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutFarmsInput
+  upsert?: Prisma.OrganizationUpsertWithoutFarmsInput
+  disconnect?: Prisma.OrganizationWhereInput | boolean
+  delete?: Prisma.OrganizationWhereInput | boolean
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutFarmsInput, Prisma.OrganizationUpdateWithoutFarmsInput>, Prisma.OrganizationUncheckedUpdateWithoutFarmsInput>
 }
 
 export type OrganizationCreateNestedManyWithoutContactPersonInput = {
@@ -602,469 +580,15 @@ export type OrganizationCreateOrConnectWithoutFarmsInput = {
   create: Prisma.XOR<Prisma.OrganizationCreateWithoutFarmsInput, Prisma.OrganizationUncheckedCreateWithoutFarmsInput>
 }
 
-export type OrganizationUpsertWithWhereUniqueWithoutFarmsInput = {
-  where: Prisma.OrganizationWhereUniqueInput
+export type OrganizationUpsertWithoutFarmsInput = {
   update: Prisma.XOR<Prisma.OrganizationUpdateWithoutFarmsInput, Prisma.OrganizationUncheckedUpdateWithoutFarmsInput>
   create: Prisma.XOR<Prisma.OrganizationCreateWithoutFarmsInput, Prisma.OrganizationUncheckedCreateWithoutFarmsInput>
+  where?: Prisma.OrganizationWhereInput
 }
 
-export type OrganizationUpdateWithWhereUniqueWithoutFarmsInput = {
-  where: Prisma.OrganizationWhereUniqueInput
+export type OrganizationUpdateToOneWithWhereWithoutFarmsInput = {
+  where?: Prisma.OrganizationWhereInput
   data: Prisma.XOR<Prisma.OrganizationUpdateWithoutFarmsInput, Prisma.OrganizationUncheckedUpdateWithoutFarmsInput>
-}
-
-export type OrganizationUpdateManyWithWhereWithoutFarmsInput = {
-  where: Prisma.OrganizationScalarWhereInput
-  data: Prisma.XOR<Prisma.OrganizationUpdateManyMutationInput, Prisma.OrganizationUncheckedUpdateManyWithoutFarmsInput>
-}
-
-export type OrganizationScalarWhereInput = {
-  AND?: Prisma.OrganizationScalarWhereInput | Prisma.OrganizationScalarWhereInput[]
-  OR?: Prisma.OrganizationScalarWhereInput[]
-  NOT?: Prisma.OrganizationScalarWhereInput | Prisma.OrganizationScalarWhereInput[]
-  id?: Prisma.StringFilter<"Organization"> | string
-  name?: Prisma.StringFilter<"Organization"> | string
-  slug?: Prisma.StringFilter<"Organization"> | string
-  logo?: Prisma.StringNullableFilter<"Organization"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
-  metadata?: Prisma.StringNullableFilter<"Organization"> | string | null
-  contactPersonId?: Prisma.StringFilter<"Organization"> | string
-}
-
-export type OrganizationCreateWithoutContactPersonInput = {
-  id: string
-  name: string
-  slug: string
-  logo?: string | null
-  createdAt: Date | string
-  metadata?: string | null
-  members?: Prisma.MemberCreateNestedManyWithoutOrganizationInput
-  invitations?: Prisma.InvitationCreateNestedManyWithoutOrganizationInput
-  billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingOrgInput
-  shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingOrgInput
-  ownerships?: Prisma.OwnershipCreateNestedManyWithoutOrganizationInput
-  farms?: Prisma.FarmCreateNestedManyWithoutOrganizationsInput
-}
-
-export type OrganizationUncheckedCreateWithoutContactPersonInput = {
-  id: string
-  name: string
-  slug: string
-  logo?: string | null
-  createdAt: Date | string
-  metadata?: string | null
-  members?: Prisma.MemberUncheckedCreateNestedManyWithoutOrganizationInput
-  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutOrganizationInput
-  billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingOrgInput
-  shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingOrgInput
-  ownerships?: Prisma.OwnershipUncheckedCreateNestedManyWithoutOrganizationInput
-  farms?: Prisma.FarmUncheckedCreateNestedManyWithoutOrganizationsInput
-}
-
-export type OrganizationCreateOrConnectWithoutContactPersonInput = {
-  where: Prisma.OrganizationWhereUniqueInput
-  create: Prisma.XOR<Prisma.OrganizationCreateWithoutContactPersonInput, Prisma.OrganizationUncheckedCreateWithoutContactPersonInput>
-}
-
-export type OrganizationCreateManyContactPersonInputEnvelope = {
-  data: Prisma.OrganizationCreateManyContactPersonInput | Prisma.OrganizationCreateManyContactPersonInput[]
-  skipDuplicates?: boolean
-}
-
-export type OrganizationUpsertWithWhereUniqueWithoutContactPersonInput = {
-  where: Prisma.OrganizationWhereUniqueInput
-  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutContactPersonInput, Prisma.OrganizationUncheckedUpdateWithoutContactPersonInput>
-  create: Prisma.XOR<Prisma.OrganizationCreateWithoutContactPersonInput, Prisma.OrganizationUncheckedCreateWithoutContactPersonInput>
-}
-
-export type OrganizationUpdateWithWhereUniqueWithoutContactPersonInput = {
-  where: Prisma.OrganizationWhereUniqueInput
-  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutContactPersonInput, Prisma.OrganizationUncheckedUpdateWithoutContactPersonInput>
-}
-
-export type OrganizationUpdateManyWithWhereWithoutContactPersonInput = {
-  where: Prisma.OrganizationScalarWhereInput
-  data: Prisma.XOR<Prisma.OrganizationUpdateManyMutationInput, Prisma.OrganizationUncheckedUpdateManyWithoutContactPersonInput>
-}
-
-export type OrganizationCreateWithoutBillingAddressesInput = {
-  id: string
-  name: string
-  slug: string
-  logo?: string | null
-  createdAt: Date | string
-  metadata?: string | null
-  members?: Prisma.MemberCreateNestedManyWithoutOrganizationInput
-  contactPerson: Prisma.UserCreateNestedOneWithoutOrganizationsInput
-  invitations?: Prisma.InvitationCreateNestedManyWithoutOrganizationInput
-  shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingOrgInput
-  ownerships?: Prisma.OwnershipCreateNestedManyWithoutOrganizationInput
-  farms?: Prisma.FarmCreateNestedManyWithoutOrganizationsInput
-}
-
-export type OrganizationUncheckedCreateWithoutBillingAddressesInput = {
-  id: string
-  name: string
-  slug: string
-  logo?: string | null
-  createdAt: Date | string
-  metadata?: string | null
-  contactPersonId: string
-  members?: Prisma.MemberUncheckedCreateNestedManyWithoutOrganizationInput
-  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutOrganizationInput
-  shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingOrgInput
-  ownerships?: Prisma.OwnershipUncheckedCreateNestedManyWithoutOrganizationInput
-  farms?: Prisma.FarmUncheckedCreateNestedManyWithoutOrganizationsInput
-}
-
-export type OrganizationCreateOrConnectWithoutBillingAddressesInput = {
-  where: Prisma.OrganizationWhereUniqueInput
-  create: Prisma.XOR<Prisma.OrganizationCreateWithoutBillingAddressesInput, Prisma.OrganizationUncheckedCreateWithoutBillingAddressesInput>
-}
-
-export type OrganizationCreateWithoutShippingAddressesInput = {
-  id: string
-  name: string
-  slug: string
-  logo?: string | null
-  createdAt: Date | string
-  metadata?: string | null
-  members?: Prisma.MemberCreateNestedManyWithoutOrganizationInput
-  contactPerson: Prisma.UserCreateNestedOneWithoutOrganizationsInput
-  invitations?: Prisma.InvitationCreateNestedManyWithoutOrganizationInput
-  billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingOrgInput
-  ownerships?: Prisma.OwnershipCreateNestedManyWithoutOrganizationInput
-  farms?: Prisma.FarmCreateNestedManyWithoutOrganizationsInput
-}
-
-export type OrganizationUncheckedCreateWithoutShippingAddressesInput = {
-  id: string
-  name: string
-  slug: string
-  logo?: string | null
-  createdAt: Date | string
-  metadata?: string | null
-  contactPersonId: string
-  members?: Prisma.MemberUncheckedCreateNestedManyWithoutOrganizationInput
-  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutOrganizationInput
-  billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingOrgInput
-  ownerships?: Prisma.OwnershipUncheckedCreateNestedManyWithoutOrganizationInput
-  farms?: Prisma.FarmUncheckedCreateNestedManyWithoutOrganizationsInput
-}
-
-export type OrganizationCreateOrConnectWithoutShippingAddressesInput = {
-  where: Prisma.OrganizationWhereUniqueInput
-  create: Prisma.XOR<Prisma.OrganizationCreateWithoutShippingAddressesInput, Prisma.OrganizationUncheckedCreateWithoutShippingAddressesInput>
-}
-
-export type OrganizationUpsertWithoutBillingAddressesInput = {
-  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutBillingAddressesInput, Prisma.OrganizationUncheckedUpdateWithoutBillingAddressesInput>
-  create: Prisma.XOR<Prisma.OrganizationCreateWithoutBillingAddressesInput, Prisma.OrganizationUncheckedCreateWithoutBillingAddressesInput>
-  where?: Prisma.OrganizationWhereInput
-}
-
-export type OrganizationUpdateToOneWithWhereWithoutBillingAddressesInput = {
-  where?: Prisma.OrganizationWhereInput
-  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutBillingAddressesInput, Prisma.OrganizationUncheckedUpdateWithoutBillingAddressesInput>
-}
-
-export type OrganizationUpdateWithoutBillingAddressesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  members?: Prisma.MemberUpdateManyWithoutOrganizationNestedInput
-  contactPerson?: Prisma.UserUpdateOneRequiredWithoutOrganizationsNestedInput
-  invitations?: Prisma.InvitationUpdateManyWithoutOrganizationNestedInput
-  shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingOrgNestedInput
-  ownerships?: Prisma.OwnershipUpdateManyWithoutOrganizationNestedInput
-  farms?: Prisma.FarmUpdateManyWithoutOrganizationsNestedInput
-}
-
-export type OrganizationUncheckedUpdateWithoutBillingAddressesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contactPersonId?: Prisma.StringFieldUpdateOperationsInput | string
-  members?: Prisma.MemberUncheckedUpdateManyWithoutOrganizationNestedInput
-  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutOrganizationNestedInput
-  shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingOrgNestedInput
-  ownerships?: Prisma.OwnershipUncheckedUpdateManyWithoutOrganizationNestedInput
-  farms?: Prisma.FarmUncheckedUpdateManyWithoutOrganizationsNestedInput
-}
-
-export type OrganizationUpsertWithoutShippingAddressesInput = {
-  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutShippingAddressesInput, Prisma.OrganizationUncheckedUpdateWithoutShippingAddressesInput>
-  create: Prisma.XOR<Prisma.OrganizationCreateWithoutShippingAddressesInput, Prisma.OrganizationUncheckedCreateWithoutShippingAddressesInput>
-  where?: Prisma.OrganizationWhereInput
-}
-
-export type OrganizationUpdateToOneWithWhereWithoutShippingAddressesInput = {
-  where?: Prisma.OrganizationWhereInput
-  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutShippingAddressesInput, Prisma.OrganizationUncheckedUpdateWithoutShippingAddressesInput>
-}
-
-export type OrganizationUpdateWithoutShippingAddressesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  members?: Prisma.MemberUpdateManyWithoutOrganizationNestedInput
-  contactPerson?: Prisma.UserUpdateOneRequiredWithoutOrganizationsNestedInput
-  invitations?: Prisma.InvitationUpdateManyWithoutOrganizationNestedInput
-  billingAddresses?: Prisma.AddressUpdateManyWithoutBillingOrgNestedInput
-  ownerships?: Prisma.OwnershipUpdateManyWithoutOrganizationNestedInput
-  farms?: Prisma.FarmUpdateManyWithoutOrganizationsNestedInput
-}
-
-export type OrganizationUncheckedUpdateWithoutShippingAddressesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contactPersonId?: Prisma.StringFieldUpdateOperationsInput | string
-  members?: Prisma.MemberUncheckedUpdateManyWithoutOrganizationNestedInput
-  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutOrganizationNestedInput
-  billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingOrgNestedInput
-  ownerships?: Prisma.OwnershipUncheckedUpdateManyWithoutOrganizationNestedInput
-  farms?: Prisma.FarmUncheckedUpdateManyWithoutOrganizationsNestedInput
-}
-
-export type OrganizationCreateWithoutOwnershipsInput = {
-  id: string
-  name: string
-  slug: string
-  logo?: string | null
-  createdAt: Date | string
-  metadata?: string | null
-  members?: Prisma.MemberCreateNestedManyWithoutOrganizationInput
-  contactPerson: Prisma.UserCreateNestedOneWithoutOrganizationsInput
-  invitations?: Prisma.InvitationCreateNestedManyWithoutOrganizationInput
-  billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingOrgInput
-  shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingOrgInput
-  farms?: Prisma.FarmCreateNestedManyWithoutOrganizationsInput
-}
-
-export type OrganizationUncheckedCreateWithoutOwnershipsInput = {
-  id: string
-  name: string
-  slug: string
-  logo?: string | null
-  createdAt: Date | string
-  metadata?: string | null
-  contactPersonId: string
-  members?: Prisma.MemberUncheckedCreateNestedManyWithoutOrganizationInput
-  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutOrganizationInput
-  billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingOrgInput
-  shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingOrgInput
-  farms?: Prisma.FarmUncheckedCreateNestedManyWithoutOrganizationsInput
-}
-
-export type OrganizationCreateOrConnectWithoutOwnershipsInput = {
-  where: Prisma.OrganizationWhereUniqueInput
-  create: Prisma.XOR<Prisma.OrganizationCreateWithoutOwnershipsInput, Prisma.OrganizationUncheckedCreateWithoutOwnershipsInput>
-}
-
-export type OrganizationUpsertWithoutOwnershipsInput = {
-  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutOwnershipsInput, Prisma.OrganizationUncheckedUpdateWithoutOwnershipsInput>
-  create: Prisma.XOR<Prisma.OrganizationCreateWithoutOwnershipsInput, Prisma.OrganizationUncheckedCreateWithoutOwnershipsInput>
-  where?: Prisma.OrganizationWhereInput
-}
-
-export type OrganizationUpdateToOneWithWhereWithoutOwnershipsInput = {
-  where?: Prisma.OrganizationWhereInput
-  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutOwnershipsInput, Prisma.OrganizationUncheckedUpdateWithoutOwnershipsInput>
-}
-
-export type OrganizationUpdateWithoutOwnershipsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  members?: Prisma.MemberUpdateManyWithoutOrganizationNestedInput
-  contactPerson?: Prisma.UserUpdateOneRequiredWithoutOrganizationsNestedInput
-  invitations?: Prisma.InvitationUpdateManyWithoutOrganizationNestedInput
-  billingAddresses?: Prisma.AddressUpdateManyWithoutBillingOrgNestedInput
-  shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingOrgNestedInput
-  farms?: Prisma.FarmUpdateManyWithoutOrganizationsNestedInput
-}
-
-export type OrganizationUncheckedUpdateWithoutOwnershipsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contactPersonId?: Prisma.StringFieldUpdateOperationsInput | string
-  members?: Prisma.MemberUncheckedUpdateManyWithoutOrganizationNestedInput
-  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutOrganizationNestedInput
-  billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingOrgNestedInput
-  shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingOrgNestedInput
-  farms?: Prisma.FarmUncheckedUpdateManyWithoutOrganizationsNestedInput
-}
-
-export type OrganizationCreateWithoutMembersInput = {
-  id: string
-  name: string
-  slug: string
-  logo?: string | null
-  createdAt: Date | string
-  metadata?: string | null
-  contactPerson: Prisma.UserCreateNestedOneWithoutOrganizationsInput
-  invitations?: Prisma.InvitationCreateNestedManyWithoutOrganizationInput
-  billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingOrgInput
-  shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingOrgInput
-  ownerships?: Prisma.OwnershipCreateNestedManyWithoutOrganizationInput
-  farms?: Prisma.FarmCreateNestedManyWithoutOrganizationsInput
-}
-
-export type OrganizationUncheckedCreateWithoutMembersInput = {
-  id: string
-  name: string
-  slug: string
-  logo?: string | null
-  createdAt: Date | string
-  metadata?: string | null
-  contactPersonId: string
-  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutOrganizationInput
-  billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingOrgInput
-  shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingOrgInput
-  ownerships?: Prisma.OwnershipUncheckedCreateNestedManyWithoutOrganizationInput
-  farms?: Prisma.FarmUncheckedCreateNestedManyWithoutOrganizationsInput
-}
-
-export type OrganizationCreateOrConnectWithoutMembersInput = {
-  where: Prisma.OrganizationWhereUniqueInput
-  create: Prisma.XOR<Prisma.OrganizationCreateWithoutMembersInput, Prisma.OrganizationUncheckedCreateWithoutMembersInput>
-}
-
-export type OrganizationUpsertWithoutMembersInput = {
-  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutMembersInput, Prisma.OrganizationUncheckedUpdateWithoutMembersInput>
-  create: Prisma.XOR<Prisma.OrganizationCreateWithoutMembersInput, Prisma.OrganizationUncheckedCreateWithoutMembersInput>
-  where?: Prisma.OrganizationWhereInput
-}
-
-export type OrganizationUpdateToOneWithWhereWithoutMembersInput = {
-  where?: Prisma.OrganizationWhereInput
-  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutMembersInput, Prisma.OrganizationUncheckedUpdateWithoutMembersInput>
-}
-
-export type OrganizationUpdateWithoutMembersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contactPerson?: Prisma.UserUpdateOneRequiredWithoutOrganizationsNestedInput
-  invitations?: Prisma.InvitationUpdateManyWithoutOrganizationNestedInput
-  billingAddresses?: Prisma.AddressUpdateManyWithoutBillingOrgNestedInput
-  shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingOrgNestedInput
-  ownerships?: Prisma.OwnershipUpdateManyWithoutOrganizationNestedInput
-  farms?: Prisma.FarmUpdateManyWithoutOrganizationsNestedInput
-}
-
-export type OrganizationUncheckedUpdateWithoutMembersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contactPersonId?: Prisma.StringFieldUpdateOperationsInput | string
-  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutOrganizationNestedInput
-  billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingOrgNestedInput
-  shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingOrgNestedInput
-  ownerships?: Prisma.OwnershipUncheckedUpdateManyWithoutOrganizationNestedInput
-  farms?: Prisma.FarmUncheckedUpdateManyWithoutOrganizationsNestedInput
-}
-
-export type OrganizationCreateWithoutInvitationsInput = {
-  id: string
-  name: string
-  slug: string
-  logo?: string | null
-  createdAt: Date | string
-  metadata?: string | null
-  members?: Prisma.MemberCreateNestedManyWithoutOrganizationInput
-  contactPerson: Prisma.UserCreateNestedOneWithoutOrganizationsInput
-  billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingOrgInput
-  shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingOrgInput
-  ownerships?: Prisma.OwnershipCreateNestedManyWithoutOrganizationInput
-  farms?: Prisma.FarmCreateNestedManyWithoutOrganizationsInput
-}
-
-export type OrganizationUncheckedCreateWithoutInvitationsInput = {
-  id: string
-  name: string
-  slug: string
-  logo?: string | null
-  createdAt: Date | string
-  metadata?: string | null
-  contactPersonId: string
-  members?: Prisma.MemberUncheckedCreateNestedManyWithoutOrganizationInput
-  billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingOrgInput
-  shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingOrgInput
-  ownerships?: Prisma.OwnershipUncheckedCreateNestedManyWithoutOrganizationInput
-  farms?: Prisma.FarmUncheckedCreateNestedManyWithoutOrganizationsInput
-}
-
-export type OrganizationCreateOrConnectWithoutInvitationsInput = {
-  where: Prisma.OrganizationWhereUniqueInput
-  create: Prisma.XOR<Prisma.OrganizationCreateWithoutInvitationsInput, Prisma.OrganizationUncheckedCreateWithoutInvitationsInput>
-}
-
-export type OrganizationUpsertWithoutInvitationsInput = {
-  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutInvitationsInput, Prisma.OrganizationUncheckedUpdateWithoutInvitationsInput>
-  create: Prisma.XOR<Prisma.OrganizationCreateWithoutInvitationsInput, Prisma.OrganizationUncheckedCreateWithoutInvitationsInput>
-  where?: Prisma.OrganizationWhereInput
-}
-
-export type OrganizationUpdateToOneWithWhereWithoutInvitationsInput = {
-  where?: Prisma.OrganizationWhereInput
-  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutInvitationsInput, Prisma.OrganizationUncheckedUpdateWithoutInvitationsInput>
-}
-
-export type OrganizationUpdateWithoutInvitationsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  members?: Prisma.MemberUpdateManyWithoutOrganizationNestedInput
-  contactPerson?: Prisma.UserUpdateOneRequiredWithoutOrganizationsNestedInput
-  billingAddresses?: Prisma.AddressUpdateManyWithoutBillingOrgNestedInput
-  shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingOrgNestedInput
-  ownerships?: Prisma.OwnershipUpdateManyWithoutOrganizationNestedInput
-  farms?: Prisma.FarmUpdateManyWithoutOrganizationsNestedInput
-}
-
-export type OrganizationUncheckedUpdateWithoutInvitationsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contactPersonId?: Prisma.StringFieldUpdateOperationsInput | string
-  members?: Prisma.MemberUncheckedUpdateManyWithoutOrganizationNestedInput
-  billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingOrgNestedInput
-  shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingOrgNestedInput
-  ownerships?: Prisma.OwnershipUncheckedUpdateManyWithoutOrganizationNestedInput
-  farms?: Prisma.FarmUncheckedUpdateManyWithoutOrganizationsNestedInput
 }
 
 export type OrganizationUpdateWithoutFarmsInput = {
@@ -1097,7 +621,172 @@ export type OrganizationUncheckedUpdateWithoutFarmsInput = {
   ownerships?: Prisma.OwnershipUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
-export type OrganizationUncheckedUpdateManyWithoutFarmsInput = {
+export type OrganizationCreateWithoutContactPersonInput = {
+  id: string
+  name: string
+  slug: string
+  logo?: string | null
+  createdAt: Date | string
+  metadata?: string | null
+  members?: Prisma.MemberCreateNestedManyWithoutOrganizationInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutOrganizationInput
+  billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingOrgInput
+  shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingOrgInput
+  ownerships?: Prisma.OwnershipCreateNestedManyWithoutOrganizationInput
+  farms?: Prisma.FarmCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutContactPersonInput = {
+  id: string
+  name: string
+  slug: string
+  logo?: string | null
+  createdAt: Date | string
+  metadata?: string | null
+  members?: Prisma.MemberUncheckedCreateNestedManyWithoutOrganizationInput
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutOrganizationInput
+  billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingOrgInput
+  shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingOrgInput
+  ownerships?: Prisma.OwnershipUncheckedCreateNestedManyWithoutOrganizationInput
+  farms?: Prisma.FarmUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutContactPersonInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutContactPersonInput, Prisma.OrganizationUncheckedCreateWithoutContactPersonInput>
+}
+
+export type OrganizationCreateManyContactPersonInputEnvelope = {
+  data: Prisma.OrganizationCreateManyContactPersonInput | Prisma.OrganizationCreateManyContactPersonInput[]
+  skipDuplicates?: boolean
+}
+
+export type OrganizationUpsertWithWhereUniqueWithoutContactPersonInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutContactPersonInput, Prisma.OrganizationUncheckedUpdateWithoutContactPersonInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutContactPersonInput, Prisma.OrganizationUncheckedCreateWithoutContactPersonInput>
+}
+
+export type OrganizationUpdateWithWhereUniqueWithoutContactPersonInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutContactPersonInput, Prisma.OrganizationUncheckedUpdateWithoutContactPersonInput>
+}
+
+export type OrganizationUpdateManyWithWhereWithoutContactPersonInput = {
+  where: Prisma.OrganizationScalarWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateManyMutationInput, Prisma.OrganizationUncheckedUpdateManyWithoutContactPersonInput>
+}
+
+export type OrganizationScalarWhereInput = {
+  AND?: Prisma.OrganizationScalarWhereInput | Prisma.OrganizationScalarWhereInput[]
+  OR?: Prisma.OrganizationScalarWhereInput[]
+  NOT?: Prisma.OrganizationScalarWhereInput | Prisma.OrganizationScalarWhereInput[]
+  id?: Prisma.StringFilter<"Organization"> | string
+  name?: Prisma.StringFilter<"Organization"> | string
+  slug?: Prisma.StringFilter<"Organization"> | string
+  logo?: Prisma.StringNullableFilter<"Organization"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
+  metadata?: Prisma.StringNullableFilter<"Organization"> | string | null
+  contactPersonId?: Prisma.StringFilter<"Organization"> | string
+}
+
+export type OrganizationCreateWithoutBillingAddressesInput = {
+  id: string
+  name: string
+  slug: string
+  logo?: string | null
+  createdAt: Date | string
+  metadata?: string | null
+  members?: Prisma.MemberCreateNestedManyWithoutOrganizationInput
+  contactPerson: Prisma.UserCreateNestedOneWithoutOrganizationsInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutOrganizationInput
+  shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingOrgInput
+  ownerships?: Prisma.OwnershipCreateNestedManyWithoutOrganizationInput
+  farms?: Prisma.FarmCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutBillingAddressesInput = {
+  id: string
+  name: string
+  slug: string
+  logo?: string | null
+  createdAt: Date | string
+  metadata?: string | null
+  contactPersonId: string
+  members?: Prisma.MemberUncheckedCreateNestedManyWithoutOrganizationInput
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutOrganizationInput
+  shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingOrgInput
+  ownerships?: Prisma.OwnershipUncheckedCreateNestedManyWithoutOrganizationInput
+  farms?: Prisma.FarmUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutBillingAddressesInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutBillingAddressesInput, Prisma.OrganizationUncheckedCreateWithoutBillingAddressesInput>
+}
+
+export type OrganizationCreateWithoutShippingAddressesInput = {
+  id: string
+  name: string
+  slug: string
+  logo?: string | null
+  createdAt: Date | string
+  metadata?: string | null
+  members?: Prisma.MemberCreateNestedManyWithoutOrganizationInput
+  contactPerson: Prisma.UserCreateNestedOneWithoutOrganizationsInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutOrganizationInput
+  billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingOrgInput
+  ownerships?: Prisma.OwnershipCreateNestedManyWithoutOrganizationInput
+  farms?: Prisma.FarmCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutShippingAddressesInput = {
+  id: string
+  name: string
+  slug: string
+  logo?: string | null
+  createdAt: Date | string
+  metadata?: string | null
+  contactPersonId: string
+  members?: Prisma.MemberUncheckedCreateNestedManyWithoutOrganizationInput
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutOrganizationInput
+  billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingOrgInput
+  ownerships?: Prisma.OwnershipUncheckedCreateNestedManyWithoutOrganizationInput
+  farms?: Prisma.FarmUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutShippingAddressesInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutShippingAddressesInput, Prisma.OrganizationUncheckedCreateWithoutShippingAddressesInput>
+}
+
+export type OrganizationUpsertWithoutBillingAddressesInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutBillingAddressesInput, Prisma.OrganizationUncheckedUpdateWithoutBillingAddressesInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutBillingAddressesInput, Prisma.OrganizationUncheckedCreateWithoutBillingAddressesInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutBillingAddressesInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutBillingAddressesInput, Prisma.OrganizationUncheckedUpdateWithoutBillingAddressesInput>
+}
+
+export type OrganizationUpdateWithoutBillingAddressesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  members?: Prisma.MemberUpdateManyWithoutOrganizationNestedInput
+  contactPerson?: Prisma.UserUpdateOneRequiredWithoutOrganizationsNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutOrganizationNestedInput
+  shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingOrgNestedInput
+  ownerships?: Prisma.OwnershipUpdateManyWithoutOrganizationNestedInput
+  farms?: Prisma.FarmUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutBillingAddressesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1105,6 +794,280 @@ export type OrganizationUncheckedUpdateManyWithoutFarmsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  members?: Prisma.MemberUncheckedUpdateManyWithoutOrganizationNestedInput
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutOrganizationNestedInput
+  shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingOrgNestedInput
+  ownerships?: Prisma.OwnershipUncheckedUpdateManyWithoutOrganizationNestedInput
+  farms?: Prisma.FarmUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUpsertWithoutShippingAddressesInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutShippingAddressesInput, Prisma.OrganizationUncheckedUpdateWithoutShippingAddressesInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutShippingAddressesInput, Prisma.OrganizationUncheckedCreateWithoutShippingAddressesInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutShippingAddressesInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutShippingAddressesInput, Prisma.OrganizationUncheckedUpdateWithoutShippingAddressesInput>
+}
+
+export type OrganizationUpdateWithoutShippingAddressesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  members?: Prisma.MemberUpdateManyWithoutOrganizationNestedInput
+  contactPerson?: Prisma.UserUpdateOneRequiredWithoutOrganizationsNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutOrganizationNestedInput
+  billingAddresses?: Prisma.AddressUpdateManyWithoutBillingOrgNestedInput
+  ownerships?: Prisma.OwnershipUpdateManyWithoutOrganizationNestedInput
+  farms?: Prisma.FarmUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutShippingAddressesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  members?: Prisma.MemberUncheckedUpdateManyWithoutOrganizationNestedInput
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutOrganizationNestedInput
+  billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingOrgNestedInput
+  ownerships?: Prisma.OwnershipUncheckedUpdateManyWithoutOrganizationNestedInput
+  farms?: Prisma.FarmUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutOwnershipsInput = {
+  id: string
+  name: string
+  slug: string
+  logo?: string | null
+  createdAt: Date | string
+  metadata?: string | null
+  members?: Prisma.MemberCreateNestedManyWithoutOrganizationInput
+  contactPerson: Prisma.UserCreateNestedOneWithoutOrganizationsInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutOrganizationInput
+  billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingOrgInput
+  shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingOrgInput
+  farms?: Prisma.FarmCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutOwnershipsInput = {
+  id: string
+  name: string
+  slug: string
+  logo?: string | null
+  createdAt: Date | string
+  metadata?: string | null
+  contactPersonId: string
+  members?: Prisma.MemberUncheckedCreateNestedManyWithoutOrganizationInput
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutOrganizationInput
+  billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingOrgInput
+  shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingOrgInput
+  farms?: Prisma.FarmUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutOwnershipsInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutOwnershipsInput, Prisma.OrganizationUncheckedCreateWithoutOwnershipsInput>
+}
+
+export type OrganizationUpsertWithoutOwnershipsInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutOwnershipsInput, Prisma.OrganizationUncheckedUpdateWithoutOwnershipsInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutOwnershipsInput, Prisma.OrganizationUncheckedCreateWithoutOwnershipsInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutOwnershipsInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutOwnershipsInput, Prisma.OrganizationUncheckedUpdateWithoutOwnershipsInput>
+}
+
+export type OrganizationUpdateWithoutOwnershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  members?: Prisma.MemberUpdateManyWithoutOrganizationNestedInput
+  contactPerson?: Prisma.UserUpdateOneRequiredWithoutOrganizationsNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutOrganizationNestedInput
+  billingAddresses?: Prisma.AddressUpdateManyWithoutBillingOrgNestedInput
+  shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingOrgNestedInput
+  farms?: Prisma.FarmUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutOwnershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  members?: Prisma.MemberUncheckedUpdateManyWithoutOrganizationNestedInput
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutOrganizationNestedInput
+  billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingOrgNestedInput
+  shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingOrgNestedInput
+  farms?: Prisma.FarmUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutMembersInput = {
+  id: string
+  name: string
+  slug: string
+  logo?: string | null
+  createdAt: Date | string
+  metadata?: string | null
+  contactPerson: Prisma.UserCreateNestedOneWithoutOrganizationsInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutOrganizationInput
+  billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingOrgInput
+  shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingOrgInput
+  ownerships?: Prisma.OwnershipCreateNestedManyWithoutOrganizationInput
+  farms?: Prisma.FarmCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutMembersInput = {
+  id: string
+  name: string
+  slug: string
+  logo?: string | null
+  createdAt: Date | string
+  metadata?: string | null
+  contactPersonId: string
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutOrganizationInput
+  billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingOrgInput
+  shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingOrgInput
+  ownerships?: Prisma.OwnershipUncheckedCreateNestedManyWithoutOrganizationInput
+  farms?: Prisma.FarmUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutMembersInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutMembersInput, Prisma.OrganizationUncheckedCreateWithoutMembersInput>
+}
+
+export type OrganizationUpsertWithoutMembersInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutMembersInput, Prisma.OrganizationUncheckedUpdateWithoutMembersInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutMembersInput, Prisma.OrganizationUncheckedCreateWithoutMembersInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutMembersInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutMembersInput, Prisma.OrganizationUncheckedUpdateWithoutMembersInput>
+}
+
+export type OrganizationUpdateWithoutMembersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPerson?: Prisma.UserUpdateOneRequiredWithoutOrganizationsNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutOrganizationNestedInput
+  billingAddresses?: Prisma.AddressUpdateManyWithoutBillingOrgNestedInput
+  shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingOrgNestedInput
+  ownerships?: Prisma.OwnershipUpdateManyWithoutOrganizationNestedInput
+  farms?: Prisma.FarmUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutMembersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutOrganizationNestedInput
+  billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingOrgNestedInput
+  shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingOrgNestedInput
+  ownerships?: Prisma.OwnershipUncheckedUpdateManyWithoutOrganizationNestedInput
+  farms?: Prisma.FarmUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutInvitationsInput = {
+  id: string
+  name: string
+  slug: string
+  logo?: string | null
+  createdAt: Date | string
+  metadata?: string | null
+  members?: Prisma.MemberCreateNestedManyWithoutOrganizationInput
+  contactPerson: Prisma.UserCreateNestedOneWithoutOrganizationsInput
+  billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingOrgInput
+  shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingOrgInput
+  ownerships?: Prisma.OwnershipCreateNestedManyWithoutOrganizationInput
+  farms?: Prisma.FarmCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutInvitationsInput = {
+  id: string
+  name: string
+  slug: string
+  logo?: string | null
+  createdAt: Date | string
+  metadata?: string | null
+  contactPersonId: string
+  members?: Prisma.MemberUncheckedCreateNestedManyWithoutOrganizationInput
+  billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingOrgInput
+  shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingOrgInput
+  ownerships?: Prisma.OwnershipUncheckedCreateNestedManyWithoutOrganizationInput
+  farms?: Prisma.FarmUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutInvitationsInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutInvitationsInput, Prisma.OrganizationUncheckedCreateWithoutInvitationsInput>
+}
+
+export type OrganizationUpsertWithoutInvitationsInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutInvitationsInput, Prisma.OrganizationUncheckedUpdateWithoutInvitationsInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutInvitationsInput, Prisma.OrganizationUncheckedCreateWithoutInvitationsInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutInvitationsInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutInvitationsInput, Prisma.OrganizationUncheckedUpdateWithoutInvitationsInput>
+}
+
+export type OrganizationUpdateWithoutInvitationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  members?: Prisma.MemberUpdateManyWithoutOrganizationNestedInput
+  contactPerson?: Prisma.UserUpdateOneRequiredWithoutOrganizationsNestedInput
+  billingAddresses?: Prisma.AddressUpdateManyWithoutBillingOrgNestedInput
+  shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingOrgNestedInput
+  ownerships?: Prisma.OwnershipUpdateManyWithoutOrganizationNestedInput
+  farms?: Prisma.FarmUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutInvitationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  logo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contactPersonId?: Prisma.StringFieldUpdateOperationsInput | string
+  members?: Prisma.MemberUncheckedUpdateManyWithoutOrganizationNestedInput
+  billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingOrgNestedInput
+  shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingOrgNestedInput
+  ownerships?: Prisma.OwnershipUncheckedUpdateManyWithoutOrganizationNestedInput
+  farms?: Prisma.FarmUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateManyContactPersonInput = {
@@ -1128,7 +1091,7 @@ export type OrganizationUpdateWithoutContactPersonInput = {
   billingAddresses?: Prisma.AddressUpdateManyWithoutBillingOrgNestedInput
   shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingOrgNestedInput
   ownerships?: Prisma.OwnershipUpdateManyWithoutOrganizationNestedInput
-  farms?: Prisma.FarmUpdateManyWithoutOrganizationsNestedInput
+  farms?: Prisma.FarmUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutContactPersonInput = {
@@ -1143,7 +1106,7 @@ export type OrganizationUncheckedUpdateWithoutContactPersonInput = {
   billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingOrgNestedInput
   shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingOrgNestedInput
   ownerships?: Prisma.OwnershipUncheckedUpdateManyWithoutOrganizationNestedInput
-  farms?: Prisma.FarmUncheckedUpdateManyWithoutOrganizationsNestedInput
+  farms?: Prisma.FarmUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateManyWithoutContactPersonInput = {

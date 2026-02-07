@@ -104,6 +104,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const FarmScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  slug: 'slug',
   businessName: 'businessName',
   lotSectionPlan: 'lotSectionPlan',
   abn: 'abn',
@@ -112,7 +113,8 @@ export const FarmScalarFieldEnum = {
   locationCentreId: 'locationCentreId',
   areaHa: 'areaHa',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  organizationId: 'organizationId'
 } as const
 
 export type FarmScalarFieldEnum = (typeof FarmScalarFieldEnum)[keyof typeof FarmScalarFieldEnum]

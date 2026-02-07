@@ -13,8 +13,9 @@ datasource db {
 }
 
 model Farm {
-  id               String    @id @default(cuid())
+  id               String        @id @default(cuid())
   name             String
+  slug             String?       @unique
   businessName     String?
   lotSectionPlan   String[]
   abn              String?
@@ -22,37 +23,35 @@ model Farm {
   pic              String?
   // livestockUnits LivestockUnit[]
   // paddocks       Paddock[]
-  locationCentre   GeoPoint? @relation(fields: [locationCentreId], references: [id])
+  locationCentre   GeoPoint?     @relation(fields: [locationCentreId], references: [id])
   locationCentreId String?
   areaHa           Float?
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime? @updatedAt
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime?     @updatedAt
   users            User[]
-
-  studs Stud[]
-
-  onFarms OnFarm[]
-
-  organizations Organization[] @relation("OrganizationFarms")
+  studs            Stud[]
+  onFarms          OnFarm[]
+  organization     Organization? @relation(fields: [organizationId], references: [id])
+  organizationId   String?
 }
 
 model User {
-  id            String    @id @default(cuid())
-  firstName     String
-  preferredName String?
-  lastName      String
-  farm          Farm      @relation(fields: [farmId], references: [id])
-  farmId        String
-  name          String
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-  mobileNumber  String?
-  landlineNumber String?
+  id                String         @id @default(cuid())
+  firstName         String
+  preferredName     String?
+  lastName          String
+  farm              Farm           @relation(fields: [farmId], references: [id])
+  farmId            String
+  name              String
+  email             String
+  emailVerified     Boolean        @default(false)
+  image             String?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  sessions          Session[]
+  accounts          Account[]
+  mobileNumber      String?
+  landlineNumber    String?
   members           Member[]
   invitations       Invitation[]
   billingAddresses  Address[]      @relation(name: "UserBillingAddress")
@@ -539,7 +538,7 @@ model Organization {
   billingAddresses  Address[]    @relation(name: "OrgBillingAddress")
   shippingAddresses Address[]    @relation(name: "OrgShippingAddress")
   ownerships        Ownership[]
-  farms             Farm[]       @relation("OrganizationFarms")
+  farms             Farm[]
 }
 
 model Member {
