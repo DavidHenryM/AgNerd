@@ -23,6 +23,19 @@ export interface NavItem {
   Icon: JSX.ElementType;
 }
 
+export type BetterAuthSignInOtpData = {
+    token: string;
+    user: {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        email: string;
+        emailVerified: boolean;
+        name: string;
+        image?: string | null | undefined;
+    };
+} | null
+
 export type SessionData = {
   data: {
     user: {
