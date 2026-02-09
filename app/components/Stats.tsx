@@ -14,7 +14,7 @@ export function WeightStats(props: {weights: WeightRecord[]}){
       return (
         <Box
           role="button"
-          aria-label="Showing weekly downloads"
+          aria-label="weight trend"
           tabIndex={0}
           width="100%"
           height="100%"
@@ -225,7 +225,30 @@ export function NumberStat( props: {
       unit: string | undefined,
       label: string | undefined
     } | undefined}){
-    
+  let formattedValue = props.value.toString()
+
+  if (props.style === "currency" && props.currency) {
+    formattedValue = new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency: props.currency,
+      maximumFractionDigits: 2,
+    }).format(props.value)
+  } else if (props.style === "unit" && props.unit) {
+    formattedValue = new Intl.NumberFormat(undefined, {
+      style: "unit",
+      unit: props.unit,
+      maximumFractionDigits: 2,
+    }).format(props.value)
+  } else if (props.unit) {
+    formattedValue = `${props.value.toString()} ${props.unit}`
+  }
+
+  const trendColor = props.trend?.direction === "up"
+    ? "success.main"
+    : props.trend?.direction === "down"
+      ? "error.main"
+      : "text.secondary"
+
   return (
     <Box
       role="button"
@@ -256,10 +279,20 @@ export function NumberStat( props: {
           sx={{ borderBottom: 'solid 2px rgba(137, 86, 255, 0.2)' }}
         >
           <Typography sx={{ fontSize: '1.25rem', fontWeight: 500 }}>
-            {props.value.toString()}
+            {formattedValue}
           </Typography>
-
-        {/* <SparkLineChart data={} height={100} /> */}
+          {props.trend?.value ? (
+            <Stack direction="column" alignItems="flex-end">
+              <Typography sx={{ fontSize: '0.85rem', fontWeight: 600, color: trendColor }}>
+                {props.trend.value}{props.trend.unit ? ` ${props.trend.unit}` : ""}
+              </Typography>
+              {props.trend.label ? (
+                <Typography sx={{ fontSize: '0.75rem', color: 'text.secondary' }}>
+                  {props.trend.label}
+                </Typography>
+              ) : null}
+            </Stack>
+          ) : null}
         </Stack>
       </Stack>
     </Box>
