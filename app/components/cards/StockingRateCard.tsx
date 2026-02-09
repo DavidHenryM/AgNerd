@@ -12,7 +12,7 @@ export default function StockingRateCard(
 ){
   return (
     <Card>
-      <CardHeader>Stocking Rate</CardHeader>
+      <CardHeader title={"Stocking Rate"} />
       <CardContent>
         <Stack gap={"6"}>
           {
@@ -24,7 +24,7 @@ export default function StockingRateCard(
             props.loadingTotalActiveDSE ? 
             <LoadingBar/> : 
             <NumberStat 
-              label={"Equivalent"} 
+              label={"Equivalent DSE"} 
               value={props.totalActiveDSE} 
               style={undefined} 
               currency={undefined} 
