@@ -1,17 +1,21 @@
 import { Card, CardContent, CardHeader, Stack, Typography } from "@mui/material"
 import { notFound } from "next/navigation"
 import { getFarmBySlug } from "@lib/queries"
+import  Content  from "@components/Content"
+import { FarmCard } from "@/app/components/cards/FarmCard"
 
 const detailLabelStyle = { fontWeight: 600 }
 
-export default async function FarmDetailsPage({ params }: { params: { slug: string } }) {
-  const farm = await getFarmBySlug(params.slug)
+export default async function FarmDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const farm = await getFarmBySlug(slug)
 
   if (!farm) {
     return notFound()
   }
 
   return (
+    <Content backgroundImageIndex={1}>
     <Card>
       <CardHeader
         title={farm.name}
@@ -19,9 +23,6 @@ export default async function FarmDetailsPage({ params }: { params: { slug: stri
       />
       <CardContent>
         <Stack spacing={1}>
-          <Typography variant="body2">
-            <span style={detailLabelStyle}>Slug:</span> {farm.slug}
-          </Typography>
           {farm.pic ? (
             <Typography variant="body2">
               <span style={detailLabelStyle}>PIC:</span> {farm.pic}
@@ -45,5 +46,7 @@ export default async function FarmDetailsPage({ params }: { params: { slug: stri
         </Stack>
       </CardContent>
     </Card>
+    <FarmCard />
+    </Content>
   )
 }
