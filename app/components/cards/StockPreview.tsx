@@ -6,6 +6,7 @@ import { useState } from "react"
 import AddWeightDialogue from "@components/dialogues/AddWeightDialogue"
 import PregDialogue from "@components/dialogues/PregDialogue"
 import TreatmentDialogue from "@components/dialogues/TreatmentDialogue"
+import EditLivestockDialogue from "@components/dialogues/EditLivestockDialogue"
 import { EarTagGraphic } from "@components/EarTag"
 import { WeightStats } from "@components/Stats"
 import { StockClassChip, SexChip, DesexedChip, CommercialClassChip } from "@components/Chips"
@@ -91,6 +92,19 @@ export default function StockPreviewCard(props: {
     const bDate = b.birthDate ? new Date(b.birthDate).getTime() : 0
     return bDate - aDate
   })
+  const progenyWithBirthDates = progenySorted
+    .map((calf) => (calf.birthDate ? new Date(calf.birthDate) : null))
+    .filter((date): date is Date => !!date)
+    .sort((a, b) => a.getTime() - b.getTime())
+  const calvingIntervals = progenyWithBirthDates
+    .slice(1)
+    .map((date, index) => daysBetween(progenyWithBirthDates[index], date))
+  const averageCalvingInterval = calvingIntervals.length > 0
+    ? calvingIntervals.reduce((sum, interval) => sum + interval, 0) / calvingIntervals.length
+    : undefined
+  const reproductiveEfficiency = averageCalvingInterval
+    ? (365 / averageCalvingInterval) * 100
+    : undefined
 
   const handleFocusProgeny = (id: string) => {
     props.onFocusById(id)
@@ -156,40 +170,49 @@ export default function StockPreviewCard(props: {
             
             </Stack>
 
-            <Stack direction="row" spacing={1} flexWrap="wrap" alignItems="center">
-              <Typography variant="caption" color="text.secondary">Lineage</Typography>
-              {sireLabel ? (
-                <Button
-                  variant="text"
-                  size="small"
-                  onClick={() => stock.sire?.id && props.onFocusById(stock.sire.id)}
-                >
-                  <Typography>Sire: {sireLabel}</Typography>
-                </Button>
-              ) : null}
-              {damLabel ? (
-                <Button
-                  variant="text"
-                  size="small"
-                  onClick={() => stock.dam?.id && props.onFocusById(stock.dam.id)}
-                >
-                  <Typography>Dam: {damLabel}</Typography>
-                </Button>
-              ) : null}
-              {progenyCount > 0 ? (
-                <Button
-                  variant="text"
-                  size="small"
-                  onClick={() => setOpenProgeny(true)}
-                >
-                  <Typography>Progeny ({progenyCount})</Typography>
-                </Button>
-              ) : null}
-            </Stack>
+            {sireLabel || damLabel || progenyCount > 0 ? (
+              <Stack direction="row" spacing={1} flexWrap="wrap" alignItems="center">
+                <Typography variant="caption" color="text.secondary">Lineage</Typography>
+                {sireLabel ? (
+                  <Button
+                    variant="text"
+                    size="small"
+                    onClick={() => stock.sire?.id && props.onFocusById(stock.sire.id)}
+                  >
+                    <Typography>Sire: {sireLabel}</Typography>
+                  </Button>
+                ) : null}
+                {damLabel ? (
+                  <Button
+                    variant="text"
+                    size="small"
+                    onClick={() => stock.dam?.id && props.onFocusById(stock.dam.id)}
+                  >
+                    <Typography>Dam: {damLabel}</Typography>
+                  </Button>
+                ) : null}
+                {progenyCount > 0 ? (
+                  <Button
+                    variant="text"
+                    size="small"
+                    onClick={() => setOpenProgeny(true)}
+                  >
+                    <Typography>Progeny ({progenyCount})</Typography>
+                  </Button>
+                ) : null}
+              </Stack>
+            ) : null}
             {!stock.desexed ? (
               <Stack direction="row" spacing={1} flexWrap="wrap">
                 <Typography variant="caption">Calves: {progenyCount}</Typography>
-                <Typography variant="caption">Last calf: {lastCalfText}</Typography>
+                {progenyCount > 0 ? (
+                  <Typography variant="caption">Last calf: {lastCalfText}</Typography>
+                ) : null}
+                {stock.sex === "FEMALE" && progenyWithBirthDates.length >= 2 && reproductiveEfficiency ? (
+                  <Typography variant="caption" sx={{ width: "100%" }}>
+                    Reproductive efficiency: {reproductiveEfficiency.toFixed(1)}%
+                  </Typography>
+                ) : null}
               </Stack>
             ) : (
               <Typography variant="caption">Calves: N/A (desexed)</Typography>
@@ -224,6 +247,7 @@ export default function StockPreviewCard(props: {
       <AddWeightDialogue stock={stock} setStock={setStock} open={openWeight} setOpen={setOpenWeight}/>
       <TreatmentDialogue open={openTreat} setOpen={setOpenTreat}/>
       <PregDialogue open={openPreg} setOpen={setOpenPreg}/>
+      <EditLivestockDialogue open={openMenu} setOpen={setOpenMenu} stock={stock} setStock={setStock} />
       <Dialog open={openProgeny} onClose={() => setOpenProgeny(false)} fullWidth maxWidth="sm">
         <DialogTitle>Progeny</DialogTitle>
         <DialogContent dividers>
