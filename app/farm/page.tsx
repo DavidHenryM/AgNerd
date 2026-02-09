@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, Divider, List, ListItem, ListItemButton, ListItemText, Stack, Typography } from "@mui/material"
 import { authClient } from "@lib/auth-client"
 import { getUserFarms, type FarmListItem } from "@lib/queries"
@@ -10,29 +11,42 @@ import Content from "../components/Content"
 
 export default function Farm(){
   const sessionData = authClient.useSession()
+  const router = useRouter()
   const [farms, setFarms] = useState<FarmListItem[]>([])
   const [loadingFarms, setLoadingFarms] = useState(true)
 
   useEffect(() => {
-    const userId = sessionData.data?.user?.id
-    if (!userId) {
-      setFarms([])
-      setLoadingFarms(false)
-      return
-    }
-
-    setLoadingFarms(true)
-    getUserFarms(userId)
-      .then((result) => {
-        setFarms(result)
-      })
-      .finally(() => {
+    async function fetchFarms() {
+      const userId = sessionData.data?.user?.id
+      if (!userId) {
+        setFarms([])
         setLoadingFarms(false)
-      })
+        return
+      }
+
+      setLoadingFarms(true)
+      getUserFarms(userId)
+        .then((result) => {
+          setFarms(result)
+        })
+        .finally(() => {
+          setLoadingFarms(false)
+        })
+    }
+  fetchFarms()
   }, [sessionData.data?.user?.id])
 
+  useEffect(() => {
+    if (sessionData.isPending || loadingFarms) {
+      return
+    }
+    if (farms.length === 1 && farms[0].slug) {
+      router.replace(`/farm/${farms[0].slug}`)
+    }
+  }, [farms, loadingFarms, router, sessionData.isPending])
+
   return (
-    <Content>
+    <Content backgroundImageIndex={0}>
     <Stack spacing={3}>
       <Card>
         <CardHeader
@@ -76,7 +90,7 @@ export default function Farm(){
         </CardContent>
       </Card>
       <Divider />
-      <FarmCard />
+      
     </Stack>
     </Content>
   )

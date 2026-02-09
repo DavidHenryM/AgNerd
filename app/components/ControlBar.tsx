@@ -14,6 +14,8 @@ export default function ControlBar(
     setFilterChecked: Dispatch<SetStateAction<Array<boolean>>>
     openFilter: boolean,
     setOpenFilter: Dispatch<SetStateAction<boolean>>
+    onFarmOnly: boolean
+    setOnFarmOnly: Dispatch<SetStateAction<boolean>>
   }) {
   const [openCreateNew, setOpenCreateNew] = useState(false)
   
@@ -66,7 +68,14 @@ export default function ControlBar(
         </SpeedDial>
       </Box>
       <SortBeastsDialogue open={openSort} setOpen={setOpenSort}/>
-      <FilterBeastsDialogue open={props.openFilter} setOpen={props.setOpenFilter} checked={props.filterChecked} setChecked={props.setFilterChecked}/>
+      <FilterBeastsDialogue
+        open={props.openFilter}
+        setOpen={props.setOpenFilter}
+        checked={props.filterChecked}
+        setChecked={props.setFilterChecked}
+        onFarmOnly={props.onFarmOnly}
+        setOnFarmOnly={props.setOnFarmOnly}
+      />
       <CreateNewBeastDialogue open={openCreateNew} setOpen={setOpenCreateNew}/>
     </>
   )

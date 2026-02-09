@@ -7,7 +7,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
   Stack,
+  Switch,
   Typography,
   Paper,
 } from "@mui/material"
@@ -19,6 +21,8 @@ export default function FilterBeastsDialogue(props: {
   setOpen: Dispatch<SetStateAction<boolean>>
   checked: Array<boolean>
   setChecked: Dispatch<SetStateAction<Array<boolean>>>
+  onFarmOnly: boolean
+  setOnFarmOnly: Dispatch<SetStateAction<boolean>>
 }) {
   const commercialClasses = Object.keys(CommercialClass)
 
@@ -32,6 +36,15 @@ export default function FilterBeastsDialogue(props: {
       <DialogTitle>Filter</DialogTitle>
       <DialogContent dividers>
         <Stack spacing={2}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={props.onFarmOnly}
+                onChange={(event) => props.setOnFarmOnly(event.target.checked)}
+              />
+            }
+            label="Only show livestock on farm"
+          />
           <Typography variant="body2" fontWeight="medium">
             Select Stock Class(es)
           </Typography>
