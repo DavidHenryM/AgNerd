@@ -53,7 +53,6 @@ export function StockClassChip(props: {stockClass: StockClass}) {
   if(props.stockClass == "CATTLE"){
     return (   
       <Chip 
-        sx={{backgroundColor: 'burlywood'}}
         icon={<Icons.GiCow />}
         label={props.stockClass}
       />
@@ -71,7 +70,6 @@ export function CommercialClassChip(props: {commercialClass: CommercialClass}) {
   if(props.commercialClass == "COMMERCIAL"){
     return (
       <Chip 
-        sx={{backgroundColor: 'yellow.200'}} 
         icon={<Icons.GiMoneyStack/>}
         label={props.commercialClass}
       />
@@ -79,7 +77,6 @@ export function CommercialClassChip(props: {commercialClass: CommercialClass}) {
   } else if(props.commercialClass == "SEEDSTOCK"){
     return (
       <Chip 
-        sx={{backgroundColor: 'green.300'}} 
         icon={<Icons.GiSeedling/>}
           label={props.commercialClass}
         ></Chip>
@@ -87,7 +84,6 @@ export function CommercialClassChip(props: {commercialClass: CommercialClass}) {
   } else if(props.commercialClass == "PET"){
     return (
       <Chip 
-        sx={{backgroundColor: 'red'}} 
         icon={<Icons.GiPawHeart/>}
         label={props.commercialClass}
       ></Chip>
