@@ -16,6 +16,7 @@ export default function ControlBar(
     setOpenFilter: Dispatch<SetStateAction<boolean>>
     onFarmOnly: boolean
     setOnFarmOnly: Dispatch<SetStateAction<boolean>>
+    onCreated?: () => void
   }) {
   const [openCreateNew, setOpenCreateNew] = useState(false)
   
@@ -76,7 +77,7 @@ export default function ControlBar(
         onFarmOnly={props.onFarmOnly}
         setOnFarmOnly={props.setOnFarmOnly}
       />
-      <CreateNewBeastDialogue open={openCreateNew} setOpen={setOpenCreateNew}/>
+      <CreateNewBeastDialogue open={openCreateNew} setOpen={setOpenCreateNew} onCreated={props.onCreated}/>
     </>
   )
 
