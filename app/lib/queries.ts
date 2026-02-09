@@ -27,6 +27,36 @@ export async function getLivestock(whereFilter: LivestockUnitWhereInput) {
     comment: true,
     sireId: true,
     damId: true,
+    sire: {
+      select: {
+        id: true,
+        name: true,
+        angusTechId: true,
+      },
+    },
+    dam: {
+      select: {
+        id: true,
+        name: true,
+        angusTechId: true,
+      },
+    },
+    birthed: {
+      select: {
+        id: true,
+        name: true,
+        angusTechId: true,
+        birthDate: true,
+      },
+    },
+    sired: {
+      select: {
+        id: true,
+        name: true,
+        angusTechId: true,
+        birthDate: true,
+      },
+    },
     mobRef: true,
     // pregnancyId: true,
     purchasePrice: true, 
