@@ -57,16 +57,31 @@ export function ActiveLivestock() {
     updateWhereFilter()
   },[whereFilter])
 
+  const refreshLivestock = () => {
+    setLoading(true)
+    getLivestock(whereFilter)
+      .then((livestock: LivestockWithRelations[]) => {
+        livestockUnits.current = livestock
+        setLivestockDisplay(livestockUnits.current)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }
+
   useEffect(() => {
-    setWhereFilter((prev) => {
-      const next: LivestockUnitWhereInput = { ...prev }
-      if (onFarmOnly) {
-        next.onFarmHistory = { some: { endDate: { equals: null } } }
-      } else {
-        delete (next as { onFarmHistory?: LivestockUnitWhereInput["onFarmHistory"] }).onFarmHistory
-      }
-      return next
-    })
+    async function updateWhereFilter() {
+      setWhereFilter((prev) => {
+        const next: LivestockUnitWhereInput = { ...prev }
+        if (onFarmOnly) {
+          next.onFarmHistory = { some: { endDate: { equals: null } } }
+        } else {
+          delete (next as { onFarmHistory?: LivestockUnitWhereInput["onFarmHistory"] }).onFarmHistory
+        }
+        return next
+      })
+    }
+    updateWhereFilter()
   }, [onFarmOnly])
 
   if (loading){
@@ -94,6 +109,7 @@ export function ActiveLivestock() {
               setOpenFilter={setOpenFilter}
               onFarmOnly={onFarmOnly}
               setOnFarmOnly={setOnFarmOnly}
+              onCreated={refreshLivestock}
             />
             {/* <Grid spacing={2}> */}
               {
