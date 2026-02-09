@@ -15,93 +15,49 @@ export function EarTagGraphic(
     }
   }
 ){
-  if (props.text.line1 && !props.text.line2 && props.text.line3) {
-    const text={
-        colour: props.text.colour,
-        line1: props.text.line1, 
-        line3: props.text.line3
-      }
-    return <EarTagGraphicLine1And3 tagColour={props.tagColour} text={text}
-  />
-  } else if (props.text.line1 && props.text.line2 && props.text.line3) {
-    const text = {
-        colour: props.text.colour,
-        line1: props.text.line1,
-        line2: props.text.line2,
-        line3: props.text.line3
-      }
-    return (<EarTagGraphicLine1And2And3 tagColour={props.tagColour} text={text} />)
-  } else if(!props.text.line1 && !props.text.line2 && props.text.line3) {
-    const text={
-        colour: props.text.colour,
-        line3: props.text.line3
-      }
-    return (<EarTagGraphicLine3 tagColour={props.tagColour} text={text} />)
-  } else {
+  const line1 = props.text.line1
+  const line2 = props.text.line2
+  const line3 = props.text.line3
+  const nonEmptyLines = [line1, line2, line3].filter((line) => line)
+  const isSingleLine = nonEmptyLines.length === 1
+
+  if (nonEmptyLines.length === 0) {
     return (
-    <EarTagGraphicContainer tagColour={props.tagColour} textOffset={25}>
-      <></>
-    </EarTagGraphicContainer>)
+      <EarTagGraphicContainer tagColour={props.tagColour} textOffset={25}>
+        <></>
+      </EarTagGraphicContainer>
+    )
   }
-}
 
-function EarTagGraphicLine3( props: {
-  tagColour: string,
-  text: {
-    colour: VisualIdColour | null, 
-    line3: string
-  }
-  }) {
   return (
     <EarTagGraphicContainer tagColour={props.tagColour} textOffset={25}>
-      <Typography variant="h4" color={props.text.colour ? props.text.colour : "black"} fontWeight={"bold"}>
-        {props.text.line3}
-      </Typography>
-
-    </EarTagGraphicContainer>
-  )
-}
-
-function EarTagGraphicLine1And3( props: {
-    tagColour: string,
-    text: {
-      colour: VisualIdColour | null, 
-      line1: string,
-      line3: string
-    }
-  }) {
-  return (
-    <EarTagGraphicContainer tagColour={props.tagColour} textOffset={25}>
-      <Typography variant="h6" color={props.text.colour ? props.text.colour : "black"} fontWeight={"bold"}>
-        {props.text.line1}
-      </Typography>
-      <Typography variant="h4" fontWeight={"bold"} color={props.text.colour ? props.text.colour : "black"}>
-        {props.text.line3}
-      </Typography>
-    </EarTagGraphicContainer>
-  )
-}
-
-function EarTagGraphicLine1And2And3( props: {
-    tagColour: string,
-    text: {
-      colour: VisualIdColour | null, 
-      line1: string,
-      line2: string,
-      line3: string
-    }
-  }) {
-  return (
-    <EarTagGraphicContainer tagColour={props.tagColour} textOffset={25}>
-      <Typography variant="h6" color={props.text.colour ? props.text.colour : "black"} fontWeight={"bold"}>
-        {props.text.line1}
-      </Typography>
-      <Typography variant="caption" color={props.text.colour ? props.text.colour : "black"} fontWeight={"bold"}>
-        {props.text.line2}
-      </Typography>
-      <Typography variant="h6" fontWeight={"bold"} color={props.text.colour ? props.text.colour : "black"}>
-        {props.text.line3}
-      </Typography>
+      {line1 ? (
+        <Typography
+          variant={isSingleLine ? "h4" : "h6"}
+          color={props.text.colour ? props.text.colour : "black"}
+          fontWeight={"bold"}
+        >
+          {line1}
+        </Typography>
+      ) : null}
+      {line2 ? (
+        <Typography
+          variant={isSingleLine ? "h4" : "caption"}
+          color={props.text.colour ? props.text.colour : "black"}
+          fontWeight={"bold"}
+        >
+          {line2}
+        </Typography>
+      ) : null}
+      {line3 ? (
+        <Typography
+          variant={isSingleLine ? "h4" : "h6"}
+          fontWeight={"bold"}
+          color={props.text.colour ? props.text.colour : "black"}
+        >
+          {line3}
+        </Typography>
+      ) : null}
     </EarTagGraphicContainer>
   )
 }
