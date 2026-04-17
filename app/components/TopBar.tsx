@@ -37,7 +37,8 @@ export function TopBar(
     if(!isMobile){
       props.setDrawerOpenAction(true)
     }
-  },[isMobile, props])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[isMobile])
 
   return (
     <AppBar 
@@ -56,11 +57,12 @@ export function TopBar(
           }
       }}>
       <Toolbar>
-        {isMobile ? 
-        <IconButton onClick={()=>(props.setDrawerOpenAction(!props.drawerOpen))}>  
+        <IconButton
+          onClick={()=>(props.setDrawerOpenAction(!props.drawerOpen))}
+          sx={{ display: { xs: 'inline-flex', md: 'none' } }}
+        >
           <MenuIcon/>
-        </IconButton> 
-        : <></>}
+        </IconButton>
         <Typography
           variant="h6"
           component="div"
@@ -69,7 +71,7 @@ export function TopBar(
         >
           AgNerd 
         </Typography>
-        <Breadcrumbs sx={{ '& ol': { justifyContent: 'left' }, color: "secondary.main", flexGrow: 1500 }}>
+        <Breadcrumbs sx={{ '& ol': { justifyContent: 'left' }, color: "secondary.main", flexGrow: 1500, display: { xs: 'none', md: 'flex' } }}>
         {
         paths.map((directory, index, pathsArray)=>{
           return(

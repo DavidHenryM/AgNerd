@@ -20,7 +20,8 @@ export default function Navbar(props: {
     if (isMobile){
       props.setDrawerOpen(false)
     }
-  },[isMobile, props])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[isMobile])
 
 
 
@@ -62,17 +63,21 @@ export default function Navbar(props: {
     <Box sx={{ flexGrow: 1, position: 'absolute', 
       top: 0, 
       left: `${Number(drawerWidth.smDrawerOpen.slice(0, -2)) - 45}px`, 
-      zIndex: 1}}>
-        { 
-          isMobile ? 
-            <IconButton color="inherit" onClick={()=>props.setDrawerOpen(false)}>
-              <CloseIcon />
-            </IconButton>
-          : <></>
-        }
+      zIndex: 1,
+      display: { xs: 'block', md: 'none' }
+    }}>
+        <IconButton color="inherit" onClick={()=>props.setDrawerOpen(false)}>
+          <CloseIcon />
+        </IconButton>
     </Box>
-      <Box sx={{ my: 2, display: "flex", justifyContent: "center", width: "100%" }}>
-        <Image width={150} loading="eager" src={logo} alt="AgNerd"/>
+      <Box sx={{ my: 2, display: "flex", justifyContent: "center", width: "100%", px: 0.5 }}>
+        <Image
+          width={150}
+          loading="eager"
+          src={logo}
+          alt="AgNerd"
+          style={{ width: '100%', maxWidth: 150, height: 'auto' }}
+        />
       </Box>
         <List>
           {navigation.map((nav) => (
@@ -84,15 +89,17 @@ export default function Navbar(props: {
                 <ListItemButton
                   onClick={()=>(handleMenuClick())}
                   sx={{
-                    mx: 1,
+                    mx: { xs: 1, md: 0 },
                     my: 0.5,
-                    px: 1.5,
+                    px: { xs: 1.5, md: 0 },
                     py: 1,
                     borderRadius: 2,
+                    justifyContent: { md: 'center', lg: 'flex-start' },
                     color: 'primary.main',
                     transition: 'all 150ms ease',
                     '& .MuiListItemIcon-root': {
-                      minWidth: 36,
+                      minWidth: { xs: 36, md: 'auto', lg: 36 },
+                      justifyContent: 'center',
                       color: 'primary.main',
                     },
                     '&:hover': {
@@ -109,7 +116,7 @@ export default function Navbar(props: {
                   <ListItemIcon>
                     <nav.Icon/>
                   </ListItemIcon>
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 600, display: { md: 'none', lg: 'block' } }}>
                     {nav.label}
                   </Typography>
                 </ListItemButton>
@@ -129,15 +136,17 @@ export default function Navbar(props: {
                 <ListItemButton
                   onClick={()=>(handleMenuClick())}
                   sx={{
-                    mx: 1,
+                    mx: { xs: 1, md: 0 },
                     my: 0.5,
-                    px: 1.5,
+                    px: { xs: 1.5, md: 0 },
                     py: 1,
                     borderRadius: 2,
+                    justifyContent: { md: 'center', lg: 'flex-start' },
                     color: 'primary.main',
                     transition: 'all 150ms ease',
                     '& .MuiListItemIcon-root': {
-                      minWidth: 36,
+                      minWidth: { xs: 36, md: 'auto', lg: 36 },
+                      justifyContent: 'center',
                       color: 'primary.main',
                     },
                     '&:hover': {
@@ -154,7 +163,7 @@ export default function Navbar(props: {
                   <ListItemIcon>
                     <nav.Icon/>
                   </ListItemIcon>
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 600, display: { md: 'none', lg: 'block' } }}>
                     {nav.label}
                   </Typography>
                 </ListItemButton>

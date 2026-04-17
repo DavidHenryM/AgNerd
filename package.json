@@ -47,6 +47,7 @@
     "cpx2": "^8.0.0",
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.1.6",
+    "fbx2gltf": "^0.9.7-p1",
     "prisma": "^7.3.0",
     "tailwindcss": "^4.1.18",
     "tsx": "^4.21.0",

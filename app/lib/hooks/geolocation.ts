@@ -5,6 +5,8 @@ const useGeolocation = () => {
   const [longitude, setLongitude] = useState<number | null>(null);
   const [locationTimestamp, setLocationTimestamp] = useState<number | null>(null);
   const [heading, setHeading] = useState<number | null>(null);
+  const [speed, setSpeed] = useState<number | null>(null);
+  const [accuracy, setAccuracy] = useState<number | null>(null);
   const [error, setError] = useState<null | string>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -13,6 +15,8 @@ const useGeolocation = () => {
     setLongitude(position.coords.longitude);
     setLocationTimestamp(position.timestamp);
     setHeading(position.coords.heading);
+    setSpeed(position.coords.speed);
+    setAccuracy(position.coords.accuracy);
     setError(null);
     setLoading(false);
   };
@@ -23,6 +27,8 @@ const useGeolocation = () => {
     setLongitude(null);
     setLocationTimestamp(null);
     setHeading(null);
+    setSpeed(null);
+    setAccuracy(null);
     setLoading(false);
   };
 
@@ -58,7 +64,7 @@ const useGeolocation = () => {
     fetchLocation();
   }, []); // Empty dependency array means this runs once on mount
 
-  return { latitude, longitude, locationTimestamp, heading, error, loading };
+  return { latitude, longitude, locationTimestamp, heading, speed, accuracy, error, loading };
 };
 
 export default useGeolocation;

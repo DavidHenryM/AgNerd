@@ -3,7 +3,7 @@ import { footerHeight } from "@app/settings";
 
 const Footer: React.FC = () => {
   return (
-    <AppBar position="fixed" color="primary" sx={{ maxHeight: footerHeight, top:"auto", bottom: 0, }}>
+    <AppBar position="fixed" color="primary" sx={{ maxHeight: footerHeight, top:"auto", bottom: 0, display: { xs: 'none', md: 'block' } }}>
       <Grid
         container
         direction="row"
