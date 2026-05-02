@@ -5,14 +5,14 @@ import {
   Color,
   HeadingPitchRange,
   Math as CesiumMath,
+  ScreenSpaceEventType,
   Entity,
   ConstantPositionProperty,
-  ConstantProperty,
   HeightReference,
   ColorMaterialProperty,
   ClassificationType,
 } from "cesium";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Box } from "@mui/material";
 import { getUsersFarm } from "@lib/queries";
 import useGeolocation from "@lib/hooks/geolocation";
@@ -22,6 +22,38 @@ import NavigationControls, {
 
 // ── Geo helpers ─────────────────────────────────────────────────────
 const EARTH_RADIUS = 6_371_000; // metres
+const TRACTOR_TARGET_WIDTH_METERS = 2;
+// Update this if the source GLB width differs; scale = targetWidth / sourceWidth.
+const TRACTOR_SOURCE_WIDTH_METERS = 2;
+const TRACTOR_WORLD_SCALE =
+  TRACTOR_TARGET_WIDTH_METERS / TRACTOR_SOURCE_WIDTH_METERS;
+const SCALE_KEY_BASE_PIXELS = 120;
+const SCALE_KEY_ZOOM_FACTOR = 1 / 3;
+const MIN_CAMERA_CLEARANCE_METERS = 2;
+
+function roundNiceDistance(meters: number): number {
+  const power = 10 ** Math.floor(Math.log10(meters));
+  const normalized = meters / power;
+
+  if (normalized < 1.5) return 1 * power;
+  if (normalized < 3) return 2 * power;
+  if (normalized < 7) return 5 * power;
+  return 10 * power;
+}
+
+function zoomLevelDistanceForPixelSpan(
+  cameraRangeMeters: number,
+  pixelSpan: number
+): number | null {
+  if (!Number.isFinite(cameraRangeMeters) || cameraRangeMeters <= 0) return null;
+  if (!Number.isFinite(pixelSpan) || pixelSpan <= 0) return null;
+
+  const normalizedSpan = pixelSpan / SCALE_KEY_BASE_PIXELS;
+  const distance = cameraRangeMeters * SCALE_KEY_ZOOM_FACTOR * normalizedSpan;
+
+  if (!Number.isFinite(distance) || distance <= 0) return null;
+  return distance;
+}
 
 /** Haversine distance in metres between two lat/lng points. */
 function haversineDistance(
@@ -142,9 +174,38 @@ export default function NavigationScreen() {
   const [widthMeters, setWidthMeters] = useState(12);
   const [offsetMeters, setOffsetMeters] = useState(0);
   const [totalAreaSqMeters, setTotalAreaSqMeters] = useState(0);
-  const [selectedColor, setSelectedColor] = useState(MODEL_COLORS[0].hex);
+  const [cameraRangeMeters, setCameraRangeMeters] = useState(100);
+  const [selectedColor] = useState(MODEL_COLORS[0].hex);
   const prevPointRef = useRef<GpsPoint | null>(null);
   const stripEntitiesRef = useRef<Entity[]>([]);
+
+  const { mapScaleMeters, mapScalePixels } = useMemo(() => {
+    const rawMeters = zoomLevelDistanceForPixelSpan(
+      cameraRangeMeters,
+      SCALE_KEY_BASE_PIXELS
+    );
+
+    if (rawMeters === null) {
+      return {
+        mapScaleMeters: null,
+        mapScalePixels: SCALE_KEY_BASE_PIXELS,
+      };
+    }
+
+    const roundedMeters = roundNiceDistance(rawMeters);
+    const pixelWidth = Math.max(
+      40,
+      Math.min(
+        SCALE_KEY_BASE_PIXELS,
+        (roundedMeters / rawMeters) * SCALE_KEY_BASE_PIXELS
+      )
+    );
+
+    return {
+      mapScaleMeters: roundedMeters,
+      mapScalePixels: pixelWidth,
+    };
+  }, [cameraRangeMeters]);
 
   // Fetch farm location for initial camera position
   const userId = "current";
@@ -179,11 +240,53 @@ export default function NavigationScreen() {
     });
     viewerRef.current = viewer;
 
+    // Avoid double-zoom handling: we handle wheel zoom ourselves via state.
+    viewer.scene.screenSpaceCameraController.enableZoom = false;
+    viewer.scene.screenSpaceCameraController.enableCollisionDetection = true;
+    viewer.scene.screenSpaceCameraController.minimumZoomDistance =
+      MIN_CAMERA_CLEARANCE_METERS;
+
+    // Safety clamp: if camera ever goes below terrain, snap it just above ground.
+    const removeClampCameraListener = viewer.scene.postRender.addEventListener(() => {
+      const carto = viewer.camera.positionCartographic;
+      const terrainHeight = viewer.scene.globe.getHeight(carto) ?? 0;
+      const minHeight = terrainHeight + MIN_CAMERA_CLEARANCE_METERS;
+
+      if (carto.height < minHeight) {
+        viewer.camera.setView({
+          destination: Cartesian3.fromRadians(
+            carto.longitude,
+            carto.latitude,
+            minHeight
+          ),
+          orientation: {
+            heading: viewer.camera.heading,
+            pitch: viewer.camera.pitch,
+            roll: viewer.camera.roll,
+          },
+        });
+      }
+    });
+
+    // Keep app zoom state in sync when user zooms with the mouse wheel.
+    viewer.screenSpaceEventHandler.setInputAction(
+      (delta: number) => {
+        if (!Number.isFinite(delta) || delta === 0) return;
+        setCameraRangeMeters((r) => {
+          const next = delta > 0 ? r * 1.15 : r * 0.87;
+          return Math.max(20, Math.min(10_000, next));
+        });
+      },
+      ScreenSpaceEventType.WHEEL
+    );
+
     const observer = new ResizeObserver(() => viewer.resize());
     observer.observe(el);
 
     return () => {
       observer.disconnect();
+      viewer.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.WHEEL);
+      removeClampCameraListener();
       if (!viewer.isDestroyed()) viewer.destroy();
       viewerRef.current = null;
     };
@@ -214,22 +317,18 @@ export default function NavigationScreen() {
         position,
         model: {
           uri: "/models/Tractor.glb",
-          minimumPixelSize: 64,
-          maximumScale: 50,
+          // World-space sizing: stays constant relative to terrain regardless of zoom.
+          scale: TRACTOR_WORLD_SCALE,
           heightReference: HeightReference.CLAMP_TO_GROUND,
-          color: Color.fromCssColorString(selectedColor),
         },
       });
       modelEntityRef.current = entity;
     } else {
       const entity = modelEntityRef.current;
       (entity.position as ConstantPositionProperty).setValue(position);
-      if (entity.model) {
-        (entity.model.color as ConstantProperty).setValue(
-          Color.fromCssColorString(selectedColor)
-        );
-      }
+
     }
+    
 
     // Heading-oriented camera: look from behind and above
     const headingRad =
@@ -241,10 +340,10 @@ export default function NavigationScreen() {
       new HeadingPitchRange(
         headingRad,
         CesiumMath.toRadians(-35), // pitched forward
-        300 // distance
+        cameraRangeMeters // distance
       )
     );
-  }, [latitude, longitude, heading, selectedColor]);
+  }, [latitude, longitude, heading, selectedColor, cameraRangeMeters]);
 
   // ── Path painting while tracking ──────────────────────────────────
   useEffect(() => {
@@ -310,6 +409,14 @@ export default function NavigationScreen() {
     setIsTracking(false);
   }, []);
 
+  const handleZoomIn = useCallback(() => {
+    setCameraRangeMeters((r) => Math.max(20, r * 0.75));
+  }, []);
+
+  const handleZoomOut = useCallback(() => {
+    setCameraRangeMeters((r) => Math.min(10_000, r * 1.33));
+  }, []);
+
   return (
     <Box sx={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}>
       <Box
@@ -330,7 +437,10 @@ export default function NavigationScreen() {
         setOffsetMeters={setOffsetMeters}
         totalAreaSqMeters={totalAreaSqMeters}
         selectedColor={selectedColor}
-        setSelectedColor={setSelectedColor}
+        mapScaleMeters={mapScaleMeters}
+        mapScalePixels={mapScalePixels}
+        onZoomIn={handleZoomIn}
+        onZoomOut={handleZoomOut}
         onReset={handleReset}
       />
     </Box>

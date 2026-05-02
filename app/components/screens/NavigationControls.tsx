@@ -16,6 +16,8 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import SpeedIcon from "@mui/icons-material/Speed";
 import TuneIcon from "@mui/icons-material/Tune";
+import ZoomInIcon from "@mui/icons-material/ZoomIn";
+import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import { drawerWidth, footerHeight } from "@app/settings";
 
 // ── colour palette offered to the user ──────────────────────────────
@@ -55,6 +57,12 @@ function formatArea(sqMeters: number): { ha: string; acres: string } {
   };
 }
 
+function formatDistance(meters: number): string {
+  if (meters >= 1000) return `${(meters / 1000).toFixed(2)} km`;
+  if (meters >= 100) return `${meters.toFixed(0)} m`;
+  return `${meters.toFixed(1)} m`;
+}
+
 // ── overlay panel styling ───────────────────────────────────────────
 const panelSx = {
   background: "rgba(0,0,0,0.6)",
@@ -80,7 +88,10 @@ export interface NavigationControlsProps {
   setOffsetMeters: Dispatch<SetStateAction<number>>;
   totalAreaSqMeters: number;
   selectedColor: string;
-  setSelectedColor: Dispatch<SetStateAction<string>>;
+  mapScaleMeters: number | null;
+  mapScalePixels: number;
+  onZoomIn: () => void;
+  onZoomOut: () => void;
   onReset: () => void;
 }
 
@@ -99,7 +110,10 @@ export default function NavigationControls(props: NavigationControlsProps) {
     setOffsetMeters,
     totalAreaSqMeters,
     selectedColor,
-    setSelectedColor,
+    mapScaleMeters,
+    mapScalePixels,
+    onZoomIn,
+    onZoomOut,
     onReset,
   } = props;
 
@@ -161,6 +175,91 @@ export default function NavigationControls(props: NavigationControlsProps) {
               Area
             </Typography>
             <Typography variant="caption">{area.ha} ha / {area.acres} ac</Typography>
+          </Stack>
+
+          {/* Zoom controls */}
+          <Stack direction="row" spacing={0.75} mt={1}>
+            <Fab
+              size="small"
+              onClick={onZoomOut}
+              sx={{
+                width: 32,
+                height: 32,
+                minHeight: 32,
+                bgcolor: "rgba(255,255,255,0.15)",
+              }}
+            >
+              <ZoomOutIcon fontSize="small" />
+            </Fab>
+            <Fab
+              size="small"
+              onClick={onZoomIn}
+              sx={{
+                width: 32,
+                height: 32,
+                minHeight: 32,
+                bgcolor: "rgba(255,255,255,0.15)",
+              }}
+            >
+              <ZoomInIcon fontSize="small" />
+            </Fab>
+          </Stack>
+        </Box>
+      </Box>
+
+      {/* ── Bottom-right panel: map distance key ──────────────────── */}
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: { xs: 12, md: `calc(${footerHeight} + 12px)` },
+          right: 12,
+          zIndex: 1200,
+        }}
+      >
+        <Box sx={panelSx}>
+          <Typography variant="caption" sx={{ fontWeight: 600 }}>
+            Distance Key
+          </Typography>
+          <Stack direction="row" alignItems="center" spacing={0.75} mt={0.25}>
+            <Box
+              sx={{
+                position: "relative",
+                width: mapScalePixels,
+                height: 8,
+                flexShrink: 0,
+              }}
+            >
+              <Box
+                sx={{
+                  position: "absolute",
+                  left: 0,
+                  right: 0,
+                  top: 3,
+                  borderTop: "2px solid rgba(255,255,255,0.95)",
+                }}
+              />
+              <Box
+                sx={{
+                  position: "absolute",
+                  left: 0,
+                  top: 1,
+                  height: 6,
+                  borderLeft: "2px solid rgba(255,255,255,0.95)",
+                }}
+              />
+              <Box
+                sx={{
+                  position: "absolute",
+                  right: 0,
+                  top: 1,
+                  height: 6,
+                  borderRight: "2px solid rgba(255,255,255,0.95)",
+                }}
+              />
+            </Box>
+            <Typography variant="caption">
+              {mapScaleMeters === null ? "—" : formatDistance(mapScaleMeters)}
+            </Typography>
           </Stack>
         </Box>
       </Box>
@@ -249,31 +348,6 @@ export default function NavigationControls(props: NavigationControlsProps) {
                   {offsetMeters > 0 ? "+" : ""}
                   {offsetMeters.toFixed(1)}m
                 </Typography>
-              </Stack>
-            </Box>
-
-            {/* ─ Colour picker ─ */}
-            <Box sx={panelSx}>
-              <Typography variant="caption" sx={{ fontWeight: 600 }}>
-                Colour
-              </Typography>
-              <Stack direction="row" spacing={0.5} mt={0.5}>
-                {MODEL_COLORS.map((c) => (
-                  <Box
-                    key={c.hex}
-                    onClick={() => setSelectedColor(c.hex)}
-                    sx={{
-                      width: 24,
-                      height: 24,
-                      borderRadius: "50%",
-                      bgcolor: c.hex,
-                      cursor: "pointer",
-                      border: selectedColor === c.hex ? "2px solid white" : "2px solid transparent",
-                      transition: "border 0.15s",
-                      "&:hover": { border: "2px solid rgba(255,255,255,0.6)" },
-                    }}
-                  />
-                ))}
               </Stack>
             </Box>
           </Stack>

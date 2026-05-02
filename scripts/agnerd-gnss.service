@@ -1,0 +1,17 @@
+[Unit]
+Description=AgNerd GNSS Reader Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/agnerd
+EnvironmentFile=/etc/agnerd/gnss.env
+ExecStart=/usr/bin/env node /opt/agnerd/scripts/gnss-reader.mjs
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
