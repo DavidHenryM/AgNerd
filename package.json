@@ -11,7 +11,7 @@
     "start": "next start",
     "lint": "eslint",
     "generate": "prisma generate",
-    "copy-cesium": "cpx \"node_modules/@cesium/engine/Source/**\" \"public/cesium/Source\" --dereference"
+    "copy-cesium": "cpx \"node_modules/@cesium/engine/Source/**\" \"public/cesium/\" --dereference"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
