@@ -1,5 +1,7 @@
 import { prisma } from "@lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const GNSS_INTERNAL_TOKEN = process.env.GNSS_INTERNAL_TOKEN;
 
 function asOptionalNumber(value: unknown): number | null {
@@ -14,6 +16,34 @@ function asOptionalNumber(value: unknown): number | null {
 
 function badRequest(message: string, status = 400) {
   return Response.json({ error: message }, { status });
+}
+
+export async function GET() {
+  const latest = await prisma.geoPoint.findFirst({
+    orderBy: {
+      id: "desc",
+    },
+    select: {
+      id: true,
+      latitude: true,
+      longitude: true,
+      heading: true,
+    },
+  });
+
+  if (!latest) {
+    return Response.json({ ok: true, position: null });
+  }
+
+  return Response.json({
+    ok: true,
+    position: {
+      id: latest.id,
+      latitude: latest.latitude,
+      longitude: latest.longitude,
+      heading: latest.heading,
+    },
+  });
 }
 
 export async function POST(request: Request) {
@@ -53,28 +83,17 @@ export async function POST(request: Request) {
     return badRequest("Invalid timestamp.");
   }
 
-  const saved = await prisma.livestockUnitPosition.create({
+  const saved = await prisma.geoPoint.create({
     data: {
-      date: timestamp,
-      location: {
-        create: {
-          latitude,
-          longitude,
-          heading,
-        },
-      },
+      latitude,
+      longitude,
+      heading,
     },
     select: {
       id: true,
-      date: true,
-      location: {
-        select: {
-          id: true,
-          latitude: true,
-          longitude: true,
-          heading: true,
-        },
-      },
+      latitude: true,
+      longitude: true,
+      heading: true,
     },
   });
 
@@ -82,6 +101,7 @@ export async function POST(request: Request) {
     ok: true,
     saved,
     metadata: {
+      timestamp: timestamp.toISOString(),
       fixType: body.fixType ?? null,
       satellites: asOptionalNumber(body.satellites),
       horizontalAccuracyMeters: asOptionalNumber(body.horizontalAccuracyMeters),
