@@ -1,17 +1,38 @@
 #!/usr/bin/env node
+import { createConnection } from "node:net";
 import { SerialPort } from "serialport";
 import { ReadlineParser } from "@serialport/parser-readline";
 import { writeFile } from "node:fs/promises";
+import { rename } from "node:fs/promises";
+import { mkdir } from "node:fs/promises";
+import { dirname } from "node:path";
 
+const GNSS_SOURCE = (process.env.GNSS_SOURCE || "gpsd").toLowerCase();
+const GPSD_HOST = process.env.GPSD_HOST || "127.0.0.1";
+const GPSD_PORT = Number.parseInt(process.env.GPSD_PORT || "2947", 10);
+const GPSD_RECONNECT_MS = Number.parseInt(process.env.GPSD_RECONNECT_MS || "3000", 10);
 const GNSS_READ_DEVICE = process.env.GNSS_READ_DEVICE || process.env.GNSS_DEVICE;
 const GNSS_READ_BAUDRATE = Number.parseInt(process.env.GNSS_READ_BAUDRATE || process.env.GNSS_BAUDRATE || "460800", 10);
 const GNSS_POST_INTERVAL_MS = Number.parseInt(process.env.GNSS_POST_INTERVAL_MS || "1000", 10);
 const GNSS_INGEST_URL = process.env.GNSS_INGEST_URL || "http://localhost:3000/api/gnss/position";
 const GNSS_INTERNAL_TOKEN = process.env.GNSS_INTERNAL_TOKEN;
 const GNSS_STATUS_FILE = process.env.GNSS_STATUS_FILE || "/tmp/agnerd-gnss-status.json";
+const GNSS_STATUS_FALLBACK_FILE = process.env.GNSS_STATUS_FALLBACK_FILE || "/var/tmp/agnerd-gnss-status.json";
 
-if (!GNSS_READ_DEVICE) {
-  console.error("Missing GNSS_READ_DEVICE (or GNSS_DEVICE) environment variable.");
+let statusFilePathInUse = GNSS_STATUS_FILE;
+
+if (GNSS_SOURCE !== "gpsd" && GNSS_SOURCE !== "serial") {
+  console.error(`Unsupported GNSS_SOURCE '${GNSS_SOURCE}'. Use 'gpsd' or 'serial'.`);
+  process.exit(1);
+}
+
+if (GNSS_SOURCE === "serial" && !GNSS_READ_DEVICE) {
+  console.error("Missing GNSS_READ_DEVICE (or GNSS_DEVICE) environment variable for serial source.");
+  process.exit(1);
+}
+
+if (!Number.isFinite(GPSD_PORT) || GPSD_PORT <= 0) {
+  console.error(`Invalid GPSD_PORT '${process.env.GPSD_PORT}'.`);
   process.exit(1);
 }
 
@@ -27,10 +48,13 @@ const state = {
   receivingUbx: false,
   ubxBuffer: Buffer.alloc(0),
   status: {
+    source: GNSS_SOURCE,
     startedAt: new Date().toISOString(),
     lastReadAt: null,
     lastPostAt: null,
     lastPostStatus: null,
+    lastGpsdConnectAt: null,
+    lastGpsdDisconnectAt: null,
     parseErrors: 0,
   },
 };
@@ -226,6 +250,169 @@ function deriveFixLabel(fixType, flags) {
   return "NO_FIX";
 }
 
+function setLatestFix(next) {
+  state.status.lastReadAt = new Date().toISOString();
+  state.latest = {
+    timestamp: next.timestamp,
+    latitude: next.latitude,
+    longitude: next.longitude,
+    heading: next.heading,
+    speedKnots: next.speedKnots,
+  };
+}
+
+function parseGpsdMessage(line) {
+  let message;
+  try {
+    message = JSON.parse(line);
+  } catch {
+    state.status.parseErrors += 1;
+    return;
+  }
+
+  if (!message || typeof message !== "object") {
+    return;
+  }
+
+  if (message.class === "TPV") {
+    const mode = Number.isFinite(message.mode) ? Number(message.mode) : null;
+    const latitude = Number.isFinite(message.lat) ? Number(message.lat) : null;
+    const longitude = Number.isFinite(message.lon) ? Number(message.lon) : null;
+    const heading = Number.isFinite(message.track) ? Number(message.track) : null;
+    const speedKnots = Number.isFinite(message.speed)
+      ? Number(message.speed) * 1.9438444924406
+      : null;
+    const timestamp =
+      typeof message.time === "string" && !Number.isNaN(Date.parse(message.time))
+        ? new Date(message.time).toISOString()
+        : new Date().toISOString();
+
+    if (mode !== null) {
+      state.ubx.fixType = mode;
+    }
+    state.ubx.hAccMeters = Number.isFinite(message.epx) ? Number(message.epx) : null;
+    state.ubx.vAccMeters = Number.isFinite(message.epv) ? Number(message.epv) : null;
+
+    if (mode !== null && mode >= 2 && latitude !== null && longitude !== null) {
+      setLatestFix({
+        timestamp,
+        latitude,
+        longitude,
+        heading,
+        speedKnots,
+      });
+    }
+    return;
+  }
+
+  if (message.class === "SKY") {
+    if (Number.isFinite(message.uSat)) {
+      state.ubx.numSV = Number(message.uSat);
+      return;
+    }
+    if (Array.isArray(message.satellites)) {
+      state.ubx.numSV = message.satellites.filter((sat) => sat && sat.used === true).length;
+    }
+  }
+}
+
+function startSerialReader() {
+  console.log(`Starting GNSS serial source on ${GNSS_READ_DEVICE} @ ${GNSS_READ_BAUDRATE}`);
+  const port = new SerialPort({ path: GNSS_READ_DEVICE, baudRate: GNSS_READ_BAUDRATE });
+  const lineParser = port.pipe(new ReadlineParser({ delimiter: "\r\n" }));
+
+  lineParser.on("data", (line) => {
+    state.status.lastReadAt = new Date().toISOString();
+    const parsed = parseNmeaRmc(line.trim());
+    if (parsed) {
+      state.latest = parsed;
+    }
+  });
+
+  port.on("data", (chunk) => {
+    state.receivingUbx = true;
+    parseUbxFromChunk(Buffer.from(chunk));
+  });
+
+  port.on("open", () => {
+    console.log("GNSS serial port opened.");
+  });
+
+  port.on("error", (error) => {
+    console.error(`GNSS serial error: ${error.message}`);
+  });
+
+  return port;
+}
+
+function startGpsdReader() {
+  console.log(`Starting GNSS gpsd source on ${GPSD_HOST}:${GPSD_PORT}`);
+
+  let socket = null;
+  let reconnectTimer = null;
+  let buffer = "";
+  let shuttingDown = false;
+
+  function scheduleReconnect() {
+    if (shuttingDown || reconnectTimer) {
+      return;
+    }
+    reconnectTimer = setTimeout(() => {
+      reconnectTimer = null;
+      connect();
+    }, GPSD_RECONNECT_MS);
+  }
+
+  function connect() {
+    socket = createConnection({ host: GPSD_HOST, port: GPSD_PORT });
+
+    socket.on("connect", () => {
+      state.status.lastGpsdConnectAt = new Date().toISOString();
+      buffer = "";
+      socket.write('?WATCH={"enable":true,"json":true};\n');
+      console.log("Connected to gpsd.");
+    });
+
+    socket.on("data", (chunk) => {
+      buffer += chunk.toString("utf8");
+      const lines = buffer.split(/\r?\n/);
+      buffer = lines.pop() || "";
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+        parseGpsdMessage(trimmed);
+      }
+    });
+
+    socket.on("error", (error) => {
+      console.error(`gpsd socket error: ${error.message}`);
+    });
+
+    socket.on("close", () => {
+      state.status.lastGpsdDisconnectAt = new Date().toISOString();
+      if (!shuttingDown) {
+        console.error("gpsd connection closed. Reconnecting...");
+        scheduleReconnect();
+      }
+    });
+  }
+
+  connect();
+
+  return () => {
+    shuttingDown = true;
+    if (reconnectTimer) {
+      clearTimeout(reconnectTimer);
+      reconnectTimer = null;
+    }
+    if (socket) {
+      socket.destroy();
+      socket = null;
+    }
+  };
+}
+
 async function postLatest() {
   if (!state.latest) {
     return;
@@ -267,45 +454,57 @@ async function postLatest() {
   }
 }
 
-async function writeStatusFile() {
-  const payload = {
+function buildStatusPayload(filePath) {
+  return {
     ...state.status,
     latest: state.latest,
     ubx: state.ubx,
+    statusFilePath: filePath,
     statusFileUpdatedAt: new Date().toISOString(),
   };
+}
+
+async function writeStatusFileTo(filePath) {
+  const payload = buildStatusPayload(filePath);
+  const tempPath = `${filePath}.tmp`;
+  await mkdir(dirname(filePath), { recursive: true });
+  await writeFile(tempPath, JSON.stringify(payload, null, 2), "utf8");
+  await rename(tempPath, filePath);
+}
+
+async function writeStatusFile() {
 
   try {
-    await writeFile(GNSS_STATUS_FILE, JSON.stringify(payload, null, 2), "utf8");
+    await writeStatusFileTo(statusFilePathInUse);
   } catch (error) {
-    console.error(`Status file write failed: ${error instanceof Error ? error.message : String(error)}`);
+    const primaryError = error instanceof Error ? error.message : String(error);
+
+    if (statusFilePathInUse !== GNSS_STATUS_FALLBACK_FILE) {
+      try {
+        await writeStatusFileTo(GNSS_STATUS_FALLBACK_FILE);
+        statusFilePathInUse = GNSS_STATUS_FALLBACK_FILE;
+        console.error(
+          `Status file write failed at '${GNSS_STATUS_FILE}': ${primaryError}. ` +
+          `Fell back to '${GNSS_STATUS_FALLBACK_FILE}'.`
+        );
+        return;
+      } catch (fallbackError) {
+        const fallbackMessage =
+          fallbackError instanceof Error ? fallbackError.message : String(fallbackError);
+        console.error(
+          `Status file write failed at '${GNSS_STATUS_FILE}' (${primaryError}) and fallback ` +
+          `'${GNSS_STATUS_FALLBACK_FILE}' (${fallbackMessage}).`
+        );
+        return;
+      }
+    }
+
+    console.error(`Status file write failed at '${statusFilePathInUse}': ${primaryError}`);
   }
 }
 
-console.log(`Opening GNSS read port ${GNSS_READ_DEVICE} @ ${GNSS_READ_BAUDRATE}`);
-const port = new SerialPort({ path: GNSS_READ_DEVICE, baudRate: GNSS_READ_BAUDRATE });
-const lineParser = port.pipe(new ReadlineParser({ delimiter: "\r\n" }));
-
-lineParser.on("data", (line) => {
-  state.status.lastReadAt = new Date().toISOString();
-  const parsed = parseNmeaRmc(line.trim());
-  if (parsed) {
-    state.latest = parsed;
-  }
-});
-
-port.on("data", (chunk) => {
-  state.receivingUbx = true;
-  parseUbxFromChunk(Buffer.from(chunk));
-});
-
-port.on("open", () => {
-  console.log("GNSS serial port opened.");
-});
-
-port.on("error", (error) => {
-  console.error(`GNSS serial error: ${error.message}`);
-});
+const serialPort = GNSS_SOURCE === "serial" ? startSerialReader() : null;
+const stopGpsdReader = GNSS_SOURCE === "gpsd" ? startGpsdReader() : null;
 
 setInterval(() => {
   postLatest().catch((error) => {
@@ -321,8 +520,11 @@ setInterval(() => {
 
 process.on("SIGINT", async () => {
   console.log("Shutting down GNSS reader...");
-  if (port.isOpen) {
-    await new Promise((resolve) => port.close(resolve));
+  if (typeof stopGpsdReader === "function") {
+    stopGpsdReader();
+  }
+  if (serialPort && serialPort.isOpen) {
+    await new Promise((resolve) => serialPort.close(resolve));
   }
   process.exit(0);
 });
