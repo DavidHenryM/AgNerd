@@ -1,0 +1,17 @@
+[Unit]
+Description=AgNerd Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/agnerd
+EnvironmentFile=/etc/agnerd/.env
+ExecStart=/usr/bin/env npm start
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
