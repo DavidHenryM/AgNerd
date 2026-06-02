@@ -51,6 +51,15 @@ npm ci
 npm run build
 sudo cp -R dist/* /opt/agnerd/
 
+if [ ! -d /opt/agnerd/scripts ]; then
+    echo "Creating /opt/agnerd/scripts directory"
+    sudo mkdir -p /opt/agnerd/scripts
+fi
+
+if [ ! -d /opt/agnerd/public ]; then
+    echo "Creating /opt/agnerd/public directory"
+    sudo mkdir -p /opt/agnerd/public
+fi
 
 sudo systemctl daemon-reload
 sudo systemctl enable agnerd-gnss.service
