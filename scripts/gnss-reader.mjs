@@ -6,6 +6,28 @@ import { writeFile } from "node:fs/promises";
 import { rename } from "node:fs/promises";
 import { mkdir } from "node:fs/promises";
 import { dirname } from "node:path";
+import { v4 as uuidv4 } from "uuid";
+import readline from 'node:readline';
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const required = ["GNSS_READ_DEVICE"];
+const options = ["GNSS_SOURCE", "GPSD_HOST", "GPSD_PORT", "GPSD_RECONNECT_MS", "GNSS_READ_BAUDRATE", "GNSS_POST_INTERVAL_MS", "GNSS_INGEST_URL", "GNSS_INTERNAL_TOKEN", "GNSS_STATUS_FILE", "GNSS_STATUS_FALLBACK_FILE"];
+for (const key of required) {
+  if (!process.env[key]) {
+    console.error(`Missing required environment variable: ${key}`);
+    process.exit(1);
+  }
+}
+
+for (const key of options) {
+  if (!process.env[key]) {
+    console.warn(`Missing optional environment variable: ${key} Using default`);
+  }
+}
 
 const GNSS_SOURCE = (process.env.GNSS_SOURCE || "gpsd").toLowerCase();
 const GPSD_HOST = process.env.GPSD_HOST || "127.0.0.1";
@@ -15,7 +37,7 @@ const GNSS_READ_DEVICE = process.env.GNSS_READ_DEVICE || process.env.GNSS_DEVICE
 const GNSS_READ_BAUDRATE = Number.parseInt(process.env.GNSS_READ_BAUDRATE || process.env.GNSS_BAUDRATE || "460800", 10);
 const GNSS_POST_INTERVAL_MS = Number.parseInt(process.env.GNSS_POST_INTERVAL_MS || "1000", 10);
 const GNSS_INGEST_URL = process.env.GNSS_INGEST_URL || "http://localhost:3000/api/gnss/position";
-const GNSS_INTERNAL_TOKEN = process.env.GNSS_INTERNAL_TOKEN;
+let GNSS_INTERNAL_TOKEN = process.env.GNSS_INTERNAL_TOKEN;
 const GNSS_STATUS_FILE = process.env.GNSS_STATUS_FILE || "/tmp/agnerd-gnss-status.json";
 const GNSS_STATUS_FALLBACK_FILE = process.env.GNSS_STATUS_FALLBACK_FILE || "/var/tmp/agnerd-gnss-status.json";
 
@@ -34,6 +56,18 @@ if (GNSS_SOURCE === "serial" && !GNSS_READ_DEVICE) {
 if (!Number.isFinite(GPSD_PORT) || GPSD_PORT <= 0) {
   console.error(`Invalid GPSD_PORT '${process.env.GPSD_PORT}'.`);
   process.exit(1);
+}
+
+if (!GNSS_INTERNAL_TOKEN) {
+  console.warn("No GNSS_INTERNAL_TOKEN provided. Ingest requests will be unauthenticated.");
+  rl.question(`Generate a new token? (y/n) `, answer => {
+    if (answer.toLowerCase() === 'y') {
+      console.log("Generating new token...");
+      GNSS_INTERNAL_TOKEN = uuidv4();
+      console.log(`Generated new token: ${GNSS_INTERNAL_TOKEN}\n Please set this as the GNSS_INTERNAL_TOKEN environment variable in your agnerd .env file and your gnss.env file.`);
+    }
+    rl.close();
+  });
 }
 
 const state = {
