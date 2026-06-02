@@ -18,16 +18,16 @@ else
     echo "/opt/agnerd directory already exists, skipping creation."
 fi
 
-if [ -f /etc/agnerd/gpsd.env ]; then
-    echo "gpsd.env already exists in install location, skipping copy."
-elif [ -f gpsd.env ]; then
+if [ -f /etc/agnerd/gnss.env ]; then
+    echo "gnss.env already exists in install location, skipping copy."
+elif [ -f gnss.env ]; then
     echo "Copying gpsd.env to /etc/agnerd/gpsd.env"
     sudo cp gpsd.env /etc/agnerd/gpsd.env
-elif [ -f gpsd.example.env ]; then
-    echo "gpsd.env not found, copying gpsd.example.env to /etc/agnerd/gpsd.env"
-    sudo cp gpsd.example.env /etc/agnerd/gpsd.env
+elif [ -f gnss.example.env ]; then
+    echo "gnss.env not found, copying gnss.example.env to /etc/agnerd/gnss.env"
+    sudo cp gnss.example.env /etc/agnerd/gnss.env
 else
-    echo "gpsd.example.env not found, cannot copy to /etc/agnerd/gpsd.env - please create gpsd.env or gpsd.example.env and run the install script again."
+    echo "gnss.example.env not found, cannot copy to /etc/agnerd/gnss.env - please create gnss.env or gnss.example.env and run the install script again."
 fi
 
 if [ -f /etc/agnerd/.env ]; then
