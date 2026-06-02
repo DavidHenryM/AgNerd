@@ -4,7 +4,13 @@
 
 set -euo pipefail
 
-required_vars=(NTRIP_USER NTRIP_PASSWORD NTRIP_HOST NTRIP_PORT NTRIP_MOUNT)
+GA_NTRIP_USER="${GA_NTRIP_USER:-${NTRIP_USER:-}}"
+GA_NTRIP_PASSWORD="${GA_NTRIP_PASSWORD:-${NTRIP_PASSWORD:-}}"
+GA_NTRIP_HOST="${GA_NTRIP_HOST:-${NTRIP_HOST:-}}"
+GA_NTRIP_PORT="${GA_NTRIP_PORT:-${NTRIP_PORT:-}}"
+GA_NTRIP_MOUNT="${GA_NTRIP_MOUNT:-${NTRIP_MOUNT:-}}"
+
+required_vars=(GA_NTRIP_USER GA_NTRIP_PASSWORD GA_NTRIP_HOST GA_NTRIP_PORT GA_NTRIP_MOUNT)
 for var_name in "${required_vars[@]}"; do
 	if [[ -z "${!var_name:-}" ]]; then
 		echo "Missing required environment variable: ${var_name}" >&2
@@ -13,11 +19,11 @@ for var_name in "${required_vars[@]}"; do
 done
 
 NTRIP_SCHEME="ntrip"
-if [[ "${NTRIP_SECURE:-false}" == "true" ]]; then
+if [[ "${GA_NTRIP_SECURE:-${NTRIP_SECURE:-false}}" == "true" ]]; then
 	NTRIP_SCHEME="ntrips"
 fi
 
-INPUT_URI="${NTRIP_SCHEME}://${NTRIP_USER}:${NTRIP_PASSWORD}@${NTRIP_HOST}:${NTRIP_PORT}/${NTRIP_MOUNT}"
+INPUT_URI="${NTRIP_SCHEME}://${GA_NTRIP_USER}:${GA_NTRIP_PASSWORD}@${GA_NTRIP_HOST}:${GA_NTRIP_PORT}/${GA_NTRIP_MOUNT}"
 
 OUTPUT_MODE="${NTRIP_OUTPUT_MODE:-serial}"
 OUTPUT_URI=""

@@ -1,18 +1,85 @@
 #!/usr/bin/env node
 import { spawn } from "node:child_process";
 
-const required = ["NTRIP_USER", "NTRIP_PASSWORD", "NTRIP_HOST", "NTRIP_PORT", "NTRIP_MOUNT"];
-for (const key of required) {
-  if (!process.env[key]) {
-    console.error(`Missing required environment variable: ${key}`);
-    process.exit(1);
-  }
+function resolveInputVar(primaryKey, fallbackKey) {
+  return process.env[primaryKey] || process.env[fallbackKey] || "";
 }
 
-const secure = (process.env.NTRIP_SECURE || "false").toLowerCase() === "true";
+function asBool(value, defaultValue = false) {
+  if (value === undefined || value === null || value === "") return defaultValue;
+  const normalized = String(value).trim().toLowerCase();
+  if (["1", "true", "yes", "on"].includes(normalized)) return true;
+  if (["0", "false", "no", "off"].includes(normalized)) return false;
+  return defaultValue;
+}
+
+const gaNtripUser = resolveInputVar("GA_NTRIP_USER", "NTRIP_USER");
+const gaNtripPassword = resolveInputVar("GA_NTRIP_PASSWORD", "NTRIP_PASSWORD");
+const gaNtripHost = resolveInputVar("GA_NTRIP_HOST", "NTRIP_HOST");
+const gaNtripPort = resolveInputVar("GA_NTRIP_PORT", "NTRIP_PORT");
+const gaNtripMount = resolveInputVar("GA_NTRIP_MOUNT", "NTRIP_MOUNT");
+
+const secure = (process.env.GA_NTRIP_SECURE || process.env.NTRIP_SECURE || "false").toLowerCase() === "true";
 const scheme = secure ? "ntrips" : "ntrip";
 
-const inUri = `${scheme}://${process.env.NTRIP_USER}:${process.env.NTRIP_PASSWORD}@${process.env.NTRIP_HOST}:${process.env.NTRIP_PORT}/${process.env.NTRIP_MOUNT}`;
+const useClosestNtrip = asBool(process.env.GA_NTRIP_USE_CLOSEST, true);
+const closestNtripEndpoint =
+  process.env.GA_NTRIP_CLOSEST_ENDPOINT ||
+  process.env.GNSS_CORS_CLOSEST_ENDPOINT ||
+  "http://localhost:3000/api/gnss/cors?closestNtripPath=true";
+
+const hasFallbackConfig =
+  Boolean(gaNtripUser) &&
+  Boolean(gaNtripPassword) &&
+  Boolean(gaNtripHost) &&
+  Boolean(gaNtripPort) &&
+  Boolean(gaNtripMount);
+
+if (!useClosestNtrip && !hasFallbackConfig) {
+  console.error("Missing GA_NTRIP_* configuration for static mount mode.");
+  process.exit(1);
+}
+
+async function resolveClosestNtripUri() {
+  const response = await fetch(closestNtripEndpoint, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+    },
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(`closest ntrip endpoint returned ${response.status}`);
+  }
+
+  const payload = await response.json();
+  const ntripPath = payload?.result?.ntripPath;
+  if (typeof ntripPath !== "string" || !(ntripPath.startsWith("ntrip://") || ntripPath.startsWith("ntrips://"))) {
+    throw new Error("closest ntrip endpoint did not return a valid result.ntripPath");
+  }
+
+  return ntripPath;
+}
+
+const fallbackInUri = hasFallbackConfig
+  ? `${scheme}://${gaNtripUser}:${gaNtripPassword}@${gaNtripHost}:${gaNtripPort}/${gaNtripMount}`
+  : "";
+
+let inUri = fallbackInUri;
+if (useClosestNtrip) {
+  try {
+    inUri = await resolveClosestNtripUri();
+    console.log(`Resolved closest NTRIP URI from ${closestNtripEndpoint}`);
+  } catch (error) {
+    if (!hasFallbackConfig) {
+      console.error(`Failed to resolve closest NTRIP URI: ${error instanceof Error ? error.message : String(error)}`);
+      console.error("No static GA_NTRIP fallback config available.");
+      process.exit(1);
+    }
+    console.warn(`Failed to resolve closest NTRIP URI, falling back to GA_NTRIP_MOUNT: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
 
 const outputMode = process.env.NTRIP_OUTPUT_MODE || "serial";
 let outUri = "";
