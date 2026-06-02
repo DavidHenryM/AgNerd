@@ -21,8 +21,8 @@ fi
 if [ -f /etc/agnerd/gnss.env ]; then
     echo "gnss.env already exists in install location, skipping copy."
 elif [ -f gnss.env ]; then
-    echo "Copying gpsd.env to /etc/agnerd/gpsd.env"
-    sudo cp gpsd.env /etc/agnerd/gpsd.env
+    echo "Copying gnss.env to /etc/agnerd/gnss.env"
+    sudo cp gnss.env /etc/agnerd/gnss.env
 elif [ -f gnss.example.env ]; then
     echo "gnss.env not found, copying gnss.example.env to /etc/agnerd/gnss.env"
     sudo cp gnss.example.env /etc/agnerd/gnss.env
