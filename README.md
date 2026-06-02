@@ -51,11 +51,11 @@ This repo includes scripts and API routes to:
 
 Copy `example.env` values into your runtime environment and set at least:
 
-- `NTRIP_USER`
-- `NTRIP_PASSWORD`
-- `NTRIP_HOST`
-- `NTRIP_PORT`
-- `NTRIP_MOUNT`
+- `GA_NTRIP_USER`
+- `GA_NTRIP_PASSWORD`
+- `GA_NTRIP_HOST`
+- `GA_NTRIP_PORT`
+- `GA_NTRIP_MOUNT`
 - `NTRIP_OUTPUT_MODE` (`serial` recommended)
 - `GNSS_DEVICE` / `GNSS_READ_DEVICE` / `GNSS_CORRECTION_DEVICE`
 - `GNSS_INTERNAL_TOKEN`
@@ -93,6 +93,14 @@ This runs [scripts/gnss-reader.mjs](scripts/gnss-reader.mjs), which:
 	- Persists `LivestockUnitPosition` and nested `GeoPoint`.
 - `GET /api/gnss/status`
 	- Reports status file availability and timestamp.
+- `GET /api/gnss/cors?country=AU`
+	- Retrieves CORS stations from Geoscience Australia (`https://metadata.gnss.ga.gov.au/api/corsSites`).
+	- Query options:
+		- `raw=true` to return upstream raw records.
+		- `lat` and `lon` to return closest station(s), with optional `limit` (default `1`, max `50`).
+		- `closestCodeOnly=true` with `lat` and `lon` to return only the nearest four-letter station code.
+		- `closestNtripPath=true` with `lat` and `lon` to return nearest station code plus full NTRIP URI.
+	- Returns `501` for country codes other than `AU` (not yet implemented).
 
 ### Optional systemd Service
 
