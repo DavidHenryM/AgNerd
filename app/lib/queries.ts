@@ -1,11 +1,39 @@
 "use server"
 
 import { prisma } from "@lib/prisma"
+import { auth } from "@lib/auth"
+import { headers } from "next/headers"
 import { CommercialClass, LivestockUnit, Sex, StockClass, User, VisualIdColour, WeighMethod } from "@generated/client"
 import { LivestockUnitSelect, LivestockUnitWhereInput } from "@generated/models"
 import { FarmAndLocation, GetOrganisationsResult } from "@lib/types"
 
+async function requireSession() {
+  const session = await auth.api.getSession({ headers: await headers() })
+  if (!session) {
+    throw new Error("Unauthorized")
+  }
+  return session
+}
+
+async function getSessionFarmId(userId: string): Promise<string> {
+  const user = await prisma.user.findFirst({
+    where: { id: userId },
+    select: { farmId: true },
+  })
+  if (!user) {
+    throw new Error("User not found")
+  }
+  return user.farmId
+}
+
 export async function getLivestock(whereFilter: LivestockUnitWhereInput) {
+  const session = await requireSession()
+  const farmId = await getSessionFarmId(session.user.id)
+
+  // Scope to the signed-in user's farm, preserving all caller-supplied filters
+  const scopedFilter: LivestockUnitWhereInput = {
+    AND: [whereFilter, { onFarmHistory: { some: { farmId } } }],
+  }
   const select: LivestockUnitSelect = {
     id: true,
     name: true,
@@ -63,7 +91,7 @@ export async function getLivestock(whereFilter: LivestockUnitWhereInput) {
     purchaseDate: true,
   }
 
-  const livestockActive = await prisma.livestockUnit.findMany({where: whereFilter, select: select})
+  const livestockActive = await prisma.livestockUnit.findMany({where: scopedFilter, select: select})
   return livestockActive 
 }
 
@@ -72,9 +100,15 @@ export async function getActiveLivestock(): Promise<LivestockUnit[]>{
 }
 
 export async function getLivestockUnit(id: string): Promise<LivestockUnit | null> {
+  const session = await requireSession()
+  const farmId = await getSessionFarmId(session.user.id)
+
   const livestockUnit = await prisma.livestockUnit.findFirst(
     {
-      where: {id: {equals: id}},
+      where: {
+        id: {equals: id},
+        onFarmHistory: { some: { farmId } },
+      },
       select: {
         id: true,
         name: true,
@@ -113,6 +147,7 @@ export async function addWeightRecord(
   weighMethod: WeighMethod,
   dateMeasured: string | Date | undefined) 
   {
+  await requireSession()
 
   const response = await prisma.weightRecord.create({
     data: { 
@@ -145,14 +180,18 @@ export async function createLivestockUnit(data: {
   visualIdBackgroundColour?: VisualIdColour | null
   visualIdTextColour?: VisualIdColour | null
 }) {
-  const onFarmHistory = data.farmId
-    ? {
-      create: {
-        farmId: data.farmId,
-        startDate: data.birthDate,
-      },
-    }
-    : undefined
+  const session = await requireSession()
+  const sessionFarmId = await getSessionFarmId(session.user.id)
+
+  // Always link new livestock to the signed-in user's farm
+  const resolvedFarmId = data.farmId ?? sessionFarmId
+
+  const onFarmHistory = {
+    create: {
+      farmId: resolvedFarmId,
+      startDate: data.birthDate,
+    },
+  }
 
   const response = await prisma.livestockUnit.create({
     data: {
@@ -203,6 +242,18 @@ export async function updateLivestockUnit(
     active?: boolean
   }
 ) {
+  const session = await requireSession()
+  const farmId = await getSessionFarmId(session.user.id)
+
+  // Verify the livestock unit belongs to the user's farm before updating
+  const owned = await prisma.livestockUnit.findFirst({
+    where: { id, onFarmHistory: { some: { farmId } } },
+    select: { id: true },
+  })
+  if (!owned) {
+    throw new Error("Not found")
+  }
+
   const updateData: Record<string, unknown> = {}
   if (data.name !== undefined) updateData.name = data.name
   if (data.angusTechId !== undefined) updateData.angusTechId = data.angusTechId
@@ -234,6 +285,7 @@ export async function updateLivestockUnit(
 }
 
 export async function getOnFarmStatus(livestockUnitId: string, farmId: string) {
+  await requireSession()
   return prisma.onFarm.findFirst({
     where: {
       livestockUnitId: livestockUnitId,
@@ -252,6 +304,7 @@ export async function setOnFarmStatus(data: {
   onFarm: boolean
   startDate?: Date
 }) {
+  await requireSession()
   if (data.onFarm) {
     const existing = await prisma.onFarm.findFirst({
       where: {
@@ -295,6 +348,17 @@ export async function setOnFarmStatus(data: {
 
   
 export async function setLivestockUnitInactive(livestockUnitId: string){
+  const session = await requireSession()
+  const farmId = await getSessionFarmId(session.user.id)
+
+  const owned = await prisma.livestockUnit.findFirst({
+    where: { id: livestockUnitId, onFarmHistory: { some: { farmId } } },
+    select: { id: true },
+  })
+  if (!owned) {
+    throw new Error("Not found")
+  }
+
   const response = await prisma.livestockUnit.update({
     where: {
         id: livestockUnitId,
@@ -308,21 +372,38 @@ export async function setLivestockUnitInactive(livestockUnitId: string){
 
 export async function setLivestockUnitActive(
   livestockUnitId: string){
+    const session = await requireSession()
+    const farmId = await getSessionFarmId(session.user.id)
+
+    const owned = await prisma.livestockUnit.findFirst({
+      where: { id: livestockUnitId, onFarmHistory: { some: { farmId } } },
+      select: { id: true },
+    })
+    if (!owned) {
+      throw new Error("Not found")
+    }
+
     const response = await prisma.livestockUnit.update({
       where: {
           id: livestockUnitId,
       },
       data: {
-        active: false
+        active: true
       }
     })
     return response
   }
 
 export async function getActiveLivestockCount(): Promise<number> {
+  const session = await requireSession()
+  const farmId = await getSessionFarmId(session.user.id)
+
   const livestockActiveCount = await prisma.livestockUnit.count(
     {
-      where: {active: {equals: true}},
+      where: {
+        active: { equals: true },
+        onFarmHistory: { some: { farmId } },
+      },
     }
   )
   console.log(livestockActiveCount)
@@ -330,7 +411,10 @@ export async function getActiveLivestockCount(): Promise<number> {
 }
 
 export async function getFarmName(): Promise<string> {
-  const farm = await prisma.farm.findFirst()
+  const session = await requireSession()
+  const farmId = await getSessionFarmId(session.user.id)
+
+  const farm = await prisma.farm.findFirst({ where: { id: farmId } })
   if (farm){
     return farm.name
   } else {
@@ -339,12 +423,16 @@ export async function getFarmName(): Promise<string> {
 }
 
 export async function getTotalActiveDSE(): Promise<number> {
+  const session = await requireSession()
+  const farmId = await getSessionFarmId(session.user.id)
+
   const totalActiveDSE = await prisma.livestockUnit.aggregate({
     _sum: {
       drySheepEquivalent: true
     },
     where: {
-      active: true
+      active: true,
+      onFarmHistory: { some: { farmId } },
     }
   })
   return totalActiveDSE._sum.drySheepEquivalent ? totalActiveDSE._sum.drySheepEquivalent : 0
@@ -398,9 +486,13 @@ export async function getUserFarms(userId: string): Promise<FarmListItem[]> {
 }
 
 export async function getFarmBySlug(slug: string) {
+  const session = await requireSession()
+  const farmId = await getSessionFarmId(session.user.id)
+
   const farm = await prisma.farm.findFirst({
     where: {
       slug: { equals: slug },
+      id: farmId,
     },
     select: {
       id: true,
@@ -418,9 +510,13 @@ export async function getFarmBySlug(slug: string) {
 }
 
 export async function getFarmWorkspaceBySlug(slug: string) {
+  const session = await requireSession()
+  const farmId = await getSessionFarmId(session.user.id)
+
   const farm = await prisma.farm.findFirst({
     where: {
       slug: { equals: slug },
+      id: farmId,
     },
     include: {
       locationCentre: true,
@@ -564,6 +660,7 @@ export async function getFarmWorkspaceBySlug(slug: string) {
 }
 
 export async function getFarmLivestockOptions(farmId: string) {
+  await requireSession()
   return prisma.livestockUnit.findMany({
     where: {
       active: true,
@@ -587,6 +684,7 @@ export async function getFarmLivestockOptions(farmId: string) {
 }
 
 export async function getUserFromId(userId: string): Promise<User | null>{
+  await requireSession()
   const user = await prisma.user.findFirst({
     where: {
       id: userId,
@@ -597,6 +695,7 @@ export async function getUserFromId(userId: string): Promise<User | null>{
 }
 
 export async function getUserFromEmail(email: string): Promise<User | null>{
+  await requireSession()
   const user = await prisma.user.findFirst({
     where: {
       email: email,
@@ -608,6 +707,7 @@ export async function getUserFromEmail(email: string): Promise<User | null>{
 
 
 export async function getOrganisations(contactPersonId: string): Promise<GetOrganisationsResult[]> {
+  await requireSession()
   const organisations = prisma.organization.findMany({
     where: {
       contactPersonId: contactPersonId
