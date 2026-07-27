@@ -17,8 +17,8 @@ export async function getSessionFarmId(userId: string): Promise<string> {
     where: { id: userId },
     select: { farmId: true },
   })
-  if (!user) {
-    throw new Error("User not found")
+  if (!user || !user.farmId) {
+    throw new Error("User not found or has no associated farm")
   }
   return user.farmId
 }
