@@ -106,7 +106,7 @@ model Mob {
   id          String          @id @default(cuid())
   farm        Farm            @relation(fields: [farmId], references: [id])
   farmId      String
-  name        String
+  name        String?
   members     LivestockUnit[]
   comment     String?
   grazes      GrazeMob[]

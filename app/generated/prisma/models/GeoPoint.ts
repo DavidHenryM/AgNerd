@@ -30,12 +30,14 @@ export type GeoPointAvgAggregateOutputType = {
   latitude: number | null
   longitude: number | null
   heading: number | null
+  sortOrder: number | null
 }
 
 export type GeoPointSumAggregateOutputType = {
   latitude: number | null
   longitude: number | null
   heading: number | null
+  sortOrder: number | null
 }
 
 export type GeoPointMinAggregateOutputType = {
@@ -43,8 +45,10 @@ export type GeoPointMinAggregateOutputType = {
   latitude: number | null
   longitude: number | null
   heading: number | null
+  sortOrder: number | null
   paddockId: string | null
   livestockUnitPositionId: string | null
+  farmBoundaryId: string | null
 }
 
 export type GeoPointMaxAggregateOutputType = {
@@ -52,8 +56,10 @@ export type GeoPointMaxAggregateOutputType = {
   latitude: number | null
   longitude: number | null
   heading: number | null
+  sortOrder: number | null
   paddockId: string | null
   livestockUnitPositionId: string | null
+  farmBoundaryId: string | null
 }
 
 export type GeoPointCountAggregateOutputType = {
@@ -61,8 +67,10 @@ export type GeoPointCountAggregateOutputType = {
   latitude: number
   longitude: number
   heading: number
+  sortOrder: number
   paddockId: number
   livestockUnitPositionId: number
+  farmBoundaryId: number
   _all: number
 }
 
@@ -71,12 +79,14 @@ export type GeoPointAvgAggregateInputType = {
   latitude?: true
   longitude?: true
   heading?: true
+  sortOrder?: true
 }
 
 export type GeoPointSumAggregateInputType = {
   latitude?: true
   longitude?: true
   heading?: true
+  sortOrder?: true
 }
 
 export type GeoPointMinAggregateInputType = {
@@ -84,8 +94,10 @@ export type GeoPointMinAggregateInputType = {
   latitude?: true
   longitude?: true
   heading?: true
+  sortOrder?: true
   paddockId?: true
   livestockUnitPositionId?: true
+  farmBoundaryId?: true
 }
 
 export type GeoPointMaxAggregateInputType = {
@@ -93,8 +105,10 @@ export type GeoPointMaxAggregateInputType = {
   latitude?: true
   longitude?: true
   heading?: true
+  sortOrder?: true
   paddockId?: true
   livestockUnitPositionId?: true
+  farmBoundaryId?: true
 }
 
 export type GeoPointCountAggregateInputType = {
@@ -102,8 +116,10 @@ export type GeoPointCountAggregateInputType = {
   latitude?: true
   longitude?: true
   heading?: true
+  sortOrder?: true
   paddockId?: true
   livestockUnitPositionId?: true
+  farmBoundaryId?: true
   _all?: true
 }
 
@@ -198,8 +214,10 @@ export type GeoPointGroupByOutputType = {
   latitude: number
   longitude: number
   heading: number | null
+  sortOrder: number
   paddockId: string | null
   livestockUnitPositionId: string | null
+  farmBoundaryId: string | null
   _count: GeoPointCountAggregateOutputType | null
   _avg: GeoPointAvgAggregateOutputType | null
   _sum: GeoPointSumAggregateOutputType | null
@@ -230,10 +248,13 @@ export type GeoPointWhereInput = {
   latitude?: Prisma.FloatFilter<"GeoPoint"> | number
   longitude?: Prisma.FloatFilter<"GeoPoint"> | number
   heading?: Prisma.FloatNullableFilter<"GeoPoint"> | number | null
+  sortOrder?: Prisma.IntFilter<"GeoPoint"> | number
   paddockId?: Prisma.StringNullableFilter<"GeoPoint"> | string | null
   livestockUnitPositionId?: Prisma.StringNullableFilter<"GeoPoint"> | string | null
+  farmBoundaryId?: Prisma.StringNullableFilter<"GeoPoint"> | string | null
   paddock?: Prisma.XOR<Prisma.PaddockNullableScalarRelationFilter, Prisma.PaddockWhereInput> | null
   livestockUnitPosition?: Prisma.XOR<Prisma.LivestockUnitPositionNullableScalarRelationFilter, Prisma.LivestockUnitPositionWhereInput> | null
+  boundaryFarm?: Prisma.XOR<Prisma.FarmNullableScalarRelationFilter, Prisma.FarmWhereInput> | null
   farms?: Prisma.FarmListRelationFilter
 }
 
@@ -242,10 +263,13 @@ export type GeoPointOrderByWithRelationInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   heading?: Prisma.SortOrderInput | Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   paddockId?: Prisma.SortOrderInput | Prisma.SortOrder
   livestockUnitPositionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  farmBoundaryId?: Prisma.SortOrderInput | Prisma.SortOrder
   paddock?: Prisma.PaddockOrderByWithRelationInput
   livestockUnitPosition?: Prisma.LivestockUnitPositionOrderByWithRelationInput
+  boundaryFarm?: Prisma.FarmOrderByWithRelationInput
   farms?: Prisma.FarmOrderByRelationAggregateInput
 }
 
@@ -258,9 +282,12 @@ export type GeoPointWhereUniqueInput = Prisma.AtLeast<{
   latitude?: Prisma.FloatFilter<"GeoPoint"> | number
   longitude?: Prisma.FloatFilter<"GeoPoint"> | number
   heading?: Prisma.FloatNullableFilter<"GeoPoint"> | number | null
+  sortOrder?: Prisma.IntFilter<"GeoPoint"> | number
   paddockId?: Prisma.StringNullableFilter<"GeoPoint"> | string | null
+  farmBoundaryId?: Prisma.StringNullableFilter<"GeoPoint"> | string | null
   paddock?: Prisma.XOR<Prisma.PaddockNullableScalarRelationFilter, Prisma.PaddockWhereInput> | null
   livestockUnitPosition?: Prisma.XOR<Prisma.LivestockUnitPositionNullableScalarRelationFilter, Prisma.LivestockUnitPositionWhereInput> | null
+  boundaryFarm?: Prisma.XOR<Prisma.FarmNullableScalarRelationFilter, Prisma.FarmWhereInput> | null
   farms?: Prisma.FarmListRelationFilter
 }, "id" | "livestockUnitPositionId">
 
@@ -269,8 +296,10 @@ export type GeoPointOrderByWithAggregationInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   heading?: Prisma.SortOrderInput | Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   paddockId?: Prisma.SortOrderInput | Prisma.SortOrder
   livestockUnitPositionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  farmBoundaryId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.GeoPointCountOrderByAggregateInput
   _avg?: Prisma.GeoPointAvgOrderByAggregateInput
   _max?: Prisma.GeoPointMaxOrderByAggregateInput
@@ -286,8 +315,10 @@ export type GeoPointScalarWhereWithAggregatesInput = {
   latitude?: Prisma.FloatWithAggregatesFilter<"GeoPoint"> | number
   longitude?: Prisma.FloatWithAggregatesFilter<"GeoPoint"> | number
   heading?: Prisma.FloatNullableWithAggregatesFilter<"GeoPoint"> | number | null
+  sortOrder?: Prisma.IntWithAggregatesFilter<"GeoPoint"> | number
   paddockId?: Prisma.StringNullableWithAggregatesFilter<"GeoPoint"> | string | null
   livestockUnitPositionId?: Prisma.StringNullableWithAggregatesFilter<"GeoPoint"> | string | null
+  farmBoundaryId?: Prisma.StringNullableWithAggregatesFilter<"GeoPoint"> | string | null
 }
 
 export type GeoPointCreateInput = {
@@ -295,8 +326,10 @@ export type GeoPointCreateInput = {
   latitude: number
   longitude: number
   heading?: number | null
+  sortOrder?: number
   paddock?: Prisma.PaddockCreateNestedOneWithoutPolygonInput
   livestockUnitPosition?: Prisma.LivestockUnitPositionCreateNestedOneWithoutLocationInput
+  boundaryFarm?: Prisma.FarmCreateNestedOneWithoutBoundaryPointsInput
   farms?: Prisma.FarmCreateNestedManyWithoutLocationCentreInput
 }
 
@@ -305,8 +338,10 @@ export type GeoPointUncheckedCreateInput = {
   latitude: number
   longitude: number
   heading?: number | null
+  sortOrder?: number
   paddockId?: string | null
   livestockUnitPositionId?: string | null
+  farmBoundaryId?: string | null
   farms?: Prisma.FarmUncheckedCreateNestedManyWithoutLocationCentreInput
 }
 
@@ -315,8 +350,10 @@ export type GeoPointUpdateInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   heading?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   paddock?: Prisma.PaddockUpdateOneWithoutPolygonNestedInput
   livestockUnitPosition?: Prisma.LivestockUnitPositionUpdateOneWithoutLocationNestedInput
+  boundaryFarm?: Prisma.FarmUpdateOneWithoutBoundaryPointsNestedInput
   farms?: Prisma.FarmUpdateManyWithoutLocationCentreNestedInput
 }
 
@@ -325,8 +362,10 @@ export type GeoPointUncheckedUpdateInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   heading?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   paddockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  farmBoundaryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   farms?: Prisma.FarmUncheckedUpdateManyWithoutLocationCentreNestedInput
 }
 
@@ -335,8 +374,10 @@ export type GeoPointCreateManyInput = {
   latitude: number
   longitude: number
   heading?: number | null
+  sortOrder?: number
   paddockId?: string | null
   livestockUnitPositionId?: string | null
+  farmBoundaryId?: string | null
 }
 
 export type GeoPointUpdateManyMutationInput = {
@@ -344,6 +385,7 @@ export type GeoPointUpdateManyMutationInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   heading?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type GeoPointUncheckedUpdateManyInput = {
@@ -351,8 +393,10 @@ export type GeoPointUncheckedUpdateManyInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   heading?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   paddockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  farmBoundaryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type GeoPointNullableScalarRelationFilter = {
@@ -375,14 +419,17 @@ export type GeoPointCountOrderByAggregateInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   heading?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   paddockId?: Prisma.SortOrder
   livestockUnitPositionId?: Prisma.SortOrder
+  farmBoundaryId?: Prisma.SortOrder
 }
 
 export type GeoPointAvgOrderByAggregateInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   heading?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
 }
 
 export type GeoPointMaxOrderByAggregateInput = {
@@ -390,8 +437,10 @@ export type GeoPointMaxOrderByAggregateInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   heading?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   paddockId?: Prisma.SortOrder
   livestockUnitPositionId?: Prisma.SortOrder
+  farmBoundaryId?: Prisma.SortOrder
 }
 
 export type GeoPointMinOrderByAggregateInput = {
@@ -399,20 +448,37 @@ export type GeoPointMinOrderByAggregateInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   heading?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   paddockId?: Prisma.SortOrder
   livestockUnitPositionId?: Prisma.SortOrder
+  farmBoundaryId?: Prisma.SortOrder
 }
 
 export type GeoPointSumOrderByAggregateInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   heading?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
 }
 
 export type GeoPointCreateNestedOneWithoutFarmsInput = {
   create?: Prisma.XOR<Prisma.GeoPointCreateWithoutFarmsInput, Prisma.GeoPointUncheckedCreateWithoutFarmsInput>
   connectOrCreate?: Prisma.GeoPointCreateOrConnectWithoutFarmsInput
   connect?: Prisma.GeoPointWhereUniqueInput
+}
+
+export type GeoPointCreateNestedManyWithoutBoundaryFarmInput = {
+  create?: Prisma.XOR<Prisma.GeoPointCreateWithoutBoundaryFarmInput, Prisma.GeoPointUncheckedCreateWithoutBoundaryFarmInput> | Prisma.GeoPointCreateWithoutBoundaryFarmInput[] | Prisma.GeoPointUncheckedCreateWithoutBoundaryFarmInput[]
+  connectOrCreate?: Prisma.GeoPointCreateOrConnectWithoutBoundaryFarmInput | Prisma.GeoPointCreateOrConnectWithoutBoundaryFarmInput[]
+  createMany?: Prisma.GeoPointCreateManyBoundaryFarmInputEnvelope
+  connect?: Prisma.GeoPointWhereUniqueInput | Prisma.GeoPointWhereUniqueInput[]
+}
+
+export type GeoPointUncheckedCreateNestedManyWithoutBoundaryFarmInput = {
+  create?: Prisma.XOR<Prisma.GeoPointCreateWithoutBoundaryFarmInput, Prisma.GeoPointUncheckedCreateWithoutBoundaryFarmInput> | Prisma.GeoPointCreateWithoutBoundaryFarmInput[] | Prisma.GeoPointUncheckedCreateWithoutBoundaryFarmInput[]
+  connectOrCreate?: Prisma.GeoPointCreateOrConnectWithoutBoundaryFarmInput | Prisma.GeoPointCreateOrConnectWithoutBoundaryFarmInput[]
+  createMany?: Prisma.GeoPointCreateManyBoundaryFarmInputEnvelope
+  connect?: Prisma.GeoPointWhereUniqueInput | Prisma.GeoPointWhereUniqueInput[]
 }
 
 export type GeoPointUpdateOneWithoutFarmsNestedInput = {
@@ -423,6 +489,34 @@ export type GeoPointUpdateOneWithoutFarmsNestedInput = {
   delete?: Prisma.GeoPointWhereInput | boolean
   connect?: Prisma.GeoPointWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.GeoPointUpdateToOneWithWhereWithoutFarmsInput, Prisma.GeoPointUpdateWithoutFarmsInput>, Prisma.GeoPointUncheckedUpdateWithoutFarmsInput>
+}
+
+export type GeoPointUpdateManyWithoutBoundaryFarmNestedInput = {
+  create?: Prisma.XOR<Prisma.GeoPointCreateWithoutBoundaryFarmInput, Prisma.GeoPointUncheckedCreateWithoutBoundaryFarmInput> | Prisma.GeoPointCreateWithoutBoundaryFarmInput[] | Prisma.GeoPointUncheckedCreateWithoutBoundaryFarmInput[]
+  connectOrCreate?: Prisma.GeoPointCreateOrConnectWithoutBoundaryFarmInput | Prisma.GeoPointCreateOrConnectWithoutBoundaryFarmInput[]
+  upsert?: Prisma.GeoPointUpsertWithWhereUniqueWithoutBoundaryFarmInput | Prisma.GeoPointUpsertWithWhereUniqueWithoutBoundaryFarmInput[]
+  createMany?: Prisma.GeoPointCreateManyBoundaryFarmInputEnvelope
+  set?: Prisma.GeoPointWhereUniqueInput | Prisma.GeoPointWhereUniqueInput[]
+  disconnect?: Prisma.GeoPointWhereUniqueInput | Prisma.GeoPointWhereUniqueInput[]
+  delete?: Prisma.GeoPointWhereUniqueInput | Prisma.GeoPointWhereUniqueInput[]
+  connect?: Prisma.GeoPointWhereUniqueInput | Prisma.GeoPointWhereUniqueInput[]
+  update?: Prisma.GeoPointUpdateWithWhereUniqueWithoutBoundaryFarmInput | Prisma.GeoPointUpdateWithWhereUniqueWithoutBoundaryFarmInput[]
+  updateMany?: Prisma.GeoPointUpdateManyWithWhereWithoutBoundaryFarmInput | Prisma.GeoPointUpdateManyWithWhereWithoutBoundaryFarmInput[]
+  deleteMany?: Prisma.GeoPointScalarWhereInput | Prisma.GeoPointScalarWhereInput[]
+}
+
+export type GeoPointUncheckedUpdateManyWithoutBoundaryFarmNestedInput = {
+  create?: Prisma.XOR<Prisma.GeoPointCreateWithoutBoundaryFarmInput, Prisma.GeoPointUncheckedCreateWithoutBoundaryFarmInput> | Prisma.GeoPointCreateWithoutBoundaryFarmInput[] | Prisma.GeoPointUncheckedCreateWithoutBoundaryFarmInput[]
+  connectOrCreate?: Prisma.GeoPointCreateOrConnectWithoutBoundaryFarmInput | Prisma.GeoPointCreateOrConnectWithoutBoundaryFarmInput[]
+  upsert?: Prisma.GeoPointUpsertWithWhereUniqueWithoutBoundaryFarmInput | Prisma.GeoPointUpsertWithWhereUniqueWithoutBoundaryFarmInput[]
+  createMany?: Prisma.GeoPointCreateManyBoundaryFarmInputEnvelope
+  set?: Prisma.GeoPointWhereUniqueInput | Prisma.GeoPointWhereUniqueInput[]
+  disconnect?: Prisma.GeoPointWhereUniqueInput | Prisma.GeoPointWhereUniqueInput[]
+  delete?: Prisma.GeoPointWhereUniqueInput | Prisma.GeoPointWhereUniqueInput[]
+  connect?: Prisma.GeoPointWhereUniqueInput | Prisma.GeoPointWhereUniqueInput[]
+  update?: Prisma.GeoPointUpdateWithWhereUniqueWithoutBoundaryFarmInput | Prisma.GeoPointUpdateWithWhereUniqueWithoutBoundaryFarmInput[]
+  updateMany?: Prisma.GeoPointUpdateManyWithWhereWithoutBoundaryFarmInput | Prisma.GeoPointUpdateManyWithWhereWithoutBoundaryFarmInput[]
+  deleteMany?: Prisma.GeoPointScalarWhereInput | Prisma.GeoPointScalarWhereInput[]
 }
 
 export type GeoPointCreateNestedManyWithoutPaddockInput = {
@@ -504,8 +598,10 @@ export type GeoPointCreateWithoutFarmsInput = {
   latitude: number
   longitude: number
   heading?: number | null
+  sortOrder?: number
   paddock?: Prisma.PaddockCreateNestedOneWithoutPolygonInput
   livestockUnitPosition?: Prisma.LivestockUnitPositionCreateNestedOneWithoutLocationInput
+  boundaryFarm?: Prisma.FarmCreateNestedOneWithoutBoundaryPointsInput
 }
 
 export type GeoPointUncheckedCreateWithoutFarmsInput = {
@@ -513,13 +609,47 @@ export type GeoPointUncheckedCreateWithoutFarmsInput = {
   latitude: number
   longitude: number
   heading?: number | null
+  sortOrder?: number
   paddockId?: string | null
   livestockUnitPositionId?: string | null
+  farmBoundaryId?: string | null
 }
 
 export type GeoPointCreateOrConnectWithoutFarmsInput = {
   where: Prisma.GeoPointWhereUniqueInput
   create: Prisma.XOR<Prisma.GeoPointCreateWithoutFarmsInput, Prisma.GeoPointUncheckedCreateWithoutFarmsInput>
+}
+
+export type GeoPointCreateWithoutBoundaryFarmInput = {
+  id?: string
+  latitude: number
+  longitude: number
+  heading?: number | null
+  sortOrder?: number
+  paddock?: Prisma.PaddockCreateNestedOneWithoutPolygonInput
+  livestockUnitPosition?: Prisma.LivestockUnitPositionCreateNestedOneWithoutLocationInput
+  farms?: Prisma.FarmCreateNestedManyWithoutLocationCentreInput
+}
+
+export type GeoPointUncheckedCreateWithoutBoundaryFarmInput = {
+  id?: string
+  latitude: number
+  longitude: number
+  heading?: number | null
+  sortOrder?: number
+  paddockId?: string | null
+  livestockUnitPositionId?: string | null
+  farms?: Prisma.FarmUncheckedCreateNestedManyWithoutLocationCentreInput
+}
+
+export type GeoPointCreateOrConnectWithoutBoundaryFarmInput = {
+  where: Prisma.GeoPointWhereUniqueInput
+  create: Prisma.XOR<Prisma.GeoPointCreateWithoutBoundaryFarmInput, Prisma.GeoPointUncheckedCreateWithoutBoundaryFarmInput>
+}
+
+export type GeoPointCreateManyBoundaryFarmInputEnvelope = {
+  data: Prisma.GeoPointCreateManyBoundaryFarmInput | Prisma.GeoPointCreateManyBoundaryFarmInput[]
+  skipDuplicates?: boolean
 }
 
 export type GeoPointUpsertWithoutFarmsInput = {
@@ -538,8 +668,10 @@ export type GeoPointUpdateWithoutFarmsInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   heading?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   paddock?: Prisma.PaddockUpdateOneWithoutPolygonNestedInput
   livestockUnitPosition?: Prisma.LivestockUnitPositionUpdateOneWithoutLocationNestedInput
+  boundaryFarm?: Prisma.FarmUpdateOneWithoutBoundaryPointsNestedInput
 }
 
 export type GeoPointUncheckedUpdateWithoutFarmsInput = {
@@ -547,8 +679,40 @@ export type GeoPointUncheckedUpdateWithoutFarmsInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   heading?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   paddockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  farmBoundaryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type GeoPointUpsertWithWhereUniqueWithoutBoundaryFarmInput = {
+  where: Prisma.GeoPointWhereUniqueInput
+  update: Prisma.XOR<Prisma.GeoPointUpdateWithoutBoundaryFarmInput, Prisma.GeoPointUncheckedUpdateWithoutBoundaryFarmInput>
+  create: Prisma.XOR<Prisma.GeoPointCreateWithoutBoundaryFarmInput, Prisma.GeoPointUncheckedCreateWithoutBoundaryFarmInput>
+}
+
+export type GeoPointUpdateWithWhereUniqueWithoutBoundaryFarmInput = {
+  where: Prisma.GeoPointWhereUniqueInput
+  data: Prisma.XOR<Prisma.GeoPointUpdateWithoutBoundaryFarmInput, Prisma.GeoPointUncheckedUpdateWithoutBoundaryFarmInput>
+}
+
+export type GeoPointUpdateManyWithWhereWithoutBoundaryFarmInput = {
+  where: Prisma.GeoPointScalarWhereInput
+  data: Prisma.XOR<Prisma.GeoPointUpdateManyMutationInput, Prisma.GeoPointUncheckedUpdateManyWithoutBoundaryFarmInput>
+}
+
+export type GeoPointScalarWhereInput = {
+  AND?: Prisma.GeoPointScalarWhereInput | Prisma.GeoPointScalarWhereInput[]
+  OR?: Prisma.GeoPointScalarWhereInput[]
+  NOT?: Prisma.GeoPointScalarWhereInput | Prisma.GeoPointScalarWhereInput[]
+  id?: Prisma.StringFilter<"GeoPoint"> | string
+  latitude?: Prisma.FloatFilter<"GeoPoint"> | number
+  longitude?: Prisma.FloatFilter<"GeoPoint"> | number
+  heading?: Prisma.FloatNullableFilter<"GeoPoint"> | number | null
+  sortOrder?: Prisma.IntFilter<"GeoPoint"> | number
+  paddockId?: Prisma.StringNullableFilter<"GeoPoint"> | string | null
+  livestockUnitPositionId?: Prisma.StringNullableFilter<"GeoPoint"> | string | null
+  farmBoundaryId?: Prisma.StringNullableFilter<"GeoPoint"> | string | null
 }
 
 export type GeoPointCreateWithoutPaddockInput = {
@@ -556,7 +720,9 @@ export type GeoPointCreateWithoutPaddockInput = {
   latitude: number
   longitude: number
   heading?: number | null
+  sortOrder?: number
   livestockUnitPosition?: Prisma.LivestockUnitPositionCreateNestedOneWithoutLocationInput
+  boundaryFarm?: Prisma.FarmCreateNestedOneWithoutBoundaryPointsInput
   farms?: Prisma.FarmCreateNestedManyWithoutLocationCentreInput
 }
 
@@ -565,7 +731,9 @@ export type GeoPointUncheckedCreateWithoutPaddockInput = {
   latitude: number
   longitude: number
   heading?: number | null
+  sortOrder?: number
   livestockUnitPositionId?: string | null
+  farmBoundaryId?: string | null
   farms?: Prisma.FarmUncheckedCreateNestedManyWithoutLocationCentreInput
 }
 
@@ -595,24 +763,14 @@ export type GeoPointUpdateManyWithWhereWithoutPaddockInput = {
   data: Prisma.XOR<Prisma.GeoPointUpdateManyMutationInput, Prisma.GeoPointUncheckedUpdateManyWithoutPaddockInput>
 }
 
-export type GeoPointScalarWhereInput = {
-  AND?: Prisma.GeoPointScalarWhereInput | Prisma.GeoPointScalarWhereInput[]
-  OR?: Prisma.GeoPointScalarWhereInput[]
-  NOT?: Prisma.GeoPointScalarWhereInput | Prisma.GeoPointScalarWhereInput[]
-  id?: Prisma.StringFilter<"GeoPoint"> | string
-  latitude?: Prisma.FloatFilter<"GeoPoint"> | number
-  longitude?: Prisma.FloatFilter<"GeoPoint"> | number
-  heading?: Prisma.FloatNullableFilter<"GeoPoint"> | number | null
-  paddockId?: Prisma.StringNullableFilter<"GeoPoint"> | string | null
-  livestockUnitPositionId?: Prisma.StringNullableFilter<"GeoPoint"> | string | null
-}
-
 export type GeoPointCreateWithoutLivestockUnitPositionInput = {
   id?: string
   latitude: number
   longitude: number
   heading?: number | null
+  sortOrder?: number
   paddock?: Prisma.PaddockCreateNestedOneWithoutPolygonInput
+  boundaryFarm?: Prisma.FarmCreateNestedOneWithoutBoundaryPointsInput
   farms?: Prisma.FarmCreateNestedManyWithoutLocationCentreInput
 }
 
@@ -621,7 +779,9 @@ export type GeoPointUncheckedCreateWithoutLivestockUnitPositionInput = {
   latitude: number
   longitude: number
   heading?: number | null
+  sortOrder?: number
   paddockId?: string | null
+  farmBoundaryId?: string | null
   farms?: Prisma.FarmUncheckedCreateNestedManyWithoutLocationCentreInput
 }
 
@@ -646,7 +806,9 @@ export type GeoPointUpdateWithoutLivestockUnitPositionInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   heading?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   paddock?: Prisma.PaddockUpdateOneWithoutPolygonNestedInput
+  boundaryFarm?: Prisma.FarmUpdateOneWithoutBoundaryPointsNestedInput
   farms?: Prisma.FarmUpdateManyWithoutLocationCentreNestedInput
 }
 
@@ -655,8 +817,52 @@ export type GeoPointUncheckedUpdateWithoutLivestockUnitPositionInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   heading?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   paddockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  farmBoundaryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   farms?: Prisma.FarmUncheckedUpdateManyWithoutLocationCentreNestedInput
+}
+
+export type GeoPointCreateManyBoundaryFarmInput = {
+  id?: string
+  latitude: number
+  longitude: number
+  heading?: number | null
+  sortOrder?: number
+  paddockId?: string | null
+  livestockUnitPositionId?: string | null
+}
+
+export type GeoPointUpdateWithoutBoundaryFarmInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  heading?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  paddock?: Prisma.PaddockUpdateOneWithoutPolygonNestedInput
+  livestockUnitPosition?: Prisma.LivestockUnitPositionUpdateOneWithoutLocationNestedInput
+  farms?: Prisma.FarmUpdateManyWithoutLocationCentreNestedInput
+}
+
+export type GeoPointUncheckedUpdateWithoutBoundaryFarmInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  heading?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  paddockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  farms?: Prisma.FarmUncheckedUpdateManyWithoutLocationCentreNestedInput
+}
+
+export type GeoPointUncheckedUpdateManyWithoutBoundaryFarmInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  latitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitude?: Prisma.FloatFieldUpdateOperationsInput | number
+  heading?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  paddockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type GeoPointCreateManyPaddockInput = {
@@ -664,7 +870,9 @@ export type GeoPointCreateManyPaddockInput = {
   latitude: number
   longitude: number
   heading?: number | null
+  sortOrder?: number
   livestockUnitPositionId?: string | null
+  farmBoundaryId?: string | null
 }
 
 export type GeoPointUpdateWithoutPaddockInput = {
@@ -672,7 +880,9 @@ export type GeoPointUpdateWithoutPaddockInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   heading?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   livestockUnitPosition?: Prisma.LivestockUnitPositionUpdateOneWithoutLocationNestedInput
+  boundaryFarm?: Prisma.FarmUpdateOneWithoutBoundaryPointsNestedInput
   farms?: Prisma.FarmUpdateManyWithoutLocationCentreNestedInput
 }
 
@@ -681,7 +891,9 @@ export type GeoPointUncheckedUpdateWithoutPaddockInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   heading?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  farmBoundaryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   farms?: Prisma.FarmUncheckedUpdateManyWithoutLocationCentreNestedInput
 }
 
@@ -690,7 +902,9 @@ export type GeoPointUncheckedUpdateManyWithoutPaddockInput = {
   latitude?: Prisma.FloatFieldUpdateOperationsInput | number
   longitude?: Prisma.FloatFieldUpdateOperationsInput | number
   heading?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  farmBoundaryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -729,10 +943,13 @@ export type GeoPointSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   latitude?: boolean
   longitude?: boolean
   heading?: boolean
+  sortOrder?: boolean
   paddockId?: boolean
   livestockUnitPositionId?: boolean
+  farmBoundaryId?: boolean
   paddock?: boolean | Prisma.GeoPoint$paddockArgs<ExtArgs>
   livestockUnitPosition?: boolean | Prisma.GeoPoint$livestockUnitPositionArgs<ExtArgs>
+  boundaryFarm?: boolean | Prisma.GeoPoint$boundaryFarmArgs<ExtArgs>
   farms?: boolean | Prisma.GeoPoint$farmsArgs<ExtArgs>
   _count?: boolean | Prisma.GeoPointCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["geoPoint"]>
@@ -742,10 +959,13 @@ export type GeoPointSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   latitude?: boolean
   longitude?: boolean
   heading?: boolean
+  sortOrder?: boolean
   paddockId?: boolean
   livestockUnitPositionId?: boolean
+  farmBoundaryId?: boolean
   paddock?: boolean | Prisma.GeoPoint$paddockArgs<ExtArgs>
   livestockUnitPosition?: boolean | Prisma.GeoPoint$livestockUnitPositionArgs<ExtArgs>
+  boundaryFarm?: boolean | Prisma.GeoPoint$boundaryFarmArgs<ExtArgs>
 }, ExtArgs["result"]["geoPoint"]>
 
 export type GeoPointSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -753,10 +973,13 @@ export type GeoPointSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   latitude?: boolean
   longitude?: boolean
   heading?: boolean
+  sortOrder?: boolean
   paddockId?: boolean
   livestockUnitPositionId?: boolean
+  farmBoundaryId?: boolean
   paddock?: boolean | Prisma.GeoPoint$paddockArgs<ExtArgs>
   livestockUnitPosition?: boolean | Prisma.GeoPoint$livestockUnitPositionArgs<ExtArgs>
+  boundaryFarm?: boolean | Prisma.GeoPoint$boundaryFarmArgs<ExtArgs>
 }, ExtArgs["result"]["geoPoint"]>
 
 export type GeoPointSelectScalar = {
@@ -764,24 +987,29 @@ export type GeoPointSelectScalar = {
   latitude?: boolean
   longitude?: boolean
   heading?: boolean
+  sortOrder?: boolean
   paddockId?: boolean
   livestockUnitPositionId?: boolean
+  farmBoundaryId?: boolean
 }
 
-export type GeoPointOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "latitude" | "longitude" | "heading" | "paddockId" | "livestockUnitPositionId", ExtArgs["result"]["geoPoint"]>
+export type GeoPointOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "latitude" | "longitude" | "heading" | "sortOrder" | "paddockId" | "livestockUnitPositionId" | "farmBoundaryId", ExtArgs["result"]["geoPoint"]>
 export type GeoPointInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   paddock?: boolean | Prisma.GeoPoint$paddockArgs<ExtArgs>
   livestockUnitPosition?: boolean | Prisma.GeoPoint$livestockUnitPositionArgs<ExtArgs>
+  boundaryFarm?: boolean | Prisma.GeoPoint$boundaryFarmArgs<ExtArgs>
   farms?: boolean | Prisma.GeoPoint$farmsArgs<ExtArgs>
   _count?: boolean | Prisma.GeoPointCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type GeoPointIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   paddock?: boolean | Prisma.GeoPoint$paddockArgs<ExtArgs>
   livestockUnitPosition?: boolean | Prisma.GeoPoint$livestockUnitPositionArgs<ExtArgs>
+  boundaryFarm?: boolean | Prisma.GeoPoint$boundaryFarmArgs<ExtArgs>
 }
 export type GeoPointIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   paddock?: boolean | Prisma.GeoPoint$paddockArgs<ExtArgs>
   livestockUnitPosition?: boolean | Prisma.GeoPoint$livestockUnitPositionArgs<ExtArgs>
+  boundaryFarm?: boolean | Prisma.GeoPoint$boundaryFarmArgs<ExtArgs>
 }
 
 export type $GeoPointPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -789,6 +1017,7 @@ export type $GeoPointPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   objects: {
     paddock: Prisma.$PaddockPayload<ExtArgs> | null
     livestockUnitPosition: Prisma.$LivestockUnitPositionPayload<ExtArgs> | null
+    boundaryFarm: Prisma.$FarmPayload<ExtArgs> | null
     farms: Prisma.$FarmPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -796,8 +1025,10 @@ export type $GeoPointPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     latitude: number
     longitude: number
     heading: number | null
+    sortOrder: number
     paddockId: string | null
     livestockUnitPositionId: string | null
+    farmBoundaryId: string | null
   }, ExtArgs["result"]["geoPoint"]>
   composites: {}
 }
@@ -1194,6 +1425,7 @@ export interface Prisma__GeoPointClient<T, Null = never, ExtArgs extends runtime
   readonly [Symbol.toStringTag]: "PrismaPromise"
   paddock<T extends Prisma.GeoPoint$paddockArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GeoPoint$paddockArgs<ExtArgs>>): Prisma.Prisma__PaddockClient<runtime.Types.Result.GetResult<Prisma.$PaddockPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   livestockUnitPosition<T extends Prisma.GeoPoint$livestockUnitPositionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GeoPoint$livestockUnitPositionArgs<ExtArgs>>): Prisma.Prisma__LivestockUnitPositionClient<runtime.Types.Result.GetResult<Prisma.$LivestockUnitPositionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  boundaryFarm<T extends Prisma.GeoPoint$boundaryFarmArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GeoPoint$boundaryFarmArgs<ExtArgs>>): Prisma.Prisma__FarmClient<runtime.Types.Result.GetResult<Prisma.$FarmPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   farms<T extends Prisma.GeoPoint$farmsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GeoPoint$farmsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FarmPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1228,8 +1460,10 @@ export interface GeoPointFieldRefs {
   readonly latitude: Prisma.FieldRef<"GeoPoint", 'Float'>
   readonly longitude: Prisma.FieldRef<"GeoPoint", 'Float'>
   readonly heading: Prisma.FieldRef<"GeoPoint", 'Float'>
+  readonly sortOrder: Prisma.FieldRef<"GeoPoint", 'Int'>
   readonly paddockId: Prisma.FieldRef<"GeoPoint", 'String'>
   readonly livestockUnitPositionId: Prisma.FieldRef<"GeoPoint", 'String'>
+  readonly farmBoundaryId: Prisma.FieldRef<"GeoPoint", 'String'>
 }
     
 
@@ -1670,6 +1904,25 @@ export type GeoPoint$livestockUnitPositionArgs<ExtArgs extends runtime.Types.Ext
    */
   include?: Prisma.LivestockUnitPositionInclude<ExtArgs> | null
   where?: Prisma.LivestockUnitPositionWhereInput
+}
+
+/**
+ * GeoPoint.boundaryFarm
+ */
+export type GeoPoint$boundaryFarmArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Farm
+   */
+  select?: Prisma.FarmSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Farm
+   */
+  omit?: Prisma.FarmOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FarmInclude<ExtArgs> | null
+  where?: Prisma.FarmWhereInput
 }
 
 /**

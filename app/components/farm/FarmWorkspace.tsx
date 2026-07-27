@@ -32,7 +32,6 @@ import {
   updateGateState,
 } from "@lib/mutations"
 import {
-  calculatePolygonAreaHa,
   formatCoordinateText,
   formatDateTime,
   parseCoordinateText,
@@ -387,7 +386,7 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
               <CardContent>
                 <Stack spacing={2}>
                   <TextField label="Boundary coordinates" value={boundaryText} onChange={(event) => setBoundaryText(event.target.value)} multiline minRows={8} fullWidth />
-                  <TextField label="Area (ha)" value={boundaryAreaHa} onChange={(event) => setBoundaryAreaHa(event.target.value)} helperText={boundaryText ? `Derived: ${calculatePolygonAreaHa(parseCoordinateText(boundaryText || "0,0\n0,0\n0,0")).toFixed(2)} ha` : undefined} />
+                  <TextField label="Area (ha)" value={boundaryAreaHa} onChange={(event) => setBoundaryAreaHa(event.target.value)} helperText={undefined} />
                   <Button type="submit" variant="contained" disabled={busy !== null}>Save farm boundary</Button>
                 </Stack>
               </CardContent>
@@ -484,7 +483,7 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
               <CardContent>
                 <Stack spacing={2}>
                   <TextField select label="Mob" value={movementMobId} onChange={(event) => setMovementMobId(event.target.value)} required>
-                    {farm.mobs.map((mob) => <MenuItem key={mob.id} value={mob.id}>{mob.name}</MenuItem>)}
+                    {farm.mobs.map((mob) => <MenuItem key={mob.id} value={mob.id}>{mob.name ?? "Unnamed mob"}</MenuItem>)}
                   </TextField>
                   <TextField select label="From paddock" value={movementFromPaddockId} onChange={(event) => setMovementFromPaddockId(event.target.value)}>
                     {farm.paddocks.map((paddock) => <MenuItem key={paddock.id} value={paddock.id}>{paddock.name}</MenuItem>)}
@@ -506,7 +505,7 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
                 <Stack spacing={2}>
                   {farm.mobs.map((mob) => (
                     <Box key={mob.id}>
-                      <Typography fontWeight={600}>{mob.name}</Typography>
+                      <Typography fontWeight={600}>{mob.name ?? "Unnamed mob"}</Typography>
                       <Typography variant="body2">{mob.members.length} beasts · {mob.members.reduce((sum, member) => sum + member.drySheepEquivalent, 0)} DSE</Typography>
                       <Typography variant="body2">Latest move: {mob.movements[mob.movements.length - 1]?.toPaddock.name ?? "No movement recorded"}</Typography>
                     </Box>
@@ -663,7 +662,7 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
                 <Stack spacing={1}>
                   {allMovements.length > 0 ? allMovements.map((movement) => (
                     <Box key={movement.id}>
-                      <Typography fontWeight={600}>{movement.mobName}</Typography>
+                      <Typography fontWeight={600}>{movement.mobName ?? "Unnamed mob"}</Typography>
                       <Typography variant="body2">{movement.fromPaddock?.name ?? "Outside"} → {movement.toPaddock.name}</Typography>
                       <Typography variant="body2">{formatDateTime(movement.movedAt)}</Typography>
                     </Box>

@@ -11,7 +11,7 @@ type MobMovement = {
 
 type MobAnalyticsInput = {
   id: string
-  name: string
+  name: string | null
   members: MobMember[]
   movements: MobMovement[]
 }
@@ -60,7 +60,7 @@ export function getCurrentMobSummaries(mobs: MobAnalyticsInput[]): CurrentMobSum
 
     return {
       mobId: mob.id,
-      mobName: mob.name,
+      mobName: mob.name ?? "Unnamed mob",
       currentDse: mob.members.reduce((sum, member) => sum + member.drySheepEquivalent, 0),
       currentPaddockId: latestMovement?.toPaddockId ?? null,
     }

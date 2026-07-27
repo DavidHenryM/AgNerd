@@ -369,6 +369,7 @@ export type LivestockUnitWhereInput = {
   onFarmHistory?: Prisma.OnFarmListRelationFilter
   birthStud?: Prisma.StudListRelationFilter
   ownershipHistory?: Prisma.OwnershipListRelationFilter
+  mobMemberships?: Prisma.MobMembershipListRelationFilter
 }
 
 export type LivestockUnitOrderByWithRelationInput = {
@@ -407,6 +408,7 @@ export type LivestockUnitOrderByWithRelationInput = {
   onFarmHistory?: Prisma.OnFarmOrderByRelationAggregateInput
   birthStud?: Prisma.StudOrderByRelationAggregateInput
   ownershipHistory?: Prisma.OwnershipOrderByRelationAggregateInput
+  mobMemberships?: Prisma.MobMembershipOrderByRelationAggregateInput
 }
 
 export type LivestockUnitWhereUniqueInput = Prisma.AtLeast<{
@@ -448,6 +450,7 @@ export type LivestockUnitWhereUniqueInput = Prisma.AtLeast<{
   onFarmHistory?: Prisma.OnFarmListRelationFilter
   birthStud?: Prisma.StudListRelationFilter
   ownershipHistory?: Prisma.OwnershipListRelationFilter
+  mobMemberships?: Prisma.MobMembershipListRelationFilter
 }, "id">
 
 export type LivestockUnitOrderByWithAggregationInput = {
@@ -541,6 +544,7 @@ export type LivestockUnitCreateInput = {
   onFarmHistory?: Prisma.OnFarmCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitUncheckedCreateInput = {
@@ -576,6 +580,7 @@ export type LivestockUnitUncheckedCreateInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudUncheckedCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipUncheckedCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitUpdateInput = {
@@ -611,6 +616,7 @@ export type LivestockUnitUpdateInput = {
   onFarmHistory?: Prisma.OnFarmUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateInput = {
@@ -646,6 +652,7 @@ export type LivestockUnitUncheckedUpdateInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUncheckedUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitCreateManyInput = {
@@ -1119,6 +1126,20 @@ export type LivestockUnitUpdateOneRequiredWithoutEstimatedBreedingValueResultNes
   update?: Prisma.XOR<Prisma.XOR<Prisma.LivestockUnitUpdateToOneWithWhereWithoutEstimatedBreedingValueResultInput, Prisma.LivestockUnitUpdateWithoutEstimatedBreedingValueResultInput>, Prisma.LivestockUnitUncheckedUpdateWithoutEstimatedBreedingValueResultInput>
 }
 
+export type LivestockUnitCreateNestedOneWithoutMobMembershipsInput = {
+  create?: Prisma.XOR<Prisma.LivestockUnitCreateWithoutMobMembershipsInput, Prisma.LivestockUnitUncheckedCreateWithoutMobMembershipsInput>
+  connectOrCreate?: Prisma.LivestockUnitCreateOrConnectWithoutMobMembershipsInput
+  connect?: Prisma.LivestockUnitWhereUniqueInput
+}
+
+export type LivestockUnitUpdateOneRequiredWithoutMobMembershipsNestedInput = {
+  create?: Prisma.XOR<Prisma.LivestockUnitCreateWithoutMobMembershipsInput, Prisma.LivestockUnitUncheckedCreateWithoutMobMembershipsInput>
+  connectOrCreate?: Prisma.LivestockUnitCreateOrConnectWithoutMobMembershipsInput
+  upsert?: Prisma.LivestockUnitUpsertWithoutMobMembershipsInput
+  connect?: Prisma.LivestockUnitWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LivestockUnitUpdateToOneWithWhereWithoutMobMembershipsInput, Prisma.LivestockUnitUpdateWithoutMobMembershipsInput>, Prisma.LivestockUnitUncheckedUpdateWithoutMobMembershipsInput>
+}
+
 export type LivestockUnitCreateNestedOneWithoutWeightsInput = {
   create?: Prisma.XOR<Prisma.LivestockUnitCreateWithoutWeightsInput, Prisma.LivestockUnitUncheckedCreateWithoutWeightsInput>
   connectOrCreate?: Prisma.LivestockUnitCreateOrConnectWithoutWeightsInput
@@ -1165,6 +1186,7 @@ export type LivestockUnitCreateWithoutBreedInput = {
   onFarmHistory?: Prisma.OnFarmCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitUncheckedCreateWithoutBreedInput = {
@@ -1199,6 +1221,7 @@ export type LivestockUnitUncheckedCreateWithoutBreedInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudUncheckedCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipUncheckedCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitCreateOrConnectWithoutBreedInput = {
@@ -1249,6 +1272,7 @@ export type LivestockUnitUpdateWithoutBreedInput = {
   onFarmHistory?: Prisma.OnFarmUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateWithoutBreedInput = {
@@ -1283,6 +1307,7 @@ export type LivestockUnitUncheckedUpdateWithoutBreedInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUncheckedUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitCreateWithoutMobInput = {
@@ -1317,6 +1342,7 @@ export type LivestockUnitCreateWithoutMobInput = {
   onFarmHistory?: Prisma.OnFarmCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitUncheckedCreateWithoutMobInput = {
@@ -1351,6 +1377,7 @@ export type LivestockUnitUncheckedCreateWithoutMobInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudUncheckedCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipUncheckedCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitCreateOrConnectWithoutMobInput = {
@@ -1439,6 +1466,7 @@ export type LivestockUnitCreateWithoutSiredInput = {
   onFarmHistory?: Prisma.OnFarmCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitUncheckedCreateWithoutSiredInput = {
@@ -1473,6 +1501,7 @@ export type LivestockUnitUncheckedCreateWithoutSiredInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudUncheckedCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipUncheckedCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitCreateOrConnectWithoutSiredInput = {
@@ -1512,6 +1541,7 @@ export type LivestockUnitCreateWithoutSireInput = {
   onFarmHistory?: Prisma.OnFarmCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitUncheckedCreateWithoutSireInput = {
@@ -1546,6 +1576,7 @@ export type LivestockUnitUncheckedCreateWithoutSireInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudUncheckedCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipUncheckedCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitCreateOrConnectWithoutSireInput = {
@@ -1590,6 +1621,7 @@ export type LivestockUnitCreateWithoutBirthedInput = {
   onFarmHistory?: Prisma.OnFarmCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitUncheckedCreateWithoutBirthedInput = {
@@ -1624,6 +1656,7 @@ export type LivestockUnitUncheckedCreateWithoutBirthedInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudUncheckedCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipUncheckedCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitCreateOrConnectWithoutBirthedInput = {
@@ -1663,6 +1696,7 @@ export type LivestockUnitCreateWithoutDamInput = {
   onFarmHistory?: Prisma.OnFarmCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitUncheckedCreateWithoutDamInput = {
@@ -1697,6 +1731,7 @@ export type LivestockUnitUncheckedCreateWithoutDamInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudUncheckedCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipUncheckedCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitCreateOrConnectWithoutDamInput = {
@@ -1752,6 +1787,7 @@ export type LivestockUnitUpdateWithoutSiredInput = {
   onFarmHistory?: Prisma.OnFarmUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateWithoutSiredInput = {
@@ -1786,6 +1822,7 @@ export type LivestockUnitUncheckedUpdateWithoutSiredInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUncheckedUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUpsertWithWhereUniqueWithoutSireInput = {
@@ -1847,6 +1884,7 @@ export type LivestockUnitUpdateWithoutBirthedInput = {
   onFarmHistory?: Prisma.OnFarmUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateWithoutBirthedInput = {
@@ -1881,6 +1919,7 @@ export type LivestockUnitUncheckedUpdateWithoutBirthedInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUncheckedUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUpsertWithWhereUniqueWithoutDamInput = {
@@ -1931,6 +1970,7 @@ export type LivestockUnitCreateWithoutOnFarmHistoryInput = {
   estimatedBreedingValueResult?: Prisma.EstimatedBreedingValueResultCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitUncheckedCreateWithoutOnFarmHistoryInput = {
@@ -1965,6 +2005,7 @@ export type LivestockUnitUncheckedCreateWithoutOnFarmHistoryInput = {
   estimatedBreedingValueResult?: Prisma.EstimatedBreedingValueResultUncheckedCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudUncheckedCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipUncheckedCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitCreateOrConnectWithoutOnFarmHistoryInput = {
@@ -2015,6 +2056,7 @@ export type LivestockUnitUpdateWithoutOnFarmHistoryInput = {
   estimatedBreedingValueResult?: Prisma.EstimatedBreedingValueResultUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateWithoutOnFarmHistoryInput = {
@@ -2049,6 +2091,7 @@ export type LivestockUnitUncheckedUpdateWithoutOnFarmHistoryInput = {
   estimatedBreedingValueResult?: Prisma.EstimatedBreedingValueResultUncheckedUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUncheckedUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitCreateWithoutOwnershipHistoryInput = {
@@ -2083,6 +2126,7 @@ export type LivestockUnitCreateWithoutOwnershipHistoryInput = {
   estimatedBreedingValueResult?: Prisma.EstimatedBreedingValueResultCreateNestedManyWithoutLivestockUnitInput
   onFarmHistory?: Prisma.OnFarmCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudCreateNestedManyWithoutLiveStockBornHereInput
+  mobMemberships?: Prisma.MobMembershipCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitUncheckedCreateWithoutOwnershipHistoryInput = {
@@ -2117,6 +2161,7 @@ export type LivestockUnitUncheckedCreateWithoutOwnershipHistoryInput = {
   estimatedBreedingValueResult?: Prisma.EstimatedBreedingValueResultUncheckedCreateNestedManyWithoutLivestockUnitInput
   onFarmHistory?: Prisma.OnFarmUncheckedCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudUncheckedCreateNestedManyWithoutLiveStockBornHereInput
+  mobMemberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitCreateOrConnectWithoutOwnershipHistoryInput = {
@@ -2167,6 +2212,7 @@ export type LivestockUnitUpdateWithoutOwnershipHistoryInput = {
   estimatedBreedingValueResult?: Prisma.EstimatedBreedingValueResultUpdateManyWithoutLivestockUnitNestedInput
   onFarmHistory?: Prisma.OnFarmUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUpdateManyWithoutLiveStockBornHereNestedInput
+  mobMemberships?: Prisma.MobMembershipUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateWithoutOwnershipHistoryInput = {
@@ -2201,6 +2247,7 @@ export type LivestockUnitUncheckedUpdateWithoutOwnershipHistoryInput = {
   estimatedBreedingValueResult?: Prisma.EstimatedBreedingValueResultUncheckedUpdateManyWithoutLivestockUnitNestedInput
   onFarmHistory?: Prisma.OnFarmUncheckedUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUncheckedUpdateManyWithoutLiveStockBornHereNestedInput
+  mobMemberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitCreateWithoutBirthStudInput = {
@@ -2235,6 +2282,7 @@ export type LivestockUnitCreateWithoutBirthStudInput = {
   estimatedBreedingValueResult?: Prisma.EstimatedBreedingValueResultCreateNestedManyWithoutLivestockUnitInput
   onFarmHistory?: Prisma.OnFarmCreateNestedManyWithoutLivestockUnitInput
   ownershipHistory?: Prisma.OwnershipCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitUncheckedCreateWithoutBirthStudInput = {
@@ -2269,6 +2317,7 @@ export type LivestockUnitUncheckedCreateWithoutBirthStudInput = {
   estimatedBreedingValueResult?: Prisma.EstimatedBreedingValueResultUncheckedCreateNestedManyWithoutLivestockUnitInput
   onFarmHistory?: Prisma.OnFarmUncheckedCreateNestedManyWithoutLivestockUnitInput
   ownershipHistory?: Prisma.OwnershipUncheckedCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitCreateOrConnectWithoutBirthStudInput = {
@@ -2324,6 +2373,7 @@ export type LivestockUnitCreateWithoutPregnanciesInput = {
   onFarmHistory?: Prisma.OnFarmCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitUncheckedCreateWithoutPregnanciesInput = {
@@ -2358,6 +2408,7 @@ export type LivestockUnitUncheckedCreateWithoutPregnanciesInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudUncheckedCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipUncheckedCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitCreateOrConnectWithoutPregnanciesInput = {
@@ -2408,6 +2459,7 @@ export type LivestockUnitUpdateWithoutPregnanciesInput = {
   onFarmHistory?: Prisma.OnFarmUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateWithoutPregnanciesInput = {
@@ -2442,6 +2494,7 @@ export type LivestockUnitUncheckedUpdateWithoutPregnanciesInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUncheckedUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitCreateWithoutTreatmentsInput = {
@@ -2476,6 +2529,7 @@ export type LivestockUnitCreateWithoutTreatmentsInput = {
   onFarmHistory?: Prisma.OnFarmCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitUncheckedCreateWithoutTreatmentsInput = {
@@ -2510,6 +2564,7 @@ export type LivestockUnitUncheckedCreateWithoutTreatmentsInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudUncheckedCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipUncheckedCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitCreateOrConnectWithoutTreatmentsInput = {
@@ -2560,6 +2615,7 @@ export type LivestockUnitUpdateWithoutTreatmentsInput = {
   onFarmHistory?: Prisma.OnFarmUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateWithoutTreatmentsInput = {
@@ -2594,6 +2650,7 @@ export type LivestockUnitUncheckedUpdateWithoutTreatmentsInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUncheckedUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitCreateWithoutEstimatedBreedingValueResultInput = {
@@ -2628,6 +2685,7 @@ export type LivestockUnitCreateWithoutEstimatedBreedingValueResultInput = {
   onFarmHistory?: Prisma.OnFarmCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitUncheckedCreateWithoutEstimatedBreedingValueResultInput = {
@@ -2662,6 +2720,7 @@ export type LivestockUnitUncheckedCreateWithoutEstimatedBreedingValueResultInput
   onFarmHistory?: Prisma.OnFarmUncheckedCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudUncheckedCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipUncheckedCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitCreateOrConnectWithoutEstimatedBreedingValueResultInput = {
@@ -2712,6 +2771,7 @@ export type LivestockUnitUpdateWithoutEstimatedBreedingValueResultInput = {
   onFarmHistory?: Prisma.OnFarmUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateWithoutEstimatedBreedingValueResultInput = {
@@ -2743,6 +2803,163 @@ export type LivestockUnitUncheckedUpdateWithoutEstimatedBreedingValueResultInput
   pregnancies?: Prisma.LivestockUnitPregnancyUncheckedUpdateManyWithoutLivestockUnitNestedInput
   weights?: Prisma.WeightRecordUncheckedUpdateManyWithoutLivestockUnitNestedInput
   treatments?: Prisma.ChemicalTreatmentUncheckedUpdateManyWithoutLiveStockUnitNestedInput
+  onFarmHistory?: Prisma.OnFarmUncheckedUpdateManyWithoutLivestockUnitNestedInput
+  birthStud?: Prisma.StudUncheckedUpdateManyWithoutLiveStockBornHereNestedInput
+  ownershipHistory?: Prisma.OwnershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
+}
+
+export type LivestockUnitCreateWithoutMobMembershipsInput = {
+  id?: string
+  nlisId?: string | null
+  visualIdLine1?: string | null
+  visualIdLine2?: string | null
+  visualIdLine3?: string | null
+  visualIdBackgroundColour?: $Enums.VisualIdColour | null
+  visualIdTextColour?: $Enums.VisualIdColour | null
+  class: $Enums.StockClass
+  commercialClass?: $Enums.CommercialClass | null
+  name?: string | null
+  comment?: string | null
+  sex: $Enums.Sex
+  birthDate: Date | string
+  desexed: boolean
+  drySheepEquivalent?: number
+  purchasePrice?: number | null
+  purchaseDate?: Date | string | null
+  angusTechId?: string | null
+  active?: boolean
+  breed?: Prisma.BreedCreateNestedOneWithoutMembersInput
+  sire?: Prisma.LivestockUnitCreateNestedOneWithoutSiredInput
+  sired?: Prisma.LivestockUnitCreateNestedManyWithoutSireInput
+  dam?: Prisma.LivestockUnitCreateNestedOneWithoutBirthedInput
+  birthed?: Prisma.LivestockUnitCreateNestedManyWithoutDamInput
+  mob?: Prisma.MobCreateNestedOneWithoutMembersInput
+  pregnancies?: Prisma.LivestockUnitPregnancyCreateNestedManyWithoutLivestockUnitInput
+  weights?: Prisma.WeightRecordCreateNestedManyWithoutLivestockUnitInput
+  treatments?: Prisma.ChemicalTreatmentCreateNestedManyWithoutLiveStockUnitInput
+  estimatedBreedingValueResult?: Prisma.EstimatedBreedingValueResultCreateNestedManyWithoutLivestockUnitInput
+  onFarmHistory?: Prisma.OnFarmCreateNestedManyWithoutLivestockUnitInput
+  birthStud?: Prisma.StudCreateNestedManyWithoutLiveStockBornHereInput
+  ownershipHistory?: Prisma.OwnershipCreateNestedManyWithoutLivestockUnitInput
+}
+
+export type LivestockUnitUncheckedCreateWithoutMobMembershipsInput = {
+  id?: string
+  nlisId?: string | null
+  visualIdLine1?: string | null
+  visualIdLine2?: string | null
+  visualIdLine3?: string | null
+  visualIdBackgroundColour?: $Enums.VisualIdColour | null
+  visualIdTextColour?: $Enums.VisualIdColour | null
+  class: $Enums.StockClass
+  commercialClass?: $Enums.CommercialClass | null
+  name?: string | null
+  comment?: string | null
+  sex: $Enums.Sex
+  birthDate: Date | string
+  desexed: boolean
+  sireId?: string | null
+  damId?: string | null
+  mobRef?: string | null
+  drySheepEquivalent?: number
+  purchasePrice?: number | null
+  purchaseDate?: Date | string | null
+  angusTechId?: string | null
+  active?: boolean
+  breed?: Prisma.BreedUncheckedCreateNestedOneWithoutMembersInput
+  sired?: Prisma.LivestockUnitUncheckedCreateNestedManyWithoutSireInput
+  birthed?: Prisma.LivestockUnitUncheckedCreateNestedManyWithoutDamInput
+  pregnancies?: Prisma.LivestockUnitPregnancyUncheckedCreateNestedManyWithoutLivestockUnitInput
+  weights?: Prisma.WeightRecordUncheckedCreateNestedManyWithoutLivestockUnitInput
+  treatments?: Prisma.ChemicalTreatmentUncheckedCreateNestedManyWithoutLiveStockUnitInput
+  estimatedBreedingValueResult?: Prisma.EstimatedBreedingValueResultUncheckedCreateNestedManyWithoutLivestockUnitInput
+  onFarmHistory?: Prisma.OnFarmUncheckedCreateNestedManyWithoutLivestockUnitInput
+  birthStud?: Prisma.StudUncheckedCreateNestedManyWithoutLiveStockBornHereInput
+  ownershipHistory?: Prisma.OwnershipUncheckedCreateNestedManyWithoutLivestockUnitInput
+}
+
+export type LivestockUnitCreateOrConnectWithoutMobMembershipsInput = {
+  where: Prisma.LivestockUnitWhereUniqueInput
+  create: Prisma.XOR<Prisma.LivestockUnitCreateWithoutMobMembershipsInput, Prisma.LivestockUnitUncheckedCreateWithoutMobMembershipsInput>
+}
+
+export type LivestockUnitUpsertWithoutMobMembershipsInput = {
+  update: Prisma.XOR<Prisma.LivestockUnitUpdateWithoutMobMembershipsInput, Prisma.LivestockUnitUncheckedUpdateWithoutMobMembershipsInput>
+  create: Prisma.XOR<Prisma.LivestockUnitCreateWithoutMobMembershipsInput, Prisma.LivestockUnitUncheckedCreateWithoutMobMembershipsInput>
+  where?: Prisma.LivestockUnitWhereInput
+}
+
+export type LivestockUnitUpdateToOneWithWhereWithoutMobMembershipsInput = {
+  where?: Prisma.LivestockUnitWhereInput
+  data: Prisma.XOR<Prisma.LivestockUnitUpdateWithoutMobMembershipsInput, Prisma.LivestockUnitUncheckedUpdateWithoutMobMembershipsInput>
+}
+
+export type LivestockUnitUpdateWithoutMobMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nlisId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visualIdLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visualIdLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visualIdLine3?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visualIdBackgroundColour?: Prisma.NullableEnumVisualIdColourFieldUpdateOperationsInput | $Enums.VisualIdColour | null
+  visualIdTextColour?: Prisma.NullableEnumVisualIdColourFieldUpdateOperationsInput | $Enums.VisualIdColour | null
+  class?: Prisma.EnumStockClassFieldUpdateOperationsInput | $Enums.StockClass
+  commercialClass?: Prisma.NullableEnumCommercialClassFieldUpdateOperationsInput | $Enums.CommercialClass | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sex?: Prisma.EnumSexFieldUpdateOperationsInput | $Enums.Sex
+  birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  desexed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  drySheepEquivalent?: Prisma.IntFieldUpdateOperationsInput | number
+  purchasePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  purchaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  angusTechId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  breed?: Prisma.BreedUpdateOneWithoutMembersNestedInput
+  sire?: Prisma.LivestockUnitUpdateOneWithoutSiredNestedInput
+  sired?: Prisma.LivestockUnitUpdateManyWithoutSireNestedInput
+  dam?: Prisma.LivestockUnitUpdateOneWithoutBirthedNestedInput
+  birthed?: Prisma.LivestockUnitUpdateManyWithoutDamNestedInput
+  mob?: Prisma.MobUpdateOneWithoutMembersNestedInput
+  pregnancies?: Prisma.LivestockUnitPregnancyUpdateManyWithoutLivestockUnitNestedInput
+  weights?: Prisma.WeightRecordUpdateManyWithoutLivestockUnitNestedInput
+  treatments?: Prisma.ChemicalTreatmentUpdateManyWithoutLiveStockUnitNestedInput
+  estimatedBreedingValueResult?: Prisma.EstimatedBreedingValueResultUpdateManyWithoutLivestockUnitNestedInput
+  onFarmHistory?: Prisma.OnFarmUpdateManyWithoutLivestockUnitNestedInput
+  birthStud?: Prisma.StudUpdateManyWithoutLiveStockBornHereNestedInput
+  ownershipHistory?: Prisma.OwnershipUpdateManyWithoutLivestockUnitNestedInput
+}
+
+export type LivestockUnitUncheckedUpdateWithoutMobMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  nlisId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visualIdLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visualIdLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visualIdLine3?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  visualIdBackgroundColour?: Prisma.NullableEnumVisualIdColourFieldUpdateOperationsInput | $Enums.VisualIdColour | null
+  visualIdTextColour?: Prisma.NullableEnumVisualIdColourFieldUpdateOperationsInput | $Enums.VisualIdColour | null
+  class?: Prisma.EnumStockClassFieldUpdateOperationsInput | $Enums.StockClass
+  commercialClass?: Prisma.NullableEnumCommercialClassFieldUpdateOperationsInput | $Enums.CommercialClass | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sex?: Prisma.EnumSexFieldUpdateOperationsInput | $Enums.Sex
+  birthDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  desexed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sireId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  damId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobRef?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  drySheepEquivalent?: Prisma.IntFieldUpdateOperationsInput | number
+  purchasePrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  purchaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  angusTechId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  breed?: Prisma.BreedUncheckedUpdateOneWithoutMembersNestedInput
+  sired?: Prisma.LivestockUnitUncheckedUpdateManyWithoutSireNestedInput
+  birthed?: Prisma.LivestockUnitUncheckedUpdateManyWithoutDamNestedInput
+  pregnancies?: Prisma.LivestockUnitPregnancyUncheckedUpdateManyWithoutLivestockUnitNestedInput
+  weights?: Prisma.WeightRecordUncheckedUpdateManyWithoutLivestockUnitNestedInput
+  treatments?: Prisma.ChemicalTreatmentUncheckedUpdateManyWithoutLiveStockUnitNestedInput
+  estimatedBreedingValueResult?: Prisma.EstimatedBreedingValueResultUncheckedUpdateManyWithoutLivestockUnitNestedInput
   onFarmHistory?: Prisma.OnFarmUncheckedUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUncheckedUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
@@ -2780,6 +2997,7 @@ export type LivestockUnitCreateWithoutWeightsInput = {
   onFarmHistory?: Prisma.OnFarmCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitUncheckedCreateWithoutWeightsInput = {
@@ -2814,6 +3032,7 @@ export type LivestockUnitUncheckedCreateWithoutWeightsInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedCreateNestedManyWithoutLivestockUnitInput
   birthStud?: Prisma.StudUncheckedCreateNestedManyWithoutLiveStockBornHereInput
   ownershipHistory?: Prisma.OwnershipUncheckedCreateNestedManyWithoutLivestockUnitInput
+  mobMemberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutLivestockUnitInput
 }
 
 export type LivestockUnitCreateOrConnectWithoutWeightsInput = {
@@ -2864,6 +3083,7 @@ export type LivestockUnitUpdateWithoutWeightsInput = {
   onFarmHistory?: Prisma.OnFarmUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateWithoutWeightsInput = {
@@ -2898,6 +3118,7 @@ export type LivestockUnitUncheckedUpdateWithoutWeightsInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUncheckedUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitCreateManyMobInput = {
@@ -2956,6 +3177,7 @@ export type LivestockUnitUpdateWithoutMobInput = {
   onFarmHistory?: Prisma.OnFarmUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateWithoutMobInput = {
@@ -2990,6 +3212,7 @@ export type LivestockUnitUncheckedUpdateWithoutMobInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUncheckedUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateManyWithoutMobInput = {
@@ -3096,6 +3319,7 @@ export type LivestockUnitUpdateWithoutSireInput = {
   onFarmHistory?: Prisma.OnFarmUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateWithoutSireInput = {
@@ -3130,6 +3354,7 @@ export type LivestockUnitUncheckedUpdateWithoutSireInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUncheckedUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateManyWithoutSireInput = {
@@ -3188,6 +3413,7 @@ export type LivestockUnitUpdateWithoutDamInput = {
   onFarmHistory?: Prisma.OnFarmUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateWithoutDamInput = {
@@ -3222,6 +3448,7 @@ export type LivestockUnitUncheckedUpdateWithoutDamInput = {
   onFarmHistory?: Prisma.OnFarmUncheckedUpdateManyWithoutLivestockUnitNestedInput
   birthStud?: Prisma.StudUncheckedUpdateManyWithoutLiveStockBornHereNestedInput
   ownershipHistory?: Prisma.OwnershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateManyWithoutDamInput = {
@@ -3280,6 +3507,7 @@ export type LivestockUnitUpdateWithoutBirthStudInput = {
   estimatedBreedingValueResult?: Prisma.EstimatedBreedingValueResultUpdateManyWithoutLivestockUnitNestedInput
   onFarmHistory?: Prisma.OnFarmUpdateManyWithoutLivestockUnitNestedInput
   ownershipHistory?: Prisma.OwnershipUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateWithoutBirthStudInput = {
@@ -3314,6 +3542,7 @@ export type LivestockUnitUncheckedUpdateWithoutBirthStudInput = {
   estimatedBreedingValueResult?: Prisma.EstimatedBreedingValueResultUncheckedUpdateManyWithoutLivestockUnitNestedInput
   onFarmHistory?: Prisma.OnFarmUncheckedUpdateManyWithoutLivestockUnitNestedInput
   ownershipHistory?: Prisma.OwnershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
+  mobMemberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutLivestockUnitNestedInput
 }
 
 export type LivestockUnitUncheckedUpdateManyWithoutBirthStudInput = {
@@ -3356,6 +3585,7 @@ export type LivestockUnitCountOutputType = {
   onFarmHistory: number
   birthStud: number
   ownershipHistory: number
+  mobMemberships: number
 }
 
 export type LivestockUnitCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3368,6 +3598,7 @@ export type LivestockUnitCountOutputTypeSelect<ExtArgs extends runtime.Types.Ext
   onFarmHistory?: boolean | LivestockUnitCountOutputTypeCountOnFarmHistoryArgs
   birthStud?: boolean | LivestockUnitCountOutputTypeCountBirthStudArgs
   ownershipHistory?: boolean | LivestockUnitCountOutputTypeCountOwnershipHistoryArgs
+  mobMemberships?: boolean | LivestockUnitCountOutputTypeCountMobMembershipsArgs
 }
 
 /**
@@ -3443,6 +3674,13 @@ export type LivestockUnitCountOutputTypeCountOwnershipHistoryArgs<ExtArgs extend
   where?: Prisma.OwnershipWhereInput
 }
 
+/**
+ * LivestockUnitCountOutputType without action
+ */
+export type LivestockUnitCountOutputTypeCountMobMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MobMembershipWhereInput
+}
+
 
 export type LivestockUnitSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3480,6 +3718,7 @@ export type LivestockUnitSelect<ExtArgs extends runtime.Types.Extensions.Interna
   onFarmHistory?: boolean | Prisma.LivestockUnit$onFarmHistoryArgs<ExtArgs>
   birthStud?: boolean | Prisma.LivestockUnit$birthStudArgs<ExtArgs>
   ownershipHistory?: boolean | Prisma.LivestockUnit$ownershipHistoryArgs<ExtArgs>
+  mobMemberships?: boolean | Prisma.LivestockUnit$mobMembershipsArgs<ExtArgs>
   _count?: boolean | Prisma.LivestockUnitCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["livestockUnit"]>
 
@@ -3579,6 +3818,7 @@ export type LivestockUnitInclude<ExtArgs extends runtime.Types.Extensions.Intern
   onFarmHistory?: boolean | Prisma.LivestockUnit$onFarmHistoryArgs<ExtArgs>
   birthStud?: boolean | Prisma.LivestockUnit$birthStudArgs<ExtArgs>
   ownershipHistory?: boolean | Prisma.LivestockUnit$ownershipHistoryArgs<ExtArgs>
+  mobMemberships?: boolean | Prisma.LivestockUnit$mobMembershipsArgs<ExtArgs>
   _count?: boolean | Prisma.LivestockUnitCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LivestockUnitIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3608,6 +3848,7 @@ export type $LivestockUnitPayload<ExtArgs extends runtime.Types.Extensions.Inter
     onFarmHistory: Prisma.$OnFarmPayload<ExtArgs>[]
     birthStud: Prisma.$StudPayload<ExtArgs>[]
     ownershipHistory: Prisma.$OwnershipPayload<ExtArgs>[]
+    mobMemberships: Prisma.$MobMembershipPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -4039,6 +4280,7 @@ export interface Prisma__LivestockUnitClient<T, Null = never, ExtArgs extends ru
   onFarmHistory<T extends Prisma.LivestockUnit$onFarmHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LivestockUnit$onFarmHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OnFarmPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   birthStud<T extends Prisma.LivestockUnit$birthStudArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LivestockUnit$birthStudArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ownershipHistory<T extends Prisma.LivestockUnit$ownershipHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LivestockUnit$ownershipHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OwnershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mobMemberships<T extends Prisma.LivestockUnit$mobMembershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LivestockUnit$mobMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MobMembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4784,6 +5026,30 @@ export type LivestockUnit$ownershipHistoryArgs<ExtArgs extends runtime.Types.Ext
   take?: number
   skip?: number
   distinct?: Prisma.OwnershipScalarFieldEnum | Prisma.OwnershipScalarFieldEnum[]
+}
+
+/**
+ * LivestockUnit.mobMemberships
+ */
+export type LivestockUnit$mobMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MobMembership
+   */
+  select?: Prisma.MobMembershipSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MobMembership
+   */
+  omit?: Prisma.MobMembershipOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MobMembershipInclude<ExtArgs> | null
+  where?: Prisma.MobMembershipWhereInput
+  orderBy?: Prisma.MobMembershipOrderByWithRelationInput | Prisma.MobMembershipOrderByWithRelationInput[]
+  cursor?: Prisma.MobMembershipWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MobMembershipScalarFieldEnum | Prisma.MobMembershipScalarFieldEnum[]
 }
 
 /**

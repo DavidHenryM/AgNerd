@@ -49,7 +49,7 @@ export default function FarmMap({ farm }: { farm: FarmWorkspaceFarm }) {
 
         return {
           id: mob.id,
-          name: mob.name,
+          name: mob.name ?? "Unnamed mob",
           latitude: centroid.latitude,
           longitude: centroid.longitude,
           paddockName: paddock.name,
@@ -157,7 +157,7 @@ export default function FarmMap({ farm }: { farm: FarmWorkspaceFarm }) {
           showBackground: true,
           backgroundColor: Color.BLACK.withAlpha(0.55),
           fillColor: Color.WHITE,
-          pixelOffset: new Cartesian3(0, -20, 0),
+
         },
       })
     })

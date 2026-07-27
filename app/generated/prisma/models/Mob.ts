@@ -26,40 +26,58 @@ export type AggregateMob = {
 
 export type MobMinAggregateOutputType = {
   id: string | null
+  farmId: string | null
   name: string | null
   comment: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type MobMaxAggregateOutputType = {
   id: string | null
+  farmId: string | null
   name: string | null
   comment: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type MobCountAggregateOutputType = {
   id: number
+  farmId: number
   name: number
   comment: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
 
 export type MobMinAggregateInputType = {
   id?: true
+  farmId?: true
   name?: true
   comment?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type MobMaxAggregateInputType = {
   id?: true
+  farmId?: true
   name?: true
   comment?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type MobCountAggregateInputType = {
   id?: true
+  farmId?: true
   name?: true
   comment?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -137,8 +155,11 @@ export type MobGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
 
 export type MobGroupByOutputType = {
   id: string
+  farmId: string
   name: string | null
   comment: string | null
+  createdAt: Date
+  updatedAt: Date | null
   _count: MobCountAggregateOutputType | null
   _min: MobMinAggregateOutputType | null
   _max: MobMaxAggregateOutputType | null
@@ -164,18 +185,30 @@ export type MobWhereInput = {
   OR?: Prisma.MobWhereInput[]
   NOT?: Prisma.MobWhereInput | Prisma.MobWhereInput[]
   id?: Prisma.StringFilter<"Mob"> | string
+  farmId?: Prisma.StringFilter<"Mob"> | string
   name?: Prisma.StringNullableFilter<"Mob"> | string | null
   comment?: Prisma.StringNullableFilter<"Mob"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Mob"> | Date | string
+  updatedAt?: Prisma.DateTimeNullableFilter<"Mob"> | Date | string | null
+  farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   members?: Prisma.LivestockUnitListRelationFilter
   grazes?: Prisma.GrazeMobListRelationFilter
+  memberships?: Prisma.MobMembershipListRelationFilter
+  movements?: Prisma.MobMovementListRelationFilter
 }
 
 export type MobOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  farmId?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   comment?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  farm?: Prisma.FarmOrderByWithRelationInput
   members?: Prisma.LivestockUnitOrderByRelationAggregateInput
   grazes?: Prisma.GrazeMobOrderByRelationAggregateInput
+  memberships?: Prisma.MobMembershipOrderByRelationAggregateInput
+  movements?: Prisma.MobMovementOrderByRelationAggregateInput
 }
 
 export type MobWhereUniqueInput = Prisma.AtLeast<{
@@ -183,16 +216,25 @@ export type MobWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.MobWhereInput | Prisma.MobWhereInput[]
   OR?: Prisma.MobWhereInput[]
   NOT?: Prisma.MobWhereInput | Prisma.MobWhereInput[]
+  farmId?: Prisma.StringFilter<"Mob"> | string
   name?: Prisma.StringNullableFilter<"Mob"> | string | null
   comment?: Prisma.StringNullableFilter<"Mob"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Mob"> | Date | string
+  updatedAt?: Prisma.DateTimeNullableFilter<"Mob"> | Date | string | null
+  farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   members?: Prisma.LivestockUnitListRelationFilter
   grazes?: Prisma.GrazeMobListRelationFilter
+  memberships?: Prisma.MobMembershipListRelationFilter
+  movements?: Prisma.MobMovementListRelationFilter
 }, "id">
 
 export type MobOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  farmId?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   comment?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.MobCountOrderByAggregateInput
   _max?: Prisma.MobMaxOrderByAggregateInput
   _min?: Prisma.MobMinOrderByAggregateInput
@@ -203,76 +245,126 @@ export type MobScalarWhereWithAggregatesInput = {
   OR?: Prisma.MobScalarWhereWithAggregatesInput[]
   NOT?: Prisma.MobScalarWhereWithAggregatesInput | Prisma.MobScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Mob"> | string
+  farmId?: Prisma.StringWithAggregatesFilter<"Mob"> | string
   name?: Prisma.StringNullableWithAggregatesFilter<"Mob"> | string | null
   comment?: Prisma.StringNullableWithAggregatesFilter<"Mob"> | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Mob"> | Date | string
+  updatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Mob"> | Date | string | null
 }
 
 export type MobCreateInput = {
   id?: string
   name?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  farm: Prisma.FarmCreateNestedOneWithoutMobsInput
   members?: Prisma.LivestockUnitCreateNestedManyWithoutMobInput
   grazes?: Prisma.GrazeMobCreateNestedManyWithoutMobInput
+  memberships?: Prisma.MobMembershipCreateNestedManyWithoutMobInput
+  movements?: Prisma.MobMovementCreateNestedManyWithoutMobInput
 }
 
 export type MobUncheckedCreateInput = {
   id?: string
+  farmId: string
   name?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
   members?: Prisma.LivestockUnitUncheckedCreateNestedManyWithoutMobInput
   grazes?: Prisma.GrazeMobUncheckedCreateNestedManyWithoutMobInput
+  memberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutMobInput
+  movements?: Prisma.MobMovementUncheckedCreateNestedManyWithoutMobInput
 }
 
 export type MobUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  farm?: Prisma.FarmUpdateOneRequiredWithoutMobsNestedInput
   members?: Prisma.LivestockUnitUpdateManyWithoutMobNestedInput
   grazes?: Prisma.GrazeMobUpdateManyWithoutMobNestedInput
+  memberships?: Prisma.MobMembershipUpdateManyWithoutMobNestedInput
+  movements?: Prisma.MobMovementUpdateManyWithoutMobNestedInput
 }
 
 export type MobUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   members?: Prisma.LivestockUnitUncheckedUpdateManyWithoutMobNestedInput
   grazes?: Prisma.GrazeMobUncheckedUpdateManyWithoutMobNestedInput
+  memberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutMobNestedInput
+  movements?: Prisma.MobMovementUncheckedUpdateManyWithoutMobNestedInput
 }
 
 export type MobCreateManyInput = {
   id?: string
+  farmId: string
   name?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
 }
 
 export type MobUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type MobUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type MobListRelationFilter = {
+  every?: Prisma.MobWhereInput
+  some?: Prisma.MobWhereInput
+  none?: Prisma.MobWhereInput
+}
+
+export type MobOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type MobCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  farmId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   comment?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type MobMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  farmId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   comment?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type MobMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  farmId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   comment?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type MobScalarRelationFilter = {
@@ -283,6 +375,48 @@ export type MobScalarRelationFilter = {
 export type MobNullableScalarRelationFilter = {
   is?: Prisma.MobWhereInput | null
   isNot?: Prisma.MobWhereInput | null
+}
+
+export type MobCreateNestedManyWithoutFarmInput = {
+  create?: Prisma.XOR<Prisma.MobCreateWithoutFarmInput, Prisma.MobUncheckedCreateWithoutFarmInput> | Prisma.MobCreateWithoutFarmInput[] | Prisma.MobUncheckedCreateWithoutFarmInput[]
+  connectOrCreate?: Prisma.MobCreateOrConnectWithoutFarmInput | Prisma.MobCreateOrConnectWithoutFarmInput[]
+  createMany?: Prisma.MobCreateManyFarmInputEnvelope
+  connect?: Prisma.MobWhereUniqueInput | Prisma.MobWhereUniqueInput[]
+}
+
+export type MobUncheckedCreateNestedManyWithoutFarmInput = {
+  create?: Prisma.XOR<Prisma.MobCreateWithoutFarmInput, Prisma.MobUncheckedCreateWithoutFarmInput> | Prisma.MobCreateWithoutFarmInput[] | Prisma.MobUncheckedCreateWithoutFarmInput[]
+  connectOrCreate?: Prisma.MobCreateOrConnectWithoutFarmInput | Prisma.MobCreateOrConnectWithoutFarmInput[]
+  createMany?: Prisma.MobCreateManyFarmInputEnvelope
+  connect?: Prisma.MobWhereUniqueInput | Prisma.MobWhereUniqueInput[]
+}
+
+export type MobUpdateManyWithoutFarmNestedInput = {
+  create?: Prisma.XOR<Prisma.MobCreateWithoutFarmInput, Prisma.MobUncheckedCreateWithoutFarmInput> | Prisma.MobCreateWithoutFarmInput[] | Prisma.MobUncheckedCreateWithoutFarmInput[]
+  connectOrCreate?: Prisma.MobCreateOrConnectWithoutFarmInput | Prisma.MobCreateOrConnectWithoutFarmInput[]
+  upsert?: Prisma.MobUpsertWithWhereUniqueWithoutFarmInput | Prisma.MobUpsertWithWhereUniqueWithoutFarmInput[]
+  createMany?: Prisma.MobCreateManyFarmInputEnvelope
+  set?: Prisma.MobWhereUniqueInput | Prisma.MobWhereUniqueInput[]
+  disconnect?: Prisma.MobWhereUniqueInput | Prisma.MobWhereUniqueInput[]
+  delete?: Prisma.MobWhereUniqueInput | Prisma.MobWhereUniqueInput[]
+  connect?: Prisma.MobWhereUniqueInput | Prisma.MobWhereUniqueInput[]
+  update?: Prisma.MobUpdateWithWhereUniqueWithoutFarmInput | Prisma.MobUpdateWithWhereUniqueWithoutFarmInput[]
+  updateMany?: Prisma.MobUpdateManyWithWhereWithoutFarmInput | Prisma.MobUpdateManyWithWhereWithoutFarmInput[]
+  deleteMany?: Prisma.MobScalarWhereInput | Prisma.MobScalarWhereInput[]
+}
+
+export type MobUncheckedUpdateManyWithoutFarmNestedInput = {
+  create?: Prisma.XOR<Prisma.MobCreateWithoutFarmInput, Prisma.MobUncheckedCreateWithoutFarmInput> | Prisma.MobCreateWithoutFarmInput[] | Prisma.MobUncheckedCreateWithoutFarmInput[]
+  connectOrCreate?: Prisma.MobCreateOrConnectWithoutFarmInput | Prisma.MobCreateOrConnectWithoutFarmInput[]
+  upsert?: Prisma.MobUpsertWithWhereUniqueWithoutFarmInput | Prisma.MobUpsertWithWhereUniqueWithoutFarmInput[]
+  createMany?: Prisma.MobCreateManyFarmInputEnvelope
+  set?: Prisma.MobWhereUniqueInput | Prisma.MobWhereUniqueInput[]
+  disconnect?: Prisma.MobWhereUniqueInput | Prisma.MobWhereUniqueInput[]
+  delete?: Prisma.MobWhereUniqueInput | Prisma.MobWhereUniqueInput[]
+  connect?: Prisma.MobWhereUniqueInput | Prisma.MobWhereUniqueInput[]
+  update?: Prisma.MobUpdateWithWhereUniqueWithoutFarmInput | Prisma.MobUpdateWithWhereUniqueWithoutFarmInput[]
+  updateMany?: Prisma.MobUpdateManyWithWhereWithoutFarmInput | Prisma.MobUpdateManyWithWhereWithoutFarmInput[]
+  deleteMany?: Prisma.MobScalarWhereInput | Prisma.MobScalarWhereInput[]
 }
 
 export type MobCreateNestedOneWithoutGrazesInput = {
@@ -315,18 +449,118 @@ export type MobUpdateOneWithoutMembersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MobUpdateToOneWithWhereWithoutMembersInput, Prisma.MobUpdateWithoutMembersInput>, Prisma.MobUncheckedUpdateWithoutMembersInput>
 }
 
+export type MobCreateNestedOneWithoutMembershipsInput = {
+  create?: Prisma.XOR<Prisma.MobCreateWithoutMembershipsInput, Prisma.MobUncheckedCreateWithoutMembershipsInput>
+  connectOrCreate?: Prisma.MobCreateOrConnectWithoutMembershipsInput
+  connect?: Prisma.MobWhereUniqueInput
+}
+
+export type MobUpdateOneRequiredWithoutMembershipsNestedInput = {
+  create?: Prisma.XOR<Prisma.MobCreateWithoutMembershipsInput, Prisma.MobUncheckedCreateWithoutMembershipsInput>
+  connectOrCreate?: Prisma.MobCreateOrConnectWithoutMembershipsInput
+  upsert?: Prisma.MobUpsertWithoutMembershipsInput
+  connect?: Prisma.MobWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MobUpdateToOneWithWhereWithoutMembershipsInput, Prisma.MobUpdateWithoutMembershipsInput>, Prisma.MobUncheckedUpdateWithoutMembershipsInput>
+}
+
+export type MobCreateNestedOneWithoutMovementsInput = {
+  create?: Prisma.XOR<Prisma.MobCreateWithoutMovementsInput, Prisma.MobUncheckedCreateWithoutMovementsInput>
+  connectOrCreate?: Prisma.MobCreateOrConnectWithoutMovementsInput
+  connect?: Prisma.MobWhereUniqueInput
+}
+
+export type MobUpdateOneRequiredWithoutMovementsNestedInput = {
+  create?: Prisma.XOR<Prisma.MobCreateWithoutMovementsInput, Prisma.MobUncheckedCreateWithoutMovementsInput>
+  connectOrCreate?: Prisma.MobCreateOrConnectWithoutMovementsInput
+  upsert?: Prisma.MobUpsertWithoutMovementsInput
+  connect?: Prisma.MobWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MobUpdateToOneWithWhereWithoutMovementsInput, Prisma.MobUpdateWithoutMovementsInput>, Prisma.MobUncheckedUpdateWithoutMovementsInput>
+}
+
+export type MobCreateWithoutFarmInput = {
+  id?: string
+  name?: string | null
+  comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  members?: Prisma.LivestockUnitCreateNestedManyWithoutMobInput
+  grazes?: Prisma.GrazeMobCreateNestedManyWithoutMobInput
+  memberships?: Prisma.MobMembershipCreateNestedManyWithoutMobInput
+  movements?: Prisma.MobMovementCreateNestedManyWithoutMobInput
+}
+
+export type MobUncheckedCreateWithoutFarmInput = {
+  id?: string
+  name?: string | null
+  comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  members?: Prisma.LivestockUnitUncheckedCreateNestedManyWithoutMobInput
+  grazes?: Prisma.GrazeMobUncheckedCreateNestedManyWithoutMobInput
+  memberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutMobInput
+  movements?: Prisma.MobMovementUncheckedCreateNestedManyWithoutMobInput
+}
+
+export type MobCreateOrConnectWithoutFarmInput = {
+  where: Prisma.MobWhereUniqueInput
+  create: Prisma.XOR<Prisma.MobCreateWithoutFarmInput, Prisma.MobUncheckedCreateWithoutFarmInput>
+}
+
+export type MobCreateManyFarmInputEnvelope = {
+  data: Prisma.MobCreateManyFarmInput | Prisma.MobCreateManyFarmInput[]
+  skipDuplicates?: boolean
+}
+
+export type MobUpsertWithWhereUniqueWithoutFarmInput = {
+  where: Prisma.MobWhereUniqueInput
+  update: Prisma.XOR<Prisma.MobUpdateWithoutFarmInput, Prisma.MobUncheckedUpdateWithoutFarmInput>
+  create: Prisma.XOR<Prisma.MobCreateWithoutFarmInput, Prisma.MobUncheckedCreateWithoutFarmInput>
+}
+
+export type MobUpdateWithWhereUniqueWithoutFarmInput = {
+  where: Prisma.MobWhereUniqueInput
+  data: Prisma.XOR<Prisma.MobUpdateWithoutFarmInput, Prisma.MobUncheckedUpdateWithoutFarmInput>
+}
+
+export type MobUpdateManyWithWhereWithoutFarmInput = {
+  where: Prisma.MobScalarWhereInput
+  data: Prisma.XOR<Prisma.MobUpdateManyMutationInput, Prisma.MobUncheckedUpdateManyWithoutFarmInput>
+}
+
+export type MobScalarWhereInput = {
+  AND?: Prisma.MobScalarWhereInput | Prisma.MobScalarWhereInput[]
+  OR?: Prisma.MobScalarWhereInput[]
+  NOT?: Prisma.MobScalarWhereInput | Prisma.MobScalarWhereInput[]
+  id?: Prisma.StringFilter<"Mob"> | string
+  farmId?: Prisma.StringFilter<"Mob"> | string
+  name?: Prisma.StringNullableFilter<"Mob"> | string | null
+  comment?: Prisma.StringNullableFilter<"Mob"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Mob"> | Date | string
+  updatedAt?: Prisma.DateTimeNullableFilter<"Mob"> | Date | string | null
+}
+
 export type MobCreateWithoutGrazesInput = {
   id?: string
   name?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  farm: Prisma.FarmCreateNestedOneWithoutMobsInput
   members?: Prisma.LivestockUnitCreateNestedManyWithoutMobInput
+  memberships?: Prisma.MobMembershipCreateNestedManyWithoutMobInput
+  movements?: Prisma.MobMovementCreateNestedManyWithoutMobInput
 }
 
 export type MobUncheckedCreateWithoutGrazesInput = {
   id?: string
+  farmId: string
   name?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
   members?: Prisma.LivestockUnitUncheckedCreateNestedManyWithoutMobInput
+  memberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutMobInput
+  movements?: Prisma.MobMovementUncheckedCreateNestedManyWithoutMobInput
 }
 
 export type MobCreateOrConnectWithoutGrazesInput = {
@@ -349,28 +583,48 @@ export type MobUpdateWithoutGrazesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  farm?: Prisma.FarmUpdateOneRequiredWithoutMobsNestedInput
   members?: Prisma.LivestockUnitUpdateManyWithoutMobNestedInput
+  memberships?: Prisma.MobMembershipUpdateManyWithoutMobNestedInput
+  movements?: Prisma.MobMovementUpdateManyWithoutMobNestedInput
 }
 
 export type MobUncheckedUpdateWithoutGrazesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   members?: Prisma.LivestockUnitUncheckedUpdateManyWithoutMobNestedInput
+  memberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutMobNestedInput
+  movements?: Prisma.MobMovementUncheckedUpdateManyWithoutMobNestedInput
 }
 
 export type MobCreateWithoutMembersInput = {
   id?: string
   name?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  farm: Prisma.FarmCreateNestedOneWithoutMobsInput
   grazes?: Prisma.GrazeMobCreateNestedManyWithoutMobInput
+  memberships?: Prisma.MobMembershipCreateNestedManyWithoutMobInput
+  movements?: Prisma.MobMovementCreateNestedManyWithoutMobInput
 }
 
 export type MobUncheckedCreateWithoutMembersInput = {
   id?: string
+  farmId: string
   name?: string | null
   comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
   grazes?: Prisma.GrazeMobUncheckedCreateNestedManyWithoutMobInput
+  memberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutMobInput
+  movements?: Prisma.MobMovementUncheckedCreateNestedManyWithoutMobInput
 }
 
 export type MobCreateOrConnectWithoutMembersInput = {
@@ -393,14 +647,192 @@ export type MobUpdateWithoutMembersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  farm?: Prisma.FarmUpdateOneRequiredWithoutMobsNestedInput
   grazes?: Prisma.GrazeMobUpdateManyWithoutMobNestedInput
+  memberships?: Prisma.MobMembershipUpdateManyWithoutMobNestedInput
+  movements?: Prisma.MobMovementUpdateManyWithoutMobNestedInput
 }
 
 export type MobUncheckedUpdateWithoutMembersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   grazes?: Prisma.GrazeMobUncheckedUpdateManyWithoutMobNestedInput
+  memberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutMobNestedInput
+  movements?: Prisma.MobMovementUncheckedUpdateManyWithoutMobNestedInput
+}
+
+export type MobCreateWithoutMembershipsInput = {
+  id?: string
+  name?: string | null
+  comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  farm: Prisma.FarmCreateNestedOneWithoutMobsInput
+  members?: Prisma.LivestockUnitCreateNestedManyWithoutMobInput
+  grazes?: Prisma.GrazeMobCreateNestedManyWithoutMobInput
+  movements?: Prisma.MobMovementCreateNestedManyWithoutMobInput
+}
+
+export type MobUncheckedCreateWithoutMembershipsInput = {
+  id?: string
+  farmId: string
+  name?: string | null
+  comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  members?: Prisma.LivestockUnitUncheckedCreateNestedManyWithoutMobInput
+  grazes?: Prisma.GrazeMobUncheckedCreateNestedManyWithoutMobInput
+  movements?: Prisma.MobMovementUncheckedCreateNestedManyWithoutMobInput
+}
+
+export type MobCreateOrConnectWithoutMembershipsInput = {
+  where: Prisma.MobWhereUniqueInput
+  create: Prisma.XOR<Prisma.MobCreateWithoutMembershipsInput, Prisma.MobUncheckedCreateWithoutMembershipsInput>
+}
+
+export type MobUpsertWithoutMembershipsInput = {
+  update: Prisma.XOR<Prisma.MobUpdateWithoutMembershipsInput, Prisma.MobUncheckedUpdateWithoutMembershipsInput>
+  create: Prisma.XOR<Prisma.MobCreateWithoutMembershipsInput, Prisma.MobUncheckedCreateWithoutMembershipsInput>
+  where?: Prisma.MobWhereInput
+}
+
+export type MobUpdateToOneWithWhereWithoutMembershipsInput = {
+  where?: Prisma.MobWhereInput
+  data: Prisma.XOR<Prisma.MobUpdateWithoutMembershipsInput, Prisma.MobUncheckedUpdateWithoutMembershipsInput>
+}
+
+export type MobUpdateWithoutMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  farm?: Prisma.FarmUpdateOneRequiredWithoutMobsNestedInput
+  members?: Prisma.LivestockUnitUpdateManyWithoutMobNestedInput
+  grazes?: Prisma.GrazeMobUpdateManyWithoutMobNestedInput
+  movements?: Prisma.MobMovementUpdateManyWithoutMobNestedInput
+}
+
+export type MobUncheckedUpdateWithoutMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  members?: Prisma.LivestockUnitUncheckedUpdateManyWithoutMobNestedInput
+  grazes?: Prisma.GrazeMobUncheckedUpdateManyWithoutMobNestedInput
+  movements?: Prisma.MobMovementUncheckedUpdateManyWithoutMobNestedInput
+}
+
+export type MobCreateWithoutMovementsInput = {
+  id?: string
+  name?: string | null
+  comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  farm: Prisma.FarmCreateNestedOneWithoutMobsInput
+  members?: Prisma.LivestockUnitCreateNestedManyWithoutMobInput
+  grazes?: Prisma.GrazeMobCreateNestedManyWithoutMobInput
+  memberships?: Prisma.MobMembershipCreateNestedManyWithoutMobInput
+}
+
+export type MobUncheckedCreateWithoutMovementsInput = {
+  id?: string
+  farmId: string
+  name?: string | null
+  comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  members?: Prisma.LivestockUnitUncheckedCreateNestedManyWithoutMobInput
+  grazes?: Prisma.GrazeMobUncheckedCreateNestedManyWithoutMobInput
+  memberships?: Prisma.MobMembershipUncheckedCreateNestedManyWithoutMobInput
+}
+
+export type MobCreateOrConnectWithoutMovementsInput = {
+  where: Prisma.MobWhereUniqueInput
+  create: Prisma.XOR<Prisma.MobCreateWithoutMovementsInput, Prisma.MobUncheckedCreateWithoutMovementsInput>
+}
+
+export type MobUpsertWithoutMovementsInput = {
+  update: Prisma.XOR<Prisma.MobUpdateWithoutMovementsInput, Prisma.MobUncheckedUpdateWithoutMovementsInput>
+  create: Prisma.XOR<Prisma.MobCreateWithoutMovementsInput, Prisma.MobUncheckedCreateWithoutMovementsInput>
+  where?: Prisma.MobWhereInput
+}
+
+export type MobUpdateToOneWithWhereWithoutMovementsInput = {
+  where?: Prisma.MobWhereInput
+  data: Prisma.XOR<Prisma.MobUpdateWithoutMovementsInput, Prisma.MobUncheckedUpdateWithoutMovementsInput>
+}
+
+export type MobUpdateWithoutMovementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  farm?: Prisma.FarmUpdateOneRequiredWithoutMobsNestedInput
+  members?: Prisma.LivestockUnitUpdateManyWithoutMobNestedInput
+  grazes?: Prisma.GrazeMobUpdateManyWithoutMobNestedInput
+  memberships?: Prisma.MobMembershipUpdateManyWithoutMobNestedInput
+}
+
+export type MobUncheckedUpdateWithoutMovementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  members?: Prisma.LivestockUnitUncheckedUpdateManyWithoutMobNestedInput
+  grazes?: Prisma.GrazeMobUncheckedUpdateManyWithoutMobNestedInput
+  memberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutMobNestedInput
+}
+
+export type MobCreateManyFarmInput = {
+  id?: string
+  name?: string | null
+  comment?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+}
+
+export type MobUpdateWithoutFarmInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  members?: Prisma.LivestockUnitUpdateManyWithoutMobNestedInput
+  grazes?: Prisma.GrazeMobUpdateManyWithoutMobNestedInput
+  memberships?: Prisma.MobMembershipUpdateManyWithoutMobNestedInput
+  movements?: Prisma.MobMovementUpdateManyWithoutMobNestedInput
+}
+
+export type MobUncheckedUpdateWithoutFarmInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  members?: Prisma.LivestockUnitUncheckedUpdateManyWithoutMobNestedInput
+  grazes?: Prisma.GrazeMobUncheckedUpdateManyWithoutMobNestedInput
+  memberships?: Prisma.MobMembershipUncheckedUpdateManyWithoutMobNestedInput
+  movements?: Prisma.MobMovementUncheckedUpdateManyWithoutMobNestedInput
+}
+
+export type MobUncheckedUpdateManyWithoutFarmInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -411,11 +843,15 @@ export type MobUncheckedUpdateWithoutMembersInput = {
 export type MobCountOutputType = {
   members: number
   grazes: number
+  memberships: number
+  movements: number
 }
 
 export type MobCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   members?: boolean | MobCountOutputTypeCountMembersArgs
   grazes?: boolean | MobCountOutputTypeCountGrazesArgs
+  memberships?: boolean | MobCountOutputTypeCountMembershipsArgs
+  movements?: boolean | MobCountOutputTypeCountMovementsArgs
 }
 
 /**
@@ -442,53 +878,97 @@ export type MobCountOutputTypeCountGrazesArgs<ExtArgs extends runtime.Types.Exte
   where?: Prisma.GrazeMobWhereInput
 }
 
+/**
+ * MobCountOutputType without action
+ */
+export type MobCountOutputTypeCountMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MobMembershipWhereInput
+}
+
+/**
+ * MobCountOutputType without action
+ */
+export type MobCountOutputTypeCountMovementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MobMovementWhereInput
+}
+
 
 export type MobSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  farmId?: boolean
   name?: boolean
   comment?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   members?: boolean | Prisma.Mob$membersArgs<ExtArgs>
   grazes?: boolean | Prisma.Mob$grazesArgs<ExtArgs>
+  memberships?: boolean | Prisma.Mob$membershipsArgs<ExtArgs>
+  movements?: boolean | Prisma.Mob$movementsArgs<ExtArgs>
   _count?: boolean | Prisma.MobCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mob"]>
 
 export type MobSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  farmId?: boolean
   name?: boolean
   comment?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mob"]>
 
 export type MobSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  farmId?: boolean
   name?: boolean
   comment?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mob"]>
 
 export type MobSelectScalar = {
   id?: boolean
+  farmId?: boolean
   name?: boolean
   comment?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type MobOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "comment", ExtArgs["result"]["mob"]>
+export type MobOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "name" | "comment" | "createdAt" | "updatedAt", ExtArgs["result"]["mob"]>
 export type MobInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   members?: boolean | Prisma.Mob$membersArgs<ExtArgs>
   grazes?: boolean | Prisma.Mob$grazesArgs<ExtArgs>
+  memberships?: boolean | Prisma.Mob$membershipsArgs<ExtArgs>
+  movements?: boolean | Prisma.Mob$movementsArgs<ExtArgs>
   _count?: boolean | Prisma.MobCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type MobIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type MobIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type MobIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
+}
+export type MobIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
+}
 
 export type $MobPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Mob"
   objects: {
+    farm: Prisma.$FarmPayload<ExtArgs>
     members: Prisma.$LivestockUnitPayload<ExtArgs>[]
     grazes: Prisma.$GrazeMobPayload<ExtArgs>[]
+    memberships: Prisma.$MobMembershipPayload<ExtArgs>[]
+    movements: Prisma.$MobMovementPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    farmId: string
     name: string | null
     comment: string | null
+    createdAt: Date
+    updatedAt: Date | null
   }, ExtArgs["result"]["mob"]>
   composites: {}
 }
@@ -883,8 +1363,11 @@ readonly fields: MobFieldRefs;
  */
 export interface Prisma__MobClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  farm<T extends Prisma.FarmDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FarmDefaultArgs<ExtArgs>>): Prisma.Prisma__FarmClient<runtime.Types.Result.GetResult<Prisma.$FarmPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   members<T extends Prisma.Mob$membersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Mob$membersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LivestockUnitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   grazes<T extends Prisma.Mob$grazesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Mob$grazesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GrazeMobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  memberships<T extends Prisma.Mob$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Mob$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MobMembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  movements<T extends Prisma.Mob$movementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Mob$movementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MobMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -915,8 +1398,11 @@ export interface Prisma__MobClient<T, Null = never, ExtArgs extends runtime.Type
  */
 export interface MobFieldRefs {
   readonly id: Prisma.FieldRef<"Mob", 'String'>
+  readonly farmId: Prisma.FieldRef<"Mob", 'String'>
   readonly name: Prisma.FieldRef<"Mob", 'String'>
   readonly comment: Prisma.FieldRef<"Mob", 'String'>
+  readonly createdAt: Prisma.FieldRef<"Mob", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Mob", 'DateTime'>
 }
     
 
@@ -1140,7 +1626,7 @@ export type MobCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   /**
    * The data needed to create a Mob.
    */
-  data?: Prisma.XOR<Prisma.MobCreateInput, Prisma.MobUncheckedCreateInput>
+  data: Prisma.XOR<Prisma.MobCreateInput, Prisma.MobUncheckedCreateInput>
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
 
@@ -1172,6 +1658,10 @@ export type MobCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.
    */
   data: Prisma.MobCreateManyInput | Prisma.MobCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MobIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1243,6 +1733,10 @@ export type MobUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many Mobs to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MobIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1359,6 +1853,54 @@ export type Mob$grazesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.GrazeMobScalarFieldEnum | Prisma.GrazeMobScalarFieldEnum[]
+}
+
+/**
+ * Mob.memberships
+ */
+export type Mob$membershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MobMembership
+   */
+  select?: Prisma.MobMembershipSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MobMembership
+   */
+  omit?: Prisma.MobMembershipOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MobMembershipInclude<ExtArgs> | null
+  where?: Prisma.MobMembershipWhereInput
+  orderBy?: Prisma.MobMembershipOrderByWithRelationInput | Prisma.MobMembershipOrderByWithRelationInput[]
+  cursor?: Prisma.MobMembershipWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MobMembershipScalarFieldEnum | Prisma.MobMembershipScalarFieldEnum[]
+}
+
+/**
+ * Mob.movements
+ */
+export type Mob$movementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MobMovement
+   */
+  select?: Prisma.MobMovementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MobMovement
+   */
+  omit?: Prisma.MobMovementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MobMovementInclude<ExtArgs> | null
+  where?: Prisma.MobMovementWhereInput
+  orderBy?: Prisma.MobMovementOrderByWithRelationInput | Prisma.MobMovementOrderByWithRelationInput[]
+  cursor?: Prisma.MobMovementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MobMovementScalarFieldEnum | Prisma.MobMovementScalarFieldEnum[]
 }
 
 /**

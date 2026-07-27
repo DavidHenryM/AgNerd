@@ -138,6 +138,36 @@ export type LivestockUnitPosition = Prisma.LivestockUnitPositionModel
  */
 export type GeoPoint = Prisma.GeoPointModel
 /**
+ * Model Gate
+ * 
+ */
+export type Gate = Prisma.GateModel
+/**
+ * Model GateStateChange
+ * 
+ */
+export type GateStateChange = Prisma.GateStateChangeModel
+/**
+ * Model MobMembership
+ * 
+ */
+export type MobMembership = Prisma.MobMembershipModel
+/**
+ * Model MobMovement
+ * 
+ */
+export type MobMovement = Prisma.MobMovementModel
+/**
+ * Model PaddockFeedRecord
+ * 
+ */
+export type PaddockFeedRecord = Prisma.PaddockFeedRecordModel
+/**
+ * Model PaddockWorkEvent
+ * 
+ */
+export type PaddockWorkEvent = Prisma.PaddockWorkEventModel
+/**
  * Model WeightRecord
  * 
  */

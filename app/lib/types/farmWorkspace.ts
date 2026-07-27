@@ -86,7 +86,7 @@ export type FarmWorkspaceMovement = {
 
 export type FarmWorkspaceMob = {
   id: string
-  name: string
+  name: string | null
   comment: string | null
   members: FarmWorkspaceLivestock[]
   memberships: FarmWorkspaceMembership[]
