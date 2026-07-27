@@ -13,26 +13,28 @@ datasource db {
 }
 
 model Farm {
-  id               String        @id @default(cuid())
-  name             String
-  slug             String?       @unique
-  businessName     String?
-  lotSectionPlan   String[]
-  abn              String?
-  acn              String?
-  pic              String?
-  // livestockUnits LivestockUnit[]
-  // paddocks       Paddock[]
-  locationCentre   GeoPoint?     @relation(fields: [locationCentreId], references: [id])
-  locationCentreId String?
-  areaHa           Float?
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime?     @updatedAt
-  users            User[]
-  studs            Stud[]
-  onFarms          OnFarm[]
-  organization     Organization? @relation(fields: [organizationId], references: [id])
-  organizationId   String?
+  id                 String        @id @default(cuid())
+  name               String
+  slug               String?       @unique
+  businessName       String?
+  lotSectionPlan     String[]
+  abn                String?
+  acn                String?
+  pic                String?
+  locationCentre     GeoPoint?     @relation("FarmLocationCentre", fields: [locationCentreId], references: [id])
+  locationCentreId   String?
+  boundaryPoints     GeoPoint[]    @relation("FarmBoundaryPoints")
+  areaHa             Float?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime?     @updatedAt
+  users              User[]
+  studs              Stud[]
+  onFarms            OnFarm[]
+  paddocks           Paddock[]
+  mobs               Mob[]
+  gates              Gate[]
+  organization       Organization? @relation(fields: [organizationId], references: [id])
+  organizationId     String?
 }
 
 model User {
@@ -101,11 +103,17 @@ model Breed {
 }
 
 model Mob {
-  id      String          @id @default(cuid())
-  name    String?
-  members LivestockUnit[]
-  comment String?
-  grazes  GrazeMob[]
+  id          String          @id @default(cuid())
+  farm        Farm            @relation(fields: [farmId], references: [id])
+  farmId      String
+  name        String
+  members     LivestockUnit[]
+  comment     String?
+  grazes      GrazeMob[]
+  memberships MobMembership[]
+  movements   MobMovement[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime?       @updatedAt
 }
 
 model GrazeMob {
@@ -153,6 +161,7 @@ model LivestockUnit {
   onFarmHistory                OnFarm[]
   birthStud                    Stud[]
   ownershipHistory             Ownership[]
+  mobMemberships               MobMembership[]
 }
 
 model OnFarm {
@@ -367,6 +376,23 @@ enum ApplicationMethod {
   INTRAVENUS_INJECTION
 }
 
+enum GateState {
+  OPEN
+  CLOSED
+}
+
+enum FeedSourceType {
+  MANUAL
+  DERIVED_ESTIMATE
+}
+
+enum PaddockWorkType {
+  CHEMICAL_TREATMENT
+  LIME
+  SEED_SOWING
+  FERTILISER
+}
+
 enum VisualIdColour {
   WHITE
   ORANGE
@@ -380,14 +406,23 @@ enum VisualIdColour {
 
 model Paddock {
   id                      String                 @id @default(cuid())
+  farm                    Farm                   @relation(fields: [farmId], references: [id])
+  farmId                  String
   name                    String
-  polygon                 GeoPoint[]
+  description             String?
+  polygon                 GeoPoint[]             @relation("PaddockBoundaryPoints")
   areaHa                  Float
   graze                   Graze[]
   livestockUnitPosition   LivestockUnitPosition? @relation(fields: [livestockUnitPositionId], references: [id])
   livestockUnitPositionId String?                @unique
-  // farm                    Farm                   @relation(fields: [farmId], references: [id])
-  // farmId                  Int                    @unique
+  outgoingGates           Gate[]                 @relation("GateFromPaddock")
+  incomingGates           Gate[]                 @relation("GateToPaddock")
+  feedRecords             PaddockFeedRecord[]
+  workEvents              PaddockWorkEvent[]
+  arrivals                MobMovement[]          @relation("MobMovementDestination")
+  departures              MobMovement[]          @relation("MobMovementOrigin")
+  createdAt               DateTime               @default(now())
+  updatedAt               DateTime?              @updatedAt
 }
 
 model LivestockUnitPosition {
@@ -402,12 +437,98 @@ model GeoPoint {
   latitude                Float
   longitude               Float
   heading                 Float?
-  paddock                 Paddock?               @relation(fields: [paddockId], references: [id])
+  sortOrder               Int                    @default(0)
+  paddock                 Paddock?               @relation("PaddockBoundaryPoints", fields: [paddockId], references: [id])
   paddockId               String?
   livestockUnitPosition   LivestockUnitPosition? @relation(fields: [livestockUnitPositionId], references: [id])
   livestockUnitPositionId String?                @unique
+  boundaryFarm            Farm?                  @relation("FarmBoundaryPoints", fields: [farmBoundaryId], references: [id])
+  farmBoundaryId          String?
+  farms                   Farm[]                 @relation("FarmLocationCentre")
+}
 
-  farms Farm[]
+model Gate {
+  id            String            @id @default(cuid())
+  farm          Farm              @relation(fields: [farmId], references: [id])
+  farmId        String
+  fromPaddock   Paddock           @relation("GateFromPaddock", fields: [fromPaddockId], references: [id])
+  fromPaddockId String
+  toPaddock     Paddock           @relation("GateToPaddock", fields: [toPaddockId], references: [id])
+  toPaddockId   String
+  name          String?
+  latitude      Float
+  longitude     Float
+  notes         String?
+  stateChanges  GateStateChange[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime?         @updatedAt
+}
+
+model GateStateChange {
+  id         String     @id @default(cuid())
+  gate       Gate       @relation(fields: [gateId], references: [id], onDelete: Cascade)
+  gateId     String
+  state      GateState
+  recordedAt DateTime
+  note       String?
+  createdAt  DateTime   @default(now())
+}
+
+model MobMembership {
+  id              String        @id @default(cuid())
+  mob             Mob           @relation(fields: [mobId], references: [id], onDelete: Cascade)
+  mobId           String
+  livestockUnit   LivestockUnit @relation(fields: [livestockUnitId], references: [id], onDelete: Cascade)
+  livestockUnitId String
+  startDate       DateTime
+  endDate         DateTime?
+  note            String?
+  createdAt       DateTime      @default(now())
+}
+
+model MobMovement {
+  id            String    @id @default(cuid())
+  mob           Mob       @relation(fields: [mobId], references: [id], onDelete: Cascade)
+  mobId         String
+  fromPaddock   Paddock?  @relation("MobMovementOrigin", fields: [fromPaddockId], references: [id])
+  fromPaddockId String?
+  toPaddock     Paddock   @relation("MobMovementDestination", fields: [toPaddockId], references: [id])
+  toPaddockId   String
+  movedAt       DateTime
+  note          String?
+  createdAt     DateTime  @default(now())
+}
+
+model PaddockFeedRecord {
+  id               String         @id @default(cuid())
+  paddock          Paddock        @relation(fields: [paddockId], references: [id], onDelete: Cascade)
+  paddockId        String
+  recordedAt       DateTime
+  feedKgDmPerHa    Float
+  sourceType       FeedSourceType
+  estimateMethod   String?
+  confidencePct    Float?
+  note             String?
+  createdAt        DateTime       @default(now())
+}
+
+model PaddockWorkEvent {
+  id                String          @id @default(cuid())
+  paddock           Paddock         @relation(fields: [paddockId], references: [id], onDelete: Cascade)
+  paddockId         String
+  workType          PaddockWorkType
+  startedAt         DateTime
+  completedAt       DateTime?
+  productName       String?
+  rate              Float?
+  rateUnit          String?
+  totalQuantity     Float?
+  totalQuantityUnit String?
+  cost              Float?
+  operatorName      String?
+  notes             String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime?       @updatedAt
 }
 
 model WeightRecord {
