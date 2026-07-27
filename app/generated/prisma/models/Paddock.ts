@@ -36,23 +36,35 @@ export type PaddockSumAggregateOutputType = {
 
 export type PaddockMinAggregateOutputType = {
   id: string | null
+  farmId: string | null
   name: string | null
+  description: string | null
   areaHa: number | null
   livestockUnitPositionId: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type PaddockMaxAggregateOutputType = {
   id: string | null
+  farmId: string | null
   name: string | null
+  description: string | null
   areaHa: number | null
   livestockUnitPositionId: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type PaddockCountAggregateOutputType = {
   id: number
+  farmId: number
   name: number
+  description: number
   areaHa: number
   livestockUnitPositionId: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -67,23 +79,35 @@ export type PaddockSumAggregateInputType = {
 
 export type PaddockMinAggregateInputType = {
   id?: true
+  farmId?: true
   name?: true
+  description?: true
   areaHa?: true
   livestockUnitPositionId?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type PaddockMaxAggregateInputType = {
   id?: true
+  farmId?: true
   name?: true
+  description?: true
   areaHa?: true
   livestockUnitPositionId?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type PaddockCountAggregateInputType = {
   id?: true
+  farmId?: true
   name?: true
+  description?: true
   areaHa?: true
   livestockUnitPositionId?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -175,9 +199,13 @@ export type PaddockGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type PaddockGroupByOutputType = {
   id: string
+  farmId: string
   name: string
+  description: string | null
   areaHa: number
   livestockUnitPositionId: string | null
+  createdAt: Date
+  updatedAt: Date | null
   _count: PaddockCountAggregateOutputType | null
   _avg: PaddockAvgAggregateOutputType | null
   _sum: PaddockSumAggregateOutputType | null
@@ -205,22 +233,44 @@ export type PaddockWhereInput = {
   OR?: Prisma.PaddockWhereInput[]
   NOT?: Prisma.PaddockWhereInput | Prisma.PaddockWhereInput[]
   id?: Prisma.StringFilter<"Paddock"> | string
+  farmId?: Prisma.StringFilter<"Paddock"> | string
   name?: Prisma.StringFilter<"Paddock"> | string
+  description?: Prisma.StringNullableFilter<"Paddock"> | string | null
   areaHa?: Prisma.FloatFilter<"Paddock"> | number
   livestockUnitPositionId?: Prisma.StringNullableFilter<"Paddock"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Paddock"> | Date | string
+  updatedAt?: Prisma.DateTimeNullableFilter<"Paddock"> | Date | string | null
+  farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   polygon?: Prisma.GeoPointListRelationFilter
   graze?: Prisma.GrazeListRelationFilter
   livestockUnitPosition?: Prisma.XOR<Prisma.LivestockUnitPositionNullableScalarRelationFilter, Prisma.LivestockUnitPositionWhereInput> | null
+  outgoingGates?: Prisma.GateListRelationFilter
+  incomingGates?: Prisma.GateListRelationFilter
+  feedRecords?: Prisma.PaddockFeedRecordListRelationFilter
+  workEvents?: Prisma.PaddockWorkEventListRelationFilter
+  arrivals?: Prisma.MobMovementListRelationFilter
+  departures?: Prisma.MobMovementListRelationFilter
 }
 
 export type PaddockOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  farmId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   areaHa?: Prisma.SortOrder
   livestockUnitPositionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  farm?: Prisma.FarmOrderByWithRelationInput
   polygon?: Prisma.GeoPointOrderByRelationAggregateInput
   graze?: Prisma.GrazeOrderByRelationAggregateInput
   livestockUnitPosition?: Prisma.LivestockUnitPositionOrderByWithRelationInput
+  outgoingGates?: Prisma.GateOrderByRelationAggregateInput
+  incomingGates?: Prisma.GateOrderByRelationAggregateInput
+  feedRecords?: Prisma.PaddockFeedRecordOrderByRelationAggregateInput
+  workEvents?: Prisma.PaddockWorkEventOrderByRelationAggregateInput
+  arrivals?: Prisma.MobMovementOrderByRelationAggregateInput
+  departures?: Prisma.MobMovementOrderByRelationAggregateInput
 }
 
 export type PaddockWhereUniqueInput = Prisma.AtLeast<{
@@ -229,18 +279,33 @@ export type PaddockWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PaddockWhereInput | Prisma.PaddockWhereInput[]
   OR?: Prisma.PaddockWhereInput[]
   NOT?: Prisma.PaddockWhereInput | Prisma.PaddockWhereInput[]
+  farmId?: Prisma.StringFilter<"Paddock"> | string
   name?: Prisma.StringFilter<"Paddock"> | string
+  description?: Prisma.StringNullableFilter<"Paddock"> | string | null
   areaHa?: Prisma.FloatFilter<"Paddock"> | number
+  createdAt?: Prisma.DateTimeFilter<"Paddock"> | Date | string
+  updatedAt?: Prisma.DateTimeNullableFilter<"Paddock"> | Date | string | null
+  farm?: Prisma.XOR<Prisma.FarmScalarRelationFilter, Prisma.FarmWhereInput>
   polygon?: Prisma.GeoPointListRelationFilter
   graze?: Prisma.GrazeListRelationFilter
   livestockUnitPosition?: Prisma.XOR<Prisma.LivestockUnitPositionNullableScalarRelationFilter, Prisma.LivestockUnitPositionWhereInput> | null
+  outgoingGates?: Prisma.GateListRelationFilter
+  incomingGates?: Prisma.GateListRelationFilter
+  feedRecords?: Prisma.PaddockFeedRecordListRelationFilter
+  workEvents?: Prisma.PaddockWorkEventListRelationFilter
+  arrivals?: Prisma.MobMovementListRelationFilter
+  departures?: Prisma.MobMovementListRelationFilter
 }, "id" | "livestockUnitPositionId">
 
 export type PaddockOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  farmId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   areaHa?: Prisma.SortOrder
   livestockUnitPositionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.PaddockCountOrderByAggregateInput
   _avg?: Prisma.PaddockAvgOrderByAggregateInput
   _max?: Prisma.PaddockMaxOrderByAggregateInput
@@ -253,65 +318,130 @@ export type PaddockScalarWhereWithAggregatesInput = {
   OR?: Prisma.PaddockScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PaddockScalarWhereWithAggregatesInput | Prisma.PaddockScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Paddock"> | string
+  farmId?: Prisma.StringWithAggregatesFilter<"Paddock"> | string
   name?: Prisma.StringWithAggregatesFilter<"Paddock"> | string
+  description?: Prisma.StringNullableWithAggregatesFilter<"Paddock"> | string | null
   areaHa?: Prisma.FloatWithAggregatesFilter<"Paddock"> | number
   livestockUnitPositionId?: Prisma.StringNullableWithAggregatesFilter<"Paddock"> | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Paddock"> | Date | string
+  updatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Paddock"> | Date | string | null
 }
 
 export type PaddockCreateInput = {
   id?: string
   name: string
+  description?: string | null
   areaHa: number
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  farm: Prisma.FarmCreateNestedOneWithoutPaddocksInput
   polygon?: Prisma.GeoPointCreateNestedManyWithoutPaddockInput
   graze?: Prisma.GrazeCreateNestedManyWithoutPaddockInput
   livestockUnitPosition?: Prisma.LivestockUnitPositionCreateNestedOneWithoutPaddockInput
+  outgoingGates?: Prisma.GateCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementCreateNestedManyWithoutFromPaddockInput
 }
 
 export type PaddockUncheckedCreateInput = {
   id?: string
+  farmId: string
   name: string
+  description?: string | null
   areaHa: number
   livestockUnitPositionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
   polygon?: Prisma.GeoPointUncheckedCreateNestedManyWithoutPaddockInput
   graze?: Prisma.GrazeUncheckedCreateNestedManyWithoutPaddockInput
+  outgoingGates?: Prisma.GateUncheckedCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateUncheckedCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementUncheckedCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementUncheckedCreateNestedManyWithoutFromPaddockInput
 }
 
 export type PaddockUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  farm?: Prisma.FarmUpdateOneRequiredWithoutPaddocksNestedInput
   polygon?: Prisma.GeoPointUpdateManyWithoutPaddockNestedInput
   graze?: Prisma.GrazeUpdateManyWithoutPaddockNestedInput
   livestockUnitPosition?: Prisma.LivestockUnitPositionUpdateOneWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUpdateManyWithoutFromPaddockNestedInput
 }
 
 export type PaddockUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
   livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   polygon?: Prisma.GeoPointUncheckedUpdateManyWithoutPaddockNestedInput
   graze?: Prisma.GrazeUncheckedUpdateManyWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUncheckedUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUncheckedUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUncheckedUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUncheckedUpdateManyWithoutFromPaddockNestedInput
 }
 
 export type PaddockCreateManyInput = {
   id?: string
+  farmId: string
   name: string
+  description?: string | null
   areaHa: number
   livestockUnitPositionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
 }
 
 export type PaddockUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type PaddockUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
   livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type PaddockListRelationFilter = {
+  every?: Prisma.PaddockWhereInput
+  some?: Prisma.PaddockWhereInput
+  none?: Prisma.PaddockWhereInput
+}
+
+export type PaddockOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type PaddockScalarRelationFilter = {
@@ -321,9 +451,13 @@ export type PaddockScalarRelationFilter = {
 
 export type PaddockCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  farmId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   areaHa?: Prisma.SortOrder
   livestockUnitPositionId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type PaddockAvgOrderByAggregateInput = {
@@ -332,16 +466,24 @@ export type PaddockAvgOrderByAggregateInput = {
 
 export type PaddockMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  farmId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   areaHa?: Prisma.SortOrder
   livestockUnitPositionId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type PaddockMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  farmId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   areaHa?: Prisma.SortOrder
   livestockUnitPositionId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type PaddockSumOrderByAggregateInput = {
@@ -351,6 +493,48 @@ export type PaddockSumOrderByAggregateInput = {
 export type PaddockNullableScalarRelationFilter = {
   is?: Prisma.PaddockWhereInput | null
   isNot?: Prisma.PaddockWhereInput | null
+}
+
+export type PaddockCreateNestedManyWithoutFarmInput = {
+  create?: Prisma.XOR<Prisma.PaddockCreateWithoutFarmInput, Prisma.PaddockUncheckedCreateWithoutFarmInput> | Prisma.PaddockCreateWithoutFarmInput[] | Prisma.PaddockUncheckedCreateWithoutFarmInput[]
+  connectOrCreate?: Prisma.PaddockCreateOrConnectWithoutFarmInput | Prisma.PaddockCreateOrConnectWithoutFarmInput[]
+  createMany?: Prisma.PaddockCreateManyFarmInputEnvelope
+  connect?: Prisma.PaddockWhereUniqueInput | Prisma.PaddockWhereUniqueInput[]
+}
+
+export type PaddockUncheckedCreateNestedManyWithoutFarmInput = {
+  create?: Prisma.XOR<Prisma.PaddockCreateWithoutFarmInput, Prisma.PaddockUncheckedCreateWithoutFarmInput> | Prisma.PaddockCreateWithoutFarmInput[] | Prisma.PaddockUncheckedCreateWithoutFarmInput[]
+  connectOrCreate?: Prisma.PaddockCreateOrConnectWithoutFarmInput | Prisma.PaddockCreateOrConnectWithoutFarmInput[]
+  createMany?: Prisma.PaddockCreateManyFarmInputEnvelope
+  connect?: Prisma.PaddockWhereUniqueInput | Prisma.PaddockWhereUniqueInput[]
+}
+
+export type PaddockUpdateManyWithoutFarmNestedInput = {
+  create?: Prisma.XOR<Prisma.PaddockCreateWithoutFarmInput, Prisma.PaddockUncheckedCreateWithoutFarmInput> | Prisma.PaddockCreateWithoutFarmInput[] | Prisma.PaddockUncheckedCreateWithoutFarmInput[]
+  connectOrCreate?: Prisma.PaddockCreateOrConnectWithoutFarmInput | Prisma.PaddockCreateOrConnectWithoutFarmInput[]
+  upsert?: Prisma.PaddockUpsertWithWhereUniqueWithoutFarmInput | Prisma.PaddockUpsertWithWhereUniqueWithoutFarmInput[]
+  createMany?: Prisma.PaddockCreateManyFarmInputEnvelope
+  set?: Prisma.PaddockWhereUniqueInput | Prisma.PaddockWhereUniqueInput[]
+  disconnect?: Prisma.PaddockWhereUniqueInput | Prisma.PaddockWhereUniqueInput[]
+  delete?: Prisma.PaddockWhereUniqueInput | Prisma.PaddockWhereUniqueInput[]
+  connect?: Prisma.PaddockWhereUniqueInput | Prisma.PaddockWhereUniqueInput[]
+  update?: Prisma.PaddockUpdateWithWhereUniqueWithoutFarmInput | Prisma.PaddockUpdateWithWhereUniqueWithoutFarmInput[]
+  updateMany?: Prisma.PaddockUpdateManyWithWhereWithoutFarmInput | Prisma.PaddockUpdateManyWithWhereWithoutFarmInput[]
+  deleteMany?: Prisma.PaddockScalarWhereInput | Prisma.PaddockScalarWhereInput[]
+}
+
+export type PaddockUncheckedUpdateManyWithoutFarmNestedInput = {
+  create?: Prisma.XOR<Prisma.PaddockCreateWithoutFarmInput, Prisma.PaddockUncheckedCreateWithoutFarmInput> | Prisma.PaddockCreateWithoutFarmInput[] | Prisma.PaddockUncheckedCreateWithoutFarmInput[]
+  connectOrCreate?: Prisma.PaddockCreateOrConnectWithoutFarmInput | Prisma.PaddockCreateOrConnectWithoutFarmInput[]
+  upsert?: Prisma.PaddockUpsertWithWhereUniqueWithoutFarmInput | Prisma.PaddockUpsertWithWhereUniqueWithoutFarmInput[]
+  createMany?: Prisma.PaddockCreateManyFarmInputEnvelope
+  set?: Prisma.PaddockWhereUniqueInput | Prisma.PaddockWhereUniqueInput[]
+  disconnect?: Prisma.PaddockWhereUniqueInput | Prisma.PaddockWhereUniqueInput[]
+  delete?: Prisma.PaddockWhereUniqueInput | Prisma.PaddockWhereUniqueInput[]
+  connect?: Prisma.PaddockWhereUniqueInput | Prisma.PaddockWhereUniqueInput[]
+  update?: Prisma.PaddockUpdateWithWhereUniqueWithoutFarmInput | Prisma.PaddockUpdateWithWhereUniqueWithoutFarmInput[]
+  updateMany?: Prisma.PaddockUpdateManyWithWhereWithoutFarmInput | Prisma.PaddockUpdateManyWithWhereWithoutFarmInput[]
+  deleteMany?: Prisma.PaddockScalarWhereInput | Prisma.PaddockScalarWhereInput[]
 }
 
 export type PaddockCreateNestedOneWithoutGrazeInput = {
@@ -415,20 +599,202 @@ export type PaddockUpdateOneWithoutPolygonNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PaddockUpdateToOneWithWhereWithoutPolygonInput, Prisma.PaddockUpdateWithoutPolygonInput>, Prisma.PaddockUncheckedUpdateWithoutPolygonInput>
 }
 
+export type PaddockCreateNestedOneWithoutOutgoingGatesInput = {
+  create?: Prisma.XOR<Prisma.PaddockCreateWithoutOutgoingGatesInput, Prisma.PaddockUncheckedCreateWithoutOutgoingGatesInput>
+  connectOrCreate?: Prisma.PaddockCreateOrConnectWithoutOutgoingGatesInput
+  connect?: Prisma.PaddockWhereUniqueInput
+}
+
+export type PaddockCreateNestedOneWithoutIncomingGatesInput = {
+  create?: Prisma.XOR<Prisma.PaddockCreateWithoutIncomingGatesInput, Prisma.PaddockUncheckedCreateWithoutIncomingGatesInput>
+  connectOrCreate?: Prisma.PaddockCreateOrConnectWithoutIncomingGatesInput
+  connect?: Prisma.PaddockWhereUniqueInput
+}
+
+export type PaddockUpdateOneRequiredWithoutOutgoingGatesNestedInput = {
+  create?: Prisma.XOR<Prisma.PaddockCreateWithoutOutgoingGatesInput, Prisma.PaddockUncheckedCreateWithoutOutgoingGatesInput>
+  connectOrCreate?: Prisma.PaddockCreateOrConnectWithoutOutgoingGatesInput
+  upsert?: Prisma.PaddockUpsertWithoutOutgoingGatesInput
+  connect?: Prisma.PaddockWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PaddockUpdateToOneWithWhereWithoutOutgoingGatesInput, Prisma.PaddockUpdateWithoutOutgoingGatesInput>, Prisma.PaddockUncheckedUpdateWithoutOutgoingGatesInput>
+}
+
+export type PaddockUpdateOneRequiredWithoutIncomingGatesNestedInput = {
+  create?: Prisma.XOR<Prisma.PaddockCreateWithoutIncomingGatesInput, Prisma.PaddockUncheckedCreateWithoutIncomingGatesInput>
+  connectOrCreate?: Prisma.PaddockCreateOrConnectWithoutIncomingGatesInput
+  upsert?: Prisma.PaddockUpsertWithoutIncomingGatesInput
+  connect?: Prisma.PaddockWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PaddockUpdateToOneWithWhereWithoutIncomingGatesInput, Prisma.PaddockUpdateWithoutIncomingGatesInput>, Prisma.PaddockUncheckedUpdateWithoutIncomingGatesInput>
+}
+
+export type PaddockCreateNestedOneWithoutDeparturesInput = {
+  create?: Prisma.XOR<Prisma.PaddockCreateWithoutDeparturesInput, Prisma.PaddockUncheckedCreateWithoutDeparturesInput>
+  connectOrCreate?: Prisma.PaddockCreateOrConnectWithoutDeparturesInput
+  connect?: Prisma.PaddockWhereUniqueInput
+}
+
+export type PaddockCreateNestedOneWithoutArrivalsInput = {
+  create?: Prisma.XOR<Prisma.PaddockCreateWithoutArrivalsInput, Prisma.PaddockUncheckedCreateWithoutArrivalsInput>
+  connectOrCreate?: Prisma.PaddockCreateOrConnectWithoutArrivalsInput
+  connect?: Prisma.PaddockWhereUniqueInput
+}
+
+export type PaddockUpdateOneWithoutDeparturesNestedInput = {
+  create?: Prisma.XOR<Prisma.PaddockCreateWithoutDeparturesInput, Prisma.PaddockUncheckedCreateWithoutDeparturesInput>
+  connectOrCreate?: Prisma.PaddockCreateOrConnectWithoutDeparturesInput
+  upsert?: Prisma.PaddockUpsertWithoutDeparturesInput
+  disconnect?: Prisma.PaddockWhereInput | boolean
+  delete?: Prisma.PaddockWhereInput | boolean
+  connect?: Prisma.PaddockWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PaddockUpdateToOneWithWhereWithoutDeparturesInput, Prisma.PaddockUpdateWithoutDeparturesInput>, Prisma.PaddockUncheckedUpdateWithoutDeparturesInput>
+}
+
+export type PaddockUpdateOneRequiredWithoutArrivalsNestedInput = {
+  create?: Prisma.XOR<Prisma.PaddockCreateWithoutArrivalsInput, Prisma.PaddockUncheckedCreateWithoutArrivalsInput>
+  connectOrCreate?: Prisma.PaddockCreateOrConnectWithoutArrivalsInput
+  upsert?: Prisma.PaddockUpsertWithoutArrivalsInput
+  connect?: Prisma.PaddockWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PaddockUpdateToOneWithWhereWithoutArrivalsInput, Prisma.PaddockUpdateWithoutArrivalsInput>, Prisma.PaddockUncheckedUpdateWithoutArrivalsInput>
+}
+
+export type PaddockCreateNestedOneWithoutFeedRecordsInput = {
+  create?: Prisma.XOR<Prisma.PaddockCreateWithoutFeedRecordsInput, Prisma.PaddockUncheckedCreateWithoutFeedRecordsInput>
+  connectOrCreate?: Prisma.PaddockCreateOrConnectWithoutFeedRecordsInput
+  connect?: Prisma.PaddockWhereUniqueInput
+}
+
+export type PaddockUpdateOneRequiredWithoutFeedRecordsNestedInput = {
+  create?: Prisma.XOR<Prisma.PaddockCreateWithoutFeedRecordsInput, Prisma.PaddockUncheckedCreateWithoutFeedRecordsInput>
+  connectOrCreate?: Prisma.PaddockCreateOrConnectWithoutFeedRecordsInput
+  upsert?: Prisma.PaddockUpsertWithoutFeedRecordsInput
+  connect?: Prisma.PaddockWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PaddockUpdateToOneWithWhereWithoutFeedRecordsInput, Prisma.PaddockUpdateWithoutFeedRecordsInput>, Prisma.PaddockUncheckedUpdateWithoutFeedRecordsInput>
+}
+
+export type PaddockCreateNestedOneWithoutWorkEventsInput = {
+  create?: Prisma.XOR<Prisma.PaddockCreateWithoutWorkEventsInput, Prisma.PaddockUncheckedCreateWithoutWorkEventsInput>
+  connectOrCreate?: Prisma.PaddockCreateOrConnectWithoutWorkEventsInput
+  connect?: Prisma.PaddockWhereUniqueInput
+}
+
+export type PaddockUpdateOneRequiredWithoutWorkEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.PaddockCreateWithoutWorkEventsInput, Prisma.PaddockUncheckedCreateWithoutWorkEventsInput>
+  connectOrCreate?: Prisma.PaddockCreateOrConnectWithoutWorkEventsInput
+  upsert?: Prisma.PaddockUpsertWithoutWorkEventsInput
+  connect?: Prisma.PaddockWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PaddockUpdateToOneWithWhereWithoutWorkEventsInput, Prisma.PaddockUpdateWithoutWorkEventsInput>, Prisma.PaddockUncheckedUpdateWithoutWorkEventsInput>
+}
+
+export type PaddockCreateWithoutFarmInput = {
+  id?: string
+  name: string
+  description?: string | null
+  areaHa: number
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  polygon?: Prisma.GeoPointCreateNestedManyWithoutPaddockInput
+  graze?: Prisma.GrazeCreateNestedManyWithoutPaddockInput
+  livestockUnitPosition?: Prisma.LivestockUnitPositionCreateNestedOneWithoutPaddockInput
+  outgoingGates?: Prisma.GateCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementCreateNestedManyWithoutFromPaddockInput
+}
+
+export type PaddockUncheckedCreateWithoutFarmInput = {
+  id?: string
+  name: string
+  description?: string | null
+  areaHa: number
+  livestockUnitPositionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  polygon?: Prisma.GeoPointUncheckedCreateNestedManyWithoutPaddockInput
+  graze?: Prisma.GrazeUncheckedCreateNestedManyWithoutPaddockInput
+  outgoingGates?: Prisma.GateUncheckedCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateUncheckedCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementUncheckedCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementUncheckedCreateNestedManyWithoutFromPaddockInput
+}
+
+export type PaddockCreateOrConnectWithoutFarmInput = {
+  where: Prisma.PaddockWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaddockCreateWithoutFarmInput, Prisma.PaddockUncheckedCreateWithoutFarmInput>
+}
+
+export type PaddockCreateManyFarmInputEnvelope = {
+  data: Prisma.PaddockCreateManyFarmInput | Prisma.PaddockCreateManyFarmInput[]
+  skipDuplicates?: boolean
+}
+
+export type PaddockUpsertWithWhereUniqueWithoutFarmInput = {
+  where: Prisma.PaddockWhereUniqueInput
+  update: Prisma.XOR<Prisma.PaddockUpdateWithoutFarmInput, Prisma.PaddockUncheckedUpdateWithoutFarmInput>
+  create: Prisma.XOR<Prisma.PaddockCreateWithoutFarmInput, Prisma.PaddockUncheckedCreateWithoutFarmInput>
+}
+
+export type PaddockUpdateWithWhereUniqueWithoutFarmInput = {
+  where: Prisma.PaddockWhereUniqueInput
+  data: Prisma.XOR<Prisma.PaddockUpdateWithoutFarmInput, Prisma.PaddockUncheckedUpdateWithoutFarmInput>
+}
+
+export type PaddockUpdateManyWithWhereWithoutFarmInput = {
+  where: Prisma.PaddockScalarWhereInput
+  data: Prisma.XOR<Prisma.PaddockUpdateManyMutationInput, Prisma.PaddockUncheckedUpdateManyWithoutFarmInput>
+}
+
+export type PaddockScalarWhereInput = {
+  AND?: Prisma.PaddockScalarWhereInput | Prisma.PaddockScalarWhereInput[]
+  OR?: Prisma.PaddockScalarWhereInput[]
+  NOT?: Prisma.PaddockScalarWhereInput | Prisma.PaddockScalarWhereInput[]
+  id?: Prisma.StringFilter<"Paddock"> | string
+  farmId?: Prisma.StringFilter<"Paddock"> | string
+  name?: Prisma.StringFilter<"Paddock"> | string
+  description?: Prisma.StringNullableFilter<"Paddock"> | string | null
+  areaHa?: Prisma.FloatFilter<"Paddock"> | number
+  livestockUnitPositionId?: Prisma.StringNullableFilter<"Paddock"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Paddock"> | Date | string
+  updatedAt?: Prisma.DateTimeNullableFilter<"Paddock"> | Date | string | null
+}
+
 export type PaddockCreateWithoutGrazeInput = {
   id?: string
   name: string
+  description?: string | null
   areaHa: number
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  farm: Prisma.FarmCreateNestedOneWithoutPaddocksInput
   polygon?: Prisma.GeoPointCreateNestedManyWithoutPaddockInput
   livestockUnitPosition?: Prisma.LivestockUnitPositionCreateNestedOneWithoutPaddockInput
+  outgoingGates?: Prisma.GateCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementCreateNestedManyWithoutFromPaddockInput
 }
 
 export type PaddockUncheckedCreateWithoutGrazeInput = {
   id?: string
+  farmId: string
   name: string
+  description?: string | null
   areaHa: number
   livestockUnitPositionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
   polygon?: Prisma.GeoPointUncheckedCreateNestedManyWithoutPaddockInput
+  outgoingGates?: Prisma.GateUncheckedCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateUncheckedCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementUncheckedCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementUncheckedCreateNestedManyWithoutFromPaddockInput
 }
 
 export type PaddockCreateOrConnectWithoutGrazeInput = {
@@ -450,33 +816,73 @@ export type PaddockUpdateToOneWithWhereWithoutGrazeInput = {
 export type PaddockUpdateWithoutGrazeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  farm?: Prisma.FarmUpdateOneRequiredWithoutPaddocksNestedInput
   polygon?: Prisma.GeoPointUpdateManyWithoutPaddockNestedInput
   livestockUnitPosition?: Prisma.LivestockUnitPositionUpdateOneWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUpdateManyWithoutFromPaddockNestedInput
 }
 
 export type PaddockUncheckedUpdateWithoutGrazeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
   livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   polygon?: Prisma.GeoPointUncheckedUpdateManyWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUncheckedUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUncheckedUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUncheckedUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUncheckedUpdateManyWithoutFromPaddockNestedInput
 }
 
 export type PaddockCreateWithoutLivestockUnitPositionInput = {
   id?: string
   name: string
+  description?: string | null
   areaHa: number
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  farm: Prisma.FarmCreateNestedOneWithoutPaddocksInput
   polygon?: Prisma.GeoPointCreateNestedManyWithoutPaddockInput
   graze?: Prisma.GrazeCreateNestedManyWithoutPaddockInput
+  outgoingGates?: Prisma.GateCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementCreateNestedManyWithoutFromPaddockInput
 }
 
 export type PaddockUncheckedCreateWithoutLivestockUnitPositionInput = {
   id?: string
+  farmId: string
   name: string
+  description?: string | null
   areaHa: number
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
   polygon?: Prisma.GeoPointUncheckedCreateNestedManyWithoutPaddockInput
   graze?: Prisma.GrazeUncheckedCreateNestedManyWithoutPaddockInput
+  outgoingGates?: Prisma.GateUncheckedCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateUncheckedCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementUncheckedCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementUncheckedCreateNestedManyWithoutFromPaddockInput
 }
 
 export type PaddockCreateOrConnectWithoutLivestockUnitPositionInput = {
@@ -498,33 +904,73 @@ export type PaddockUpdateToOneWithWhereWithoutLivestockUnitPositionInput = {
 export type PaddockUpdateWithoutLivestockUnitPositionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  farm?: Prisma.FarmUpdateOneRequiredWithoutPaddocksNestedInput
   polygon?: Prisma.GeoPointUpdateManyWithoutPaddockNestedInput
   graze?: Prisma.GrazeUpdateManyWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUpdateManyWithoutFromPaddockNestedInput
 }
 
 export type PaddockUncheckedUpdateWithoutLivestockUnitPositionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   polygon?: Prisma.GeoPointUncheckedUpdateManyWithoutPaddockNestedInput
   graze?: Prisma.GrazeUncheckedUpdateManyWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUncheckedUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUncheckedUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUncheckedUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUncheckedUpdateManyWithoutFromPaddockNestedInput
 }
 
 export type PaddockCreateWithoutPolygonInput = {
   id?: string
   name: string
+  description?: string | null
   areaHa: number
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  farm: Prisma.FarmCreateNestedOneWithoutPaddocksInput
   graze?: Prisma.GrazeCreateNestedManyWithoutPaddockInput
   livestockUnitPosition?: Prisma.LivestockUnitPositionCreateNestedOneWithoutPaddockInput
+  outgoingGates?: Prisma.GateCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementCreateNestedManyWithoutFromPaddockInput
 }
 
 export type PaddockUncheckedCreateWithoutPolygonInput = {
   id?: string
+  farmId: string
   name: string
+  description?: string | null
   areaHa: number
   livestockUnitPositionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
   graze?: Prisma.GrazeUncheckedCreateNestedManyWithoutPaddockInput
+  outgoingGates?: Prisma.GateUncheckedCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateUncheckedCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementUncheckedCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementUncheckedCreateNestedManyWithoutFromPaddockInput
 }
 
 export type PaddockCreateOrConnectWithoutPolygonInput = {
@@ -546,17 +992,621 @@ export type PaddockUpdateToOneWithWhereWithoutPolygonInput = {
 export type PaddockUpdateWithoutPolygonInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  farm?: Prisma.FarmUpdateOneRequiredWithoutPaddocksNestedInput
   graze?: Prisma.GrazeUpdateManyWithoutPaddockNestedInput
   livestockUnitPosition?: Prisma.LivestockUnitPositionUpdateOneWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUpdateManyWithoutFromPaddockNestedInput
 }
 
 export type PaddockUncheckedUpdateWithoutPolygonInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
   livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   graze?: Prisma.GrazeUncheckedUpdateManyWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUncheckedUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUncheckedUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUncheckedUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUncheckedUpdateManyWithoutFromPaddockNestedInput
+}
+
+export type PaddockCreateWithoutOutgoingGatesInput = {
+  id?: string
+  name: string
+  description?: string | null
+  areaHa: number
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  farm: Prisma.FarmCreateNestedOneWithoutPaddocksInput
+  polygon?: Prisma.GeoPointCreateNestedManyWithoutPaddockInput
+  graze?: Prisma.GrazeCreateNestedManyWithoutPaddockInput
+  livestockUnitPosition?: Prisma.LivestockUnitPositionCreateNestedOneWithoutPaddockInput
+  incomingGates?: Prisma.GateCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementCreateNestedManyWithoutFromPaddockInput
+}
+
+export type PaddockUncheckedCreateWithoutOutgoingGatesInput = {
+  id?: string
+  farmId: string
+  name: string
+  description?: string | null
+  areaHa: number
+  livestockUnitPositionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  polygon?: Prisma.GeoPointUncheckedCreateNestedManyWithoutPaddockInput
+  graze?: Prisma.GrazeUncheckedCreateNestedManyWithoutPaddockInput
+  incomingGates?: Prisma.GateUncheckedCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementUncheckedCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementUncheckedCreateNestedManyWithoutFromPaddockInput
+}
+
+export type PaddockCreateOrConnectWithoutOutgoingGatesInput = {
+  where: Prisma.PaddockWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaddockCreateWithoutOutgoingGatesInput, Prisma.PaddockUncheckedCreateWithoutOutgoingGatesInput>
+}
+
+export type PaddockCreateWithoutIncomingGatesInput = {
+  id?: string
+  name: string
+  description?: string | null
+  areaHa: number
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  farm: Prisma.FarmCreateNestedOneWithoutPaddocksInput
+  polygon?: Prisma.GeoPointCreateNestedManyWithoutPaddockInput
+  graze?: Prisma.GrazeCreateNestedManyWithoutPaddockInput
+  livestockUnitPosition?: Prisma.LivestockUnitPositionCreateNestedOneWithoutPaddockInput
+  outgoingGates?: Prisma.GateCreateNestedManyWithoutFromPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementCreateNestedManyWithoutFromPaddockInput
+}
+
+export type PaddockUncheckedCreateWithoutIncomingGatesInput = {
+  id?: string
+  farmId: string
+  name: string
+  description?: string | null
+  areaHa: number
+  livestockUnitPositionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  polygon?: Prisma.GeoPointUncheckedCreateNestedManyWithoutPaddockInput
+  graze?: Prisma.GrazeUncheckedCreateNestedManyWithoutPaddockInput
+  outgoingGates?: Prisma.GateUncheckedCreateNestedManyWithoutFromPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementUncheckedCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementUncheckedCreateNestedManyWithoutFromPaddockInput
+}
+
+export type PaddockCreateOrConnectWithoutIncomingGatesInput = {
+  where: Prisma.PaddockWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaddockCreateWithoutIncomingGatesInput, Prisma.PaddockUncheckedCreateWithoutIncomingGatesInput>
+}
+
+export type PaddockUpsertWithoutOutgoingGatesInput = {
+  update: Prisma.XOR<Prisma.PaddockUpdateWithoutOutgoingGatesInput, Prisma.PaddockUncheckedUpdateWithoutOutgoingGatesInput>
+  create: Prisma.XOR<Prisma.PaddockCreateWithoutOutgoingGatesInput, Prisma.PaddockUncheckedCreateWithoutOutgoingGatesInput>
+  where?: Prisma.PaddockWhereInput
+}
+
+export type PaddockUpdateToOneWithWhereWithoutOutgoingGatesInput = {
+  where?: Prisma.PaddockWhereInput
+  data: Prisma.XOR<Prisma.PaddockUpdateWithoutOutgoingGatesInput, Prisma.PaddockUncheckedUpdateWithoutOutgoingGatesInput>
+}
+
+export type PaddockUpdateWithoutOutgoingGatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  farm?: Prisma.FarmUpdateOneRequiredWithoutPaddocksNestedInput
+  polygon?: Prisma.GeoPointUpdateManyWithoutPaddockNestedInput
+  graze?: Prisma.GrazeUpdateManyWithoutPaddockNestedInput
+  livestockUnitPosition?: Prisma.LivestockUnitPositionUpdateOneWithoutPaddockNestedInput
+  incomingGates?: Prisma.GateUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUpdateManyWithoutFromPaddockNestedInput
+}
+
+export type PaddockUncheckedUpdateWithoutOutgoingGatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  polygon?: Prisma.GeoPointUncheckedUpdateManyWithoutPaddockNestedInput
+  graze?: Prisma.GrazeUncheckedUpdateManyWithoutPaddockNestedInput
+  incomingGates?: Prisma.GateUncheckedUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUncheckedUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUncheckedUpdateManyWithoutFromPaddockNestedInput
+}
+
+export type PaddockUpsertWithoutIncomingGatesInput = {
+  update: Prisma.XOR<Prisma.PaddockUpdateWithoutIncomingGatesInput, Prisma.PaddockUncheckedUpdateWithoutIncomingGatesInput>
+  create: Prisma.XOR<Prisma.PaddockCreateWithoutIncomingGatesInput, Prisma.PaddockUncheckedCreateWithoutIncomingGatesInput>
+  where?: Prisma.PaddockWhereInput
+}
+
+export type PaddockUpdateToOneWithWhereWithoutIncomingGatesInput = {
+  where?: Prisma.PaddockWhereInput
+  data: Prisma.XOR<Prisma.PaddockUpdateWithoutIncomingGatesInput, Prisma.PaddockUncheckedUpdateWithoutIncomingGatesInput>
+}
+
+export type PaddockUpdateWithoutIncomingGatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  farm?: Prisma.FarmUpdateOneRequiredWithoutPaddocksNestedInput
+  polygon?: Prisma.GeoPointUpdateManyWithoutPaddockNestedInput
+  graze?: Prisma.GrazeUpdateManyWithoutPaddockNestedInput
+  livestockUnitPosition?: Prisma.LivestockUnitPositionUpdateOneWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUpdateManyWithoutFromPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUpdateManyWithoutFromPaddockNestedInput
+}
+
+export type PaddockUncheckedUpdateWithoutIncomingGatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  polygon?: Prisma.GeoPointUncheckedUpdateManyWithoutPaddockNestedInput
+  graze?: Prisma.GrazeUncheckedUpdateManyWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUncheckedUpdateManyWithoutFromPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUncheckedUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUncheckedUpdateManyWithoutFromPaddockNestedInput
+}
+
+export type PaddockCreateWithoutDeparturesInput = {
+  id?: string
+  name: string
+  description?: string | null
+  areaHa: number
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  farm: Prisma.FarmCreateNestedOneWithoutPaddocksInput
+  polygon?: Prisma.GeoPointCreateNestedManyWithoutPaddockInput
+  graze?: Prisma.GrazeCreateNestedManyWithoutPaddockInput
+  livestockUnitPosition?: Prisma.LivestockUnitPositionCreateNestedOneWithoutPaddockInput
+  outgoingGates?: Prisma.GateCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementCreateNestedManyWithoutToPaddockInput
+}
+
+export type PaddockUncheckedCreateWithoutDeparturesInput = {
+  id?: string
+  farmId: string
+  name: string
+  description?: string | null
+  areaHa: number
+  livestockUnitPositionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  polygon?: Prisma.GeoPointUncheckedCreateNestedManyWithoutPaddockInput
+  graze?: Prisma.GrazeUncheckedCreateNestedManyWithoutPaddockInput
+  outgoingGates?: Prisma.GateUncheckedCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateUncheckedCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementUncheckedCreateNestedManyWithoutToPaddockInput
+}
+
+export type PaddockCreateOrConnectWithoutDeparturesInput = {
+  where: Prisma.PaddockWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaddockCreateWithoutDeparturesInput, Prisma.PaddockUncheckedCreateWithoutDeparturesInput>
+}
+
+export type PaddockCreateWithoutArrivalsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  areaHa: number
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  farm: Prisma.FarmCreateNestedOneWithoutPaddocksInput
+  polygon?: Prisma.GeoPointCreateNestedManyWithoutPaddockInput
+  graze?: Prisma.GrazeCreateNestedManyWithoutPaddockInput
+  livestockUnitPosition?: Prisma.LivestockUnitPositionCreateNestedOneWithoutPaddockInput
+  outgoingGates?: Prisma.GateCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventCreateNestedManyWithoutPaddockInput
+  departures?: Prisma.MobMovementCreateNestedManyWithoutFromPaddockInput
+}
+
+export type PaddockUncheckedCreateWithoutArrivalsInput = {
+  id?: string
+  farmId: string
+  name: string
+  description?: string | null
+  areaHa: number
+  livestockUnitPositionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  polygon?: Prisma.GeoPointUncheckedCreateNestedManyWithoutPaddockInput
+  graze?: Prisma.GrazeUncheckedCreateNestedManyWithoutPaddockInput
+  outgoingGates?: Prisma.GateUncheckedCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateUncheckedCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedCreateNestedManyWithoutPaddockInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedCreateNestedManyWithoutPaddockInput
+  departures?: Prisma.MobMovementUncheckedCreateNestedManyWithoutFromPaddockInput
+}
+
+export type PaddockCreateOrConnectWithoutArrivalsInput = {
+  where: Prisma.PaddockWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaddockCreateWithoutArrivalsInput, Prisma.PaddockUncheckedCreateWithoutArrivalsInput>
+}
+
+export type PaddockUpsertWithoutDeparturesInput = {
+  update: Prisma.XOR<Prisma.PaddockUpdateWithoutDeparturesInput, Prisma.PaddockUncheckedUpdateWithoutDeparturesInput>
+  create: Prisma.XOR<Prisma.PaddockCreateWithoutDeparturesInput, Prisma.PaddockUncheckedCreateWithoutDeparturesInput>
+  where?: Prisma.PaddockWhereInput
+}
+
+export type PaddockUpdateToOneWithWhereWithoutDeparturesInput = {
+  where?: Prisma.PaddockWhereInput
+  data: Prisma.XOR<Prisma.PaddockUpdateWithoutDeparturesInput, Prisma.PaddockUncheckedUpdateWithoutDeparturesInput>
+}
+
+export type PaddockUpdateWithoutDeparturesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  farm?: Prisma.FarmUpdateOneRequiredWithoutPaddocksNestedInput
+  polygon?: Prisma.GeoPointUpdateManyWithoutPaddockNestedInput
+  graze?: Prisma.GrazeUpdateManyWithoutPaddockNestedInput
+  livestockUnitPosition?: Prisma.LivestockUnitPositionUpdateOneWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUpdateManyWithoutToPaddockNestedInput
+}
+
+export type PaddockUncheckedUpdateWithoutDeparturesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  polygon?: Prisma.GeoPointUncheckedUpdateManyWithoutPaddockNestedInput
+  graze?: Prisma.GrazeUncheckedUpdateManyWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUncheckedUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUncheckedUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUncheckedUpdateManyWithoutToPaddockNestedInput
+}
+
+export type PaddockUpsertWithoutArrivalsInput = {
+  update: Prisma.XOR<Prisma.PaddockUpdateWithoutArrivalsInput, Prisma.PaddockUncheckedUpdateWithoutArrivalsInput>
+  create: Prisma.XOR<Prisma.PaddockCreateWithoutArrivalsInput, Prisma.PaddockUncheckedCreateWithoutArrivalsInput>
+  where?: Prisma.PaddockWhereInput
+}
+
+export type PaddockUpdateToOneWithWhereWithoutArrivalsInput = {
+  where?: Prisma.PaddockWhereInput
+  data: Prisma.XOR<Prisma.PaddockUpdateWithoutArrivalsInput, Prisma.PaddockUncheckedUpdateWithoutArrivalsInput>
+}
+
+export type PaddockUpdateWithoutArrivalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  farm?: Prisma.FarmUpdateOneRequiredWithoutPaddocksNestedInput
+  polygon?: Prisma.GeoPointUpdateManyWithoutPaddockNestedInput
+  graze?: Prisma.GrazeUpdateManyWithoutPaddockNestedInput
+  livestockUnitPosition?: Prisma.LivestockUnitPositionUpdateOneWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUpdateManyWithoutPaddockNestedInput
+  departures?: Prisma.MobMovementUpdateManyWithoutFromPaddockNestedInput
+}
+
+export type PaddockUncheckedUpdateWithoutArrivalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  polygon?: Prisma.GeoPointUncheckedUpdateManyWithoutPaddockNestedInput
+  graze?: Prisma.GrazeUncheckedUpdateManyWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUncheckedUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUncheckedUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedUpdateManyWithoutPaddockNestedInput
+  departures?: Prisma.MobMovementUncheckedUpdateManyWithoutFromPaddockNestedInput
+}
+
+export type PaddockCreateWithoutFeedRecordsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  areaHa: number
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  farm: Prisma.FarmCreateNestedOneWithoutPaddocksInput
+  polygon?: Prisma.GeoPointCreateNestedManyWithoutPaddockInput
+  graze?: Prisma.GrazeCreateNestedManyWithoutPaddockInput
+  livestockUnitPosition?: Prisma.LivestockUnitPositionCreateNestedOneWithoutPaddockInput
+  outgoingGates?: Prisma.GateCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateCreateNestedManyWithoutToPaddockInput
+  workEvents?: Prisma.PaddockWorkEventCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementCreateNestedManyWithoutFromPaddockInput
+}
+
+export type PaddockUncheckedCreateWithoutFeedRecordsInput = {
+  id?: string
+  farmId: string
+  name: string
+  description?: string | null
+  areaHa: number
+  livestockUnitPositionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  polygon?: Prisma.GeoPointUncheckedCreateNestedManyWithoutPaddockInput
+  graze?: Prisma.GrazeUncheckedCreateNestedManyWithoutPaddockInput
+  outgoingGates?: Prisma.GateUncheckedCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateUncheckedCreateNestedManyWithoutToPaddockInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementUncheckedCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementUncheckedCreateNestedManyWithoutFromPaddockInput
+}
+
+export type PaddockCreateOrConnectWithoutFeedRecordsInput = {
+  where: Prisma.PaddockWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaddockCreateWithoutFeedRecordsInput, Prisma.PaddockUncheckedCreateWithoutFeedRecordsInput>
+}
+
+export type PaddockUpsertWithoutFeedRecordsInput = {
+  update: Prisma.XOR<Prisma.PaddockUpdateWithoutFeedRecordsInput, Prisma.PaddockUncheckedUpdateWithoutFeedRecordsInput>
+  create: Prisma.XOR<Prisma.PaddockCreateWithoutFeedRecordsInput, Prisma.PaddockUncheckedCreateWithoutFeedRecordsInput>
+  where?: Prisma.PaddockWhereInput
+}
+
+export type PaddockUpdateToOneWithWhereWithoutFeedRecordsInput = {
+  where?: Prisma.PaddockWhereInput
+  data: Prisma.XOR<Prisma.PaddockUpdateWithoutFeedRecordsInput, Prisma.PaddockUncheckedUpdateWithoutFeedRecordsInput>
+}
+
+export type PaddockUpdateWithoutFeedRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  farm?: Prisma.FarmUpdateOneRequiredWithoutPaddocksNestedInput
+  polygon?: Prisma.GeoPointUpdateManyWithoutPaddockNestedInput
+  graze?: Prisma.GrazeUpdateManyWithoutPaddockNestedInput
+  livestockUnitPosition?: Prisma.LivestockUnitPositionUpdateOneWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUpdateManyWithoutToPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUpdateManyWithoutFromPaddockNestedInput
+}
+
+export type PaddockUncheckedUpdateWithoutFeedRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  polygon?: Prisma.GeoPointUncheckedUpdateManyWithoutPaddockNestedInput
+  graze?: Prisma.GrazeUncheckedUpdateManyWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUncheckedUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUncheckedUpdateManyWithoutToPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUncheckedUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUncheckedUpdateManyWithoutFromPaddockNestedInput
+}
+
+export type PaddockCreateWithoutWorkEventsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  areaHa: number
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  farm: Prisma.FarmCreateNestedOneWithoutPaddocksInput
+  polygon?: Prisma.GeoPointCreateNestedManyWithoutPaddockInput
+  graze?: Prisma.GrazeCreateNestedManyWithoutPaddockInput
+  livestockUnitPosition?: Prisma.LivestockUnitPositionCreateNestedOneWithoutPaddockInput
+  outgoingGates?: Prisma.GateCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementCreateNestedManyWithoutFromPaddockInput
+}
+
+export type PaddockUncheckedCreateWithoutWorkEventsInput = {
+  id?: string
+  farmId: string
+  name: string
+  description?: string | null
+  areaHa: number
+  livestockUnitPositionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  polygon?: Prisma.GeoPointUncheckedCreateNestedManyWithoutPaddockInput
+  graze?: Prisma.GrazeUncheckedCreateNestedManyWithoutPaddockInput
+  outgoingGates?: Prisma.GateUncheckedCreateNestedManyWithoutFromPaddockInput
+  incomingGates?: Prisma.GateUncheckedCreateNestedManyWithoutToPaddockInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedCreateNestedManyWithoutPaddockInput
+  arrivals?: Prisma.MobMovementUncheckedCreateNestedManyWithoutToPaddockInput
+  departures?: Prisma.MobMovementUncheckedCreateNestedManyWithoutFromPaddockInput
+}
+
+export type PaddockCreateOrConnectWithoutWorkEventsInput = {
+  where: Prisma.PaddockWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaddockCreateWithoutWorkEventsInput, Prisma.PaddockUncheckedCreateWithoutWorkEventsInput>
+}
+
+export type PaddockUpsertWithoutWorkEventsInput = {
+  update: Prisma.XOR<Prisma.PaddockUpdateWithoutWorkEventsInput, Prisma.PaddockUncheckedUpdateWithoutWorkEventsInput>
+  create: Prisma.XOR<Prisma.PaddockCreateWithoutWorkEventsInput, Prisma.PaddockUncheckedCreateWithoutWorkEventsInput>
+  where?: Prisma.PaddockWhereInput
+}
+
+export type PaddockUpdateToOneWithWhereWithoutWorkEventsInput = {
+  where?: Prisma.PaddockWhereInput
+  data: Prisma.XOR<Prisma.PaddockUpdateWithoutWorkEventsInput, Prisma.PaddockUncheckedUpdateWithoutWorkEventsInput>
+}
+
+export type PaddockUpdateWithoutWorkEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  farm?: Prisma.FarmUpdateOneRequiredWithoutPaddocksNestedInput
+  polygon?: Prisma.GeoPointUpdateManyWithoutPaddockNestedInput
+  graze?: Prisma.GrazeUpdateManyWithoutPaddockNestedInput
+  livestockUnitPosition?: Prisma.LivestockUnitPositionUpdateOneWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUpdateManyWithoutFromPaddockNestedInput
+}
+
+export type PaddockUncheckedUpdateWithoutWorkEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  polygon?: Prisma.GeoPointUncheckedUpdateManyWithoutPaddockNestedInput
+  graze?: Prisma.GrazeUncheckedUpdateManyWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUncheckedUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUncheckedUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUncheckedUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUncheckedUpdateManyWithoutFromPaddockNestedInput
+}
+
+export type PaddockCreateManyFarmInput = {
+  id?: string
+  name: string
+  description?: string | null
+  areaHa: number
+  livestockUnitPositionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+}
+
+export type PaddockUpdateWithoutFarmInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  polygon?: Prisma.GeoPointUpdateManyWithoutPaddockNestedInput
+  graze?: Prisma.GrazeUpdateManyWithoutPaddockNestedInput
+  livestockUnitPosition?: Prisma.LivestockUnitPositionUpdateOneWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUpdateManyWithoutFromPaddockNestedInput
+}
+
+export type PaddockUncheckedUpdateWithoutFarmInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  polygon?: Prisma.GeoPointUncheckedUpdateManyWithoutPaddockNestedInput
+  graze?: Prisma.GrazeUncheckedUpdateManyWithoutPaddockNestedInput
+  outgoingGates?: Prisma.GateUncheckedUpdateManyWithoutFromPaddockNestedInput
+  incomingGates?: Prisma.GateUncheckedUpdateManyWithoutToPaddockNestedInput
+  feedRecords?: Prisma.PaddockFeedRecordUncheckedUpdateManyWithoutPaddockNestedInput
+  workEvents?: Prisma.PaddockWorkEventUncheckedUpdateManyWithoutPaddockNestedInput
+  arrivals?: Prisma.MobMovementUncheckedUpdateManyWithoutToPaddockNestedInput
+  departures?: Prisma.MobMovementUncheckedUpdateManyWithoutFromPaddockNestedInput
+}
+
+export type PaddockUncheckedUpdateManyWithoutFarmInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.FloatFieldUpdateOperationsInput | number
+  livestockUnitPositionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -567,11 +1617,23 @@ export type PaddockUncheckedUpdateWithoutPolygonInput = {
 export type PaddockCountOutputType = {
   polygon: number
   graze: number
+  outgoingGates: number
+  incomingGates: number
+  feedRecords: number
+  workEvents: number
+  arrivals: number
+  departures: number
 }
 
 export type PaddockCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   polygon?: boolean | PaddockCountOutputTypeCountPolygonArgs
   graze?: boolean | PaddockCountOutputTypeCountGrazeArgs
+  outgoingGates?: boolean | PaddockCountOutputTypeCountOutgoingGatesArgs
+  incomingGates?: boolean | PaddockCountOutputTypeCountIncomingGatesArgs
+  feedRecords?: boolean | PaddockCountOutputTypeCountFeedRecordsArgs
+  workEvents?: boolean | PaddockCountOutputTypeCountWorkEventsArgs
+  arrivals?: boolean | PaddockCountOutputTypeCountArrivalsArgs
+  departures?: boolean | PaddockCountOutputTypeCountDeparturesArgs
 }
 
 /**
@@ -598,67 +1660,154 @@ export type PaddockCountOutputTypeCountGrazeArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.GrazeWhereInput
 }
 
+/**
+ * PaddockCountOutputType without action
+ */
+export type PaddockCountOutputTypeCountOutgoingGatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GateWhereInput
+}
+
+/**
+ * PaddockCountOutputType without action
+ */
+export type PaddockCountOutputTypeCountIncomingGatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GateWhereInput
+}
+
+/**
+ * PaddockCountOutputType without action
+ */
+export type PaddockCountOutputTypeCountFeedRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaddockFeedRecordWhereInput
+}
+
+/**
+ * PaddockCountOutputType without action
+ */
+export type PaddockCountOutputTypeCountWorkEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaddockWorkEventWhereInput
+}
+
+/**
+ * PaddockCountOutputType without action
+ */
+export type PaddockCountOutputTypeCountArrivalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MobMovementWhereInput
+}
+
+/**
+ * PaddockCountOutputType without action
+ */
+export type PaddockCountOutputTypeCountDeparturesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MobMovementWhereInput
+}
+
 
 export type PaddockSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  farmId?: boolean
   name?: boolean
+  description?: boolean
   areaHa?: boolean
   livestockUnitPositionId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   polygon?: boolean | Prisma.Paddock$polygonArgs<ExtArgs>
   graze?: boolean | Prisma.Paddock$grazeArgs<ExtArgs>
   livestockUnitPosition?: boolean | Prisma.Paddock$livestockUnitPositionArgs<ExtArgs>
+  outgoingGates?: boolean | Prisma.Paddock$outgoingGatesArgs<ExtArgs>
+  incomingGates?: boolean | Prisma.Paddock$incomingGatesArgs<ExtArgs>
+  feedRecords?: boolean | Prisma.Paddock$feedRecordsArgs<ExtArgs>
+  workEvents?: boolean | Prisma.Paddock$workEventsArgs<ExtArgs>
+  arrivals?: boolean | Prisma.Paddock$arrivalsArgs<ExtArgs>
+  departures?: boolean | Prisma.Paddock$departuresArgs<ExtArgs>
   _count?: boolean | Prisma.PaddockCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["paddock"]>
 
 export type PaddockSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  farmId?: boolean
   name?: boolean
+  description?: boolean
   areaHa?: boolean
   livestockUnitPositionId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   livestockUnitPosition?: boolean | Prisma.Paddock$livestockUnitPositionArgs<ExtArgs>
 }, ExtArgs["result"]["paddock"]>
 
 export type PaddockSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  farmId?: boolean
   name?: boolean
+  description?: boolean
   areaHa?: boolean
   livestockUnitPositionId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   livestockUnitPosition?: boolean | Prisma.Paddock$livestockUnitPositionArgs<ExtArgs>
 }, ExtArgs["result"]["paddock"]>
 
 export type PaddockSelectScalar = {
   id?: boolean
+  farmId?: boolean
   name?: boolean
+  description?: boolean
   areaHa?: boolean
   livestockUnitPositionId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type PaddockOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "areaHa" | "livestockUnitPositionId", ExtArgs["result"]["paddock"]>
+export type PaddockOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "farmId" | "name" | "description" | "areaHa" | "livestockUnitPositionId" | "createdAt" | "updatedAt", ExtArgs["result"]["paddock"]>
 export type PaddockInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   polygon?: boolean | Prisma.Paddock$polygonArgs<ExtArgs>
   graze?: boolean | Prisma.Paddock$grazeArgs<ExtArgs>
   livestockUnitPosition?: boolean | Prisma.Paddock$livestockUnitPositionArgs<ExtArgs>
+  outgoingGates?: boolean | Prisma.Paddock$outgoingGatesArgs<ExtArgs>
+  incomingGates?: boolean | Prisma.Paddock$incomingGatesArgs<ExtArgs>
+  feedRecords?: boolean | Prisma.Paddock$feedRecordsArgs<ExtArgs>
+  workEvents?: boolean | Prisma.Paddock$workEventsArgs<ExtArgs>
+  arrivals?: boolean | Prisma.Paddock$arrivalsArgs<ExtArgs>
+  departures?: boolean | Prisma.Paddock$departuresArgs<ExtArgs>
   _count?: boolean | Prisma.PaddockCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PaddockIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   livestockUnitPosition?: boolean | Prisma.Paddock$livestockUnitPositionArgs<ExtArgs>
 }
 export type PaddockIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  farm?: boolean | Prisma.FarmDefaultArgs<ExtArgs>
   livestockUnitPosition?: boolean | Prisma.Paddock$livestockUnitPositionArgs<ExtArgs>
 }
 
 export type $PaddockPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Paddock"
   objects: {
+    farm: Prisma.$FarmPayload<ExtArgs>
     polygon: Prisma.$GeoPointPayload<ExtArgs>[]
     graze: Prisma.$GrazePayload<ExtArgs>[]
     livestockUnitPosition: Prisma.$LivestockUnitPositionPayload<ExtArgs> | null
+    outgoingGates: Prisma.$GatePayload<ExtArgs>[]
+    incomingGates: Prisma.$GatePayload<ExtArgs>[]
+    feedRecords: Prisma.$PaddockFeedRecordPayload<ExtArgs>[]
+    workEvents: Prisma.$PaddockWorkEventPayload<ExtArgs>[]
+    arrivals: Prisma.$MobMovementPayload<ExtArgs>[]
+    departures: Prisma.$MobMovementPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    farmId: string
     name: string
+    description: string | null
     areaHa: number
     livestockUnitPositionId: string | null
+    createdAt: Date
+    updatedAt: Date | null
   }, ExtArgs["result"]["paddock"]>
   composites: {}
 }
@@ -1053,9 +2202,16 @@ readonly fields: PaddockFieldRefs;
  */
 export interface Prisma__PaddockClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  farm<T extends Prisma.FarmDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FarmDefaultArgs<ExtArgs>>): Prisma.Prisma__FarmClient<runtime.Types.Result.GetResult<Prisma.$FarmPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   polygon<T extends Prisma.Paddock$polygonArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Paddock$polygonArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GeoPointPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   graze<T extends Prisma.Paddock$grazeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Paddock$grazeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GrazePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   livestockUnitPosition<T extends Prisma.Paddock$livestockUnitPositionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Paddock$livestockUnitPositionArgs<ExtArgs>>): Prisma.Prisma__LivestockUnitPositionClient<runtime.Types.Result.GetResult<Prisma.$LivestockUnitPositionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  outgoingGates<T extends Prisma.Paddock$outgoingGatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Paddock$outgoingGatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  incomingGates<T extends Prisma.Paddock$incomingGatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Paddock$incomingGatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  feedRecords<T extends Prisma.Paddock$feedRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Paddock$feedRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaddockFeedRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  workEvents<T extends Prisma.Paddock$workEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Paddock$workEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaddockWorkEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  arrivals<T extends Prisma.Paddock$arrivalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Paddock$arrivalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MobMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  departures<T extends Prisma.Paddock$departuresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Paddock$departuresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MobMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1086,9 +2242,13 @@ export interface Prisma__PaddockClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface PaddockFieldRefs {
   readonly id: Prisma.FieldRef<"Paddock", 'String'>
+  readonly farmId: Prisma.FieldRef<"Paddock", 'String'>
   readonly name: Prisma.FieldRef<"Paddock", 'String'>
+  readonly description: Prisma.FieldRef<"Paddock", 'String'>
   readonly areaHa: Prisma.FieldRef<"Paddock", 'Float'>
   readonly livestockUnitPositionId: Prisma.FieldRef<"Paddock", 'String'>
+  readonly createdAt: Prisma.FieldRef<"Paddock", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Paddock", 'DateTime'>
 }
     
 
@@ -1558,6 +2718,150 @@ export type Paddock$livestockUnitPositionArgs<ExtArgs extends runtime.Types.Exte
    */
   include?: Prisma.LivestockUnitPositionInclude<ExtArgs> | null
   where?: Prisma.LivestockUnitPositionWhereInput
+}
+
+/**
+ * Paddock.outgoingGates
+ */
+export type Paddock$outgoingGatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Gate
+   */
+  select?: Prisma.GateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Gate
+   */
+  omit?: Prisma.GateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GateInclude<ExtArgs> | null
+  where?: Prisma.GateWhereInput
+  orderBy?: Prisma.GateOrderByWithRelationInput | Prisma.GateOrderByWithRelationInput[]
+  cursor?: Prisma.GateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GateScalarFieldEnum | Prisma.GateScalarFieldEnum[]
+}
+
+/**
+ * Paddock.incomingGates
+ */
+export type Paddock$incomingGatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Gate
+   */
+  select?: Prisma.GateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Gate
+   */
+  omit?: Prisma.GateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GateInclude<ExtArgs> | null
+  where?: Prisma.GateWhereInput
+  orderBy?: Prisma.GateOrderByWithRelationInput | Prisma.GateOrderByWithRelationInput[]
+  cursor?: Prisma.GateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GateScalarFieldEnum | Prisma.GateScalarFieldEnum[]
+}
+
+/**
+ * Paddock.feedRecords
+ */
+export type Paddock$feedRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaddockFeedRecord
+   */
+  select?: Prisma.PaddockFeedRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaddockFeedRecord
+   */
+  omit?: Prisma.PaddockFeedRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaddockFeedRecordInclude<ExtArgs> | null
+  where?: Prisma.PaddockFeedRecordWhereInput
+  orderBy?: Prisma.PaddockFeedRecordOrderByWithRelationInput | Prisma.PaddockFeedRecordOrderByWithRelationInput[]
+  cursor?: Prisma.PaddockFeedRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaddockFeedRecordScalarFieldEnum | Prisma.PaddockFeedRecordScalarFieldEnum[]
+}
+
+/**
+ * Paddock.workEvents
+ */
+export type Paddock$workEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaddockWorkEvent
+   */
+  select?: Prisma.PaddockWorkEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaddockWorkEvent
+   */
+  omit?: Prisma.PaddockWorkEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaddockWorkEventInclude<ExtArgs> | null
+  where?: Prisma.PaddockWorkEventWhereInput
+  orderBy?: Prisma.PaddockWorkEventOrderByWithRelationInput | Prisma.PaddockWorkEventOrderByWithRelationInput[]
+  cursor?: Prisma.PaddockWorkEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaddockWorkEventScalarFieldEnum | Prisma.PaddockWorkEventScalarFieldEnum[]
+}
+
+/**
+ * Paddock.arrivals
+ */
+export type Paddock$arrivalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MobMovement
+   */
+  select?: Prisma.MobMovementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MobMovement
+   */
+  omit?: Prisma.MobMovementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MobMovementInclude<ExtArgs> | null
+  where?: Prisma.MobMovementWhereInput
+  orderBy?: Prisma.MobMovementOrderByWithRelationInput | Prisma.MobMovementOrderByWithRelationInput[]
+  cursor?: Prisma.MobMovementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MobMovementScalarFieldEnum | Prisma.MobMovementScalarFieldEnum[]
+}
+
+/**
+ * Paddock.departures
+ */
+export type Paddock$departuresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MobMovement
+   */
+  select?: Prisma.MobMovementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MobMovement
+   */
+  omit?: Prisma.MobMovementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MobMovementInclude<ExtArgs> | null
+  where?: Prisma.MobMovementWhereInput
+  orderBy?: Prisma.MobMovementOrderByWithRelationInput | Prisma.MobMovementOrderByWithRelationInput[]
+  cursor?: Prisma.MobMovementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MobMovementScalarFieldEnum | Prisma.MobMovementScalarFieldEnum[]
 }
 
 /**

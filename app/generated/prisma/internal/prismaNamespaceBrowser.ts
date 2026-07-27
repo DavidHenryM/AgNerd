@@ -75,6 +75,12 @@ export const ModelName = {
   Paddock: 'Paddock',
   LivestockUnitPosition: 'LivestockUnitPosition',
   GeoPoint: 'GeoPoint',
+  Gate: 'Gate',
+  GateStateChange: 'GateStateChange',
+  MobMembership: 'MobMembership',
+  MobMovement: 'MobMovement',
+  PaddockFeedRecord: 'PaddockFeedRecord',
+  PaddockWorkEvent: 'PaddockWorkEvent',
   WeightRecord: 'WeightRecord',
   LoraDevice: 'LoraDevice',
   Session: 'Session',
@@ -189,8 +195,11 @@ export type BreedScalarFieldEnum = (typeof BreedScalarFieldEnum)[keyof typeof Br
 
 export const MobScalarFieldEnum = {
   id: 'id',
+  farmId: 'farmId',
   name: 'name',
-  comment: 'comment'
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type MobScalarFieldEnum = (typeof MobScalarFieldEnum)[keyof typeof MobScalarFieldEnum]
@@ -387,9 +396,13 @@ export type EstimatedBreedingValueResultScalarFieldEnum = (typeof EstimatedBreed
 
 export const PaddockScalarFieldEnum = {
   id: 'id',
+  farmId: 'farmId',
   name: 'name',
+  description: 'description',
   areaHa: 'areaHa',
-  livestockUnitPositionId: 'livestockUnitPositionId'
+  livestockUnitPositionId: 'livestockUnitPositionId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type PaddockScalarFieldEnum = (typeof PaddockScalarFieldEnum)[keyof typeof PaddockScalarFieldEnum]
@@ -408,11 +421,103 @@ export const GeoPointScalarFieldEnum = {
   latitude: 'latitude',
   longitude: 'longitude',
   heading: 'heading',
+  sortOrder: 'sortOrder',
   paddockId: 'paddockId',
-  livestockUnitPositionId: 'livestockUnitPositionId'
+  livestockUnitPositionId: 'livestockUnitPositionId',
+  farmBoundaryId: 'farmBoundaryId'
 } as const
 
 export type GeoPointScalarFieldEnum = (typeof GeoPointScalarFieldEnum)[keyof typeof GeoPointScalarFieldEnum]
+
+
+export const GateScalarFieldEnum = {
+  id: 'id',
+  farmId: 'farmId',
+  fromPaddockId: 'fromPaddockId',
+  toPaddockId: 'toPaddockId',
+  name: 'name',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GateScalarFieldEnum = (typeof GateScalarFieldEnum)[keyof typeof GateScalarFieldEnum]
+
+
+export const GateStateChangeScalarFieldEnum = {
+  id: 'id',
+  gateId: 'gateId',
+  state: 'state',
+  recordedAt: 'recordedAt',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type GateStateChangeScalarFieldEnum = (typeof GateStateChangeScalarFieldEnum)[keyof typeof GateStateChangeScalarFieldEnum]
+
+
+export const MobMembershipScalarFieldEnum = {
+  id: 'id',
+  mobId: 'mobId',
+  livestockUnitId: 'livestockUnitId',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type MobMembershipScalarFieldEnum = (typeof MobMembershipScalarFieldEnum)[keyof typeof MobMembershipScalarFieldEnum]
+
+
+export const MobMovementScalarFieldEnum = {
+  id: 'id',
+  mobId: 'mobId',
+  fromPaddockId: 'fromPaddockId',
+  toPaddockId: 'toPaddockId',
+  movedAt: 'movedAt',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type MobMovementScalarFieldEnum = (typeof MobMovementScalarFieldEnum)[keyof typeof MobMovementScalarFieldEnum]
+
+
+export const PaddockFeedRecordScalarFieldEnum = {
+  id: 'id',
+  paddockId: 'paddockId',
+  recordedAt: 'recordedAt',
+  feedKgDmPerHa: 'feedKgDmPerHa',
+  sourceType: 'sourceType',
+  estimateMethod: 'estimateMethod',
+  confidencePct: 'confidencePct',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type PaddockFeedRecordScalarFieldEnum = (typeof PaddockFeedRecordScalarFieldEnum)[keyof typeof PaddockFeedRecordScalarFieldEnum]
+
+
+export const PaddockWorkEventScalarFieldEnum = {
+  id: 'id',
+  paddockId: 'paddockId',
+  workType: 'workType',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  productName: 'productName',
+  rate: 'rate',
+  rateUnit: 'rateUnit',
+  totalQuantity: 'totalQuantity',
+  totalQuantityUnit: 'totalQuantityUnit',
+  cost: 'cost',
+  operatorName: 'operatorName',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaddockWorkEventScalarFieldEnum = (typeof PaddockWorkEventScalarFieldEnum)[keyof typeof PaddockWorkEventScalarFieldEnum]
 
 
 export const WeightRecordScalarFieldEnum = {

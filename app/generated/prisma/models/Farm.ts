@@ -277,9 +277,13 @@ export type FarmWhereInput = {
   updatedAt?: Prisma.DateTimeNullableFilter<"Farm"> | Date | string | null
   organizationId?: Prisma.StringNullableFilter<"Farm"> | string | null
   locationCentre?: Prisma.XOR<Prisma.GeoPointNullableScalarRelationFilter, Prisma.GeoPointWhereInput> | null
+  boundaryPoints?: Prisma.GeoPointListRelationFilter
   users?: Prisma.UserListRelationFilter
   studs?: Prisma.StudListRelationFilter
   onFarms?: Prisma.OnFarmListRelationFilter
+  paddocks?: Prisma.PaddockListRelationFilter
+  mobs?: Prisma.MobListRelationFilter
+  gates?: Prisma.GateListRelationFilter
   organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
 }
 
@@ -298,9 +302,13 @@ export type FarmOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
   locationCentre?: Prisma.GeoPointOrderByWithRelationInput
+  boundaryPoints?: Prisma.GeoPointOrderByRelationAggregateInput
   users?: Prisma.UserOrderByRelationAggregateInput
   studs?: Prisma.StudOrderByRelationAggregateInput
   onFarms?: Prisma.OnFarmOrderByRelationAggregateInput
+  paddocks?: Prisma.PaddockOrderByRelationAggregateInput
+  mobs?: Prisma.MobOrderByRelationAggregateInput
+  gates?: Prisma.GateOrderByRelationAggregateInput
   organization?: Prisma.OrganizationOrderByWithRelationInput
 }
 
@@ -322,9 +330,13 @@ export type FarmWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeNullableFilter<"Farm"> | Date | string | null
   organizationId?: Prisma.StringNullableFilter<"Farm"> | string | null
   locationCentre?: Prisma.XOR<Prisma.GeoPointNullableScalarRelationFilter, Prisma.GeoPointWhereInput> | null
+  boundaryPoints?: Prisma.GeoPointListRelationFilter
   users?: Prisma.UserListRelationFilter
   studs?: Prisma.StudListRelationFilter
   onFarms?: Prisma.OnFarmListRelationFilter
+  paddocks?: Prisma.PaddockListRelationFilter
+  mobs?: Prisma.MobListRelationFilter
+  gates?: Prisma.GateListRelationFilter
   organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
 }, "id" | "slug">
 
@@ -381,9 +393,13 @@ export type FarmCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string | null
   locationCentre?: Prisma.GeoPointCreateNestedOneWithoutFarmsInput
+  boundaryPoints?: Prisma.GeoPointCreateNestedManyWithoutBoundaryFarmInput
   users?: Prisma.UserCreateNestedManyWithoutFarmInput
   studs?: Prisma.StudCreateNestedManyWithoutFarmsInput
   onFarms?: Prisma.OnFarmCreateNestedManyWithoutFarmInput
+  paddocks?: Prisma.PaddockCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateCreateNestedManyWithoutFarmInput
   organization?: Prisma.OrganizationCreateNestedOneWithoutFarmsInput
 }
 
@@ -401,9 +417,13 @@ export type FarmUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string | null
   organizationId?: string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedCreateNestedManyWithoutBoundaryFarmInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutFarmInput
   studs?: Prisma.StudUncheckedCreateNestedManyWithoutFarmsInput
   onFarms?: Prisma.OnFarmUncheckedCreateNestedManyWithoutFarmInput
+  paddocks?: Prisma.PaddockUncheckedCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobUncheckedCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUpdateInput = {
@@ -419,9 +439,13 @@ export type FarmUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationCentre?: Prisma.GeoPointUpdateOneWithoutFarmsNestedInput
+  boundaryPoints?: Prisma.GeoPointUpdateManyWithoutBoundaryFarmNestedInput
   users?: Prisma.UserUpdateManyWithoutFarmNestedInput
   studs?: Prisma.StudUpdateManyWithoutFarmsNestedInput
   onFarms?: Prisma.OnFarmUpdateManyWithoutFarmNestedInput
+  paddocks?: Prisma.PaddockUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUpdateManyWithoutFarmNestedInput
   organization?: Prisma.OrganizationUpdateOneWithoutFarmsNestedInput
 }
 
@@ -439,9 +463,13 @@ export type FarmUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedUpdateManyWithoutBoundaryFarmNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutFarmNestedInput
   studs?: Prisma.StudUncheckedUpdateManyWithoutFarmsNestedInput
   onFarms?: Prisma.OnFarmUncheckedUpdateManyWithoutFarmNestedInput
+  paddocks?: Prisma.PaddockUncheckedUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUncheckedUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateManyInput = {
@@ -567,6 +595,11 @@ export type FarmOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type FarmNullableScalarRelationFilter = {
+  is?: Prisma.FarmWhereInput | null
+  isNot?: Prisma.FarmWhereInput | null
+}
+
 export type FarmCreatelotSectionPlanInput = {
   set: string[]
 }
@@ -612,6 +645,20 @@ export type FarmUpdateOneRequiredWithoutUsersNestedInput = {
   upsert?: Prisma.FarmUpsertWithoutUsersInput
   connect?: Prisma.FarmWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.FarmUpdateToOneWithWhereWithoutUsersInput, Prisma.FarmUpdateWithoutUsersInput>, Prisma.FarmUncheckedUpdateWithoutUsersInput>
+}
+
+export type FarmCreateNestedOneWithoutMobsInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutMobsInput, Prisma.FarmUncheckedCreateWithoutMobsInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutMobsInput
+  connect?: Prisma.FarmWhereUniqueInput
+}
+
+export type FarmUpdateOneRequiredWithoutMobsNestedInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutMobsInput, Prisma.FarmUncheckedCreateWithoutMobsInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutMobsInput
+  upsert?: Prisma.FarmUpsertWithoutMobsInput
+  connect?: Prisma.FarmWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FarmUpdateToOneWithWhereWithoutMobsInput, Prisma.FarmUpdateWithoutMobsInput>, Prisma.FarmUncheckedUpdateWithoutMobsInput>
 }
 
 export type FarmCreateNestedOneWithoutOnFarmsInput = {
@@ -666,6 +713,26 @@ export type FarmUncheckedUpdateManyWithoutStudsNestedInput = {
   deleteMany?: Prisma.FarmScalarWhereInput | Prisma.FarmScalarWhereInput[]
 }
 
+export type FarmCreateNestedOneWithoutPaddocksInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutPaddocksInput, Prisma.FarmUncheckedCreateWithoutPaddocksInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutPaddocksInput
+  connect?: Prisma.FarmWhereUniqueInput
+}
+
+export type FarmUpdateOneRequiredWithoutPaddocksNestedInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutPaddocksInput, Prisma.FarmUncheckedCreateWithoutPaddocksInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutPaddocksInput
+  upsert?: Prisma.FarmUpsertWithoutPaddocksInput
+  connect?: Prisma.FarmWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FarmUpdateToOneWithWhereWithoutPaddocksInput, Prisma.FarmUpdateWithoutPaddocksInput>, Prisma.FarmUncheckedUpdateWithoutPaddocksInput>
+}
+
+export type FarmCreateNestedOneWithoutBoundaryPointsInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutBoundaryPointsInput, Prisma.FarmUncheckedCreateWithoutBoundaryPointsInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutBoundaryPointsInput
+  connect?: Prisma.FarmWhereUniqueInput
+}
+
 export type FarmCreateNestedManyWithoutLocationCentreInput = {
   create?: Prisma.XOR<Prisma.FarmCreateWithoutLocationCentreInput, Prisma.FarmUncheckedCreateWithoutLocationCentreInput> | Prisma.FarmCreateWithoutLocationCentreInput[] | Prisma.FarmUncheckedCreateWithoutLocationCentreInput[]
   connectOrCreate?: Prisma.FarmCreateOrConnectWithoutLocationCentreInput | Prisma.FarmCreateOrConnectWithoutLocationCentreInput[]
@@ -678,6 +745,16 @@ export type FarmUncheckedCreateNestedManyWithoutLocationCentreInput = {
   connectOrCreate?: Prisma.FarmCreateOrConnectWithoutLocationCentreInput | Prisma.FarmCreateOrConnectWithoutLocationCentreInput[]
   createMany?: Prisma.FarmCreateManyLocationCentreInputEnvelope
   connect?: Prisma.FarmWhereUniqueInput | Prisma.FarmWhereUniqueInput[]
+}
+
+export type FarmUpdateOneWithoutBoundaryPointsNestedInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutBoundaryPointsInput, Prisma.FarmUncheckedCreateWithoutBoundaryPointsInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutBoundaryPointsInput
+  upsert?: Prisma.FarmUpsertWithoutBoundaryPointsInput
+  disconnect?: Prisma.FarmWhereInput | boolean
+  delete?: Prisma.FarmWhereInput | boolean
+  connect?: Prisma.FarmWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FarmUpdateToOneWithWhereWithoutBoundaryPointsInput, Prisma.FarmUpdateWithoutBoundaryPointsInput>, Prisma.FarmUncheckedUpdateWithoutBoundaryPointsInput>
 }
 
 export type FarmUpdateManyWithoutLocationCentreNestedInput = {
@@ -706,6 +783,20 @@ export type FarmUncheckedUpdateManyWithoutLocationCentreNestedInput = {
   update?: Prisma.FarmUpdateWithWhereUniqueWithoutLocationCentreInput | Prisma.FarmUpdateWithWhereUniqueWithoutLocationCentreInput[]
   updateMany?: Prisma.FarmUpdateManyWithWhereWithoutLocationCentreInput | Prisma.FarmUpdateManyWithWhereWithoutLocationCentreInput[]
   deleteMany?: Prisma.FarmScalarWhereInput | Prisma.FarmScalarWhereInput[]
+}
+
+export type FarmCreateNestedOneWithoutGatesInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutGatesInput, Prisma.FarmUncheckedCreateWithoutGatesInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutGatesInput
+  connect?: Prisma.FarmWhereUniqueInput
+}
+
+export type FarmUpdateOneRequiredWithoutGatesNestedInput = {
+  create?: Prisma.XOR<Prisma.FarmCreateWithoutGatesInput, Prisma.FarmUncheckedCreateWithoutGatesInput>
+  connectOrCreate?: Prisma.FarmCreateOrConnectWithoutGatesInput
+  upsert?: Prisma.FarmUpsertWithoutGatesInput
+  connect?: Prisma.FarmWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FarmUpdateToOneWithWhereWithoutGatesInput, Prisma.FarmUpdateWithoutGatesInput>, Prisma.FarmUncheckedUpdateWithoutGatesInput>
 }
 
 export type FarmCreateNestedManyWithoutOrganizationInput = {
@@ -763,8 +854,12 @@ export type FarmCreateWithoutUsersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string | null
   locationCentre?: Prisma.GeoPointCreateNestedOneWithoutFarmsInput
+  boundaryPoints?: Prisma.GeoPointCreateNestedManyWithoutBoundaryFarmInput
   studs?: Prisma.StudCreateNestedManyWithoutFarmsInput
   onFarms?: Prisma.OnFarmCreateNestedManyWithoutFarmInput
+  paddocks?: Prisma.PaddockCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateCreateNestedManyWithoutFarmInput
   organization?: Prisma.OrganizationCreateNestedOneWithoutFarmsInput
 }
 
@@ -782,8 +877,12 @@ export type FarmUncheckedCreateWithoutUsersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string | null
   organizationId?: string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedCreateNestedManyWithoutBoundaryFarmInput
   studs?: Prisma.StudUncheckedCreateNestedManyWithoutFarmsInput
   onFarms?: Prisma.OnFarmUncheckedCreateNestedManyWithoutFarmInput
+  paddocks?: Prisma.PaddockUncheckedCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobUncheckedCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutUsersInput = {
@@ -815,8 +914,12 @@ export type FarmUpdateWithoutUsersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationCentre?: Prisma.GeoPointUpdateOneWithoutFarmsNestedInput
+  boundaryPoints?: Prisma.GeoPointUpdateManyWithoutBoundaryFarmNestedInput
   studs?: Prisma.StudUpdateManyWithoutFarmsNestedInput
   onFarms?: Prisma.OnFarmUpdateManyWithoutFarmNestedInput
+  paddocks?: Prisma.PaddockUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUpdateManyWithoutFarmNestedInput
   organization?: Prisma.OrganizationUpdateOneWithoutFarmsNestedInput
 }
 
@@ -834,8 +937,116 @@ export type FarmUncheckedUpdateWithoutUsersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedUpdateManyWithoutBoundaryFarmNestedInput
   studs?: Prisma.StudUncheckedUpdateManyWithoutFarmsNestedInput
   onFarms?: Prisma.OnFarmUncheckedUpdateManyWithoutFarmNestedInput
+  paddocks?: Prisma.PaddockUncheckedUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUncheckedUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUncheckedUpdateManyWithoutFarmNestedInput
+}
+
+export type FarmCreateWithoutMobsInput = {
+  id?: string
+  name: string
+  slug?: string | null
+  businessName?: string | null
+  lotSectionPlan?: Prisma.FarmCreatelotSectionPlanInput | string[]
+  abn?: string | null
+  acn?: string | null
+  pic?: string | null
+  areaHa?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  locationCentre?: Prisma.GeoPointCreateNestedOneWithoutFarmsInput
+  boundaryPoints?: Prisma.GeoPointCreateNestedManyWithoutBoundaryFarmInput
+  users?: Prisma.UserCreateNestedManyWithoutFarmInput
+  studs?: Prisma.StudCreateNestedManyWithoutFarmsInput
+  onFarms?: Prisma.OnFarmCreateNestedManyWithoutFarmInput
+  paddocks?: Prisma.PaddockCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateCreateNestedManyWithoutFarmInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutFarmsInput
+}
+
+export type FarmUncheckedCreateWithoutMobsInput = {
+  id?: string
+  name: string
+  slug?: string | null
+  businessName?: string | null
+  lotSectionPlan?: Prisma.FarmCreatelotSectionPlanInput | string[]
+  abn?: string | null
+  acn?: string | null
+  pic?: string | null
+  locationCentreId?: string | null
+  areaHa?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  organizationId?: string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedCreateNestedManyWithoutBoundaryFarmInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutFarmInput
+  studs?: Prisma.StudUncheckedCreateNestedManyWithoutFarmsInput
+  onFarms?: Prisma.OnFarmUncheckedCreateNestedManyWithoutFarmInput
+  paddocks?: Prisma.PaddockUncheckedCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateUncheckedCreateNestedManyWithoutFarmInput
+}
+
+export type FarmCreateOrConnectWithoutMobsInput = {
+  where: Prisma.FarmWhereUniqueInput
+  create: Prisma.XOR<Prisma.FarmCreateWithoutMobsInput, Prisma.FarmUncheckedCreateWithoutMobsInput>
+}
+
+export type FarmUpsertWithoutMobsInput = {
+  update: Prisma.XOR<Prisma.FarmUpdateWithoutMobsInput, Prisma.FarmUncheckedUpdateWithoutMobsInput>
+  create: Prisma.XOR<Prisma.FarmCreateWithoutMobsInput, Prisma.FarmUncheckedCreateWithoutMobsInput>
+  where?: Prisma.FarmWhereInput
+}
+
+export type FarmUpdateToOneWithWhereWithoutMobsInput = {
+  where?: Prisma.FarmWhereInput
+  data: Prisma.XOR<Prisma.FarmUpdateWithoutMobsInput, Prisma.FarmUncheckedUpdateWithoutMobsInput>
+}
+
+export type FarmUpdateWithoutMobsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lotSectionPlan?: Prisma.FarmUpdatelotSectionPlanInput | string[]
+  abn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locationCentre?: Prisma.GeoPointUpdateOneWithoutFarmsNestedInput
+  boundaryPoints?: Prisma.GeoPointUpdateManyWithoutBoundaryFarmNestedInput
+  users?: Prisma.UserUpdateManyWithoutFarmNestedInput
+  studs?: Prisma.StudUpdateManyWithoutFarmsNestedInput
+  onFarms?: Prisma.OnFarmUpdateManyWithoutFarmNestedInput
+  paddocks?: Prisma.PaddockUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUpdateManyWithoutFarmNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutFarmsNestedInput
+}
+
+export type FarmUncheckedUpdateWithoutMobsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lotSectionPlan?: Prisma.FarmUpdatelotSectionPlanInput | string[]
+  abn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationCentreId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedUpdateManyWithoutBoundaryFarmNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutFarmNestedInput
+  studs?: Prisma.StudUncheckedUpdateManyWithoutFarmsNestedInput
+  onFarms?: Prisma.OnFarmUncheckedUpdateManyWithoutFarmNestedInput
+  paddocks?: Prisma.PaddockUncheckedUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutOnFarmsInput = {
@@ -851,8 +1062,12 @@ export type FarmCreateWithoutOnFarmsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string | null
   locationCentre?: Prisma.GeoPointCreateNestedOneWithoutFarmsInput
+  boundaryPoints?: Prisma.GeoPointCreateNestedManyWithoutBoundaryFarmInput
   users?: Prisma.UserCreateNestedManyWithoutFarmInput
   studs?: Prisma.StudCreateNestedManyWithoutFarmsInput
+  paddocks?: Prisma.PaddockCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateCreateNestedManyWithoutFarmInput
   organization?: Prisma.OrganizationCreateNestedOneWithoutFarmsInput
 }
 
@@ -870,8 +1085,12 @@ export type FarmUncheckedCreateWithoutOnFarmsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string | null
   organizationId?: string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedCreateNestedManyWithoutBoundaryFarmInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutFarmInput
   studs?: Prisma.StudUncheckedCreateNestedManyWithoutFarmsInput
+  paddocks?: Prisma.PaddockUncheckedCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobUncheckedCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutOnFarmsInput = {
@@ -903,8 +1122,12 @@ export type FarmUpdateWithoutOnFarmsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationCentre?: Prisma.GeoPointUpdateOneWithoutFarmsNestedInput
+  boundaryPoints?: Prisma.GeoPointUpdateManyWithoutBoundaryFarmNestedInput
   users?: Prisma.UserUpdateManyWithoutFarmNestedInput
   studs?: Prisma.StudUpdateManyWithoutFarmsNestedInput
+  paddocks?: Prisma.PaddockUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUpdateManyWithoutFarmNestedInput
   organization?: Prisma.OrganizationUpdateOneWithoutFarmsNestedInput
 }
 
@@ -922,8 +1145,12 @@ export type FarmUncheckedUpdateWithoutOnFarmsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedUpdateManyWithoutBoundaryFarmNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutFarmNestedInput
   studs?: Prisma.StudUncheckedUpdateManyWithoutFarmsNestedInput
+  paddocks?: Prisma.PaddockUncheckedUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUncheckedUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmCreateWithoutStudsInput = {
@@ -939,8 +1166,12 @@ export type FarmCreateWithoutStudsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string | null
   locationCentre?: Prisma.GeoPointCreateNestedOneWithoutFarmsInput
+  boundaryPoints?: Prisma.GeoPointCreateNestedManyWithoutBoundaryFarmInput
   users?: Prisma.UserCreateNestedManyWithoutFarmInput
   onFarms?: Prisma.OnFarmCreateNestedManyWithoutFarmInput
+  paddocks?: Prisma.PaddockCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateCreateNestedManyWithoutFarmInput
   organization?: Prisma.OrganizationCreateNestedOneWithoutFarmsInput
 }
 
@@ -958,8 +1189,12 @@ export type FarmUncheckedCreateWithoutStudsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string | null
   organizationId?: string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedCreateNestedManyWithoutBoundaryFarmInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutFarmInput
   onFarms?: Prisma.OnFarmUncheckedCreateNestedManyWithoutFarmInput
+  paddocks?: Prisma.PaddockUncheckedCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobUncheckedCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutStudsInput = {
@@ -1002,6 +1237,159 @@ export type FarmScalarWhereInput = {
   organizationId?: Prisma.StringNullableFilter<"Farm"> | string | null
 }
 
+export type FarmCreateWithoutPaddocksInput = {
+  id?: string
+  name: string
+  slug?: string | null
+  businessName?: string | null
+  lotSectionPlan?: Prisma.FarmCreatelotSectionPlanInput | string[]
+  abn?: string | null
+  acn?: string | null
+  pic?: string | null
+  areaHa?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  locationCentre?: Prisma.GeoPointCreateNestedOneWithoutFarmsInput
+  boundaryPoints?: Prisma.GeoPointCreateNestedManyWithoutBoundaryFarmInput
+  users?: Prisma.UserCreateNestedManyWithoutFarmInput
+  studs?: Prisma.StudCreateNestedManyWithoutFarmsInput
+  onFarms?: Prisma.OnFarmCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateCreateNestedManyWithoutFarmInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutFarmsInput
+}
+
+export type FarmUncheckedCreateWithoutPaddocksInput = {
+  id?: string
+  name: string
+  slug?: string | null
+  businessName?: string | null
+  lotSectionPlan?: Prisma.FarmCreatelotSectionPlanInput | string[]
+  abn?: string | null
+  acn?: string | null
+  pic?: string | null
+  locationCentreId?: string | null
+  areaHa?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  organizationId?: string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedCreateNestedManyWithoutBoundaryFarmInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutFarmInput
+  studs?: Prisma.StudUncheckedCreateNestedManyWithoutFarmsInput
+  onFarms?: Prisma.OnFarmUncheckedCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobUncheckedCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateUncheckedCreateNestedManyWithoutFarmInput
+}
+
+export type FarmCreateOrConnectWithoutPaddocksInput = {
+  where: Prisma.FarmWhereUniqueInput
+  create: Prisma.XOR<Prisma.FarmCreateWithoutPaddocksInput, Prisma.FarmUncheckedCreateWithoutPaddocksInput>
+}
+
+export type FarmUpsertWithoutPaddocksInput = {
+  update: Prisma.XOR<Prisma.FarmUpdateWithoutPaddocksInput, Prisma.FarmUncheckedUpdateWithoutPaddocksInput>
+  create: Prisma.XOR<Prisma.FarmCreateWithoutPaddocksInput, Prisma.FarmUncheckedCreateWithoutPaddocksInput>
+  where?: Prisma.FarmWhereInput
+}
+
+export type FarmUpdateToOneWithWhereWithoutPaddocksInput = {
+  where?: Prisma.FarmWhereInput
+  data: Prisma.XOR<Prisma.FarmUpdateWithoutPaddocksInput, Prisma.FarmUncheckedUpdateWithoutPaddocksInput>
+}
+
+export type FarmUpdateWithoutPaddocksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lotSectionPlan?: Prisma.FarmUpdatelotSectionPlanInput | string[]
+  abn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locationCentre?: Prisma.GeoPointUpdateOneWithoutFarmsNestedInput
+  boundaryPoints?: Prisma.GeoPointUpdateManyWithoutBoundaryFarmNestedInput
+  users?: Prisma.UserUpdateManyWithoutFarmNestedInput
+  studs?: Prisma.StudUpdateManyWithoutFarmsNestedInput
+  onFarms?: Prisma.OnFarmUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUpdateManyWithoutFarmNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutFarmsNestedInput
+}
+
+export type FarmUncheckedUpdateWithoutPaddocksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lotSectionPlan?: Prisma.FarmUpdatelotSectionPlanInput | string[]
+  abn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationCentreId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedUpdateManyWithoutBoundaryFarmNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutFarmNestedInput
+  studs?: Prisma.StudUncheckedUpdateManyWithoutFarmsNestedInput
+  onFarms?: Prisma.OnFarmUncheckedUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUncheckedUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUncheckedUpdateManyWithoutFarmNestedInput
+}
+
+export type FarmCreateWithoutBoundaryPointsInput = {
+  id?: string
+  name: string
+  slug?: string | null
+  businessName?: string | null
+  lotSectionPlan?: Prisma.FarmCreatelotSectionPlanInput | string[]
+  abn?: string | null
+  acn?: string | null
+  pic?: string | null
+  areaHa?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  locationCentre?: Prisma.GeoPointCreateNestedOneWithoutFarmsInput
+  users?: Prisma.UserCreateNestedManyWithoutFarmInput
+  studs?: Prisma.StudCreateNestedManyWithoutFarmsInput
+  onFarms?: Prisma.OnFarmCreateNestedManyWithoutFarmInput
+  paddocks?: Prisma.PaddockCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateCreateNestedManyWithoutFarmInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutFarmsInput
+}
+
+export type FarmUncheckedCreateWithoutBoundaryPointsInput = {
+  id?: string
+  name: string
+  slug?: string | null
+  businessName?: string | null
+  lotSectionPlan?: Prisma.FarmCreatelotSectionPlanInput | string[]
+  abn?: string | null
+  acn?: string | null
+  pic?: string | null
+  locationCentreId?: string | null
+  areaHa?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  organizationId?: string | null
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutFarmInput
+  studs?: Prisma.StudUncheckedCreateNestedManyWithoutFarmsInput
+  onFarms?: Prisma.OnFarmUncheckedCreateNestedManyWithoutFarmInput
+  paddocks?: Prisma.PaddockUncheckedCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobUncheckedCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateUncheckedCreateNestedManyWithoutFarmInput
+}
+
+export type FarmCreateOrConnectWithoutBoundaryPointsInput = {
+  where: Prisma.FarmWhereUniqueInput
+  create: Prisma.XOR<Prisma.FarmCreateWithoutBoundaryPointsInput, Prisma.FarmUncheckedCreateWithoutBoundaryPointsInput>
+}
+
 export type FarmCreateWithoutLocationCentreInput = {
   id?: string
   name: string
@@ -1014,9 +1402,13 @@ export type FarmCreateWithoutLocationCentreInput = {
   areaHa?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string | null
+  boundaryPoints?: Prisma.GeoPointCreateNestedManyWithoutBoundaryFarmInput
   users?: Prisma.UserCreateNestedManyWithoutFarmInput
   studs?: Prisma.StudCreateNestedManyWithoutFarmsInput
   onFarms?: Prisma.OnFarmCreateNestedManyWithoutFarmInput
+  paddocks?: Prisma.PaddockCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateCreateNestedManyWithoutFarmInput
   organization?: Prisma.OrganizationCreateNestedOneWithoutFarmsInput
 }
 
@@ -1033,9 +1425,13 @@ export type FarmUncheckedCreateWithoutLocationCentreInput = {
   createdAt?: Date | string
   updatedAt?: Date | string | null
   organizationId?: string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedCreateNestedManyWithoutBoundaryFarmInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutFarmInput
   studs?: Prisma.StudUncheckedCreateNestedManyWithoutFarmsInput
   onFarms?: Prisma.OnFarmUncheckedCreateNestedManyWithoutFarmInput
+  paddocks?: Prisma.PaddockUncheckedCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobUncheckedCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutLocationCentreInput = {
@@ -1046,6 +1442,61 @@ export type FarmCreateOrConnectWithoutLocationCentreInput = {
 export type FarmCreateManyLocationCentreInputEnvelope = {
   data: Prisma.FarmCreateManyLocationCentreInput | Prisma.FarmCreateManyLocationCentreInput[]
   skipDuplicates?: boolean
+}
+
+export type FarmUpsertWithoutBoundaryPointsInput = {
+  update: Prisma.XOR<Prisma.FarmUpdateWithoutBoundaryPointsInput, Prisma.FarmUncheckedUpdateWithoutBoundaryPointsInput>
+  create: Prisma.XOR<Prisma.FarmCreateWithoutBoundaryPointsInput, Prisma.FarmUncheckedCreateWithoutBoundaryPointsInput>
+  where?: Prisma.FarmWhereInput
+}
+
+export type FarmUpdateToOneWithWhereWithoutBoundaryPointsInput = {
+  where?: Prisma.FarmWhereInput
+  data: Prisma.XOR<Prisma.FarmUpdateWithoutBoundaryPointsInput, Prisma.FarmUncheckedUpdateWithoutBoundaryPointsInput>
+}
+
+export type FarmUpdateWithoutBoundaryPointsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lotSectionPlan?: Prisma.FarmUpdatelotSectionPlanInput | string[]
+  abn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locationCentre?: Prisma.GeoPointUpdateOneWithoutFarmsNestedInput
+  users?: Prisma.UserUpdateManyWithoutFarmNestedInput
+  studs?: Prisma.StudUpdateManyWithoutFarmsNestedInput
+  onFarms?: Prisma.OnFarmUpdateManyWithoutFarmNestedInput
+  paddocks?: Prisma.PaddockUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUpdateManyWithoutFarmNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutFarmsNestedInput
+}
+
+export type FarmUncheckedUpdateWithoutBoundaryPointsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lotSectionPlan?: Prisma.FarmUpdatelotSectionPlanInput | string[]
+  abn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationCentreId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  users?: Prisma.UserUncheckedUpdateManyWithoutFarmNestedInput
+  studs?: Prisma.StudUncheckedUpdateManyWithoutFarmsNestedInput
+  onFarms?: Prisma.OnFarmUncheckedUpdateManyWithoutFarmNestedInput
+  paddocks?: Prisma.PaddockUncheckedUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUncheckedUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUpsertWithWhereUniqueWithoutLocationCentreInput = {
@@ -1064,6 +1515,110 @@ export type FarmUpdateManyWithWhereWithoutLocationCentreInput = {
   data: Prisma.XOR<Prisma.FarmUpdateManyMutationInput, Prisma.FarmUncheckedUpdateManyWithoutLocationCentreInput>
 }
 
+export type FarmCreateWithoutGatesInput = {
+  id?: string
+  name: string
+  slug?: string | null
+  businessName?: string | null
+  lotSectionPlan?: Prisma.FarmCreatelotSectionPlanInput | string[]
+  abn?: string | null
+  acn?: string | null
+  pic?: string | null
+  areaHa?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  locationCentre?: Prisma.GeoPointCreateNestedOneWithoutFarmsInput
+  boundaryPoints?: Prisma.GeoPointCreateNestedManyWithoutBoundaryFarmInput
+  users?: Prisma.UserCreateNestedManyWithoutFarmInput
+  studs?: Prisma.StudCreateNestedManyWithoutFarmsInput
+  onFarms?: Prisma.OnFarmCreateNestedManyWithoutFarmInput
+  paddocks?: Prisma.PaddockCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobCreateNestedManyWithoutFarmInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutFarmsInput
+}
+
+export type FarmUncheckedCreateWithoutGatesInput = {
+  id?: string
+  name: string
+  slug?: string | null
+  businessName?: string | null
+  lotSectionPlan?: Prisma.FarmCreatelotSectionPlanInput | string[]
+  abn?: string | null
+  acn?: string | null
+  pic?: string | null
+  locationCentreId?: string | null
+  areaHa?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string | null
+  organizationId?: string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedCreateNestedManyWithoutBoundaryFarmInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutFarmInput
+  studs?: Prisma.StudUncheckedCreateNestedManyWithoutFarmsInput
+  onFarms?: Prisma.OnFarmUncheckedCreateNestedManyWithoutFarmInput
+  paddocks?: Prisma.PaddockUncheckedCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobUncheckedCreateNestedManyWithoutFarmInput
+}
+
+export type FarmCreateOrConnectWithoutGatesInput = {
+  where: Prisma.FarmWhereUniqueInput
+  create: Prisma.XOR<Prisma.FarmCreateWithoutGatesInput, Prisma.FarmUncheckedCreateWithoutGatesInput>
+}
+
+export type FarmUpsertWithoutGatesInput = {
+  update: Prisma.XOR<Prisma.FarmUpdateWithoutGatesInput, Prisma.FarmUncheckedUpdateWithoutGatesInput>
+  create: Prisma.XOR<Prisma.FarmCreateWithoutGatesInput, Prisma.FarmUncheckedCreateWithoutGatesInput>
+  where?: Prisma.FarmWhereInput
+}
+
+export type FarmUpdateToOneWithWhereWithoutGatesInput = {
+  where?: Prisma.FarmWhereInput
+  data: Prisma.XOR<Prisma.FarmUpdateWithoutGatesInput, Prisma.FarmUncheckedUpdateWithoutGatesInput>
+}
+
+export type FarmUpdateWithoutGatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lotSectionPlan?: Prisma.FarmUpdatelotSectionPlanInput | string[]
+  abn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  locationCentre?: Prisma.GeoPointUpdateOneWithoutFarmsNestedInput
+  boundaryPoints?: Prisma.GeoPointUpdateManyWithoutBoundaryFarmNestedInput
+  users?: Prisma.UserUpdateManyWithoutFarmNestedInput
+  studs?: Prisma.StudUpdateManyWithoutFarmsNestedInput
+  onFarms?: Prisma.OnFarmUpdateManyWithoutFarmNestedInput
+  paddocks?: Prisma.PaddockUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUpdateManyWithoutFarmNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutFarmsNestedInput
+}
+
+export type FarmUncheckedUpdateWithoutGatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lotSectionPlan?: Prisma.FarmUpdatelotSectionPlanInput | string[]
+  abn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pic?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  locationCentreId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  areaHa?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedUpdateManyWithoutBoundaryFarmNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutFarmNestedInput
+  studs?: Prisma.StudUncheckedUpdateManyWithoutFarmsNestedInput
+  onFarms?: Prisma.OnFarmUncheckedUpdateManyWithoutFarmNestedInput
+  paddocks?: Prisma.PaddockUncheckedUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUncheckedUpdateManyWithoutFarmNestedInput
+}
+
 export type FarmCreateWithoutOrganizationInput = {
   id?: string
   name: string
@@ -1077,9 +1632,13 @@ export type FarmCreateWithoutOrganizationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string | null
   locationCentre?: Prisma.GeoPointCreateNestedOneWithoutFarmsInput
+  boundaryPoints?: Prisma.GeoPointCreateNestedManyWithoutBoundaryFarmInput
   users?: Prisma.UserCreateNestedManyWithoutFarmInput
   studs?: Prisma.StudCreateNestedManyWithoutFarmsInput
   onFarms?: Prisma.OnFarmCreateNestedManyWithoutFarmInput
+  paddocks?: Prisma.PaddockCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateCreateNestedManyWithoutFarmInput
 }
 
 export type FarmUncheckedCreateWithoutOrganizationInput = {
@@ -1095,9 +1654,13 @@ export type FarmUncheckedCreateWithoutOrganizationInput = {
   areaHa?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedCreateNestedManyWithoutBoundaryFarmInput
   users?: Prisma.UserUncheckedCreateNestedManyWithoutFarmInput
   studs?: Prisma.StudUncheckedCreateNestedManyWithoutFarmsInput
   onFarms?: Prisma.OnFarmUncheckedCreateNestedManyWithoutFarmInput
+  paddocks?: Prisma.PaddockUncheckedCreateNestedManyWithoutFarmInput
+  mobs?: Prisma.MobUncheckedCreateNestedManyWithoutFarmInput
+  gates?: Prisma.GateUncheckedCreateNestedManyWithoutFarmInput
 }
 
 export type FarmCreateOrConnectWithoutOrganizationInput = {
@@ -1139,8 +1702,12 @@ export type FarmUpdateWithoutStudsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationCentre?: Prisma.GeoPointUpdateOneWithoutFarmsNestedInput
+  boundaryPoints?: Prisma.GeoPointUpdateManyWithoutBoundaryFarmNestedInput
   users?: Prisma.UserUpdateManyWithoutFarmNestedInput
   onFarms?: Prisma.OnFarmUpdateManyWithoutFarmNestedInput
+  paddocks?: Prisma.PaddockUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUpdateManyWithoutFarmNestedInput
   organization?: Prisma.OrganizationUpdateOneWithoutFarmsNestedInput
 }
 
@@ -1158,8 +1725,12 @@ export type FarmUncheckedUpdateWithoutStudsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedUpdateManyWithoutBoundaryFarmNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutFarmNestedInput
   onFarms?: Prisma.OnFarmUncheckedUpdateManyWithoutFarmNestedInput
+  paddocks?: Prisma.PaddockUncheckedUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUncheckedUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateManyWithoutStudsInput = {
@@ -1205,9 +1776,13 @@ export type FarmUpdateWithoutLocationCentreInput = {
   areaHa?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  boundaryPoints?: Prisma.GeoPointUpdateManyWithoutBoundaryFarmNestedInput
   users?: Prisma.UserUpdateManyWithoutFarmNestedInput
   studs?: Prisma.StudUpdateManyWithoutFarmsNestedInput
   onFarms?: Prisma.OnFarmUpdateManyWithoutFarmNestedInput
+  paddocks?: Prisma.PaddockUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUpdateManyWithoutFarmNestedInput
   organization?: Prisma.OrganizationUpdateOneWithoutFarmsNestedInput
 }
 
@@ -1224,9 +1799,13 @@ export type FarmUncheckedUpdateWithoutLocationCentreInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedUpdateManyWithoutBoundaryFarmNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutFarmNestedInput
   studs?: Prisma.StudUncheckedUpdateManyWithoutFarmsNestedInput
   onFarms?: Prisma.OnFarmUncheckedUpdateManyWithoutFarmNestedInput
+  paddocks?: Prisma.PaddockUncheckedUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUncheckedUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateManyWithoutLocationCentreInput = {
@@ -1272,9 +1851,13 @@ export type FarmUpdateWithoutOrganizationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   locationCentre?: Prisma.GeoPointUpdateOneWithoutFarmsNestedInput
+  boundaryPoints?: Prisma.GeoPointUpdateManyWithoutBoundaryFarmNestedInput
   users?: Prisma.UserUpdateManyWithoutFarmNestedInput
   studs?: Prisma.StudUpdateManyWithoutFarmsNestedInput
   onFarms?: Prisma.OnFarmUpdateManyWithoutFarmNestedInput
+  paddocks?: Prisma.PaddockUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateWithoutOrganizationInput = {
@@ -1290,9 +1873,13 @@ export type FarmUncheckedUpdateWithoutOrganizationInput = {
   areaHa?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  boundaryPoints?: Prisma.GeoPointUncheckedUpdateManyWithoutBoundaryFarmNestedInput
   users?: Prisma.UserUncheckedUpdateManyWithoutFarmNestedInput
   studs?: Prisma.StudUncheckedUpdateManyWithoutFarmsNestedInput
   onFarms?: Prisma.OnFarmUncheckedUpdateManyWithoutFarmNestedInput
+  paddocks?: Prisma.PaddockUncheckedUpdateManyWithoutFarmNestedInput
+  mobs?: Prisma.MobUncheckedUpdateManyWithoutFarmNestedInput
+  gates?: Prisma.GateUncheckedUpdateManyWithoutFarmNestedInput
 }
 
 export type FarmUncheckedUpdateManyWithoutOrganizationInput = {
@@ -1316,15 +1903,23 @@ export type FarmUncheckedUpdateManyWithoutOrganizationInput = {
  */
 
 export type FarmCountOutputType = {
+  boundaryPoints: number
   users: number
   studs: number
   onFarms: number
+  paddocks: number
+  mobs: number
+  gates: number
 }
 
 export type FarmCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  boundaryPoints?: boolean | FarmCountOutputTypeCountBoundaryPointsArgs
   users?: boolean | FarmCountOutputTypeCountUsersArgs
   studs?: boolean | FarmCountOutputTypeCountStudsArgs
   onFarms?: boolean | FarmCountOutputTypeCountOnFarmsArgs
+  paddocks?: boolean | FarmCountOutputTypeCountPaddocksArgs
+  mobs?: boolean | FarmCountOutputTypeCountMobsArgs
+  gates?: boolean | FarmCountOutputTypeCountGatesArgs
 }
 
 /**
@@ -1335,6 +1930,13 @@ export type FarmCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the FarmCountOutputType
    */
   select?: Prisma.FarmCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * FarmCountOutputType without action
+ */
+export type FarmCountOutputTypeCountBoundaryPointsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GeoPointWhereInput
 }
 
 /**
@@ -1358,6 +1960,27 @@ export type FarmCountOutputTypeCountOnFarmsArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.OnFarmWhereInput
 }
 
+/**
+ * FarmCountOutputType without action
+ */
+export type FarmCountOutputTypeCountPaddocksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaddockWhereInput
+}
+
+/**
+ * FarmCountOutputType without action
+ */
+export type FarmCountOutputTypeCountMobsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MobWhereInput
+}
+
+/**
+ * FarmCountOutputType without action
+ */
+export type FarmCountOutputTypeCountGatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GateWhereInput
+}
+
 
 export type FarmSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1374,9 +1997,13 @@ export type FarmSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   organizationId?: boolean
   locationCentre?: boolean | Prisma.Farm$locationCentreArgs<ExtArgs>
+  boundaryPoints?: boolean | Prisma.Farm$boundaryPointsArgs<ExtArgs>
   users?: boolean | Prisma.Farm$usersArgs<ExtArgs>
   studs?: boolean | Prisma.Farm$studsArgs<ExtArgs>
   onFarms?: boolean | Prisma.Farm$onFarmsArgs<ExtArgs>
+  paddocks?: boolean | Prisma.Farm$paddocksArgs<ExtArgs>
+  mobs?: boolean | Prisma.Farm$mobsArgs<ExtArgs>
+  gates?: boolean | Prisma.Farm$gatesArgs<ExtArgs>
   organization?: boolean | Prisma.Farm$organizationArgs<ExtArgs>
   _count?: boolean | Prisma.FarmCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["farm"]>
@@ -1436,9 +2063,13 @@ export type FarmSelectScalar = {
 export type FarmOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "businessName" | "lotSectionPlan" | "abn" | "acn" | "pic" | "locationCentreId" | "areaHa" | "createdAt" | "updatedAt" | "organizationId", ExtArgs["result"]["farm"]>
 export type FarmInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   locationCentre?: boolean | Prisma.Farm$locationCentreArgs<ExtArgs>
+  boundaryPoints?: boolean | Prisma.Farm$boundaryPointsArgs<ExtArgs>
   users?: boolean | Prisma.Farm$usersArgs<ExtArgs>
   studs?: boolean | Prisma.Farm$studsArgs<ExtArgs>
   onFarms?: boolean | Prisma.Farm$onFarmsArgs<ExtArgs>
+  paddocks?: boolean | Prisma.Farm$paddocksArgs<ExtArgs>
+  mobs?: boolean | Prisma.Farm$mobsArgs<ExtArgs>
+  gates?: boolean | Prisma.Farm$gatesArgs<ExtArgs>
   organization?: boolean | Prisma.Farm$organizationArgs<ExtArgs>
   _count?: boolean | Prisma.FarmCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1455,9 +2086,13 @@ export type $FarmPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "Farm"
   objects: {
     locationCentre: Prisma.$GeoPointPayload<ExtArgs> | null
+    boundaryPoints: Prisma.$GeoPointPayload<ExtArgs>[]
     users: Prisma.$UserPayload<ExtArgs>[]
     studs: Prisma.$StudPayload<ExtArgs>[]
     onFarms: Prisma.$OnFarmPayload<ExtArgs>[]
+    paddocks: Prisma.$PaddockPayload<ExtArgs>[]
+    mobs: Prisma.$MobPayload<ExtArgs>[]
+    gates: Prisma.$GatePayload<ExtArgs>[]
     organization: Prisma.$OrganizationPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1869,9 +2504,13 @@ readonly fields: FarmFieldRefs;
 export interface Prisma__FarmClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   locationCentre<T extends Prisma.Farm$locationCentreArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$locationCentreArgs<ExtArgs>>): Prisma.Prisma__GeoPointClient<runtime.Types.Result.GetResult<Prisma.$GeoPointPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  boundaryPoints<T extends Prisma.Farm$boundaryPointsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$boundaryPointsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GeoPointPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   users<T extends Prisma.Farm$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   studs<T extends Prisma.Farm$studsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$studsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   onFarms<T extends Prisma.Farm$onFarmsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$onFarmsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OnFarmPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  paddocks<T extends Prisma.Farm$paddocksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$paddocksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaddockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mobs<T extends Prisma.Farm$mobsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$mobsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  gates<T extends Prisma.Farm$gatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$gatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   organization<T extends Prisma.Farm$organizationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farm$organizationArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2339,6 +2978,30 @@ export type Farm$locationCentreArgs<ExtArgs extends runtime.Types.Extensions.Int
 }
 
 /**
+ * Farm.boundaryPoints
+ */
+export type Farm$boundaryPointsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GeoPoint
+   */
+  select?: Prisma.GeoPointSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the GeoPoint
+   */
+  omit?: Prisma.GeoPointOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GeoPointInclude<ExtArgs> | null
+  where?: Prisma.GeoPointWhereInput
+  orderBy?: Prisma.GeoPointOrderByWithRelationInput | Prisma.GeoPointOrderByWithRelationInput[]
+  cursor?: Prisma.GeoPointWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GeoPointScalarFieldEnum | Prisma.GeoPointScalarFieldEnum[]
+}
+
+/**
  * Farm.users
  */
 export type Farm$usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2408,6 +3071,78 @@ export type Farm$onFarmsArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.OnFarmScalarFieldEnum | Prisma.OnFarmScalarFieldEnum[]
+}
+
+/**
+ * Farm.paddocks
+ */
+export type Farm$paddocksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Paddock
+   */
+  select?: Prisma.PaddockSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Paddock
+   */
+  omit?: Prisma.PaddockOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaddockInclude<ExtArgs> | null
+  where?: Prisma.PaddockWhereInput
+  orderBy?: Prisma.PaddockOrderByWithRelationInput | Prisma.PaddockOrderByWithRelationInput[]
+  cursor?: Prisma.PaddockWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaddockScalarFieldEnum | Prisma.PaddockScalarFieldEnum[]
+}
+
+/**
+ * Farm.mobs
+ */
+export type Farm$mobsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Mob
+   */
+  select?: Prisma.MobSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Mob
+   */
+  omit?: Prisma.MobOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MobInclude<ExtArgs> | null
+  where?: Prisma.MobWhereInput
+  orderBy?: Prisma.MobOrderByWithRelationInput | Prisma.MobOrderByWithRelationInput[]
+  cursor?: Prisma.MobWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MobScalarFieldEnum | Prisma.MobScalarFieldEnum[]
+}
+
+/**
+ * Farm.gates
+ */
+export type Farm$gatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Gate
+   */
+  select?: Prisma.GateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Gate
+   */
+  omit?: Prisma.GateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GateInclude<ExtArgs> | null
+  where?: Prisma.GateWhereInput
+  orderBy?: Prisma.GateOrderByWithRelationInput | Prisma.GateOrderByWithRelationInput[]
+  cursor?: Prisma.GateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GateScalarFieldEnum | Prisma.GateScalarFieldEnum[]
 }
 
 /**

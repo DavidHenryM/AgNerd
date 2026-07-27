@@ -106,6 +106,32 @@ export const ApplicationMethod = {
 export type ApplicationMethod = (typeof ApplicationMethod)[keyof typeof ApplicationMethod]
 
 
+export const GateState = {
+  OPEN: 'OPEN',
+  CLOSED: 'CLOSED'
+} as const
+
+export type GateState = (typeof GateState)[keyof typeof GateState]
+
+
+export const FeedSourceType = {
+  MANUAL: 'MANUAL',
+  DERIVED_ESTIMATE: 'DERIVED_ESTIMATE'
+} as const
+
+export type FeedSourceType = (typeof FeedSourceType)[keyof typeof FeedSourceType]
+
+
+export const PaddockWorkType = {
+  CHEMICAL_TREATMENT: 'CHEMICAL_TREATMENT',
+  LIME: 'LIME',
+  SEED_SOWING: 'SEED_SOWING',
+  FERTILISER: 'FERTILISER'
+} as const
+
+export type PaddockWorkType = (typeof PaddockWorkType)[keyof typeof PaddockWorkType]
+
+
 export const VisualIdColour = {
   WHITE: 'WHITE',
   ORANGE: 'ORANGE',

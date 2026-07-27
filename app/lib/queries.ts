@@ -417,6 +417,175 @@ export async function getFarmBySlug(slug: string) {
   return farm
 }
 
+export async function getFarmWorkspaceBySlug(slug: string) {
+  const farm = await prisma.farm.findFirst({
+    where: {
+      slug: { equals: slug },
+    },
+    include: {
+      locationCentre: true,
+      boundaryPoints: {
+        orderBy: {
+          sortOrder: "asc",
+        },
+      },
+      paddocks: {
+        include: {
+          polygon: {
+            orderBy: {
+              sortOrder: "asc",
+            },
+          },
+          feedRecords: {
+            orderBy: {
+              recordedAt: "asc",
+            },
+          },
+          workEvents: {
+            orderBy: {
+              startedAt: "desc",
+            },
+          },
+          arrivals: {
+            orderBy: {
+              movedAt: "asc",
+            },
+            include: {
+              mob: {
+                include: {
+                  members: {
+                    select: {
+                      id: true,
+                      name: true,
+                      drySheepEquivalent: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        orderBy: {
+          name: "asc",
+        },
+      },
+      gates: {
+        include: {
+          fromPaddock: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          toPaddock: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          stateChanges: {
+            orderBy: {
+              recordedAt: "desc",
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "asc",
+        },
+      },
+      mobs: {
+        include: {
+          members: {
+            select: {
+              id: true,
+              name: true,
+              drySheepEquivalent: true,
+              mobRef: true,
+            },
+          },
+          memberships: {
+            orderBy: {
+              startDate: "desc",
+            },
+            include: {
+              livestockUnit: {
+                select: {
+                  id: true,
+                  name: true,
+                  drySheepEquivalent: true,
+                },
+              },
+            },
+          },
+          movements: {
+            orderBy: {
+              movedAt: "asc",
+            },
+            include: {
+              fromPaddock: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+              toPaddock: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: {
+          name: "asc",
+        },
+      },
+      onFarms: {
+        where: {
+          endDate: null,
+        },
+        include: {
+          livestockUnit: {
+            select: {
+              id: true,
+              name: true,
+              drySheepEquivalent: true,
+              mobRef: true,
+              active: true,
+            },
+          },
+        },
+      },
+    },
+  })
+
+  return farm
+}
+
+export async function getFarmLivestockOptions(farmId: string) {
+  return prisma.livestockUnit.findMany({
+    where: {
+      active: true,
+      onFarmHistory: {
+        some: {
+          farmId,
+          endDate: null,
+        },
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+      drySheepEquivalent: true,
+      mobRef: true,
+    },
+    orderBy: {
+      name: "asc",
+    },
+  })
+}
+
 export async function getUserFromId(userId: string): Promise<User | null>{
   const user = await prisma.user.findFirst({
     where: {
