@@ -1,6 +1,5 @@
 import { Skeleton, Stack } from "@mui/material"
-import { LivestockUnit } from '@generated/browser'
-import { useRef, useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { BeastView } from "../../beastView"
 import StockPreviewCard, { type LivestockWithRelations } from "@components/cards/StockPreview"
 import { getLivestock } from "@lib/queries"
@@ -8,7 +7,7 @@ import { LivestockUnitWhereInput } from "@/app/generated/prisma/models"
 
 
 export default function LivestockCardsScreen(props: {whereFilter: Partial<LivestockUnitWhereInput>}) { 
-  const livestockUnits = useRef<LivestockWithRelations[]>([])
+  const [livestockUnits, setLivestockUnits] = useState<LivestockWithRelations[]>([])
   const [stockFocus, setStockFocus] = useState<LivestockWithRelations>()
   const [loading, setLoading] = useState(true)
 
@@ -16,7 +15,7 @@ export default function LivestockCardsScreen(props: {whereFilter: Partial<Livest
     setLoading(true)
     getLivestock(props.whereFilter)
       .then((livestock: LivestockWithRelations[]) => {
-        livestockUnits.current = livestock
+        setLivestockUnits(livestock)
         
       }).finally(()=>setLoading(false))
   },[props])
@@ -32,7 +31,7 @@ export default function LivestockCardsScreen(props: {whereFilter: Partial<Livest
   } else {
     if (!stockFocus){
       const handleFocusById = (id: string) => {
-        const match = livestockUnits.current.find((unit) => unit.id === id)
+        const match = livestockUnits.find((unit) => unit.id === id)
         if (match) {
           setStockFocus(match)
         }
@@ -40,7 +39,7 @@ export default function LivestockCardsScreen(props: {whereFilter: Partial<Livest
 
       return (
         <Stack direction="row" flexWrap="wrap" gap={6}>
-          {livestockUnits.current.map((stock: LivestockWithRelations, index: number) => (
+          {livestockUnits.map((stock: LivestockWithRelations, index: number) => (
             <StockPreviewCard
               key={stock.id}
               stock={stock}

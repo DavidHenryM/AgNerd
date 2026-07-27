@@ -34,7 +34,7 @@ const breakpoints = {
 }
 
 const typography = {
-  fontFamily: "var(--font-arvo)"
+  fontFamily: '"Arvo", Georgia, "Times New Roman", serif'
 }
 
 export const darkTheme = createTheme(
@@ -92,4 +92,3 @@ export const lightTheme = createTheme(
     } 
   }
 )
-
