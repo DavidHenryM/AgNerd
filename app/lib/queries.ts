@@ -1,30 +1,10 @@
 "use server"
 
 import { prisma } from "@lib/prisma"
-import { auth } from "@lib/auth"
-import { headers } from "next/headers"
+import { requireSession, getSessionFarmId } from "@lib/auth-server"
 import { CommercialClass, LivestockUnit, Sex, StockClass, User, VisualIdColour, WeighMethod } from "@generated/client"
 import { LivestockUnitSelect, LivestockUnitWhereInput } from "@generated/models"
 import { FarmAndLocation, GetOrganisationsResult } from "@lib/types"
-
-async function requireSession() {
-  const session = await auth.api.getSession({ headers: await headers() })
-  if (!session) {
-    throw new Error("Unauthorized")
-  }
-  return session
-}
-
-async function getSessionFarmId(userId: string): Promise<string> {
-  const user = await prisma.user.findFirst({
-    where: { id: userId },
-    select: { farmId: true },
-  })
-  if (!user) {
-    throw new Error("User not found")
-  }
-  return user.farmId
-}
 
 export async function getLivestock(whereFilter: LivestockUnitWhereInput) {
   const session = await requireSession()
@@ -285,7 +265,11 @@ export async function updateLivestockUnit(
 }
 
 export async function getOnFarmStatus(livestockUnitId: string, farmId: string) {
-  await requireSession()
+  const session = await requireSession()
+  const sessionFarmId = await getSessionFarmId(session.user.id)
+  if (sessionFarmId !== farmId) {
+    throw new Error("Unauthorized")
+  }
   return prisma.onFarm.findFirst({
     where: {
       livestockUnitId: livestockUnitId,
@@ -304,7 +288,11 @@ export async function setOnFarmStatus(data: {
   onFarm: boolean
   startDate?: Date
 }) {
-  await requireSession()
+  const session = await requireSession()
+  const sessionFarmId = await getSessionFarmId(session.user.id)
+  if (sessionFarmId !== data.farmId) {
+    throw new Error("Unauthorized")
+  }
   if (data.onFarm) {
     const existing = await prisma.onFarm.findFirst({
       where: {
@@ -660,7 +648,11 @@ export async function getFarmWorkspaceBySlug(slug: string) {
 }
 
 export async function getFarmLivestockOptions(farmId: string) {
-  await requireSession()
+  const session = await requireSession()
+  const sessionFarmId = await getSessionFarmId(session.user.id)
+  if (sessionFarmId !== farmId) {
+    throw new Error("Unauthorized")
+  }
   return prisma.livestockUnit.findMany({
     where: {
       active: true,

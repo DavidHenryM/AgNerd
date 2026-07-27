@@ -1,31 +1,11 @@
 "use server"
 
 import { prisma } from "@lib/prisma"
-import { auth } from "@lib/auth"
-import { headers } from "next/headers"
+import { requireSession, getSessionFarmId } from "@lib/auth-server"
 import { Role } from "better-auth/plugins"
 import { Address, FeedSourceType, GateState, PaddockWorkType } from "@generated/client"
 import { OrganizationCreateInput } from "../generated/prisma/models"
 import { calculatePolygonAreaHa, centroidFromPoints, type CoordinatePoint } from "./farmUtils"
-
-async function requireSession() {
-  const session = await auth.api.getSession({ headers: await headers() })
-  if (!session) {
-    throw new Error("Unauthorized")
-  }
-  return session
-}
-
-async function getSessionFarmId(userId: string): Promise<string> {
-  const user = await prisma.user.findFirst({
-    where: { id: userId },
-    select: { farmId: true },
-  })
-  if (!user) {
-    throw new Error("User not found")
-  }
-  return user.farmId
-}
 
 export async function setLivestockUnitInactive(livestockUnitId: string) {
   const session = await requireSession()
@@ -271,7 +251,17 @@ export async function updateGateState(data: {
   recordedAt: Date
   note?: string | null
 }) {
-  await requireSession()
+  const session = await requireSession()
+  const sessionFarmId = await getSessionFarmId(session.user.id)
+
+  const gate = await prisma.gate.findFirst({
+    where: { id: data.gateId, farmId: sessionFarmId },
+    select: { id: true },
+  })
+  if (!gate) {
+    throw new Error("Not found")
+  }
+
   return prisma.gateStateChange.create({
     data: {
       gateId: data.gateId,
@@ -346,7 +336,17 @@ export async function recordMobMovement(data: {
   movedAt: Date
   note?: string | null
 }) {
-  await requireSession()
+  const session = await requireSession()
+  const sessionFarmId = await getSessionFarmId(session.user.id)
+
+  const mob = await prisma.mob.findFirst({
+    where: { id: data.mobId, farmId: sessionFarmId },
+    select: { id: true },
+  })
+  if (!mob) {
+    throw new Error("Not found")
+  }
+
   return prisma.mobMovement.create({
     data: {
       mobId: data.mobId,
@@ -367,7 +367,17 @@ export async function createPaddockFeedRecord(data: {
   confidencePct?: number | null
   note?: string | null
 }) {
-  await requireSession()
+  const session = await requireSession()
+  const sessionFarmId = await getSessionFarmId(session.user.id)
+
+  const paddock = await prisma.paddock.findFirst({
+    where: { id: data.paddockId, farmId: sessionFarmId },
+    select: { id: true },
+  })
+  if (!paddock) {
+    throw new Error("Not found")
+  }
+
   return prisma.paddockFeedRecord.create({
     data: {
       paddockId: data.paddockId,
@@ -395,7 +405,17 @@ export async function createPaddockWorkEvent(data: {
   operatorName?: string | null
   notes?: string | null
 }) {
-  await requireSession()
+  const session = await requireSession()
+  const sessionFarmId = await getSessionFarmId(session.user.id)
+
+  const paddock = await prisma.paddock.findFirst({
+    where: { id: data.paddockId, farmId: sessionFarmId },
+    select: { id: true },
+  })
+  if (!paddock) {
+    throw new Error("Not found")
+  }
+
   return prisma.paddockWorkEvent.create({
     data: {
       paddockId: data.paddockId,
