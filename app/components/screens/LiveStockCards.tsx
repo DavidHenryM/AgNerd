@@ -7,18 +7,37 @@ import { LivestockUnitWhereInput } from "@/app/generated/prisma/models"
 
 
 export default function LivestockCardsScreen(props: {whereFilter: Partial<LivestockUnitWhereInput>}) { 
-  const [livestockUnits, setLivestockUnits] = useState<LivestockWithRelations[]>([])
+  const filterKey = JSON.stringify(props.whereFilter)
+  const [livestockResponse, setLivestockResponse] = useState<{
+    filterKey: string
+    livestockUnits: LivestockWithRelations[]
+  }>()
   const [stockFocus, setStockFocus] = useState<LivestockWithRelations>()
-  const [loading, setLoading] = useState(true)
+  const livestockUnits = livestockResponse?.livestockUnits ?? []
+  const loading = livestockResponse?.filterKey !== filterKey
 
   useEffect(() => {
-    setLoading(true)
+    let cancelled = false
+
     getLivestock(props.whereFilter)
       .then((livestock: LivestockWithRelations[]) => {
-        setLivestockUnits(livestock)
-        
-      }).finally(()=>setLoading(false))
-  },[props])
+        if (cancelled) {
+          return
+        }
+
+        setLivestockResponse({
+          filterKey,
+          livestockUnits: livestock,
+        })
+        setStockFocus((currentFocus) =>
+          currentFocus ? livestock.find((unit) => unit.id === currentFocus.id) : undefined
+        )
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [filterKey, props.whereFilter])
 
   if (loading){
     return (
