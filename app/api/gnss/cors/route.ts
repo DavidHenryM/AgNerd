@@ -1,5 +1,7 @@
 import { access, readFile } from "node:fs/promises";
 import { prisma } from "@lib/prisma";
+import { auth } from "@lib/auth";
+import { headers } from "next/headers";
 import { Resource } from "cesium";
 
 export const dynamic = "force-dynamic";
@@ -342,6 +344,11 @@ async function detectCountryCodeWithCesium(
 }
 
 export async function GET(request: Request) {
+  const session = await auth.api.getSession({ headers: await headers() })
+  if (!session) {
+    return Response.json({ ok: false, error: "Unauthorized" }, { status: 401 })
+  }
+
   const url = new URL(request.url);
   const countryParam = url.searchParams.get("country");
   const country = countryParam ? countryParam.trim().toUpperCase() : "AU";

@@ -1,4 +1,6 @@
 import { prisma } from "@lib/prisma";
+import { auth } from "@lib/auth";
+import { headers } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +21,11 @@ function badRequest(message: string, status = 400) {
 }
 
 export async function GET() {
+  const session = await auth.api.getSession({ headers: await headers() })
+  if (!session) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   const latest = await prisma.geoPoint.findFirst({
     orderBy: {
       id: "desc",

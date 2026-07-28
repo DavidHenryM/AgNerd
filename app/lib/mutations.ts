@@ -1,12 +1,24 @@
 "use server"
 
 import { prisma } from "@lib/prisma"
+import { requireSession, getSessionFarmId } from "@lib/auth-server"
 import { Role } from "better-auth/plugins"
 import { Address, FeedSourceType, GateState, PaddockWorkType } from "@generated/client"
 import { OrganizationCreateInput } from "../generated/prisma/models"
 import { calculatePolygonAreaHa, centroidFromPoints, type CoordinatePoint } from "./farmUtils"
 
 export async function setLivestockUnitInactive(livestockUnitId: string) {
+  const session = await requireSession()
+  const farmId = await getSessionFarmId(session.user.id)
+
+  const owned = await prisma.livestockUnit.findFirst({
+    where: { id: livestockUnitId, onFarmHistory: { some: { farmId } } },
+    select: { id: true },
+  })
+  if (!owned) {
+    throw new Error("Not found")
+  }
+
   return await prisma.livestockUnit.update({
       where: { id: livestockUnitId },
       data: { active: false }
@@ -14,6 +26,17 @@ export async function setLivestockUnitInactive(livestockUnitId: string) {
 }
 
 export async function setLivestockUnitActive(livestockUnitId: string) {
+  const session = await requireSession()
+  const farmId = await getSessionFarmId(session.user.id)
+
+  const owned = await prisma.livestockUnit.findFirst({
+    where: { id: livestockUnitId, onFarmHistory: { some: { farmId } } },
+    select: { id: true },
+  })
+  if (!owned) {
+    throw new Error("Not found")
+  }
+
   return await prisma.livestockUnit.update({
       where: { id: livestockUnitId },
       data: { active: true }
@@ -21,6 +44,10 @@ export async function setLivestockUnitActive(livestockUnitId: string) {
 }
 
 export async function updateUserName(email: string, firstName: string, lastName: string){
+  const session = await requireSession()
+  if (session.user.email !== email) {
+    throw new Error("Unauthorized")
+  }
   const updatedUser = await prisma.user.update({
     where: {
       email: email
@@ -50,6 +77,10 @@ export async function updateUser(id: string, data: Partial<{
   billingAddress: Partial<Address> | null
   shippingAddress: Partial<Address> | null
 }>) {
+  const session = await requireSession()
+  if (session.user.id !== id) {
+    throw new Error("Unauthorized")
+  }
   const updateData: Record<string, unknown> = {
     email: data.email,
     name: data.name,
@@ -83,6 +114,10 @@ export async function updateUser(id: string, data: Partial<{
 }
 
 export async function deleteUser(id: string){
+  const session = await requireSession()
+  if (session.user.id !== id) {
+    throw new Error("Unauthorized")
+  }
   const user = await prisma.user.delete({
     where: { id }
   })
@@ -90,6 +125,7 @@ export async function deleteUser(id: string){
 }
 
 export async function createOrganisation(organisationData: OrganizationCreateInput){
+  await requireSession()
   const createdOrganisation = await prisma.organization.create({
     data: organisationData
   })
@@ -101,6 +137,12 @@ export async function updateFarmBoundary(
   boundaryPoints: CoordinatePoint[],
   areaHa?: number | null
 ) {
+  const session = await requireSession()
+  const sessionFarmId = await getSessionFarmId(session.user.id)
+  if (sessionFarmId !== farmId) {
+    throw new Error("Unauthorized")
+  }
+
   const locationCentre = centroidFromPoints(boundaryPoints)
 
   return prisma.farm.update({
@@ -140,6 +182,12 @@ export async function createPaddock(data: {
   areaHa?: number | null
   boundaryPoints: CoordinatePoint[]
 }) {
+  const session = await requireSession()
+  const sessionFarmId = await getSessionFarmId(session.user.id)
+  if (sessionFarmId !== data.farmId) {
+    throw new Error("Unauthorized")
+  }
+
   const derivedAreaHa = calculatePolygonAreaHa(data.boundaryPoints)
 
   return prisma.paddock.create({
@@ -171,6 +219,12 @@ export async function createGate(data: {
   recordedAt: Date
   note?: string | null
 }) {
+  const session = await requireSession()
+  const sessionFarmId = await getSessionFarmId(session.user.id)
+  if (sessionFarmId !== data.farmId) {
+    throw new Error("Unauthorized")
+  }
+
   return prisma.gate.create({
     data: {
       farmId: data.farmId,
@@ -197,6 +251,17 @@ export async function updateGateState(data: {
   recordedAt: Date
   note?: string | null
 }) {
+  const session = await requireSession()
+  const sessionFarmId = await getSessionFarmId(session.user.id)
+
+  const gate = await prisma.gate.findFirst({
+    where: { id: data.gateId, farmId: sessionFarmId },
+    select: { id: true },
+  })
+  if (!gate) {
+    throw new Error("Not found")
+  }
+
   return prisma.gateStateChange.create({
     data: {
       gateId: data.gateId,
@@ -215,6 +280,12 @@ export async function createMob(data: {
   startedAt: Date
   note?: string | null
 }) {
+  const session = await requireSession()
+  const sessionFarmId = await getSessionFarmId(session.user.id)
+  if (sessionFarmId !== data.farmId) {
+    throw new Error("Unauthorized")
+  }
+
   return prisma.$transaction(async (transaction) => {
     const mob = await transaction.mob.create({
       data: {
@@ -265,6 +336,17 @@ export async function recordMobMovement(data: {
   movedAt: Date
   note?: string | null
 }) {
+  const session = await requireSession()
+  const sessionFarmId = await getSessionFarmId(session.user.id)
+
+  const mob = await prisma.mob.findFirst({
+    where: { id: data.mobId, farmId: sessionFarmId },
+    select: { id: true },
+  })
+  if (!mob) {
+    throw new Error("Not found")
+  }
+
   return prisma.mobMovement.create({
     data: {
       mobId: data.mobId,
@@ -285,6 +367,17 @@ export async function createPaddockFeedRecord(data: {
   confidencePct?: number | null
   note?: string | null
 }) {
+  const session = await requireSession()
+  const sessionFarmId = await getSessionFarmId(session.user.id)
+
+  const paddock = await prisma.paddock.findFirst({
+    where: { id: data.paddockId, farmId: sessionFarmId },
+    select: { id: true },
+  })
+  if (!paddock) {
+    throw new Error("Not found")
+  }
+
   return prisma.paddockFeedRecord.create({
     data: {
       paddockId: data.paddockId,
@@ -312,6 +405,17 @@ export async function createPaddockWorkEvent(data: {
   operatorName?: string | null
   notes?: string | null
 }) {
+  const session = await requireSession()
+  const sessionFarmId = await getSessionFarmId(session.user.id)
+
+  const paddock = await prisma.paddock.findFirst({
+    where: { id: data.paddockId, farmId: sessionFarmId },
+    select: { id: true },
+  })
+  if (!paddock) {
+    throw new Error("Not found")
+  }
+
   return prisma.paddockWorkEvent.create({
     data: {
       paddockId: data.paddockId,
