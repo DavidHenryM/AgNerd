@@ -158,7 +158,7 @@ export type OwnershipGroupByOutputType = {
   _max: OwnershipMaxAggregateOutputType | null
 }
 
-type GetOwnershipGroupByPayload<T extends OwnershipGroupByArgs> = Prisma.PrismaPromise<
+export type GetOwnershipGroupByPayload<T extends OwnershipGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<OwnershipGroupByOutputType, T['by']> &
       {
@@ -1246,6 +1246,11 @@ export type OwnershipFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Skip the first `n` Ownerships.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Ownerships.
+   */
   distinct?: Prisma.OwnershipScalarFieldEnum | Prisma.OwnershipScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }

@@ -11,6 +11,7 @@ import {
   HeightReference,
   ColorMaterialProperty,
   ClassificationType,
+  Rectangle,
 } from "cesium";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Box } from "@mui/material";
@@ -30,6 +31,7 @@ const TRACTOR_WORLD_SCALE =
 const SCALE_KEY_BASE_PIXELS = 120;
 const SCALE_KEY_ZOOM_FACTOR = 1 / 3;
 const MIN_CAMERA_CLEARANCE_METERS = 2;
+const AUSTRALIA_RECTANGLE = Rectangle.fromDegrees(112, -44, 154, -10);
 
 function roundNiceDistance(meters: number): number {
   const power = 10 ** Math.floor(Math.log10(meters));
@@ -167,6 +169,7 @@ export default function NavigationScreen() {
     heading,
     speed,
     accuracy,
+    gnssDebug,
   } = useGeolocation();
 
   // Tracking state
@@ -239,6 +242,7 @@ export default function NavigationScreen() {
       selectionIndicator: false,
     });
     viewerRef.current = viewer;
+    viewer.camera.setView({ destination: AUSTRALIA_RECTANGLE });
 
     // Avoid double-zoom handling: we handle wheel zoom ourselves via state.
     viewer.scene.screenSpaceCameraController.enableZoom = false;
@@ -429,6 +433,7 @@ export default function NavigationScreen() {
         locationTimestamp={locationTimestamp}
         accuracy={accuracy}
         speed={speed}
+        gpsConnected={gnssDebug.statusFilePresent === true}
         isTracking={isTracking}
         setIsTracking={setIsTracking}
         widthMeters={widthMeters}

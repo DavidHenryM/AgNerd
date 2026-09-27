@@ -185,7 +185,7 @@ export type ActiveIngredientGroupByOutputType = {
   _max: ActiveIngredientMaxAggregateOutputType | null
 }
 
-type GetActiveIngredientGroupByPayload<T extends ActiveIngredientGroupByArgs> = Prisma.PrismaPromise<
+export type GetActiveIngredientGroupByPayload<T extends ActiveIngredientGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ActiveIngredientGroupByOutputType, T['by']> &
       {
@@ -1147,6 +1147,11 @@ export type ActiveIngredientFindManyArgs<ExtArgs extends runtime.Types.Extension
    * Skip the first `n` ActiveIngredients.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ActiveIngredients.
+   */
   distinct?: Prisma.ActiveIngredientScalarFieldEnum | Prisma.ActiveIngredientScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }

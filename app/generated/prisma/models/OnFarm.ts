@@ -158,7 +158,7 @@ export type OnFarmGroupByOutputType = {
   _max: OnFarmMaxAggregateOutputType | null
 }
 
-type GetOnFarmGroupByPayload<T extends OnFarmGroupByArgs> = Prisma.PrismaPromise<
+export type GetOnFarmGroupByPayload<T extends OnFarmGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<OnFarmGroupByOutputType, T['by']> &
       {
@@ -1246,6 +1246,11 @@ export type OnFarmFindManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Skip the first `n` OnFarms.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of OnFarms.
+   */
   distinct?: Prisma.OnFarmScalarFieldEnum | Prisma.OnFarmScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }

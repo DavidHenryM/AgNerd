@@ -199,7 +199,7 @@ export type ChemicalTreatmentGroupByOutputType = {
   _max: ChemicalTreatmentMaxAggregateOutputType | null
 }
 
-type GetChemicalTreatmentGroupByPayload<T extends ChemicalTreatmentGroupByArgs> = Prisma.PrismaPromise<
+export type GetChemicalTreatmentGroupByPayload<T extends ChemicalTreatmentGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ChemicalTreatmentGroupByOutputType, T['by']> &
       {
@@ -1335,6 +1335,11 @@ export type ChemicalTreatmentFindManyArgs<ExtArgs extends runtime.Types.Extensio
    * Skip the first `n` ChemicalTreatments.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ChemicalTreatments.
+   */
   distinct?: Prisma.ChemicalTreatmentScalarFieldEnum | Prisma.ChemicalTreatmentScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }

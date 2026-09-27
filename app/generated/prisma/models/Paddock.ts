@@ -185,7 +185,7 @@ export type PaddockGroupByOutputType = {
   _max: PaddockMaxAggregateOutputType | null
 }
 
-type GetPaddockGroupByPayload<T extends PaddockGroupByArgs> = Prisma.PrismaPromise<
+export type GetPaddockGroupByPayload<T extends PaddockGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<PaddockGroupByOutputType, T['by']> &
       {
@@ -1289,6 +1289,11 @@ export type PaddockFindManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Skip the first `n` Paddocks.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Paddocks.
+   */
   distinct?: Prisma.PaddockScalarFieldEnum | Prisma.PaddockScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }

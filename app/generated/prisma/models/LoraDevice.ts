@@ -186,7 +186,7 @@ export type LoraDeviceGroupByOutputType = {
   _max: LoraDeviceMaxAggregateOutputType | null
 }
 
-type GetLoraDeviceGroupByPayload<T extends LoraDeviceGroupByArgs> = Prisma.PrismaPromise<
+export type GetLoraDeviceGroupByPayload<T extends LoraDeviceGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<LoraDeviceGroupByOutputType, T['by']> &
       {
@@ -1074,6 +1074,11 @@ export type LoraDeviceFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Skip the first `n` LoraDevices.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of LoraDevices.
+   */
   distinct?: Prisma.LoraDeviceScalarFieldEnum | Prisma.LoraDeviceScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }

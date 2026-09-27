@@ -137,7 +137,7 @@ export type GrazeMobGroupByOutputType = {
   _max: GrazeMobMaxAggregateOutputType | null
 }
 
-type GetGrazeMobGroupByPayload<T extends GrazeMobGroupByArgs> = Prisma.PrismaPromise<
+export type GetGrazeMobGroupByPayload<T extends GrazeMobGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<GrazeMobGroupByOutputType, T['by']> &
       {
@@ -1130,6 +1130,11 @@ export type GrazeMobFindManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Skip the first `n` GrazeMobs.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of GrazeMobs.
+   */
   distinct?: Prisma.GrazeMobScalarFieldEnum | Prisma.GrazeMobScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }

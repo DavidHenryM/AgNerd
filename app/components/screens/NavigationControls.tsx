@@ -80,6 +80,7 @@ export interface NavigationControlsProps {
   locationTimestamp: number | null;
   accuracy: number | null;
   speed: number | null;
+  gpsConnected: boolean;
   isTracking: boolean;
   setIsTracking: Dispatch<SetStateAction<boolean>>;
   widthMeters: number;
@@ -102,6 +103,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
     locationTimestamp,
     accuracy,
     speed,
+    gpsConnected,
     isTracking,
     setIsTracking,
     widthMeters,
@@ -136,19 +138,23 @@ export default function NavigationControls(props: NavigationControlsProps) {
         <Box sx={panelSx}>
           {/* GPS status */}
           <Typography variant="caption" sx={{ fontWeight: 600 }}>
-            GPS: {latitude && longitude ? "Active" : "Searching"}
+            GPS: {latitude && longitude
+              ? "Active"
+              : gpsConnected
+                ? "Connected"
+                : "Searching"}
           </Typography>
-          <Typography variant="caption" display="block">
+          <Typography variant="caption" sx={{ display: "block" }}>
             {latitude && longitude
               ? `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`
               : "—"}
           </Typography>
-          <Typography variant="caption" display="block">
+          <Typography variant="caption" sx={{ display: "block" }}>
             {locationTimestamp
               ? new Date(locationTimestamp).toLocaleTimeString()
               : ""}
           </Typography>
-          <Stack direction="row" alignItems="center" spacing={0.5} mt={0.5}>
+          <Stack direction="row" spacing={0.5} sx={{ alignItems: "center", mt: 0.5 }}>
             <Box
               sx={{
                 width: 10,
@@ -162,7 +168,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
           </Stack>
 
           {/* Speedometer */}
-          <Stack direction="row" alignItems="center" spacing={0.5} mt={1}>
+          <Stack direction="row" spacing={0.5} sx={{ alignItems: "center", mt: 1 }}>
             <SpeedIcon sx={{ fontSize: 16 }} />
             <Typography variant="caption" sx={{ fontWeight: 600 }}>
               {formatSpeed(speed)}
@@ -170,7 +176,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
           </Stack>
 
           {/* Area counter */}
-          <Stack mt={0.5}>
+          <Stack sx={{ mt: 0.5 }}>
             <Typography variant="caption" sx={{ fontWeight: 600 }}>
               Area
             </Typography>
@@ -178,7 +184,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
           </Stack>
 
           {/* Zoom controls */}
-          <Stack direction="row" spacing={0.75} mt={1}>
+          <Stack direction="row" spacing={0.75} sx={{ mt: 1 }}>
             <Fab
               size="small"
               onClick={onZoomOut}
@@ -220,7 +226,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
           <Typography variant="caption" sx={{ fontWeight: 600 }}>
             Distance Key
           </Typography>
-          <Stack direction="row" alignItems="center" spacing={0.75} mt={0.25}>
+          <Stack direction="row" spacing={0.75} sx={{ alignItems: "center", mt: 0.25 }}>
             <Box
               sx={{
                 position: "relative",
@@ -285,7 +291,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
               <Typography variant="caption" sx={{ fontWeight: 600 }}>
                 Width
               </Typography>
-              <Stack direction="row" alignItems="center" spacing={0.5}>
+              <Stack direction="row" spacing={0.5} sx={{ alignItems: "center" }}>
                 <IconButton
                   size="small"
                   sx={{ color: "white" }}
@@ -320,7 +326,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
               <Typography variant="caption" sx={{ fontWeight: 600 }}>
                 Offset
               </Typography>
-              <Stack direction="row" alignItems="center" spacing={0.5}>
+              <Stack direction="row" spacing={0.5} sx={{ alignItems: "center" }}>
                 <IconButton
                   size="small"
                   sx={{ color: "white" }}
@@ -354,7 +360,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
         </Collapse>
 
         {/* Action buttons row */}
-        <Stack direction="row" spacing={1.5} alignItems="center">
+        <Stack direction="row" spacing={1.5} sx={{ alignItems: "center" }}>
           {/* ─ Start / Stop ─ */}
           <Fab
             size="medium"

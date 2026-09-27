@@ -228,7 +228,7 @@ export type ChemicalProductGroupByOutputType = {
   _max: ChemicalProductMaxAggregateOutputType | null
 }
 
-type GetChemicalProductGroupByPayload<T extends ChemicalProductGroupByArgs> = Prisma.PrismaPromise<
+export type GetChemicalProductGroupByPayload<T extends ChemicalProductGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ChemicalProductGroupByOutputType, T['by']> &
       {
@@ -1394,6 +1394,11 @@ export type ChemicalProductFindManyArgs<ExtArgs extends runtime.Types.Extensions
    * Skip the first `n` ChemicalProducts.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ChemicalProducts.
+   */
   distinct?: Prisma.ChemicalProductScalarFieldEnum | Prisma.ChemicalProductScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }

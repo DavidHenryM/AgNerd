@@ -207,7 +207,7 @@ export type EstimatedBreedingValueResultGroupByOutputType = {
   _max: EstimatedBreedingValueResultMaxAggregateOutputType | null
 }
 
-type GetEstimatedBreedingValueResultGroupByPayload<T extends EstimatedBreedingValueResultGroupByArgs> = Prisma.PrismaPromise<
+export type GetEstimatedBreedingValueResultGroupByPayload<T extends EstimatedBreedingValueResultGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<EstimatedBreedingValueResultGroupByOutputType, T['by']> &
       {
@@ -1343,6 +1343,11 @@ export type EstimatedBreedingValueResultFindManyArgs<ExtArgs extends runtime.Typ
    * Skip the first `n` EstimatedBreedingValueResults.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of EstimatedBreedingValueResults.
+   */
   distinct?: Prisma.EstimatedBreedingValueResultScalarFieldEnum | Prisma.EstimatedBreedingValueResultScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }

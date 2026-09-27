@@ -207,7 +207,7 @@ export type GeoPointGroupByOutputType = {
   _max: GeoPointMaxAggregateOutputType | null
 }
 
-type GetGeoPointGroupByPayload<T extends GeoPointGroupByArgs> = Prisma.PrismaPromise<
+export type GetGeoPointGroupByPayload<T extends GeoPointGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<GeoPointGroupByOutputType, T['by']> &
       {
@@ -1430,6 +1430,11 @@ export type GeoPointFindManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Skip the first `n` GeoPoints.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of GeoPoints.
+   */
   distinct?: Prisma.GeoPointScalarFieldEnum | Prisma.GeoPointScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }

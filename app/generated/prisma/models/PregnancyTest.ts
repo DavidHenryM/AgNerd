@@ -206,7 +206,7 @@ export type PregnancyTestGroupByOutputType = {
   _max: PregnancyTestMaxAggregateOutputType | null
 }
 
-type GetPregnancyTestGroupByPayload<T extends PregnancyTestGroupByArgs> = Prisma.PrismaPromise<
+export type GetPregnancyTestGroupByPayload<T extends PregnancyTestGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<PregnancyTestGroupByOutputType, T['by']> &
       {
@@ -1248,6 +1248,11 @@ export type PregnancyTestFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Skip the first `n` PregnancyTests.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of PregnancyTests.
+   */
   distinct?: Prisma.PregnancyTestScalarFieldEnum | Prisma.PregnancyTestScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }

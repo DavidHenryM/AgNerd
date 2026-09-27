@@ -144,7 +144,7 @@ export type StudGroupByOutputType = {
   _max: StudMaxAggregateOutputType | null
 }
 
-type GetStudGroupByPayload<T extends StudGroupByArgs> = Prisma.PrismaPromise<
+export type GetStudGroupByPayload<T extends StudGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<StudGroupByOutputType, T['by']> &
       {
@@ -1289,6 +1289,11 @@ export type StudFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Skip the first `n` Studs.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Studs.
+   */
   distinct?: Prisma.StudScalarFieldEnum | Prisma.StudScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }

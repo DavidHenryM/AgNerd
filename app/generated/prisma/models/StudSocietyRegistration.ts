@@ -165,7 +165,7 @@ export type StudSocietyRegistrationGroupByOutputType = {
   _max: StudSocietyRegistrationMaxAggregateOutputType | null
 }
 
-type GetStudSocietyRegistrationGroupByPayload<T extends StudSocietyRegistrationGroupByArgs> = Prisma.PrismaPromise<
+export type GetStudSocietyRegistrationGroupByPayload<T extends StudSocietyRegistrationGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<StudSocietyRegistrationGroupByOutputType, T['by']> &
       {
@@ -1287,6 +1287,11 @@ export type StudSocietyRegistrationFindManyArgs<ExtArgs extends runtime.Types.Ex
    * Skip the first `n` StudSocietyRegistrations.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of StudSocietyRegistrations.
+   */
   distinct?: Prisma.StudSocietyRegistrationScalarFieldEnum | Prisma.StudSocietyRegistrationScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }

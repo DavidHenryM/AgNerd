@@ -151,7 +151,7 @@ export type BreedGroupByOutputType = {
   _max: BreedMaxAggregateOutputType | null
 }
 
-type GetBreedGroupByPayload<T extends BreedGroupByArgs> = Prisma.PrismaPromise<
+export type GetBreedGroupByPayload<T extends BreedGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<BreedGroupByOutputType, T['by']> &
       {
@@ -1048,6 +1048,11 @@ export type BreedFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Skip the first `n` Breeds.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Breeds.
+   */
   distinct?: Prisma.BreedScalarFieldEnum | Prisma.BreedScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }

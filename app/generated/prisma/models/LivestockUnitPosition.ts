@@ -137,7 +137,7 @@ export type LivestockUnitPositionGroupByOutputType = {
   _max: LivestockUnitPositionMaxAggregateOutputType | null
 }
 
-type GetLivestockUnitPositionGroupByPayload<T extends LivestockUnitPositionGroupByArgs> = Prisma.PrismaPromise<
+export type GetLivestockUnitPositionGroupByPayload<T extends LivestockUnitPositionGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<LivestockUnitPositionGroupByOutputType, T['by']> &
       {
@@ -1038,6 +1038,11 @@ export type LivestockUnitPositionFindManyArgs<ExtArgs extends runtime.Types.Exte
    * Skip the first `n` LivestockUnitPositions.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of LivestockUnitPositions.
+   */
   distinct?: Prisma.LivestockUnitPositionScalarFieldEnum | Prisma.LivestockUnitPositionScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }
