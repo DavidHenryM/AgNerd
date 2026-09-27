@@ -1,7 +1,6 @@
 'use client'
 
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'
-import { Arvo } from 'next/font/google'
 import "./globals.css";
 import { Theme, ThemeProvider } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -10,12 +9,6 @@ import { TopBar } from './components/TopBar';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { Analytics } from "@vercel/analytics/next"
-
-const arvo = Arvo({
-  variable: "--font-arvo",
-  subsets: ["latin"],
-  weight: '400'
-})
 
 
 export default function RootLayout({
@@ -63,7 +56,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${arvo.variable} antialiased`}>
+      <body className="antialiased">
         <AppRouterCacheProvider>
           <Analytics/>
           <ThemeProvider theme={theme}>      

@@ -1,6 +1,6 @@
 "use client"
 
-import { BetterAuthError, BetterAuthSignInData, BetterAuthSignInOtpData, BetterAuthSignOutData,  } from "../types";
+import { BetterAuthError, BetterAuthSignInData, BetterAuthSignInOtpData, BetterAuthSignOutData } from "./types";
 import { authClient } from "./auth-client";
 
 export async function signIn(email: string, callbackURL?: string): Promise<{data: BetterAuthSignInData, error: BetterAuthError}> {

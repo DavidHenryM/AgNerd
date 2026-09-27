@@ -511,6 +511,57 @@ export type EnumMeasurementWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumMeasurementFilter<$PrismaModel>
 }
 
+export type EnumGateStateFilter<$PrismaModel = never> = {
+  equals?: $Enums.GateState | Prisma.EnumGateStateFieldRefInput<$PrismaModel>
+  in?: $Enums.GateState[] | Prisma.ListEnumGateStateFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GateState[] | Prisma.ListEnumGateStateFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGateStateFilter<$PrismaModel> | $Enums.GateState
+}
+
+export type EnumGateStateWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GateState | Prisma.EnumGateStateFieldRefInput<$PrismaModel>
+  in?: $Enums.GateState[] | Prisma.ListEnumGateStateFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GateState[] | Prisma.ListEnumGateStateFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGateStateWithAggregatesFilter<$PrismaModel> | $Enums.GateState
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGateStateFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGateStateFilter<$PrismaModel>
+}
+
+export type EnumFeedSourceTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.FeedSourceType | Prisma.EnumFeedSourceTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.FeedSourceType[] | Prisma.ListEnumFeedSourceTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FeedSourceType[] | Prisma.ListEnumFeedSourceTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFeedSourceTypeFilter<$PrismaModel> | $Enums.FeedSourceType
+}
+
+export type EnumFeedSourceTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FeedSourceType | Prisma.EnumFeedSourceTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.FeedSourceType[] | Prisma.ListEnumFeedSourceTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FeedSourceType[] | Prisma.ListEnumFeedSourceTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFeedSourceTypeWithAggregatesFilter<$PrismaModel> | $Enums.FeedSourceType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFeedSourceTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFeedSourceTypeFilter<$PrismaModel>
+}
+
+export type EnumPaddockWorkTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.PaddockWorkType | Prisma.EnumPaddockWorkTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PaddockWorkType[] | Prisma.ListEnumPaddockWorkTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PaddockWorkType[] | Prisma.ListEnumPaddockWorkTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPaddockWorkTypeFilter<$PrismaModel> | $Enums.PaddockWorkType
+}
+
+export type EnumPaddockWorkTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PaddockWorkType | Prisma.EnumPaddockWorkTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PaddockWorkType[] | Prisma.ListEnumPaddockWorkTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PaddockWorkType[] | Prisma.ListEnumPaddockWorkTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPaddockWorkTypeWithAggregatesFilter<$PrismaModel> | $Enums.PaddockWorkType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPaddockWorkTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPaddockWorkTypeFilter<$PrismaModel>
+}
+
 export type EnumWeighMethodFilter<$PrismaModel = never> = {
   equals?: $Enums.WeighMethod | Prisma.EnumWeighMethodFieldRefInput<$PrismaModel>
   in?: $Enums.WeighMethod[] | Prisma.ListEnumWeighMethodFieldRefInput<$PrismaModel>
@@ -1031,6 +1082,57 @@ export type NestedEnumMeasurementWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumMeasurementFilter<$PrismaModel>
   _max?: Prisma.NestedEnumMeasurementFilter<$PrismaModel>
+}
+
+export type NestedEnumGateStateFilter<$PrismaModel = never> = {
+  equals?: $Enums.GateState | Prisma.EnumGateStateFieldRefInput<$PrismaModel>
+  in?: $Enums.GateState[] | Prisma.ListEnumGateStateFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GateState[] | Prisma.ListEnumGateStateFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGateStateFilter<$PrismaModel> | $Enums.GateState
+}
+
+export type NestedEnumGateStateWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GateState | Prisma.EnumGateStateFieldRefInput<$PrismaModel>
+  in?: $Enums.GateState[] | Prisma.ListEnumGateStateFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GateState[] | Prisma.ListEnumGateStateFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGateStateWithAggregatesFilter<$PrismaModel> | $Enums.GateState
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGateStateFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGateStateFilter<$PrismaModel>
+}
+
+export type NestedEnumFeedSourceTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.FeedSourceType | Prisma.EnumFeedSourceTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.FeedSourceType[] | Prisma.ListEnumFeedSourceTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FeedSourceType[] | Prisma.ListEnumFeedSourceTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFeedSourceTypeFilter<$PrismaModel> | $Enums.FeedSourceType
+}
+
+export type NestedEnumFeedSourceTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FeedSourceType | Prisma.EnumFeedSourceTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.FeedSourceType[] | Prisma.ListEnumFeedSourceTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FeedSourceType[] | Prisma.ListEnumFeedSourceTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFeedSourceTypeWithAggregatesFilter<$PrismaModel> | $Enums.FeedSourceType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFeedSourceTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFeedSourceTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumPaddockWorkTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.PaddockWorkType | Prisma.EnumPaddockWorkTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PaddockWorkType[] | Prisma.ListEnumPaddockWorkTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PaddockWorkType[] | Prisma.ListEnumPaddockWorkTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPaddockWorkTypeFilter<$PrismaModel> | $Enums.PaddockWorkType
+}
+
+export type NestedEnumPaddockWorkTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PaddockWorkType | Prisma.EnumPaddockWorkTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PaddockWorkType[] | Prisma.ListEnumPaddockWorkTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PaddockWorkType[] | Prisma.ListEnumPaddockWorkTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPaddockWorkTypeWithAggregatesFilter<$PrismaModel> | $Enums.PaddockWorkType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPaddockWorkTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPaddockWorkTypeFilter<$PrismaModel>
 }
 
 export type NestedEnumWeighMethodFilter<$PrismaModel = never> = {

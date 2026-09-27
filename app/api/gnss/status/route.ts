@@ -1,5 +1,7 @@
 import { access } from "node:fs/promises";
 import { readFile } from "node:fs/promises";
+import { auth } from "@lib/auth";
+import { headers } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
@@ -82,6 +84,11 @@ async function readStatusFilePathFromEnvFile(): Promise<string | null> {
 }
 
 export async function GET() {
+  const session = await auth.api.getSession({ headers: await headers() })
+  if (!session) {
+    return Response.json({ ok: false, error: "Unauthorized" }, { status: 401 })
+  }
+
   const statusFileFromEnvFile = await readStatusFilePathFromEnvFile();
   const candidates = [
     GNSS_STATUS_FILE,
