@@ -133,7 +133,7 @@ npm ci
 echo "Building the AgNerd application..."
 npm run build
 echo "Copying build output to /opt/agnerd..."
-sudo cp -R dist/* /opt/agnerd/
+sudo cp -R .next/* /opt/agnerd/
 
 if [ ! -d /opt/agnerd/public ]; then
     echo "Creating /opt/agnerd/public directory"
