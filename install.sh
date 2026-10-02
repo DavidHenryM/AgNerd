@@ -3,7 +3,37 @@
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR" || exit 1
 sudo apt update
-sudo apt install gpsd -y
+sudo apt install curl gpsd -y
+
+if [ ! -x /usr/bin/node ]; then
+    echo "Node.js is missing from /usr/bin/node; installing the latest stable version with NVM."
+    NVM_USER="${SUDO_USER:-$(id -un)}"
+    NVM_HOME="$(getent passwd "$NVM_USER" | cut -d: -f6)"
+
+    if [ -z "$NVM_HOME" ]; then
+        echo "Unable to determine the home directory for $NVM_USER." >&2
+        exit 1
+    fi
+
+    NODE_PATH=$(sudo -u "$NVM_USER" env HOME="$NVM_HOME" bash -s <<'NVM_SETUP'
+set -e
+export NVM_DIR="$HOME/.nvm"
+if [ ! -s "$NVM_DIR/nvm.sh" ]; then
+    set -o pipefail
+    curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash >&2
+fi
+. "$NVM_DIR/nvm.sh"
+nvm install node >&2
+nvm use node >&2
+command -v node
+NVM_SETUP
+    ) || {
+        echo "Failed to install Node.js with NVM." >&2
+        exit 1
+    }
+
+    sudo ln -sfn "$NODE_PATH" /usr/bin/node
+fi
 
 has_env_files() {
     local directory="$1"
