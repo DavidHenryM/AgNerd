@@ -77,7 +77,7 @@ async function readStatusFilePathFromEnvFile(): Promise<string | null> {
       return null;
     }
 
-    return value.replace(/^['\"]|['\"]$/g, "");
+    return value.replace(/^["']|["']$/g, "");
   } catch {
     return null;
   }

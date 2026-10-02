@@ -28,12 +28,14 @@ export type LivestockWithRelations = LivestockUnit & {
   sired?: LivestockRelationSummary[]
 }
 
+const today = new Date()
+
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
+  const { expand: _expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme }) => ({
   marginLeft: 'auto',
@@ -78,7 +80,7 @@ export default function StockPreviewCard(props: {
     return bDate - aDate
   })[0]
   const lastCalfDays = latestProgeny?.birthDate
-    ? daysBetween(latestProgeny.birthDate, new Date())
+    ? daysBetween(latestProgeny.birthDate, today)
     : undefined
   const lastCalfYears = lastCalfDays ? Math.floor(lastCalfDays / 365) : 0
   const lastCalfMonths = lastCalfDays ? Math.floor((lastCalfDays % 365) / 30) : 0
@@ -136,7 +138,7 @@ export default function StockPreviewCard(props: {
         />
         
         <CardMedia sx={{justifyContent: "center", display: "flex", py: 1}}>
-          <Stack direction="row" spacing={2} alignItems="center" paddingX={2}>
+          <Stack direction="row" spacing={2} sx={{ alignItems: "center", px: 2 }}>
           <EarTagGraphic 
             tagColour={parseColour(stock.visualIdBackgroundColour)} 
             text={
@@ -148,7 +150,7 @@ export default function StockPreviewCard(props: {
               }
             }
           />
-          <Stack direction="column" spacing={1} flexWrap="wrap" alignItems="center">
+          <Stack direction="column" spacing={1} sx={{ flexWrap: "wrap", alignItems: "center" }}>
             <StockClassChip stockClass={stock.class}/>
             <SexChip sex={stock.sex}/>
             <DesexedChip desexed={stock.desexed} sex={stock.sex}/>
@@ -158,7 +160,7 @@ export default function StockPreviewCard(props: {
         </CardMedia>
         <CardContent>
           <Stack direction="column" spacing={1.5}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={1}>
+            <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 1 }}>
               <Stack direction="column" spacing={0.25}>
                 <Typography variant="body2" color="text.secondary">
                   NLIS: {stock.nlisId || "—"}
@@ -171,7 +173,7 @@ export default function StockPreviewCard(props: {
             </Stack>
 
             {sireLabel || damLabel || progenyCount > 0 ? (
-              <Stack direction="row" spacing={1} flexWrap="wrap" alignItems="center">
+              <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", alignItems: "center" }}>
                 <Typography variant="caption" color="text.secondary">Lineage</Typography>
                 {sireLabel ? (
                   <Button
@@ -203,7 +205,7 @@ export default function StockPreviewCard(props: {
               </Stack>
             ) : null}
             {!stock.desexed ? (
-              <Stack direction="row" spacing={1} flexWrap="wrap">
+              <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap" }}>
                 <Typography variant="caption">Calves: {progenyCount}</Typography>
                 {progenyCount > 0 ? (
                   <Typography variant="caption">Last calf: {lastCalfText}</Typography>

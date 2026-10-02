@@ -6,6 +6,7 @@ import { setLivestockUnitInactive } from "@lib/queries";
 import { LivestockUnit } from "@generated/browser";
 import { Icons } from "./lib/Icons";
 import { ConfirmDialog } from "./components/dialogues/ConfirmDialogue";
+import { Snack } from "./components/Alert";
 
 function placeHolder(text: string | undefined | null, editable: boolean): string {
   if (text){
@@ -21,7 +22,7 @@ function placeHolder(text: string | undefined | null, editable: boolean): string
 }
 
 
-function EditableRowItem(props: {title: string, value: unknown | undefined, editable: boolean}){
+function EditableRowItem(props: {title: string, value: unknown, editable: boolean}){
   if(props.value || props.editable) {
     return (
       <TableContainer>
@@ -51,44 +52,27 @@ function EditableRowItem(props: {title: string, value: unknown | undefined, edit
 export function BeastView(props: {stock: LivestockUnit}){
   const [open, setOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false)
-  const [deactivateOk, setDeactivateOk] = useState(false)
-  const [deactivateError, setDeactivateError] = useState<null | unknown>()
+  const [alertMessage, setAlertMessage] = useState("")
+  const [alertSeverity, setAlertSeverity] = useState<"success" | "error">("success")
   const [editable, setEditable] = useState(false)
 
-
-  let severity: string = 'info'
-  let message: string = ''
- 
-  const handleYes = () => {
+  const handleYes = async () => {
     setConfirmOpen(false)
-      // props.close()
-      try {
-        setLivestockUnitInactive(props.stock.id)
-        setDeactivateOk(true)
-      } catch(error: unknown){
-        setDeactivateError(error)
-      }
+    try {
+      await setLivestockUnitInactive(props.stock.id)
+      setAlertMessage('Successfully marked beast as inactive')
+      setAlertSeverity("success")
+    } catch (error: unknown) {
+      console.error("Failed to mark beast as inactive:", error)
+      setAlertMessage(error instanceof Error ? error.message : 'Failed to mark beast as inactive')
+      setAlertSeverity("error")
+    } finally {
+      setOpen(true)
+    }
   }
 
   const handleNo = () => {
     setConfirmOpen(false)
-  }
-
-  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
-
-  if (deactivateOk) {
-    severity = 'success'
-    message = 'Succesfully marked beast as inactive'
-    setOpen(true)
-  } else if (deactivateError) {
-    severity = 'error'
-    message = 'Failed to mark beast as inactive'
-    setOpen(true)
   }
 
   return (
@@ -160,6 +144,12 @@ export function BeastView(props: {stock: LivestockUnit}){
         handleNo={handleNo}
         question='Do you want to mark this beast as NOT active?' 
         text='This action will mark the beast as inactive. Are you sure you want to proceed?'/>
+      <Snack
+        message={alertMessage}
+        severity={alertSeverity}
+        open={open}
+        setOpen={setOpen}
+      />
     </>
   )
 }
@@ -202,5 +192,3 @@ export function BeastView(props: {stock: LivestockUnit}){
 //     </Snackbar>
 //     )
 // }
-
-

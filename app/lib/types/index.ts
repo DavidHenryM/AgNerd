@@ -3,8 +3,8 @@ import { BetterFetchError, SessionQueryParams } from "better-auth/client";
 import { JSX } from "react";
 
 export type BetterAuthError = {
-    code?: string | undefined | undefined;
-    message?: string | undefined | undefined;
+    code?: string;
+    message?: string;
     status: number;
     statusText: string;
 } | null
@@ -32,7 +32,7 @@ export type BetterAuthSignInOtpData = {
         email: string;
         emailVerified: boolean;
         name: string;
-        image?: string | null | undefined;
+        image?: string | null;
     };
 } | null
 
@@ -54,8 +54,8 @@ export type SessionData = {
         userId: string;
         expiresAt: Date;
         token: string;
-        ipAddress?: string | null | undefined;
-        userAgent?: string | null | undefined;
+        ipAddress?: string | null;
+        userAgent?: string | null;
     };
     } | null;
     isPending: boolean;
@@ -63,7 +63,7 @@ export type SessionData = {
     error: BetterFetchError | null;
     refetch: (queryParams?: {
         query?: SessionQueryParams;
-    } | undefined) => Promise<void>;
+    }) => Promise<void>;
 }
 
 export type FarmAndLocation = (

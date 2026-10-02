@@ -150,7 +150,9 @@ const useGeolocation = () => {
     }
 
     if (!navigator.geolocation) {
-      if (!backendFix) {
+      if (!backendAvailableRef.current) {
+        // This effect reports a browser capability failure to the hook's consumer.
+        // eslint-disable-next-line react/set-state-in-effect
         setError("Geolocation is not supported by your browser");
         setLoading(false);
       }

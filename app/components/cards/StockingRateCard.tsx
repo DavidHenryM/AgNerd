@@ -14,7 +14,7 @@ export default function StockingRateCard(
     <Card>
       <CardHeader title={"Stocking Rate"} />
       <CardContent>
-        <Stack gap={"6"}>
+        <Stack sx={{ gap: "6px" }}>
           {
             props.loadingLivestockCount ? 
             <LoadingBar/> : 

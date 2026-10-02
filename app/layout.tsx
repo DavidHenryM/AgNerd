@@ -22,7 +22,7 @@ export default function RootLayout({
   const [drawerOpen, setDrawerOpen] = useState(true)
 
   useEffect(() => {
-    async function determineInitialTheme() {
+    function determineInitialTheme() {
       const storedTheme = typeof window !== 'undefined' ? localStorage.getItem(storageKey) : null
       if (storedTheme === 'dark' || storedTheme === 'light') {
         setDarkModeActive(storedTheme === 'dark')
@@ -37,7 +37,7 @@ export default function RootLayout({
   }, [])
   
   useEffect(()=>{
-    async function getPrefersColorScheme(){
+    function getPrefersColorScheme(){
       if(darkModeActive){
         setTheme(darkTheme)
         if (typeof window !== 'undefined') {

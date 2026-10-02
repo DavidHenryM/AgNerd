@@ -37,10 +37,10 @@ export default function AddWeightDialogue(
   if(latestWeight){
     weight = latestWeight.weight
   }
-  const [weighMethod, setWeighMethod] = useState(WeighMethod.SCALES)
+  const [weighMethod] = useState(WeighMethod.SCALES)
   const [invalidDate, setInvalidDate] = useState(false)
   const [weightEdit, setWeightEdit] = useState(String(weight))
-  const [weightDateEdit, setWeightDateEdit] = useState(formatAsInputFieldDate(new Date))
+  const [weightDateEdit, setWeightDateEdit] = useState(() => formatAsInputFieldDate(new Date()))
   const [openAlert, setOpenAlert] = useState(false)
   const [alertMessage, setAlertMessage] = useState("")
   const [alertSeverity, setAlertSeverity] = useState<"success" | "error" | "info" | "warning">("success")
@@ -55,12 +55,18 @@ export default function AddWeightDialogue(
       new Date(weightDateEdit).toISOString()
       )
       .then(()=>{
-        const livestockUnit = getLivestockUnit(props.stock.id).then((unit) => {
-          if (unit) {
-            props.setStock(unit)
-            return unit
-          }
-        })
+        void getLivestockUnit(props.stock.id)
+          .then((unit) => {
+            if (unit) {
+              props.setStock(unit)
+            }
+          })
+          .catch((error: unknown) => {
+            setAlertMessage(error instanceof Error ? error.message : "Failed to refresh livestock data.")
+            setAlertSeverity("error")
+            setOpenAlert(true)
+            console.error("Failed to refresh livestock data:", error)
+          })
 
         
         setAlertMessage(`Recorded new weight of ${Number(weightEdit)}kg for ${props.stock.angusTechId}`)

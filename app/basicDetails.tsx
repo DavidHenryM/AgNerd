@@ -1,88 +1,74 @@
 "use client"
 
 import { BeastView } from './beastView';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Loading from './loading';
 import { getLivestock } from '@lib/queries';
 import ControlBar from "./components/ControlBar";
 import StockPreviewCard, { type LivestockWithRelations } from "./components/cards/StockPreview";
 import { getArrayTrues } from './utils/utils';
-import { CommercialClass, LivestockUnit } from './generated/prisma/browser';
+import { CommercialClass } from './generated/prisma/browser';
 import Content from './components/Content';
 import { Grid } from '@mui/material';
 import { LivestockUnitWhereInput } from './generated/prisma/models';
 
 export function ActiveLivestock() {
-  const commercialClasses = Object.keys(CommercialClass)
-  const livestockUnits = useRef<LivestockWithRelations[]>([])
-  const [livestockDisplay, setLivestockDisplay] = useState<LivestockWithRelations[]>([])
+  const commercialClasses = useMemo(() => Object.keys(CommercialClass), [])
+  const [livestockUnits, setLivestockUnits] = useState<LivestockWithRelations[]>([])
   const [stockFocus, setStockFocus] = useState<LivestockWithRelations>()
-  const [loading, setLoading] = useState(true)
-  const [whereFilter, setWhereFilter] = useState<LivestockUnitWhereInput>({
-    active: {equals: true},
-    commercialClass: {in: commercialClasses as CommercialClass[]},
-    onFarmHistory: { some: { endDate: { equals: null } } },
-  })
+  const [loadedFilterKey, setLoadedFilterKey] = useState<string | null>(null)
+  const [refreshing, setRefreshing] = useState(false)
+  const [onFarmOnly, setOnFarmOnly] = useState(true)
+  const whereFilter = useMemo<LivestockUnitWhereInput>(() => ({
+    active: { equals: true },
+    commercialClass: { in: commercialClasses as CommercialClass[] },
+    ...(onFarmOnly ? { onFarmHistory: { some: { endDate: { equals: null } } } } : {}),
+  }), [commercialClasses, onFarmOnly])
+  const filterKey = JSON.stringify(whereFilter)
+  const loading = refreshing || loadedFilterKey !== filterKey
   const [filterChecked, setFilterChecked] = useState(new Array<boolean>(commercialClasses.length).fill(true))
   const [openFilter, setOpenFilter] = useState(false)
-  const [onFarmOnly, setOnFarmOnly] = useState(true)
+
+  const checkedClasses = getArrayTrues(commercialClasses, filterChecked)
+  const livestockDisplay = livestockUnits.filter((livestockUnit) =>
+    livestockUnit.commercialClass != null
+    && checkedClasses.includes(livestockUnit.commercialClass)
+  )
 
   useEffect(() => {
-    async function filterLivestock() {
-      const checkedClasses: Array<string> = getArrayTrues(commercialClasses, filterChecked)
-      const livestockToDisplay: Array<LivestockWithRelations> = []
-      livestockUnits.current.map((livestockUnit: LivestockWithRelations)=>{
-        if(livestockUnit.commercialClass != null){
-          if(checkedClasses.includes(livestockUnit.commercialClass)){
-            livestockToDisplay.push(livestockUnit)
-          }
+    let cancelled = false
+    void getLivestock(whereFilter)
+      .then((livestock: LivestockWithRelations[]) => {
+        if (cancelled) {
+          return
+        }
+        setLivestockUnits(livestock)
+        setLoadedFilterKey(filterKey)
+      })
+      .catch((error: unknown) => {
+        if (!cancelled) {
+          console.error("Failed to load livestock:", error)
+          setLoadedFilterKey(filterKey)
         }
       })
-      setLivestockDisplay(livestockToDisplay)
+    return () => {
+      cancelled = true
     }
-    filterLivestock()
-  }, [filterChecked])
-
-  useEffect(() => {
-    async function updateWhereFilter() {
-      setLoading(true)
-      getLivestock(whereFilter)
-        .then((livestock: LivestockWithRelations[]) => {
-          console.log("Livestock fetched:", livestock)
-          livestockUnits.current = livestock
-          setLivestockDisplay(livestockUnits.current)
-          setLoading(false)
-        })
-      }
-    updateWhereFilter()
-  },[whereFilter])
+  }, [filterKey, whereFilter])
 
   const refreshLivestock = () => {
-    setLoading(true)
-    getLivestock(whereFilter)
+    setRefreshing(true)
+    void getLivestock(whereFilter)
       .then((livestock: LivestockWithRelations[]) => {
-        livestockUnits.current = livestock
-        setLivestockDisplay(livestockUnits.current)
+        setLivestockUnits(livestock)
+      })
+      .catch((error: unknown) => {
+        console.error("Failed to refresh livestock:", error)
       })
       .finally(() => {
-        setLoading(false)
+        setRefreshing(false)
       })
   }
-
-  useEffect(() => {
-    async function updateWhereFilter() {
-      setWhereFilter((prev) => {
-        const next: LivestockUnitWhereInput = { ...prev }
-        if (onFarmOnly) {
-          next.onFarmHistory = { some: { endDate: { equals: null } } }
-        } else {
-          delete (next as { onFarmHistory?: LivestockUnitWhereInput["onFarmHistory"] }).onFarmHistory
-        }
-        return next
-      })
-    }
-    updateWhereFilter()
-  }, [onFarmOnly])
 
   if (loading){
     return (
@@ -93,7 +79,7 @@ export function ActiveLivestock() {
   } else {
     if (!stockFocus){
       const handleFocusById = (id: string) => {
-        const match = livestockUnits.current.find((unit) => unit.id === id)
+        const match = livestockUnits.find((unit) => unit.id === id)
         if (match) {
           setStockFocus(match)
         }

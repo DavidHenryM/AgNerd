@@ -172,7 +172,7 @@ export type MobMembershipGroupByOutputType = {
   _max: MobMembershipMaxAggregateOutputType | null
 }
 
-type GetMobMembershipGroupByPayload<T extends MobMembershipGroupByArgs> = Prisma.PrismaPromise<
+export type GetMobMembershipGroupByPayload<T extends MobMembershipGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<MobMembershipGroupByOutputType, T['by']> &
       {
@@ -1328,6 +1328,11 @@ export type MobMembershipFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Skip the first `n` MobMemberships.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of MobMemberships.
+   */
   distinct?: Prisma.MobMembershipScalarFieldEnum | Prisma.MobMembershipScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }

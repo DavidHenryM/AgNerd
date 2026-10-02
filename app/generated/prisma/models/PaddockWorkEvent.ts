@@ -270,7 +270,7 @@ export type PaddockWorkEventGroupByOutputType = {
   _max: PaddockWorkEventMaxAggregateOutputType | null
 }
 
-type GetPaddockWorkEventGroupByPayload<T extends PaddockWorkEventGroupByArgs> = Prisma.PrismaPromise<
+export type GetPaddockWorkEventGroupByPayload<T extends PaddockWorkEventGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<PaddockWorkEventGroupByOutputType, T['by']> &
       {
@@ -1536,6 +1536,11 @@ export type PaddockWorkEventFindManyArgs<ExtArgs extends runtime.Types.Extension
    * Skip the first `n` PaddockWorkEvents.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of PaddockWorkEvents.
+   */
   distinct?: Prisma.PaddockWorkEventScalarFieldEnum | Prisma.PaddockWorkEventScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }

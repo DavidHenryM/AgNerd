@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, Divider, List, ListItem, ListItemButton, ListItemText, Stack, Typography } from "@mui/material"
 import { authClient } from "@lib/auth-client"
 import { getUserFarms, type FarmListItem } from "@lib/queries"
-import { FarmCard } from "../components/cards/FarmCard"
 import Content from "../components/Content"
 
 export default function Farm(){
@@ -16,7 +15,7 @@ export default function Farm(){
   const [loadingFarms, setLoadingFarms] = useState(true)
 
   useEffect(() => {
-    async function fetchFarms() {
+    function fetchFarms() {
       const userId = sessionData.data?.user?.id
       if (!userId) {
         setFarms([])
@@ -25,9 +24,12 @@ export default function Farm(){
       }
 
       setLoadingFarms(true)
-      getUserFarms(userId)
+      void getUserFarms(userId)
         .then((result) => {
           setFarms(result)
+        })
+        .catch((error: unknown) => {
+          console.error("Failed to load farms:", error)
         })
         .finally(() => {
           setLoadingFarms(false)

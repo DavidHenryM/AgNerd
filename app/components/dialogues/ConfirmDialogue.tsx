@@ -18,8 +18,8 @@ export function ConfirmDialog(props: {
           {props.text}
       </DialogContent>
         <DialogActions>
-          <Stack direction="row" gap={2}>
-            <Button onClick={props.handleYes} autoFocus>
+          <Stack direction="row" sx={{ gap: 2 }}>
+            <Button onClick={props.handleYes}>
               Yes
             </Button>
             <Button onClick={props.handleNo}>

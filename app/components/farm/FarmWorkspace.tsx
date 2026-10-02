@@ -296,14 +296,14 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
   }
 
   return (
-    <Stack spacing={3} width="100%">
+    <Stack spacing={3} sx={{ width: "100%" }}>
       {error ? <Alert severity="error">{error}</Alert> : null}
       {success ? <Alert severity="success">{success}</Alert> : null}
 
       <Card>
         <CardHeader title={farm.name} subheader={farm.businessName ?? "Farm workspace"} />
         <CardContent>
-          <Stack direction={{ xs: "column", md: "row" }} spacing={1} useFlexGap flexWrap="wrap">
+          <Stack direction={{ xs: "column", md: "row" }} spacing={1} useFlexGap sx={{ flexWrap: "wrap" }}>
             <Chip label={`Farm area ${farm.areaHa?.toFixed(2) ?? "0.00"} ha`} />
             <Chip label={`${farm.paddocks.length} paddocks`} />
             <Chip label={`${farm.mobs.length} mobs`} />
@@ -345,7 +345,7 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
                       const paddock = farm.paddocks.find((candidate) => candidate.id === mob.currentPaddockId)
                       return (
                         <Box key={mob.mobId}>
-                          <Typography fontWeight={600}>{mob.mobName}</Typography>
+                          <Typography sx={{ fontWeight: 600 }}>{mob.mobName}</Typography>
                           <Typography variant="body2">{mob.currentDse} DSE · {paddock?.name ?? "No paddock recorded"}</Typography>
                         </Box>
                       )
@@ -367,7 +367,7 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
                         <MenuItem key={value} value={value}>{value}</MenuItem>
                       ))}
                     </TextField>
-                    <TextField label="Recorded at" type="datetime-local" value={gateUpdateRecordedAt} onChange={(event) => setGateUpdateRecordedAt(event.target.value)} InputLabelProps={{ shrink: true }} />
+                    <TextField label="Recorded at" type="datetime-local" value={gateUpdateRecordedAt} onChange={(event) => setGateUpdateRecordedAt(event.target.value)} slotProps={{ inputLabel: { shrink: true } }} />
                     <TextField label="Note" value={gateUpdateNote} onChange={(event) => setGateUpdateNote(event.target.value)} multiline minRows={2} />
                     <Button type="submit" variant="contained" disabled={busy !== null || !selectedGateId}>Save gate change</Button>
                   </Stack>
@@ -413,7 +413,7 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
                 <Stack spacing={2}>
                   {farm.paddocks.map((paddock) => (
                     <Box key={paddock.id}>
-                      <Typography fontWeight={600}>{paddock.name}</Typography>
+                      <Typography sx={{ fontWeight: 600 }}>{paddock.name}</Typography>
                       <Typography variant="body2">{paddock.areaHa.toFixed(2)} ha · {paddock.description ?? "No description"}</Typography>
                     </Box>
                   ))}
@@ -438,7 +438,7 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
                   <TextField select label="Initial state" value={gateState} onChange={(event) => setGateState(event.target.value as GateState)}>
                     {Object.values(GateState).map((value) => <MenuItem key={value} value={value}>{value}</MenuItem>)}
                   </TextField>
-                  <TextField label="Recorded at" type="datetime-local" value={gateRecordedAt} onChange={(event) => setGateRecordedAt(event.target.value)} InputLabelProps={{ shrink: true }} />
+                  <TextField label="Recorded at" type="datetime-local" value={gateRecordedAt} onChange={(event) => setGateRecordedAt(event.target.value)} slotProps={{ inputLabel: { shrink: true } }} />
                   <TextField label="Notes" value={gateNote} onChange={(event) => setGateNote(event.target.value)} multiline minRows={2} />
                   <Button type="submit" variant="contained" disabled={busy !== null}>Create gate</Button>
                 </Stack>
@@ -457,13 +457,13 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
                 <Stack spacing={2}>
                   <TextField label="Mob name" value={mobName} onChange={(event) => setMobName(event.target.value)} required />
                   <TextField label="Comment" value={mobComment} onChange={(event) => setMobComment(event.target.value)} multiline minRows={2} />
-                  <TextField label="Started at" type="datetime-local" value={mobStartedAt} onChange={(event) => setMobStartedAt(event.target.value)} InputLabelProps={{ shrink: true }} />
+                  <TextField label="Started at" type="datetime-local" value={mobStartedAt} onChange={(event) => setMobStartedAt(event.target.value)} slotProps={{ inputLabel: { shrink: true } }} />
                   <TextField
                     select
                     label="Members"
                     value={mobMemberIds}
                     onChange={(event) => setMobMemberIds(typeof event.target.value === "string" ? event.target.value.split(",") : event.target.value)}
-                    SelectProps={{ multiple: true }}
+                    slotProps={{ select: { multiple: true } }}
                     helperText="Select beasts to define the mob"
                   >
                     {farm.onFarms.map(({ livestockUnit }) => (
@@ -491,7 +491,7 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
                   <TextField select label="To paddock" value={movementToPaddockId} onChange={(event) => setMovementToPaddockId(event.target.value)} required>
                     {farm.paddocks.map((paddock) => <MenuItem key={paddock.id} value={paddock.id}>{paddock.name}</MenuItem>)}
                   </TextField>
-                  <TextField label="Moved at" type="datetime-local" value={movementMovedAt} onChange={(event) => setMovementMovedAt(event.target.value)} InputLabelProps={{ shrink: true }} />
+                  <TextField label="Moved at" type="datetime-local" value={movementMovedAt} onChange={(event) => setMovementMovedAt(event.target.value)} slotProps={{ inputLabel: { shrink: true } }} />
                   <TextField label="Note" value={movementNote} onChange={(event) => setMovementNote(event.target.value)} multiline minRows={2} />
                   <Button type="submit" variant="contained" disabled={busy !== null}>Save movement</Button>
                 </Stack>
@@ -505,7 +505,7 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
                 <Stack spacing={2}>
                   {farm.mobs.map((mob) => (
                     <Box key={mob.id}>
-                      <Typography fontWeight={600}>{mob.name ?? "Unnamed mob"}</Typography>
+                      <Typography sx={{ fontWeight: 600 }}>{mob.name ?? "Unnamed mob"}</Typography>
                       <Typography variant="body2">{mob.members.length} beasts · {mob.members.reduce((sum, member) => sum + member.drySheepEquivalent, 0)} DSE</Typography>
                       <Typography variant="body2">Latest move: {mob.movements[mob.movements.length - 1]?.toPaddock.name ?? "No movement recorded"}</Typography>
                     </Box>
@@ -527,7 +527,7 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
                   <TextField select label="Paddock" value={feedPaddockId} onChange={(event) => setFeedPaddockId(event.target.value)} required>
                     {farm.paddocks.map((paddock) => <MenuItem key={paddock.id} value={paddock.id}>{paddock.name}</MenuItem>)}
                   </TextField>
-                  <TextField label="Recorded at" type="datetime-local" value={feedRecordedAt} onChange={(event) => setFeedRecordedAt(event.target.value)} InputLabelProps={{ shrink: true }} />
+                  <TextField label="Recorded at" type="datetime-local" value={feedRecordedAt} onChange={(event) => setFeedRecordedAt(event.target.value)} slotProps={{ inputLabel: { shrink: true } }} />
                   <TextField label="Feed availability (kg DM/ha)" value={feedKgDmPerHa} onChange={(event) => setFeedKgDmPerHa(event.target.value)} required />
                   <TextField select label="Source" value={feedSourceType} onChange={(event) => setFeedSourceType(event.target.value as FeedSourceType)}>
                     {Object.values(FeedSourceType).map((value) => <MenuItem key={value} value={value}>{value}</MenuItem>)}
@@ -572,8 +572,8 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
                   <TextField select label="Work type" value={workType} onChange={(event) => setWorkType(event.target.value as PaddockWorkType)}>
                     {Object.values(PaddockWorkType).map((value) => <MenuItem key={value} value={value}>{value}</MenuItem>)}
                   </TextField>
-                  <TextField label="Started at" type="datetime-local" value={workStartedAt} onChange={(event) => setWorkStartedAt(event.target.value)} InputLabelProps={{ shrink: true }} />
-                  <TextField label="Completed at" type="datetime-local" value={workCompletedAt} onChange={(event) => setWorkCompletedAt(event.target.value)} InputLabelProps={{ shrink: true }} />
+                  <TextField label="Started at" type="datetime-local" value={workStartedAt} onChange={(event) => setWorkStartedAt(event.target.value)} slotProps={{ inputLabel: { shrink: true } }} />
+                  <TextField label="Completed at" type="datetime-local" value={workCompletedAt} onChange={(event) => setWorkCompletedAt(event.target.value)} slotProps={{ inputLabel: { shrink: true } }} />
                   <TextField label="Product or input" value={workProductName} onChange={(event) => setWorkProductName(event.target.value)} />
                   <TextField label="Rate" value={workRate} onChange={(event) => setWorkRate(event.target.value)} />
                   <TextField label="Rate unit" value={workRateUnit} onChange={(event) => setWorkRateUnit(event.target.value)} />
@@ -594,7 +594,7 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
                 <Stack spacing={2}>
                   {allWorkEvents.length > 0 ? allWorkEvents.map((event) => (
                     <Box key={event.id}>
-                      <Typography fontWeight={600}>{event.paddockName} · {event.workType}</Typography>
+                      <Typography sx={{ fontWeight: 600 }}>{event.paddockName} · {event.workType}</Typography>
                       <Typography variant="body2">{formatDateTime(event.startedAt)} · {event.productName ?? "No product"}</Typography>
                       <Typography variant="body2">{event.operatorName ?? "No operator"} · {event.cost ? `$${event.cost.toFixed(2)}` : "No cost"}</Typography>
                     </Box>
@@ -642,7 +642,7 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
                 <Stack spacing={1}>
                   {grazingPressureSummaries.map((summary) => (
                     <Box key={summary.paddockId}>
-                      <Typography fontWeight={600}>{summary.paddockName}</Typography>
+                      <Typography sx={{ fontWeight: 600 }}>{summary.paddockName}</Typography>
                       <Typography variant="body2">{summary.totalDseDays} DSE-days · {summary.dseDaysPerHa} DSE-days/ha</Typography>
                     </Box>
                   ))}
@@ -662,7 +662,7 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
                 <Stack spacing={1}>
                   {allMovements.length > 0 ? allMovements.map((movement) => (
                     <Box key={movement.id}>
-                      <Typography fontWeight={600}>{movement.mobName ?? "Unnamed mob"}</Typography>
+                      <Typography sx={{ fontWeight: 600 }}>{movement.mobName ?? "Unnamed mob"}</Typography>
                       <Typography variant="body2">{movement.fromPaddock?.name ?? "Outside"} → {movement.toPaddock.name}</Typography>
                       <Typography variant="body2">{formatDateTime(movement.movedAt)}</Typography>
                     </Box>
@@ -678,7 +678,7 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
                 <Stack spacing={1}>
                   {allGateChanges.length > 0 ? allGateChanges.map((change) => (
                     <Box key={change.id}>
-                      <Typography fontWeight={600}>{change.gateName}</Typography>
+                      <Typography sx={{ fontWeight: 600 }}>{change.gateName}</Typography>
                       <Typography variant="body2">{change.state} · {formatDateTime(change.recordedAt)}</Typography>
                     </Box>
                   )) : <Typography variant="body2">No gate changes yet.</Typography>}
@@ -693,7 +693,7 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
                 <Stack spacing={1}>
                   {allFeedRecords.length > 0 ? allFeedRecords.map((record) => (
                     <Box key={record.id}>
-                      <Typography fontWeight={600}>{record.paddockName}</Typography>
+                      <Typography sx={{ fontWeight: 600 }}>{record.paddockName}</Typography>
                       <Typography variant="body2">{record.feedKgDmPerHa} kg DM/ha · {record.sourceType}</Typography>
                       <Typography variant="body2">{formatDateTime(record.recordedAt)}</Typography>
                     </Box>
@@ -709,7 +709,7 @@ export default function FarmWorkspace({ farm }: { farm: FarmWorkspaceFarm }) {
                 <Stack spacing={1}>
                   {allWorkEvents.length > 0 ? allWorkEvents.map((event) => (
                     <Box key={event.id}>
-                      <Typography fontWeight={600}>{event.paddockName}</Typography>
+                      <Typography sx={{ fontWeight: 600 }}>{event.paddockName}</Typography>
                       <Typography variant="body2">{event.workType} · {event.productName ?? "No product"}</Typography>
                       <Typography variant="body2">{formatDateTime(event.startedAt)}</Typography>
                     </Box>

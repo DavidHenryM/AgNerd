@@ -165,7 +165,7 @@ export type GateStateChangeGroupByOutputType = {
   _max: GateStateChangeMaxAggregateOutputType | null
 }
 
-type GetGateStateChangeGroupByPayload<T extends GateStateChangeGroupByArgs> = Prisma.PrismaPromise<
+export type GetGateStateChangeGroupByPayload<T extends GateStateChangeGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<GateStateChangeGroupByOutputType, T['by']> &
       {
@@ -1165,6 +1165,11 @@ export type GateStateChangeFindManyArgs<ExtArgs extends runtime.Types.Extensions
    * Skip the first `n` GateStateChanges.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of GateStateChanges.
+   */
   distinct?: Prisma.GateStateChangeScalarFieldEnum | Prisma.GateStateChangeScalarFieldEnum[]
   relationLoadStrategy?: Prisma.RelationLoadStrategy
 }

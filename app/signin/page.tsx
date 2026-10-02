@@ -66,8 +66,8 @@ export default function SignInPage() {
 
   return (
     <Content backgroundImageIndex={1}>
-      <Grid  size={12} m={2} spacing={2} p={2} sx={{justifySelf:"center", minWidth: 400}}>
-      <Stack direction="column" spacing={2} alignItems="center">
+      <Grid size={12} spacing={2} sx={{ m: 2, p: 2, justifySelf: "center", minWidth: 400 }}>
+      <Stack direction="column" spacing={2} sx={{ alignItems: "center" }}>
         {/* <FontAwesomeIcon color="#28719f" size="2xl" icon={faHorse} bounce={loading} /> */}
         {
           emailSent ? 
@@ -81,7 +81,7 @@ export default function SignInPage() {
               onChange={(e) => setOtp(e.target.value)}
               fullWidth
               disabled={loading}
-              inputProps={{ inputMode: "numeric" }}
+              slotProps={{ htmlInput: { inputMode: "numeric" } }}
             />
             {error ? (
               <Typography color="error" variant="body2">{error}</Typography>
@@ -131,4 +131,3 @@ export default function SignInPage() {
     </Content>
   )
 }
-

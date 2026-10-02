@@ -35,7 +35,7 @@ export function EarTagGraphic(
         <Typography
           variant={isSingleLine ? "h4" : "h6"}
           color={props.text.colour ? props.text.colour : "black"}
-          fontWeight={"bold"}
+          sx={{ fontWeight: "bold" }}
         >
           {line1}
         </Typography>
@@ -44,7 +44,7 @@ export function EarTagGraphic(
         <Typography
           variant={isSingleLine ? "h4" : "caption"}
           color={props.text.colour ? props.text.colour : "black"}
-          fontWeight={"bold"}
+          sx={{ fontWeight: "bold" }}
         >
           {line2}
         </Typography>
@@ -52,7 +52,7 @@ export function EarTagGraphic(
       {line3 ? (
         <Typography
           variant={isSingleLine ? "h4" : "h6"}
-          fontWeight={"bold"}
+          sx={{ fontWeight: "bold" }}
           color={props.text.colour ? props.text.colour : "black"}
         >
           {line3}
@@ -66,10 +66,7 @@ export function EarTagGraphic(
 function EarTagGraphicContainer(props: {tagColour: string, children: React.ReactNode, textOffset: number}) {
   return (
     <Box
-      fontSize={"1em"}
-      position="relative"
-      color={"black"}
-      sx={{ width: 110, height: 140, display: "inline-block" }}
+      sx={{ fontSize: "1em", position: "relative", color: "black", width: 110, height: 140, display: "inline-block" }}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -84,12 +81,15 @@ function EarTagGraphicContainer(props: {tagColour: string, children: React.React
         </g>
       </svg>
       <Stack
-      spacing={-1}
-        alignItems="center"
-        position="absolute"
-        top={`calc(50% + ${props.textOffset}px)`}
-        left="50%"
-        sx={{ transform: "translate(-50%, -50%)", width: "100%"}}
+        spacing={-1}
+        sx={{
+          alignItems: "center",
+          position: "absolute",
+          top: `calc(50% + ${props.textOffset}px)`,
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "100%",
+        }}
       >
         {props.children}
       </Stack>

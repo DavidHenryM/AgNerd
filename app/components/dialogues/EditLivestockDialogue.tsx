@@ -91,6 +91,8 @@ export default function EditLivestockDialogue(props: {
     const birthDateValue = props.stock.birthDate ? new Date(props.stock.birthDate) : null
     const purchaseDateValue = props.stock.purchaseDate ? new Date(props.stock.purchaseDate) : null
 
+    // Reinitialize the editable form when its target livestock changes.
+    // eslint-disable-next-line react/set-state-in-effect
     setEditingEnabled(false)
     setName(props.stock.name ?? "")
     setAngusId(props.stock.angusTechId ?? "")
@@ -120,6 +122,8 @@ export default function EditLivestockDialogue(props: {
     }
     const userId = sessionData.data?.user?.id
     if (!userId) {
+      // Clear the prior user's farm when the session no longer has a user.
+      // eslint-disable-next-line react/set-state-in-effect
       setCurrentFarmId(null)
       setOnFarm(false)
       setOnFarmSince("")
@@ -157,6 +161,8 @@ export default function EditLivestockDialogue(props: {
       return
     }
     if (!birthDate) {
+      // Clear parent choices that no longer apply without a birth date.
+      // eslint-disable-next-line react/set-state-in-effect
       setAvailableSires([])
       setAvailableDams([])
       return
@@ -186,6 +192,8 @@ export default function EditLivestockDialogue(props: {
 
   useEffect(() => {
     if (sireId && !availableSires.some((sire) => sire.id === sireId)) {
+      // Keep selected parent IDs valid when the candidate lists change.
+      // eslint-disable-next-line react/set-state-in-effect
       setSireId("")
     }
     if (damId && !availableDams.some((dam) => dam.id === damId)) {
@@ -337,7 +345,7 @@ export default function EditLivestockDialogue(props: {
                   label="Birthdate"
                   type="date"
                   value={birthDate}
-                  InputLabelProps={{ shrink: true }}
+                  slotProps={{ inputLabel: { shrink: true } }}
                   onChange={(event) => setBirthDate(event.target.value)}
                   disabled={!editingEnabled}
                 />
@@ -456,7 +464,7 @@ export default function EditLivestockDialogue(props: {
               <Stack spacing={2}>
                 <Typography variant="subtitle1">Visual tag</Typography>
                 <Divider />
-                <Stack direction="row" justifyContent="center" alignItems="center">
+                <Stack direction="row" sx={{ justifyContent: "center", alignItems: "center" }}>
                   <EarTagGraphic tagColour={parseColour(visualIdBackgroundColour)} text={tagPreviewText} />
                 </Stack>
                 <FormControl disabled={!editingEnabled}>
@@ -519,7 +527,7 @@ export default function EditLivestockDialogue(props: {
                   label="On farm since"
                   type="date"
                   value={onFarmSince}
-                  InputLabelProps={{ shrink: true }}
+                  slotProps={{ inputLabel: { shrink: true } }}
                   onChange={(event) => setOnFarmSince(event.target.value)}
                   disabled={!editingEnabled || !currentFarmId || !onFarm}
                 />
@@ -542,7 +550,7 @@ export default function EditLivestockDialogue(props: {
                   label="Purchase date"
                   type="date"
                   value={purchaseDate}
-                  InputLabelProps={{ shrink: true }}
+                  slotProps={{ inputLabel: { shrink: true } }}
                   onChange={(event) => setPurchaseDate(event.target.value)}
                   disabled={!editingEnabled}
                 />

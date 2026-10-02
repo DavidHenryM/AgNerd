@@ -93,32 +93,30 @@ function AccountSettings(
     
     useEffect(()=>{
       async function fetchUserData(){
-        if (props.email) {
-          setLoading(true)
-          getUserFromEmail(props.email).then((user)=>{
-            setUser(user)
-            if (user) {
-              getOrganisations(user.id).then((orgs)=>{
-                setOrganisations(orgs)
-              })
-            }
-          }).finally(()=>{
-            setLoading(false)
-          })
+        if (!props.email) {
+          setLoading(false)
+          return
+        }
+        setLoading(true)
+        try {
+          const user = await getUserFromEmail(props.email)
+          setUser(user)
+          setFirstName(user?.firstName ?? "")
+          setLastName(user?.lastName ?? "")
+          setMobileNumber(user?.mobileNumber ?? "")
+          setLandlineNumber(user?.landlineNumber ?? "")
+          setOrganisations(user ? await getOrganisations(user.id) : [])
+        } catch (error) {
+          setStatusSeverity("error")
+          setStatusMessage(error instanceof Error ? error.message : "Failed to load account information.")
+          console.error("Failed to load account information:", error)
+        } finally {
+          setLoading(false)
         }
       }
     
-      fetchUserData()
+      void fetchUserData()
     },[props.email])
-
-    useEffect(()=>{
-      if (user){
-        setFirstName(user.firstName ?? "")
-        setLastName(user.lastName ?? "")
-        setMobileNumber(user.mobileNumber ?? "")
-        setLandlineNumber(user.landlineNumber ?? "")
-      }
-    },[user])
 
     function resetEdits(){
       if (user){
@@ -200,7 +198,7 @@ function AccountSettings(
       <Waiting message="Saving account information..." open={saving}/>
       <Waiting message="Uploading avatar..." open={uploading}/>
       <Box sx={{ width: 350,}} role="presentation">
-        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{p:2}}>
+        <Stack direction="row" sx={{ p: 2, alignItems: "center", justifyContent: "space-between" }}>
           <Typography sx={{color: "primary.main"}} align="center" variant="h6">Account Information</Typography>
           <Stack direction="row" spacing={1}>
             <IconButton aria-label="Edit account information" onClick={()=>setIsEditing(true)} disabled={isEditing}>
@@ -211,7 +209,7 @@ function AccountSettings(
             </IconButton>
           </Stack>
         </Stack>
-        <Stack alignItems="center" spacing={1} sx={{px:2, pb:2}}>
+        <Stack spacing={1} sx={{ px: 2, pb: 2, alignItems: "center" }}>
           <Avatar
             alt={user?.email ?? 'User avatar'}
             src={user?.image ?? undefined}

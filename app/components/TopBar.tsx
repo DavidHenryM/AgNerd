@@ -22,7 +22,7 @@ export function TopBar(
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [paths, setPaths] = useState<string[]>([])
   useEffect(()=>{
-    async function setPathArray(){
+    function setPathArray(){
       if (pathname == "/"){
         setPaths(["/HOME"])
       } else {

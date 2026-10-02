@@ -2,7 +2,7 @@ import { WeightRecord } from "@generated/browser"
 import { sortWeightsByDate } from "../utils/utils"
 import { Box, Stack, Typography } from "@mui/material"
 import { SparkLineChart } from '@mui/x-charts/SparkLineChart';
-import { areaElementClasses, lineElementClasses } from '@mui/x-charts/LineChart';
+import { lineClasses } from '@mui/x-charts/LineChart';
 import { chartsAxisHighlightClasses } from '@mui/x-charts/ChartsAxisHighlight';
 
 export function WeightStats(props: {weights: WeightRecord[]}){
@@ -12,17 +12,8 @@ export function WeightStats(props: {weights: WeightRecord[]}){
     const lastWeightDate = latestWeight.dateMeasured
     if (props.weights.length > 1){
       return (
-        <Box
-          role="button"
-          aria-label="weight trend"
-          tabIndex={0}
-          width="100%"
-          height="100%"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Stack direction="column" width={300}>
+        <Box sx={{ width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <Stack direction="column" sx={{ width: 300 }}>
             <Typography
               sx={{
                 color: 'rgb(117, 117, 117)',
@@ -35,9 +26,7 @@ export function WeightStats(props: {weights: WeightRecord[]}){
             </Typography>
         <Stack
           direction="row"
-          justifyContent="space-between"
-          alignItems="flex-end"
-          sx={{ borderBottom: 'solid 2px rgba(137, 86, 255, 0.2)' }}
+          sx={{ justifyContent: "space-between", alignItems: "flex-end", borderBottom: 'solid 2px rgba(137, 86, 255, 0.2)' }}
         >
           <Typography variant="caption">
             {latestWeight.weight.toString() + ' kg'}
@@ -61,8 +50,8 @@ export function WeightStats(props: {weights: WeightRecord[]}){
           data={sortedWeights.flatMap((w: WeightRecord) => w.weight)}
           height={50}
           sx={{
-            [`& .${areaElementClasses.root}`]: { opacity: 0.2 },
-            [`& .${lineElementClasses.root}`]: { strokeWidth: 3 },
+            [`& .${lineClasses.area}`]: { opacity: 0.2 },
+            [`& .${lineClasses.line}`]: { strokeWidth: 3 },
             [`& .${chartsAxisHighlightClasses.root}`]: {
               stroke: 'rgb(137, 86, 255)',
               strokeDasharray: 'none',
@@ -250,17 +239,8 @@ export function NumberStat( props: {
       : "text.secondary"
 
   return (
-    <Box
-      role="button"
-      aria-label="Showing weekly downloads"
-      tabIndex={0}
-      width="100%"
-      height="100%"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Stack direction="column" width={300}>
+    <Box sx={{ width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <Stack direction="column" sx={{ width: 300 }}>
         <Typography
           sx={{
             color: 'rgb(117, 117, 117)',
@@ -274,15 +254,13 @@ export function NumberStat( props: {
         </Typography>
         <Stack
           direction="row"
-          justifyContent="space-between"
-          alignItems="flex-end"
-          sx={{ borderBottom: 'solid 2px rgba(137, 86, 255, 0.2)' }}
+          sx={{ justifyContent: "space-between", alignItems: "flex-end", borderBottom: 'solid 2px rgba(137, 86, 255, 0.2)' }}
         >
           <Typography sx={{ fontSize: '1.25rem', fontWeight: 500 }}>
             {formattedValue}
           </Typography>
           {props.trend?.value ? (
-            <Stack direction="column" alignItems="flex-end">
+            <Stack direction="column" sx={{ alignItems: "flex-end" }}>
               <Typography sx={{ fontSize: '0.85rem', fontWeight: 600, color: trendColor }}>
                 {props.trend.value}{props.trend.unit ? ` ${props.trend.unit}` : ""}
               </Typography>

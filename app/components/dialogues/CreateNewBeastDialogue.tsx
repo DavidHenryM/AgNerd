@@ -88,6 +88,8 @@ export default function CreateNewBeastDialogue(props: {
       return
     }
     if (!birthDate) {
+      // These controlled options must be cleared when the date is removed.
+      // eslint-disable-next-line react/set-state-in-effect
       setAvailableSires([])
       setAvailableDams([])
       return
@@ -121,6 +123,8 @@ export default function CreateNewBeastDialogue(props: {
     }
     const userId = sessionData.data?.user?.id
     if (!userId) {
+      // Clear the prior user's farm when the session no longer has a user.
+      // eslint-disable-next-line react/set-state-in-effect
       setCurrentFarmId(null)
       return
     }
@@ -137,6 +141,8 @@ export default function CreateNewBeastDialogue(props: {
 
   useEffect(() => {
     if (sireId && !availableSires.some((sire) => sire.id === sireId)) {
+      // Keep selected parent IDs valid when the candidate lists change.
+      // eslint-disable-next-line react/set-state-in-effect
       setSireId('')
     }
     if (damId && !availableDams.some((dam) => dam.id === damId)) {
@@ -221,7 +227,7 @@ export default function CreateNewBeastDialogue(props: {
                   label="Birthdate"
                   type="date"
                   value={birthDate}
-                  InputLabelProps={{ shrink: true }}
+                  slotProps={{ inputLabel: { shrink: true } }}
                   onChange={(event) => setBirthDate(event.target.value)}
                 />
                 <FormControl fullWidth>
@@ -330,7 +336,7 @@ export default function CreateNewBeastDialogue(props: {
               <Stack spacing={2}>
                 <Typography variant="subtitle1">Visual tag</Typography>
                 <Divider />
-                <Stack direction="row" justifyContent="center" alignItems="center">
+                <Stack direction="row" sx={{ justifyContent: "center", alignItems: "center" }}>
                   <EarTagGraphic tagColour={parseColour(visualIdBackgroundColour)} text={tagPreviewText} />
                 </Stack>
                 <FormControl>

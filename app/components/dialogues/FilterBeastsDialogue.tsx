@@ -45,13 +45,13 @@ export default function FilterBeastsDialogue(props: {
             }
             label="Only show livestock on farm"
           />
-          <Typography variant="body2" fontWeight="medium">
+          <Typography variant="body2" sx={{ fontWeight: "medium" }}>
             Select Stock Class(es)
           </Typography>
           <Stack spacing={1.5}>
             {commercialClasses.map((commercialClass: string, index: number) => (
               <Paper key={commercialClass} variant="outlined" sx={{ p: 1.25 }}>
-                <Stack direction="row" alignItems="center" spacing={2}>
+                <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
                   <Checkbox
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                       const newChecked = [...props.checked]

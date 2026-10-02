@@ -216,12 +216,16 @@ export default function NavigationScreen() {
   const [farmLon, setFarmLon] = useState<number | null>(null);
 
   useEffect(() => {
-    getUsersFarm(userId).then((farm) => {
-      if (farm?.locationCentre) {
-        setFarmLat(farm.locationCentre.latitude);
-        setFarmLon(farm.locationCentre.longitude);
-      }
-    });
+    void getUsersFarm(userId)
+      .then((farm) => {
+        if (farm?.locationCentre) {
+          setFarmLat(farm.locationCentre.latitude);
+          setFarmLon(farm.locationCentre.longitude);
+        }
+      })
+      .catch((error: unknown) => {
+        console.error("Failed to load farm location:", error);
+      });
   }, [userId]);
 
   // ── Create Cesium viewer ──────────────────────────────────────────
@@ -451,5 +455,3 @@ export default function NavigationScreen() {
     </Box>
   );
 }
-
-

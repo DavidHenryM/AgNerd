@@ -33,6 +33,9 @@ export default function LivestockCardsScreen(props: {whereFilter: Partial<Livest
           currentFocus ? livestock.find((unit) => unit.id === currentFocus.id) : undefined
         )
       })
+      .catch((error: unknown) => {
+        console.error("Failed to load livestock cards:", error)
+      })
 
     return () => {
       cancelled = true
@@ -41,7 +44,7 @@ export default function LivestockCardsScreen(props: {whereFilter: Partial<Livest
 
   if (loading){
     return (
-      <Stack direction="row" flexWrap="wrap" gap={6}>
+      <Stack direction="row" sx={{ flexWrap: "wrap", gap: 6 }}>
         {Array.from(Array(12).keys()).map((value: number) => (
           <Skeleton key={`stockPreviewCardSkeleton_${value}`} variant="rectangular" width={210} height={118} />
         ))}
@@ -57,7 +60,7 @@ export default function LivestockCardsScreen(props: {whereFilter: Partial<Livest
       }
 
       return (
-        <Stack direction="row" flexWrap="wrap" gap={6}>
+        <Stack direction="row" sx={{ flexWrap: "wrap", gap: 6 }}>
           {livestockUnits.map((stock: LivestockWithRelations, index: number) => (
             <StockPreviewCard
               key={stock.id}

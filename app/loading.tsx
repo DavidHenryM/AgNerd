@@ -7,15 +7,9 @@ import { CircularProgress, Grid, Paper, Stack, Typography } from '@mui/material'
 
 export default function Loading(){
   return (
-    <Grid container 
-      display="flex" 
-      justifyContent="center" 
-      alignItems="center" 
-      minHeight="200vh"
-      size={12}
-    >
+    <Grid container size={12} sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "200vh" }}>
     <Paper>
-      <Stack direction="column" justifyContent={"center"} alignItems="center" >
+      <Stack direction="column" sx={{ justifyContent: "center", alignItems: "center" }}>
         <NerdCowboy size={100}/>
         <CircularProgress color="primary" />
         <Typography color="primary" variant='h6'>Loading...</Typography>

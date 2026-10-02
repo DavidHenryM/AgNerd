@@ -18,9 +18,13 @@ export function SignInButton() {
 
 export function SignOutButton() {
   function handleClick() {
-    signOut().then((result)=>{
-      console.log(result)
-    })
+    void signOut()
+      .then((result) => {
+        console.log(result)
+      })
+      .catch((error: unknown) => {
+        console.error("Failed to sign out:", error)
+      })
   }
   return (
       <Button 
