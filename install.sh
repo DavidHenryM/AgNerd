@@ -5,6 +5,32 @@ cd "$SCRIPT_DIR" || exit 1
 sudo apt update
 sudo apt install gpsd -y
 
+has_env_files() {
+    local directory="$1"
+    local file
+
+    [ -f "$directory/.env" ] && return 0
+    for file in "$directory"/*.env; do
+        [ -f "$file" ] && return 0
+    done
+    return 1
+}
+
+has_config_env_files() {
+    local directory="$1"
+    local file
+
+    [ -f "$directory/.env" ] && return 0
+    for file in "$directory"/*.env; do
+        [ -f "$file" ] || continue
+        case "$(basename "$file")" in
+            example.env|example.*.env) continue ;;
+        esac
+        return 0
+    done
+    return 1
+}
+
 if [ ! -d /etc/agnerd ]; then
     echo "Creating /etc/agnerd directory"
     sudo mkdir /etc/agnerd
@@ -22,31 +48,30 @@ fi
 if [ -f gnss.env ]; then
     echo "Updating /etc/agnerd/gnss.env from gnss.env"
     sudo cp gnss.env /etc/agnerd/gnss.env
-elif [ -f example.gnss.env ]; then
-    echo "Updating /etc/agnerd/gnss.env from example.gnss.env"
-    sudo cp example.gnss.env /etc/agnerd/gnss.env
-else
-    echo "example.gnss.env not found, cannot copy to /etc/agnerd/gnss.env - please create gnss.env or example.gnss.env and run the install script again."
 fi
-
 if [ -f ntrip.env ]; then
     echo "Updating /etc/agnerd/ntrip.env from ntrip.env"
     sudo cp ntrip.env /etc/agnerd/ntrip.env
-elif [ -f example.ntrip.env ]; then
-    echo "Updating /etc/agnerd/ntrip.env from example.ntrip.env"
-    sudo cp example.ntrip.env /etc/agnerd/ntrip.env
-else
-    echo "example.ntrip.env not found, cannot copy to /etc/agnerd/ntrip.env - please create ntrip.env or example.ntrip.env and run the install script again."
 fi
-
 if [ -f .env ]; then
     echo "Updating /etc/agnerd/.env from .env"
     sudo cp .env /etc/agnerd/.env
-elif [ -f example.env ]; then
-    echo "Updating /etc/agnerd/.env from example.env"
-    sudo cp example.env /etc/agnerd/.env
+fi
+
+if has_config_env_files "$SCRIPT_DIR" || has_env_files /etc/agnerd; then
+    echo "Environment file already present in source or /etc/agnerd; skipping example environment files."
 else
-    echo "example.env not found, cannot copy to /etc/agnerd/.env - please create .env or example.env and run the install script again."
+    for example_file in example.env example.gnss.env example.ntrip.env; do
+        if [ -f "$example_file" ]; then
+            case "$example_file" in
+                example.env) destination="/etc/agnerd/.env" ;;
+                example.gnss.env) destination="/etc/agnerd/gnss.env" ;;
+                example.ntrip.env) destination="/etc/agnerd/ntrip.env" ;;
+            esac
+            echo "Installing $example_file to $destination"
+            sudo cp "$example_file" "$destination"
+        fi
+    done
 fi
 
 sudo mkdir -p /opt/agnerd/scripts
