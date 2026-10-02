@@ -2,7 +2,10 @@
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR" || exit 1
+echo "Starting AgNerd installation from $SCRIPT_DIR"
+echo "Updating package lists..."
 sudo apt update
+echo "Installing system prerequisites (curl and gpsd)..."
 sudo apt install curl gpsd -y
 
 if [ ! -x /usr/bin/node ]; then
@@ -33,6 +36,9 @@ NVM_SETUP
     }
 
     sudo ln -sfn "$NODE_PATH" /usr/bin/node
+    echo "Node.js installed and linked at /usr/bin/node."
+else
+    echo "Node.js is already available at /usr/bin/node; skipping NVM installation."
 fi
 
 has_env_files() {
@@ -78,14 +84,20 @@ fi
 if [ -f gnss.env ]; then
     echo "Updating /etc/agnerd/gnss.env from gnss.env"
     sudo cp gnss.env /etc/agnerd/gnss.env
+else
+    echo "No gnss.env source file found; keeping any existing GNSS environment file."
 fi
 if [ -f ntrip.env ]; then
     echo "Updating /etc/agnerd/ntrip.env from ntrip.env"
     sudo cp ntrip.env /etc/agnerd/ntrip.env
+else
+    echo "No ntrip.env source file found; keeping any existing NTRIP environment file."
 fi
 if [ -f .env ]; then
     echo "Updating /etc/agnerd/.env from .env"
     sudo cp .env /etc/agnerd/.env
+else
+    echo "No .env source file found; keeping any existing application environment file."
 fi
 
 if has_config_env_files "$SCRIPT_DIR" || has_env_files /etc/agnerd; then
@@ -100,20 +112,27 @@ else
             esac
             echo "Installing $example_file to $destination"
             sudo cp "$example_file" "$destination"
+        else
+            echo "Example environment file $example_file not found; skipping."
         fi
     done
 fi
 
+echo "Installing GNSS and NTRIP helper scripts to /opt/agnerd/scripts..."
 sudo mkdir -p /opt/agnerd/scripts
 sudo cp scripts/gnss-reader.mjs /opt/agnerd/scripts/gnss-reader.mjs
 sudo cp scripts/ntrip-forwarder.mjs /opt/agnerd/scripts/ntrip-forwarder.mjs
 
+echo "Installing systemd service definitions..."
 sudo cp scripts/agnerd-gnss.service /etc/systemd/system/agnerd-gnss.service
 sudo cp scripts/agnerd-ntrip.service /etc/systemd/system/agnerd-ntrip.service
 sudo cp scripts/agnerd.service /etc/systemd/system/agnerd.service
 
+echo "Installing Node.js dependencies with npm ci..."
 npm ci
+echo "Building the AgNerd application..."
 npm run build
+echo "Copying build output to /opt/agnerd..."
 sudo cp -R dist/* /opt/agnerd/
 
 if [ ! -d /opt/agnerd/public ]; then
@@ -121,13 +140,47 @@ if [ ! -d /opt/agnerd/public ]; then
     sudo mkdir -p /opt/agnerd/public
 fi
 
+echo "Reloading systemd service definitions..."
 sudo systemctl daemon-reload
 
+echo "Enabling and restarting the GNSS reader service..."
 sudo systemctl enable agnerd-gnss.service
 sudo systemctl restart agnerd-gnss.service
 
+echo "Enabling and restarting the NTRIP forwarder service..."
 sudo systemctl enable agnerd-ntrip.service
 sudo systemctl restart agnerd-ntrip.service
 
+echo "Enabling and restarting the AgNerd application service..."
 sudo systemctl enable agnerd.service
 sudo systemctl restart agnerd.service
+
+echo "Checking that all AgNerd services are active..."
+failed_services=()
+for service in agnerd-gnss.service agnerd-ntrip.service agnerd.service; do
+    echo "Checking $service..."
+    service_active=false
+    for attempt in {1..10}; do
+        if sudo systemctl is-active --quiet "$service"; then
+            service_active=true
+            break
+        fi
+        sleep 1
+    done
+
+    if [ "$service_active" = true ]; then
+        echo "$service is active and running."
+    else
+        echo "ERROR: $service did not become active." >&2
+        sudo systemctl status --no-pager --full "$service" || true
+        sudo journalctl --no-pager -u "$service" -n 30 || true
+        failed_services+=("$service")
+    fi
+done
+
+if [ "${#failed_services[@]}" -gt 0 ]; then
+    echo "Installation finished with service errors: ${failed_services[*]}" >&2
+    exit 1
+fi
+
+echo "AgNerd installation completed; all services are active."
