@@ -5,20 +5,19 @@ cd "$SCRIPT_DIR" || exit 1
 echo "Starting AgNerd installation from $SCRIPT_DIR"
 echo "Updating package lists..."
 sudo apt update
-echo "Installing system prerequisites (curl and gpsd)..."
-sudo apt install curl gpsd -y
+echo "Installing system prerequisites (curl, gpsd, and Chromium)..."
+sudo apt install curl gpsd chromium -y
+
+INSTALL_USER="${SUDO_USER:-$(id -un)}"
+INSTALL_HOME="$(getent passwd "$INSTALL_USER" | cut -d: -f6)"
+if [ -z "$INSTALL_HOME" ]; then
+    echo "Unable to determine the home directory for $INSTALL_USER." >&2
+    exit 1
+fi
 
 if [ ! -x /usr/bin/node ]; then
     echo "Node.js is missing from /usr/bin/node; installing the latest stable version with NVM."
-    NVM_USER="${SUDO_USER:-$(id -un)}"
-    NVM_HOME="$(getent passwd "$NVM_USER" | cut -d: -f6)"
-
-    if [ -z "$NVM_HOME" ]; then
-        echo "Unable to determine the home directory for $NVM_USER." >&2
-        exit 1
-    fi
-
-    NODE_PATH=$(sudo -u "$NVM_USER" env HOME="$NVM_HOME" bash -s <<'NVM_SETUP'
+    NODE_PATH=$(sudo -u "$INSTALL_USER" env HOME="$INSTALL_HOME" bash -s <<'NVM_SETUP'
 set -e
 export NVM_DIR="$HOME/.nvm"
 if [ ! -s "$NVM_DIR/nvm.sh" ]; then
@@ -122,11 +121,17 @@ echo "Installing GNSS and NTRIP helper scripts to /opt/agnerd/scripts..."
 sudo mkdir -p /opt/agnerd/scripts
 sudo cp scripts/gnss-reader.mjs /opt/agnerd/scripts/gnss-reader.mjs
 sudo cp scripts/ntrip-forwarder.mjs /opt/agnerd/scripts/ntrip-forwarder.mjs
+sudo cp scripts/kiosk.sh /opt/agnerd/scripts/kiosk.sh
+sudo chmod 755 /opt/agnerd/scripts/kiosk.sh
 
 echo "Installing systemd service definitions..."
 sudo cp scripts/agnerd-gnss.service /etc/systemd/system/agnerd-gnss.service
 sudo cp scripts/agnerd-ntrip.service /etc/systemd/system/agnerd-ntrip.service
 sudo cp scripts/agnerd.service /etc/systemd/system/agnerd.service
+sed \
+    -e "s|@KIOSK_USER@|$INSTALL_USER|g" \
+    -e "s|@KIOSK_HOME@|$INSTALL_HOME|g" \
+    scripts/agnerd-kiosk.service | sudo tee /etc/systemd/system/agnerd-kiosk.service >/dev/null
 
 echo "Installing Node.js dependencies with npm ci..."
 npm ci
@@ -155,9 +160,13 @@ echo "Enabling and restarting the AgNerd application service..."
 sudo systemctl enable agnerd.service
 sudo systemctl restart agnerd.service
 
+echo "Enabling and restarting the AgNerd kiosk service..."
+sudo systemctl enable agnerd-kiosk.service
+sudo systemctl restart agnerd-kiosk.service
+
 echo "Checking that all AgNerd services are active..."
 failed_services=()
-for service in agnerd-gnss.service agnerd-ntrip.service agnerd.service; do
+for service in agnerd-gnss.service agnerd-ntrip.service agnerd.service agnerd-kiosk.service; do
     echo "Checking $service..."
     service_active=false
     for attempt in {1..10}; do

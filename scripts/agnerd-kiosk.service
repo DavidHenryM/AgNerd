@@ -1,0 +1,20 @@
+[Unit]
+Description=AgNerd Kiosk Browser
+After=graphical.target network-online.target agnerd.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=@KIOSK_USER@
+Environment="HOME=@KIOSK_HOME@"
+Environment="DISPLAY=:0"
+Environment="XAUTHORITY=@KIOSK_HOME@/.Xauthority"
+WorkingDirectory=/opt/agnerd
+ExecStart=/usr/bin/bash /opt/agnerd/scripts/kiosk.sh
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=graphical.target
