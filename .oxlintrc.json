@@ -1,0 +1,28 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "react", "react-hooks", "jsx-a11y", "import", "nextjs"],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2026": true
+  },
+  "ignorePatterns": [
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+    "app/generated/prisma/**",
+    "public/cesium/**"
+  ],
+  "options": {
+    "typeAware": true
+  },
+  "categories": {
+    "correctness": "warn"
+  },
+  "settings": {
+    "react": {
+      "version": "19.3.0"
+    }
+  }
+}
