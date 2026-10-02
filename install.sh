@@ -15,8 +15,8 @@ if [ -z "$INSTALL_HOME" ]; then
     exit 1
 fi
 
-if [ ! -x /usr/bin/node ]; then
-    echo "Node.js is missing from /usr/bin/node; installing the latest stable version with NVM."
+if [ ! -x /usr/bin/node ] || [ ! -x /usr/bin/npm ]; then
+    echo "Node.js or npm is missing from /usr/bin; installing the latest stable Node.js with NVM."
     NODE_PATH=$(sudo -u "$INSTALL_USER" env HOME="$INSTALL_HOME" bash -s <<'NVM_SETUP'
 set -e
 export NVM_DIR="$HOME/.nvm"
@@ -35,9 +35,15 @@ NVM_SETUP
     }
 
     sudo ln -sfn "$NODE_PATH" /usr/bin/node
-    echo "Node.js installed and linked at /usr/bin/node."
+    NPM_PATH="$(dirname "$NODE_PATH")/npm"
+    if [ ! -x "$NPM_PATH" ]; then
+        echo "npm was not found alongside the NVM Node.js installation." >&2
+        exit 1
+    fi
+    sudo ln -sfn "$NPM_PATH" /usr/bin/npm
+    echo "Node.js and npm installed and linked under /usr/bin."
 else
-    echo "Node.js is already available at /usr/bin/node; skipping NVM installation."
+    echo "Node.js and npm are already available under /usr/bin; skipping NVM installation."
 fi
 
 has_env_files() {
@@ -137,12 +143,15 @@ echo "Installing Node.js dependencies with npm ci..."
 npm ci
 echo "Building the AgNerd application..."
 npm run build
-echo "Copying build output to /opt/agnerd..."
-sudo cp -R .next/* /opt/agnerd/
-
-if [ ! -d /opt/agnerd/public ]; then
-    echo "Creating /opt/agnerd/public directory"
-    sudo mkdir -p /opt/agnerd/public
+echo "Installing the production application and dependencies to /opt/agnerd..."
+sudo mkdir -p /opt/agnerd/.next /opt/agnerd/node_modules /opt/agnerd/public
+sudo cp package.json package-lock.json next.config.ts /opt/agnerd/
+sudo cp -R .next/. /opt/agnerd/.next/
+sudo cp -R node_modules/. /opt/agnerd/node_modules/
+if [ -d public ]; then
+    sudo cp -R public/. /opt/agnerd/public/
+else
+    echo "No public directory found; leaving /opt/agnerd/public empty."
 fi
 
 echo "Reloading systemd service definitions..."
