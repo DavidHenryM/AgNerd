@@ -6,7 +6,7 @@ echo "Starting AgNerd installation from $SCRIPT_DIR"
 echo "Updating package lists..."
 sudo apt update
 echo "Installing system prerequisites (curl, gpsd, and Chromium)..."
-sudo apt install curl gpsd chromium -y
+sudo apt install curl gpsd chromium rtklib -y
 
 INSTALL_USER="${SUDO_USER:-$(id -un)}"
 INSTALL_HOME="$(getent passwd "$INSTALL_USER" | cut -d: -f6)"
