@@ -11,7 +11,7 @@ flowchart LR
     subgraph host["AgNerd host (Linux, e.g. in-cab computer)"]
         app["AgNerd Next.js app<br/>(agnerd.service)"]
         reader["GNSS reader<br/>scripts/gnss-reader.mjs<br/>(agnerd-gnss.service)"]
-        fwd["NTRIP forwarder<br/>scripts/ntrip-forwarder.mjs<br/>or ntrip2tcp.sh (str2str)"]
+        fwd["NTRIP forwarder<br/>Node net/tls + serialport"]
         gpsd["gpsd"]
         statusFile[("GNSS status file<br/>/tmp/agnerd-gnss-status.json")]
     end
@@ -47,34 +47,38 @@ flowchart LR
 
 ## 2. Deployment
 
-Installed by [scripts/install.sh](../scripts/install.sh). Both services run under systemd and log to the journal.
+Installed by [install.sh](../install.sh). The app, GNSS reader, and NTRIP forwarder run under systemd and log to the journal.
 
 ```mermaid
 flowchart TB
     subgraph etc["/etc/agnerd"]
         appEnv[".env<br/>DATABASE_URL, BETTER_AUTH_SECRET,<br/>BREVO_API_KEY, EMAIL_FROM,<br/>GNSS_INTERNAL_TOKEN, CESIUM_ION_TOKEN,<br/>GA_NTRIP_*"]
         gnssEnv["gnss.env<br/>GNSS_SOURCE, GPSD_HOST/PORT,<br/>GNSS_READ_DEVICE, GNSS_INGEST_URL,<br/>GNSS_INTERNAL_TOKEN, GNSS_STATUS_FILE"]
+        ntripEnv["ntrip.env<br/>GA_NTRIP_*, API_BASE_URL"]
     end
 
     subgraph opt["/opt/agnerd"]
         build["Next.js build<br/>(npm start)"]
         readerScript["scripts/gnss-reader.mjs"]
+        ntripScript["scripts/ntrip-forwarder.mjs"]
     end
 
     subgraph systemd["systemd"]
         svcApp["agnerd.service"]
         svcGnss["agnerd-gnss.service"]
+        svcNtrip["agnerd-ntrip.service"]
     end
 
     gpsdSvc["gpsd (apt)"]
-    str2str["str2str (RTKLIB)<br/>started manually via<br/>npm run gnss:ntrip"]
-
     svcApp -- "EnvironmentFile" --> appEnv
     svcApp -- "ExecStart" --> build
     svcGnss -- "EnvironmentFile" --> gnssEnv
     svcGnss -- "ExecStart node" --> readerScript
+    svcNtrip -- "EnvironmentFile" --> ntripEnv
+    svcNtrip -- "ExecStart node" --> ntripScript
     readerScript --> gpsdSvc
-    str2str -. "no systemd unit yet" .-> systemd
+    ntripScript -- "native TLS or TCP" --> caster
+    caster["NTRIP caster"]
 ```
 
 ## 3. Application structure
@@ -187,7 +191,7 @@ sequenceDiagram
     participant CES as Cesium reverse geocode
     participant GA as GA CORS metadata API
     participant C as GA NTRIP caster
-    participant S as str2str
+    participant S as Native Node NTRIP client
     participant RX as GNSS receiver
 
     N->>API: GET ?closestNtripPath=true
@@ -201,10 +205,10 @@ sequenceDiagram
     alt resolve fails and GA_NTRIP_MOUNT set
         N->>N: fall back to static mount
     end
-    N->>S: spawn str2str -in ntrip://... -out serial:// or tcpsvr://
-    S->>C: NTRIP request
-    C-->>S: RTCM3 stream
-    S-->>RX: RTCM3 (serial or TCP :2101)
+    N->>S: Connect with built-in TCP or TLS
+    S->>C: NTRIP GET with Basic authentication
+    C-->>S: ICY/HTTP success and binary RTCM3 stream
+    S-->>RX: RTCM3 (serialport or TCP listener)
     Note over RX: Fix upgrades to RTK_FLOAT / RTK_FIXED<br/>(reported via UBX flags in gnss-reader)
 ```
 
@@ -345,4 +349,4 @@ stateDiagram-v2
 | `npm run copy-cesium` | Copy Cesium static assets to `public/cesium` |
 | `npm run gnss:reader` | Run [gnss-reader.mjs](../scripts/gnss-reader.mjs) |
 | `npm run gnss:ntrip` | Run [ntrip-forwarder.mjs](../scripts/ntrip-forwarder.mjs) (closest CORS station) |
-| `npm run gnss:ntrip:bash` | Run [ntrip2tcp.sh](../scripts/ntrip2tcp.sh) (static mount) |
+| `npm run gnss:ntrip:bash` | Compatibility alias for the JavaScript NTRIP forwarder |

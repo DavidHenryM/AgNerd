@@ -6,7 +6,7 @@ echo "Starting AgNerd installation from $SCRIPT_DIR"
 echo "Updating package lists..."
 sudo apt update
 echo "Installing system prerequisites (curl, gpsd, and Chromium)..."
-sudo apt install curl gpsd chromium rtklib -y
+sudo apt install curl gpsd chromium -y
 
 INSTALL_USER="${SUDO_USER:-$(id -un)}"
 INSTALL_HOME="$(getent passwd "$INSTALL_USER" | cut -d: -f6)"
@@ -88,33 +88,6 @@ fi
 
 set -e
 
-NTRIP_ENV_FILE="ntrip.env"
-CONFIG_FILE="/etc/stunnel/auscors.conf"
-
-# Load variables from .env
-set -a
-source "$NTRIP_ENV_FILE"
-set +a
-
-sudo tee "$CONFIG_FILE" > /dev/null <<EOF
-pid = /run/stunnel4/auscors.pid
-
-client = yes
-
-[auscors]
-accept = 127.0.0.1:2101
-connect = ${NTRIP_HOST}:${NTRIP_PORT}
-
-CAfile = /etc/ssl/certs/ca-certificates.crt
-verifyChain = yes
-checkHost = ${NTRIP_HOST}
-EOF
-
-sudo mkdir -p /run/stunnel4
-sudo chown root:root /run/stunnel4
-
-sudo curl -L -o /etc/ssl/certs/ca-certificates.crt "$GA_NTRIP_CA_URL"
-
 if [ -f gnss.env ]; then
     echo "Updating /etc/agnerd/gnss.env from gnss.env"
     sudo cp gnss.env /etc/agnerd/gnss.env
@@ -156,15 +129,25 @@ echo "Installing GNSS and NTRIP helper scripts to /opt/agnerd/scripts..."
 sudo mkdir -p /opt/agnerd/scripts
 sudo cp scripts/gnss-reader.mjs /opt/agnerd/scripts/gnss-reader.mjs
 sudo cp scripts/ntrip-forwarder.mjs /opt/agnerd/scripts/ntrip-forwarder.mjs
-sudo cp scripts/auscors.conf /etc/stunnel/auscors.conf
+sudo cp scripts/ntrip-client.mjs /opt/agnerd/scripts/ntrip-client.mjs
 sudo cp scripts/kiosk.sh /opt/agnerd/scripts/kiosk.sh
 sudo chmod 755 /opt/agnerd/scripts/kiosk.sh
 
-echo "Enabling stunnel service for auscors..."
-if grep -q '^ENABLED=' /etc/default/stunnel4; then
-    sudo sed -i 's/^ENABLED=.*/ENABLED=1/' /etc/default/stunnel4
-else
-    echo 'ENABLED=1' | sudo tee -a /etc/default/stunnel4 >/dev/null
+if [ -f /etc/stunnel/auscors.conf ]; then
+    echo "Removing the legacy AgNerd stunnel configuration..."
+    sudo rm /etc/stunnel/auscors.conf
+    shopt -s nullglob
+    STUNNEL_CONFIGS=(/etc/stunnel/*.conf)
+    shopt -u nullglob
+    if [ "${#STUNNEL_CONFIGS[@]}" -eq 0 ]; then
+        if sudo systemctl cat stunnel4.service >/dev/null 2>&1; then
+            echo "No stunnel configurations remain; stopping and disabling the legacy service..."
+            sudo systemctl disable --now stunnel4.service
+        fi
+    elif sudo systemctl is-active --quiet stunnel4.service; then
+        echo "Restarting stunnel to release the legacy AgNerd proxy listener..."
+        sudo systemctl restart stunnel4.service
+    fi
 fi
 
 echo "Installing systemd service definitions..."
@@ -193,10 +176,6 @@ fi
 
 echo "Reloading systemd service definitions..."
 sudo systemctl daemon-reload
-
-echo "Restarting stunnel service for auscors..."
-sudo systemctl enable stunnel4.service
-sudo systemctl restart stunnel4.service
 
 echo "Enabling and restarting the GNSS reader service..."
 sudo systemctl enable agnerd-gnss.service

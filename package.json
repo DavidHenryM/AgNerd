@@ -9,12 +9,13 @@
     "dev": "next dev -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
+    "test": "node --test scripts/*.test.mjs",
     "lint": "oxlint --type-aware",
     "generate": "prisma generate",
     "postinstall": "prisma generate",
     "copy-cesium": "cpx \"node_modules/@cesium/engine/Source/**\" \"public/cesium/\" --dereference",
     "gnss:ntrip": "node ./scripts/ntrip-forwarder.mjs",
-    "gnss:ntrip:bash": "bash ./scripts/ntrip2tcp.sh",
+    "gnss:ntrip:bash": "node ./scripts/ntrip-forwarder.mjs",
     "gnss:reader": "node ./scripts/gnss-reader.mjs"
   },
   "dependencies": {

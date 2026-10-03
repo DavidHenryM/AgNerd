@@ -54,11 +54,16 @@ Copy `example.env` values into your runtime environment and set at least:
 - `GA_NTRIP_USER`
 - `GA_NTRIP_PASSWORD`
 - `GA_NTRIP_HOST`
-- `GA_NTRIP_PORT`
-- `GA_NTRIP_MOUNT`
-- `NTRIP_OUTPUT_MODE` (`serial` recommended)
-- `GNSS_DEVICE` / `GNSS_READ_DEVICE` / `GNSS_CORRECTION_DEVICE`
+- `GA_NTRIP_PORT` (defaults to `2101`)
+- `GA_NTRIP_MOUNT` (static fallback when closest-station lookup is enabled)
+- `GA_NTRIP_USE_CLOSEST` (`true` to use the closest-station API)
+- `GA_NTRIP_SECURE` (defaults to `true`; set `false` only for a caster without TLS)
+- `GA_NTRIP_OUTPUT_MODE` (`serial` recommended; `tcp` is also supported)
+- `GA_NTRIP_OUTPUT_DEVICE` / `GA_NTRIP_OUTPUT_BAUDRATE`
+- `GA_NTRIP_OUTPUT_HOST` / `GA_NTRIP_OUTPUT_PORT` (TCP listener settings)
 - `GNSS_INTERNAL_TOKEN`
+
+When using the app from another device on the LAN, set `BETTER_AUTH_TRUSTED_ORIGINS` in `.env` to the exact browser origin(s), comma-separated, for example `http://192.168.0.230:3000`. Keep `BETTER_AUTH_URL` set to the app's canonical URL. Do not use a wildcard for arbitrary IP origins.
 
 ### Run Correction Forwarding
 
@@ -66,12 +71,16 @@ Copy `example.env` values into your runtime environment and set at least:
 npm run gnss:ntrip
 ```
 
-This runs [scripts/ntrip-forwarder.mjs](scripts/ntrip-forwarder.mjs), a Node implementation inside this project that wraps `str2str` and supports:
+This runs [scripts/ntrip-forwarder.mjs](scripts/ntrip-forwarder.mjs), a JavaScript NTRIP client that uses Node's built-in TCP/TLS networking and the existing `serialport` package. It supports:
 
-- `NTRIP_OUTPUT_MODE=serial`: send RTCM directly to a serial GNSS device.
-- `NTRIP_OUTPUT_MODE=tcp`: expose RTCM as a TCP server stream.
+- `GA_NTRIP_OUTPUT_MODE=serial`: send RTCM directly to a serial GNSS device.
+- `GA_NTRIP_OUTPUT_MODE=tcp`: expose RTCM as a TCP server stream.
+- Closest-station lookup with a configured static mount as fallback.
+- Direct TLS with normal Node certificate validation, and automatic reconnect with bounded backoff.
 
-The original shell version remains available at [scripts/ntrip2tcp.sh](scripts/ntrip2tcp.sh) via `npm run gnss:ntrip:bash`.
+The TCP output listener defaults to `localhost`; it has no client authentication, so only bind it to a trusted network interface.
+
+The `npm run gnss:ntrip:bash` command remains as a compatibility alias and delegates to the same JavaScript forwarder. `stunnel` and RTKLIB are not required.
 
 ### Run GNSS Reader + Ingest
 
