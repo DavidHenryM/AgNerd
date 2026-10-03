@@ -14,6 +14,7 @@ export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   if (
+    pathname.startsWith("/cesium/") ||
     PUBLIC_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix)) ||
     isPublicGnssRequest(request)
   ) {
