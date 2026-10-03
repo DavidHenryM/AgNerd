@@ -6,6 +6,40 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+`npm run dev` and `npm run build` automatically run `copy-cesium` first to populate
+`public/cesium`. These generated assets are not committed to Git. For an existing
+deployment, run `npm run copy-cesium` from the application directory and restart
+the server, or rerun the installer to build and deploy the assets.
+
+### Database schema
+
+The active schema is [prisma/schema.prisma](prisma/schema.prisma), not the
+legacy [app/prisma/schema.prisma](app/prisma/schema.prisma).
+`npm run generate` (also run during installation) generates the Prisma client;
+it does **not** update database tables.
+
+If GNSS ingestion fails with Prisma `P2022` reporting a missing
+`GeoPoint.sortOrder` column, an older database may also be missing
+`GeoPoint.farmBoundaryId`. Back up the database, then apply the targeted
+[GeoPoint repair](prisma/patches/add-geopoint-boundary-fields.sql) to the same
+database used by the application. With the direct PostgreSQL URL exported in
+your shell:
+
+```bash
+PRISMA_DATABASE_URL="${PRISMA_DATABASE_POSTGRES_URL:-$DATABASE_URL}" \
+  npx prisma db execute --file prisma/patches/add-geopoint-boundary-fields.sql
+```
+
+The application uses `PRISMA_DATABASE_POSTGRES_URL`, falling back to
+`DATABASE_URL`; the Prisma CLI reads `PRISMA_DATABASE_URL` from
+[prisma.config.ts](prisma.config.ts). Ensure these target the same database.
+The repair is transactional and safe to reapply: it adds the missing columns
+and farm-boundary foreign key without deleting existing rows. Existing points
+receive `sortOrder = 0`; their boundary order is not reconstructed.
+This is a targeted patch for existing databases, not a full migration baseline.
+Avoid a blanket `prisma db push` against a populated database without reviewing
+all proposed schema changes.
+
 First, run the development server:
 
 ```bash
@@ -99,7 +133,7 @@ This runs [scripts/gnss-reader.mjs](scripts/gnss-reader.mjs), which:
 
 - `POST /api/gnss/position`
 	- Requires header `x-gnss-token` when `GNSS_INTERNAL_TOKEN` is set.
-	- Persists `LivestockUnitPosition` and nested `GeoPoint`.
+	- Persists a `GeoPoint` and returns GNSS metadata.
 - `GET /api/gnss/status`
 	- Reports status file availability and timestamp.
 - `GET /api/gnss/cors?country=AU`
