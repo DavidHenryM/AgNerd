@@ -40,7 +40,6 @@ const GA_NTRIP_PASSWORD = process.env.GA_NTRIP_PASSWORD;
 const GA_NTRIP_HOST = (process.env.GA_NTRIP_HOST).trim().toLocaleLowerCase();
 const GA_NTRIP_PORT = Number.parseInt(process.env.GA_NTRIP_PORT || "2101", 10);
 const GA_NTRIP_MOUNT = process.env.GA_NTRIP_MOUNT;
-const GA_NTRIP_SECURE = asBool(process.env.GA_NTRIP_SECURE, false);
 const GA_NTRIP_USE_CLOSEST = asBool(process.env.GA_NTRIP_USE_CLOSEST, GA_NTRIP_MOUNT ? false : true);
 const GA_NTRIP_OUTPUT_MODE = process.env.GA_NTRIP_OUTPUT_MODE || "serial";
 const GA_NTRIP_OUTPUT_DEVICE = process.env.GA_NTRIP_OUTPUT_DEVICE || "/dev/serial0";
@@ -49,7 +48,7 @@ const GA_NTRIP_OUTPUT_HOST = process.env.GA_NTRIP_OUTPUT_HOST || "localhost";
 const GA_NTRIP_OUTPUT_PORT = Number.parseInt(process.env.GA_NTRIP_OUTPUT_PORT || "2101", 10);
 const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000/api";
 
-const scheme = GA_NTRIP_SECURE ? "ntrips" : "ntrip";
+const scheme = "ntrip";
 
 if (!GA_NTRIP_USE_CLOSEST && !GA_NTRIP_MOUNT) {
   console.error("Missing GA_NTRIP_MOUNT configuration for static mount mode.");
@@ -71,7 +70,7 @@ async function resolveClosestNtripUri() {
 
   const payload = await response.json();
   const ntripPath = payload?.result?.ntripPath;
-  if (typeof ntripPath !== "string" || !(ntripPath.startsWith("ntrip://") || ntripPath.startsWith("ntrips://"))) {
+  if (typeof ntripPath !== "string" || !(ntripPath.startsWith("ntrip://") || ntripPath.startsWith("ntrip://"))) {
     throw new Error("closest ntrip endpoint did not return a valid result.ntripPath");
   }
 
