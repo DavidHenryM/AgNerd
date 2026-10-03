@@ -14,6 +14,15 @@ export default function SignInPage() {
   const [emailSent, setEmailSent] = useState(false)
   const router = useRouter();
 
+  const getCallbackURL = () => {
+    const requestedURL = new URLSearchParams(window.location.search).get("callbackUrl");
+    if (!requestedURL?.startsWith("/") || requestedURL.startsWith("//")) return "/home";
+
+    const resolvedURL = new URL(requestedURL, window.location.origin);
+    if (resolvedURL.origin !== window.location.origin) return "/home";
+    return `${resolvedURL.pathname}${resolvedURL.search}${resolvedURL.hash}`;
+  };
+
   const handleSignIn = async () => {
     setError(null)
     if (!email || typeof email !== 'string') {
@@ -22,7 +31,7 @@ export default function SignInPage() {
     }
     try{
       setLoading(true)
-      const {data, error} = await signIn(email)
+      const {data, error} = await signIn(email, getCallbackURL())
       if(error?.message){
         throw new Error(error.message)
       }
@@ -49,13 +58,14 @@ export default function SignInPage() {
     }
     try{
       setLoading(true)
-      const { data, error } = await signInWithOtp(email, otp)
+      const callbackURL = getCallbackURL();
+      const { data, error } = await signInWithOtp(email, otp, callbackURL)
       if (error?.message) {
         throw new Error(error.message)
       }
       if (data?.user) {
         setEmailSent(false)
-         router.push('/home')
+         router.push(callbackURL)
       }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err))

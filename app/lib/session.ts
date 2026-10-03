@@ -24,10 +24,11 @@ export async function signIn(email: string, callbackURL?: string): Promise<{data
   return {data, error}
 }
 
-export async function signInWithOtp(email: string, otp: string): Promise<{data: BetterAuthSignInOtpData, error: BetterAuthError}> {
+export async function signInWithOtp(email: string, otp: string, callbackURL = "/home"): Promise<{data: BetterAuthSignInOtpData, error: BetterAuthError}> {
   const { data, error } = await authClient.signIn.emailOtp({
     email,
     otp,
+    callbackURL,
   })
   return { data, error }
 }

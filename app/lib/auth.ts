@@ -7,6 +7,10 @@ import { sendEmail } from "@app/lib/brevo";
 
 const MAGIC_LINK_TTL_MS = 5 * 60 * 1000;
 const magicLinkCache = new Map<string, { url: string; expiresAt: number }>();
+const trustedOrigins = (process.env.BETTER_AUTH_TRUSTED_ORIGINS || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 function getCacheKey(email: string) {
   return email.trim().toLowerCase();
@@ -35,6 +39,7 @@ function consumeMagicLink(email: string) {
 
 const auth = betterAuth({
   secret: process.env.BETTER_AUTH_SECRET!,
+  ...(trustedOrigins.length > 0 ? { trustedOrigins } : {}),
   database: prismaAdapter(prisma, {provider: "postgresql"}),
   plugins: [
     emailOTP({

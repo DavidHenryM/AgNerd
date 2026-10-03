@@ -6,10 +6,17 @@ const PUBLIC_PATH_PREFIXES = ["/signin", "/signin-error", "/api/auth"]
 // better-auth session cookie (see better-auth/dist/cookies/index.mjs)
 const SESSION_COOKIE = "better-auth.session_token"
 
+function isPublicGnssRequest(request: NextRequest) {
+  return request.nextUrl.pathname === "/api/gnss/position" && request.method === "POST";
+}
+
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  if (PUBLIC_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
+  if (
+    PUBLIC_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix)) ||
+    isPublicGnssRequest(request)
+  ) {
     return NextResponse.next()
   }
 
