@@ -97,7 +97,7 @@ if (GA_NTRIP_USE_CLOSEST) {
   }
 } else {
   ntripUrl = `${scheme}://${GA_NTRIP_USER}:${GA_NTRIP_PASSWORD}@${GA_NTRIP_HOST}:${GA_NTRIP_PORT}/${GA_NTRIP_MOUNT}`;
-  ntripUrlRedacted = ntripUrl.replace(/:(.*)@/, ":*****@");
+  ntripUrlRedacted = `${scheme}://${GA_NTRIP_USER}:*****@${GA_NTRIP_HOST}:${GA_NTRIP_PORT}/${GA_NTRIP_MOUNT}`;
 }
 
 
