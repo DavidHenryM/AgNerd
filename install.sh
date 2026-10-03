@@ -161,6 +161,8 @@ sed \
 
 echo "Installing Node.js dependencies with npm ci..."
 npm ci
+echo "Copying Cesium assets into public/cesium..."
+npm run copy-cesium
 echo "Building the AgNerd application..."
 npm run build
 echo "Installing the production application and dependencies to /opt/agnerd..."
