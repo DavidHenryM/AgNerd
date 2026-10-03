@@ -11,6 +11,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 deployment, run `npm run copy-cesium` from the application directory and restart
 the server, or rerun the installer to build and deploy the assets.
 
+The copy command uses Cesium's bundled browser assets from
+`node_modules/cesium/Build/Cesium`, including worker chunks. Do not serve
+`@cesium/engine/Source` as static assets: its workers contain unresolved package
+imports and can prevent the globe from rendering even when imagery metadata
+loads successfully. After updating this command, run `npm run copy-cesium`
+and hard-refresh the browser to replace cached source workers.
+
 ### Database schema
 
 The active schema is [prisma/schema.prisma](prisma/schema.prisma), not the
@@ -74,6 +81,12 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 ## GNSS + NTRIP Pipeline
+
+The `/navigation` screen hides the app sidebar and footer below 1536px wide.
+On a 1280x720 display, the map fills the 1280x656 area below the 64px top bar.
+Use the top bar's **Back to home** button to leave navigation on smaller screens.
+At 1536px and wider, the sidebar and footer return and the map resizes to fit
+between them. Other pages keep their usual sidebar and footer.
 
 This repo includes scripts and API routes to:
 

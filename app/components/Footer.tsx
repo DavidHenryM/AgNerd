@@ -3,9 +3,9 @@ import { footerHeight } from "@app/settings";
 
 const currentYear = new Date().getFullYear();
 
-const Footer: React.FC = () => {
+const Footer: React.FC<{ compactNavigation?: boolean }> = ({ compactNavigation }) => {
   return (
-    <AppBar position="fixed" color="primary" sx={{ maxHeight: footerHeight, top:"auto", bottom: 0, display: { xs: 'none', md: 'block' } }}>
+    <AppBar position="fixed" color="primary" sx={{ maxHeight: footerHeight, top:"auto", bottom: 0, display: compactNavigation ? { xs: 'none', xl: 'block' } : { xs: 'none', md: 'block' } }}>
       <Grid
         container
         direction="row"

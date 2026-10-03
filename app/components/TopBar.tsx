@@ -4,6 +4,8 @@ import { AppBar, Breadcrumbs, IconButton, Link, Toolbar, Tooltip, Typography, us
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import MenuIcon from '@mui/icons-material/Menu';
+import HomeIcon from '@mui/icons-material/Home';
+import NextLink from 'next/link';
 import { drawerWidth } from "@app/settings"
 import { useEffect, useState, type Dispatch } from "react";
 import UserAvatar from "./UserAvatar";
@@ -14,7 +16,8 @@ export function TopBar(
     darkModeActive: boolean, 
     setDarkModeActiveAction: Dispatch<React.SetStateAction<boolean>>, 
     drawerOpen: boolean, 
-    setDrawerOpenAction: Dispatch<React.SetStateAction<boolean>>
+    setDrawerOpenAction: Dispatch<React.SetStateAction<boolean>>,
+    compactNavigation?: boolean
   })
 {
   const pathname = usePathname()
@@ -45,24 +48,33 @@ export function TopBar(
       component="nav" 
       position="static" 
       sx={{ 
-        width: {
+        width: props.compactNavigation ? {
+          xs: '100%',
+          xl: `calc(100% - ${drawerWidth.lg})`,
+        } : {
           sm: `calc(100% - ${drawerWidth.sm})`,
           md: `calc(100% - ${drawerWidth.md})`,
           lg: `calc(100% - ${drawerWidth.lg})`,
         }, 
-        ml: {
+        ml: props.compactNavigation ? { xs: 0, xl: drawerWidth.lg } : {
           sm: drawerWidth.sm, 
           md: drawerWidth.md, 
           lg: drawerWidth.lg
           }
       }}>
       <Toolbar>
-        <IconButton
+        {props.compactNavigation ? (
+          <Tooltip title="Back to home">
+            <IconButton component={NextLink} href="/home" aria-label="Back to home" sx={{ display: { xs: 'inline-flex', xl: 'none' } }}>
+              <HomeIcon/>
+            </IconButton>
+          </Tooltip>
+        ) : <IconButton
           onClick={()=>(props.setDrawerOpenAction(!props.drawerOpen))}
           sx={{ display: { xs: 'inline-flex', md: 'none' } }}
         >
           <MenuIcon/>
-        </IconButton>
+        </IconButton>}
         <Typography
           variant="h6"
           component="div"

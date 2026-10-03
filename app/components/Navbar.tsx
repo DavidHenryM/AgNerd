@@ -11,7 +11,8 @@ export default function Navbar(props: {
   drawerOpen: boolean, 
   darkModeActive: boolean, 
   setDarkModeActive: Dispatch<React.SetStateAction<boolean>>,
-  setDrawerOpen: Dispatch<React.SetStateAction<boolean>>
+  setDrawerOpen: Dispatch<React.SetStateAction<boolean>>,
+  compactNavigation?: boolean
 }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -36,7 +37,7 @@ export default function Navbar(props: {
       {/* <Waiting message="loading user role" open={loading}/> */}
       <Drawer
         sx={{
-          display: 'flex', flexDirection: 'column',
+          display: props.compactNavigation ? { xs: 'none', xl: 'flex' } : 'flex', flexDirection: 'column',
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: {
@@ -179,6 +180,5 @@ export default function Navbar(props: {
     </>
   )
 }
-
 
 
