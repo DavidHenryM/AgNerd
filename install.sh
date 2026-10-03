@@ -163,8 +163,8 @@ echo "Installing Node.js dependencies with npm ci..."
 npm ci
 echo "Copying Cesium assets into public/cesium..."
 npm run copy-cesium
-echo "Building the AgNerd application..."
-npm run build
+echo "Building the AgNerd application without inheriting development inspector settings..."
+NODE_OPTIONS= npm run build
 echo "Installing the production application and dependencies to /opt/agnerd..."
 sudo mkdir -p /opt/agnerd/.next /opt/agnerd/node_modules /opt/agnerd/public
 sudo cp package.json package-lock.json next.config.ts /opt/agnerd/
