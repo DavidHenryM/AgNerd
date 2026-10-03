@@ -95,8 +95,8 @@ if (GA_NTRIP_USE_CLOSEST) {
     process.exit(1);
   }
 } else {
-  ntripUrl = `${scheme}://${GA_NTRIP_USER}:${GA_NTRIP_PASSWORD}@${GA_NTRIP_HOST}:${GA_NTRIP_PORT}/${GA_NTRIP_MOUNT}`;
-  ntripUrlRedacted = `${scheme}://${GA_NTRIP_USER}:*****@${GA_NTRIP_HOST}:${GA_NTRIP_PORT}/${GA_NTRIP_MOUNT}`;
+  ntripUrl = `${scheme}://${GA_NTRIP_USER}:${GA_NTRIP_PASSWORD}@127.0.0.1:2101/${GA_NTRIP_MOUNT}`;
+  ntripUrlRedacted = `${scheme}://${GA_NTRIP_USER}:*****@127.0.0.1:2101/${GA_NTRIP_MOUNT}`;
 }
 
 
