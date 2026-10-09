@@ -5,8 +5,8 @@ cd "$SCRIPT_DIR" || exit 1
 echo -e "\033[35mStarting AgNerd installation from $SCRIPT_DIR\033[0m"
 echo -e "\033[35mUpdating package lists...\033[0m"
 sudo apt update
-echo -e "\033[35mInstalling system prerequisites (curl, gpsd, and Chromium)...\033[0m"
-sudo apt install curl gpsd chromium -y
+echo -e "\033[35mInstalling system prerequisites (curl, gpsd, git and Chromium)...\033[0m"
+sudo apt install curl gpsd chromium git -y
 
 INSTALL_USER="${SUDO_USER:-$(id -un)}"
 INSTALL_HOME="$(getent passwd "$INSTALL_USER" | cut -d: -f6)"
