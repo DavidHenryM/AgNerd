@@ -6,6 +6,18 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+### Linux installer
+
+Run `bash install.sh` on the deployment machine. If `/usr/bin/node` or
+`/usr/bin/npm` is missing, the installer loads NVM without automatically
+selecting a version, installs and activates the latest stable Node.js, and
+links Node.js and npm under `/usr/bin` for the services.
+
+If an earlier run downloaded NVM but stopped with `Failed to install Node.js
+with NVM.`, rerun the updated installer. It reuses `~/.nvm` and does not require
+deleting it or reopening the terminal. Loading, installation, and activation
+failures now report which step failed, alongside NVM's error output.
+
 `npm run dev` and `npm run build` automatically run `copy-cesium` first to populate
 `public/cesium`. These generated assets are not committed to Git. For an existing
 deployment, run `npm run copy-cesium` from the application directory and restart

@@ -24,9 +24,18 @@ if [ ! -s "$NVM_DIR/nvm.sh" ]; then
     set -o pipefail
     curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash >&2
 fi
-. "$NVM_DIR/nvm.sh"
-nvm install node >&2
-nvm use node >&2
+. "$NVM_DIR/nvm.sh" --no-use || {
+    echo "Failed to load NVM from $NVM_DIR/nvm.sh." >&2
+    exit 1
+}
+nvm install node >&2 || {
+    echo "NVM could not install the latest stable Node.js; see the error above." >&2
+    exit 1
+}
+nvm use node >&2 || {
+    echo "NVM could not activate the installed Node.js version; see the error above." >&2
+    exit 1
+}
 command -v node
 NVM_SETUP
     ) || {
