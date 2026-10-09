@@ -30,6 +30,25 @@ imports and can prevent the globe from rendering even when imagery metadata
 loads successfully. After updating this command, run `npm run copy-cesium`
 and hard-refresh the browser to replace cached source workers.
 
+### Sign-in options
+
+The sign-in screen supports the existing emailed sign-in link and one-time
+code, as well as email/password login. The account's email address is its
+username; there is no separate username field.
+
+For an existing account without a password, select **Password**, then
+**Set or reset password**. The emailed link opens a form to save an
+8-128 character password and expires after one hour. This same flow resets
+forgotten passwords. Resetting a password revokes existing sessions; users
+must sign in again. Link and code sign-in remain available afterward.
+
+Password reset emails use the existing Brevo configuration (`BREVO_API_KEY`,
+`EMAIL_FROM`, and optionally `EMAIL_FROM_NAME`). Configure Better Auth's public
+`BETTER_AUTH_URL` and `BETTER_AUTH_TRUSTED_ORIGINS` for the deployment so emailed
+links reach the correct host. Password registration is disabled; this flow
+adds credentials only to existing accounts. The active Prisma schema already
+includes `Account.password`, so no schema migration is required.
+
 ### Database schema
 
 The active schema is [prisma/schema.prisma](prisma/schema.prisma), not the

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 
 // Paths that do not require authentication
-const PUBLIC_PATH_PREFIXES = ["/signin", "/signin-error", "/api/auth"]
+const PUBLIC_PATH_PREFIXES = ["/signin", "/signin-error", "/reset-password", "/api/auth"]
 
 // better-auth session cookie (see better-auth/dist/cookies/index.mjs)
 const SESSION_COOKIE = "better-auth.session_token"
