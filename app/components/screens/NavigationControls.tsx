@@ -19,6 +19,7 @@ import TuneIcon from "@mui/icons-material/Tune";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import { drawerWidth, footerHeight } from "@app/settings";
+import { GnssFixType, formatGnssFixStatus } from "@lib/gnss-status";
 
 // ── colour palette offered to the user ──────────────────────────────
 export const MODEL_COLORS: { label: string; hex: string }[] = [
@@ -33,7 +34,7 @@ export const MODEL_COLORS: { label: string; hex: string }[] = [
 function formatAccuracy(meters: number | null): { text: string; color: string } {
   if (meters === null) return { text: "—", color: "#888" };
   let color: string;
-  if (meters <= 0.1) color = "#00E676";      // RTK fix
+  if (meters <= 0.1) color = "#00E676";
   else if (meters <= 1) color = "#00BCD4";   // Excellent
   else if (meters <= 5) color = "#2196F3";   // Good
   else if (meters <= 15) color = "#FFC107";  // Moderate
@@ -81,6 +82,10 @@ export interface NavigationControlsProps {
   accuracy: number | null;
   speed: number | null;
   gpsConnected: boolean;
+  fixType: GnssFixType | null;
+  satellites: number | null;
+  fixStatusStale: boolean;
+  browserLocation: boolean;
   isTracking: boolean;
   setIsTracking: Dispatch<SetStateAction<boolean>>;
   widthMeters: number;
@@ -104,6 +109,10 @@ export default function NavigationControls(props: NavigationControlsProps) {
     accuracy,
     speed,
     gpsConnected,
+    fixType,
+    satellites,
+    fixStatusStale,
+    browserLocation,
     isTracking,
     setIsTracking,
     widthMeters,
@@ -123,6 +132,8 @@ export default function NavigationControls(props: NavigationControlsProps) {
 
   const acc = formatAccuracy(accuracy);
   const area = formatArea(totalAreaSqMeters);
+  const fix = formatGnssFixStatus(fixType, fixStatusStale, browserLocation);
+  const hasPosition = latitude !== null && longitude !== null;
 
   return (
     <>
@@ -138,17 +149,26 @@ export default function NavigationControls(props: NavigationControlsProps) {
         <Box sx={panelSx}>
           {/* GPS status */}
           <Typography variant="caption" sx={{ fontWeight: 600 }}>
-            GPS: {latitude && longitude
+            GPS: {hasPosition && !fixStatusStale && fixType !== "NO_FIX"
               ? "Active"
+              : hasPosition && fixStatusStale
+                ? "Stale"
               : gpsConnected
                 ? "Connected"
                 : "Searching"}
           </Typography>
           <Typography variant="caption" sx={{ display: "block" }}>
-            {latitude && longitude
+            {hasPosition
               ? `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`
               : "—"}
           </Typography>
+          <Stack component="output" direction="row" spacing={0.5} sx={{ alignItems: "center", mt: 0.5 }} aria-live="polite">
+            <Box sx={{ width: 10, height: 10, borderRadius: "50%", bgcolor: fix.color, flexShrink: 0 }} />
+            <Typography variant="caption" sx={{ fontWeight: 600 }}>Fix: {fix.label}</Typography>
+          </Stack>
+          {satellites !== null && (
+            <Typography variant="caption" sx={{ display: "block" }}>Satellites: {satellites}</Typography>
+          )}
           <Typography variant="caption" sx={{ display: "block" }}>
             {locationTimestamp
               ? new Date(locationTimestamp).toLocaleTimeString()
@@ -164,7 +184,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
                 flexShrink: 0,
               }}
             />
-            <Typography variant="caption">±{acc.text}</Typography>
+            <Typography variant="caption">Accuracy: {accuracy === null ? "Unknown" : `±${acc.text}`}</Typography>
           </Stack>
 
           {/* Speedometer */}

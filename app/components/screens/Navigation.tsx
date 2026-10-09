@@ -169,6 +169,10 @@ export default function NavigationScreen() {
     heading,
     speed,
     accuracy,
+    fixType,
+    satellites,
+    fixStatusStale,
+    positionSource,
     gnssDebug,
   } = useGeolocation();
 
@@ -436,6 +440,10 @@ export default function NavigationScreen() {
         longitude={longitude}
         locationTimestamp={locationTimestamp}
         accuracy={accuracy}
+        fixType={fixType}
+        satellites={satellites}
+        fixStatusStale={fixStatusStale}
+        browserLocation={positionSource === "browser"}
         speed={speed}
         gpsConnected={gnssDebug.statusFilePresent === true}
         isTracking={isTracking}
