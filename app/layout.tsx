@@ -9,6 +9,7 @@ import { TopBar } from './components/TopBar';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { Analytics } from "@vercel/analytics/next"
+import { usePathname } from "next/navigation"
 
 
 export default function RootLayout({
@@ -16,6 +17,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isNavigation = usePathname() === "/navigation"
   const storageKey = 'ag-nerd-theme'
   const [theme, setTheme] = useState<Theme>(lightTheme)
   const [darkModeActive, setDarkModeActive] = useState<boolean>(false)
@@ -60,10 +62,10 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <Analytics/>
           <ThemeProvider theme={theme}>      
-            <TopBar darkModeActive={darkModeActive} setDarkModeActiveAction={setDarkModeActive} drawerOpen={drawerOpen} setDrawerOpenAction={setDrawerOpen}/>
-            <Navbar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} setDarkModeActive={setDarkModeActive} darkModeActive={darkModeActive}/>
+            <TopBar darkModeActive={darkModeActive} setDarkModeActiveAction={setDarkModeActive} drawerOpen={drawerOpen} setDrawerOpenAction={setDrawerOpen} compactNavigation={isNavigation}/>
+            <Navbar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} setDarkModeActive={setDarkModeActive} darkModeActive={darkModeActive} compactNavigation={isNavigation}/>
               {children}
-            <Footer />
+            <Footer compactNavigation={isNavigation}/>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>

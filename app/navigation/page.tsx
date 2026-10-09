@@ -24,14 +24,9 @@ export default function Navigation(){
     <Box sx={{
       position: 'fixed',
       top: { xs: '56px', sm: '64px' },
-      bottom: { xs: 0, md: footerHeight },
+      bottom: { xs: 0, xl: footerHeight },
       right: 0,
-      left: {
-        xs: 0,
-        sm: drawerWidth.sm,
-        md: drawerWidth.sm,
-        lg: drawerWidth.sm
-      },
+      left: { xs: 0, xl: drawerWidth.lg },
       overflow: 'hidden',
     }}>
       <NavigationScreen/>
