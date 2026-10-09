@@ -116,6 +116,10 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 The `/navigation` screen hides the app sidebar and footer below 1536px wide.
 On a 1280x720 display, the map fills the 1280x656 area below the 64px top bar.
 Use the top bar's **Back to home** button to leave navigation on smaller screens.
+Navigation overlays use 56px touch targets (72px for start/stop), larger status
+readouts, and enlarged width/offset sliders for 7-inch touchscreens. The action
+controls remain at the far left; settings and status panels scroll when height
+is limited.
 At 1536px and wider, the sidebar and footer return and the map resizes to fit
 between them. Other pages keep their usual sidebar and footer.
 

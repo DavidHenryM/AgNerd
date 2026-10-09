@@ -66,12 +66,33 @@ function formatDistance(meters: number): string {
 
 // ── overlay panel styling ───────────────────────────────────────────
 const panelSx = {
-  background: "rgba(0,0,0,0.6)",
+  background: "rgba(0,0,0,0.75)",
   color: "white",
   borderRadius: 2,
-  px: 1.5,
-  py: 1,
+  px: 2,
+  py: 1.5,
   backdropFilter: "blur(4px)",
+  "& .MuiTypography-caption": { fontSize: 16, lineHeight: 1.35 },
+};
+
+const touchButtonSx = {
+  width: 56,
+  height: 56,
+  minHeight: 56,
+  flexShrink: 0,
+  "& .MuiSvgIcon-root": { fontSize: 32 },
+};
+
+const adjustmentButtonSx = {
+  ...touchButtonSx,
+  color: "white",
+};
+
+const sliderSx = {
+  flex: 1,
+  mx: 1,
+  height: 8,
+  "& .MuiSlider-thumb": { width: 28, height: 28 },
 };
 
 // ── props ───────────────────────────────────────────────────────────
@@ -146,7 +167,12 @@ export default function NavigationControls(props: NavigationControlsProps) {
           zIndex: 1200,
         }}
       >
-        <Box sx={panelSx}>
+        <Box sx={{
+          ...panelSx,
+          maxWidth: "calc(100vw - 24px)",
+          maxHeight: "calc(100dvh - 180px)",
+          overflowY: "auto",
+        }}>
           {/* GPS status */}
           <Typography variant="caption" sx={{ fontWeight: 600 }}>
             GPS: {hasPosition && !fixStatusStale && fixType !== "NO_FIX"
@@ -162,9 +188,9 @@ export default function NavigationControls(props: NavigationControlsProps) {
               ? `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`
               : "—"}
           </Typography>
-          <Stack component="output" direction="row" spacing={0.5} sx={{ alignItems: "center", mt: 0.5 }} aria-live="polite">
-            <Box sx={{ width: 10, height: 10, borderRadius: "50%", bgcolor: fix.color, flexShrink: 0 }} />
-            <Typography variant="caption" sx={{ fontWeight: 600 }}>Fix: {fix.label}</Typography>
+          <Stack component="output" direction="row" spacing={1} sx={{ alignItems: "center", mt: 0.5 }} aria-live="polite">
+            <Box sx={{ width: 16, height: 16, borderRadius: "50%", bgcolor: fix.color, flexShrink: 0 }} />
+            <Typography variant="body1" sx={{ fontWeight: 700, fontSize: 20 }}>Fix: {fix.label}</Typography>
           </Stack>
           {satellites !== null && (
             <Typography variant="caption" sx={{ display: "block" }}>Satellites: {satellites}</Typography>
@@ -174,60 +200,58 @@ export default function NavigationControls(props: NavigationControlsProps) {
               ? new Date(locationTimestamp).toLocaleTimeString()
               : ""}
           </Typography>
-          <Stack direction="row" spacing={0.5} sx={{ alignItems: "center", mt: 0.5 }}>
+          <Stack direction="row" spacing={1} sx={{ alignItems: "center", mt: 0.5 }}>
             <Box
               sx={{
-                width: 10,
-                height: 10,
+                width: 16,
+                height: 16,
                 borderRadius: "50%",
                 bgcolor: acc.color,
                 flexShrink: 0,
               }}
             />
-            <Typography variant="caption">Accuracy: {accuracy === null ? "Unknown" : `±${acc.text}`}</Typography>
+            <Typography variant="body1" sx={{ fontSize: 20 }}>Accuracy: {accuracy === null ? "Unknown" : `±${acc.text}`}</Typography>
           </Stack>
 
           {/* Speedometer */}
-          <Stack direction="row" spacing={0.5} sx={{ alignItems: "center", mt: 1 }}>
-            <SpeedIcon sx={{ fontSize: 16 }} />
-            <Typography variant="caption" sx={{ fontWeight: 600 }}>
+          <Stack direction="row" spacing={1} sx={{ alignItems: "center", mt: 1 }}>
+            <SpeedIcon sx={{ fontSize: 28 }} />
+            <Typography variant="body1" sx={{ fontWeight: 700, fontSize: 24 }}>
               {formatSpeed(speed)}
             </Typography>
           </Stack>
 
           {/* Area counter */}
-          <Stack sx={{ mt: 0.5 }}>
+          <Stack direction="row" spacing={1} sx={{ mt: 0.5, alignItems: "center" }}>
             <Typography variant="caption" sx={{ fontWeight: 600 }}>
               Area
             </Typography>
-            <Typography variant="caption">{area.ha} ha / {area.acres} ac</Typography>
+            <Typography variant="body1" sx={{ fontSize: 20 }}>{area.ha} ha / {area.acres} ac</Typography>
           </Stack>
 
           {/* Zoom controls */}
-          <Stack direction="row" spacing={0.75} sx={{ mt: 1 }}>
+          <Stack direction="row" spacing={1.5} sx={{ mt: 1 }}>
             <Fab
-              size="small"
+              aria-label="Zoom out"
               onClick={onZoomOut}
               sx={{
-                width: 32,
-                height: 32,
-                minHeight: 32,
+                ...touchButtonSx,
+                color: "white",
                 bgcolor: "rgba(255,255,255,0.15)",
               }}
             >
-              <ZoomOutIcon fontSize="small" />
+              <ZoomOutIcon />
             </Fab>
             <Fab
-              size="small"
+              aria-label="Zoom in"
               onClick={onZoomIn}
               sx={{
-                width: 32,
-                height: 32,
-                minHeight: 32,
+                ...touchButtonSx,
+                color: "white",
                 bgcolor: "rgba(255,255,255,0.15)",
               }}
             >
-              <ZoomInIcon fontSize="small" />
+              <ZoomInIcon />
             </Fab>
           </Stack>
         </Box>
@@ -251,7 +275,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
               sx={{
                 position: "relative",
                 width: mapScalePixels,
-                height: 8,
+                height: 14,
                 flexShrink: 0,
               }}
             >
@@ -260,8 +284,8 @@ export default function NavigationControls(props: NavigationControlsProps) {
                   position: "absolute",
                   left: 0,
                   right: 0,
-                  top: 3,
-                  borderTop: "2px solid rgba(255,255,255,0.95)",
+                  top: 6,
+                  borderTop: "3px solid rgba(255,255,255,0.95)",
                 }}
               />
               <Box
@@ -269,8 +293,8 @@ export default function NavigationControls(props: NavigationControlsProps) {
                   position: "absolute",
                   left: 0,
                   top: 1,
-                  height: 6,
-                  borderLeft: "2px solid rgba(255,255,255,0.95)",
+                  height: 12,
+                  borderLeft: "3px solid rgba(255,255,255,0.95)",
                 }}
               />
               <Box
@@ -278,8 +302,8 @@ export default function NavigationControls(props: NavigationControlsProps) {
                   position: "absolute",
                   right: 0,
                   top: 1,
-                  height: 6,
-                  borderRight: "2px solid rgba(255,255,255,0.95)",
+                  height: 12,
+                  borderRight: "3px solid rgba(255,255,255,0.95)",
                 }}
               />
             </Box>
@@ -301,7 +325,12 @@ export default function NavigationControls(props: NavigationControlsProps) {
       >
         {/* Collapsible settings panel */}
         <Collapse in={settingsOpen} sx={{ mb: 1 }}>
-          <Stack spacing={1} sx={{ maxWidth: 320 }}>
+          <Stack spacing={1} sx={{
+            width: 360,
+            maxWidth: "calc(100vw - 24px)",
+            maxHeight: "calc(100dvh - 180px)",
+            overflowY: "auto",
+          }}>
             {/* ─ Width control ─ */}
             <Box sx={panelSx}>
               <Typography variant="caption" sx={{ fontWeight: 600 }}>
@@ -309,29 +338,29 @@ export default function NavigationControls(props: NavigationControlsProps) {
               </Typography>
               <Stack direction="row" spacing={0.5} sx={{ alignItems: "center" }}>
                 <IconButton
-                  size="small"
-                  sx={{ color: "white" }}
+                  aria-label="Decrease width"
+                  sx={adjustmentButtonSx}
                   onClick={() => setWidthMeters((w) => Math.max(1, w - 1))}
                 >
-                  <RemoveIcon fontSize="small" />
+                  <RemoveIcon />
                 </IconButton>
                 <Slider
                   value={widthMeters}
+                  aria-label="Implement width"
                   min={1}
                   max={50}
                   step={0.5}
                   onChange={(_, v) => setWidthMeters(v as number)}
-                  size="small"
-                  sx={{ color: selectedColor, flex: 1 }}
+                  sx={{ ...sliderSx, color: selectedColor }}
                 />
                 <IconButton
-                  size="small"
-                  sx={{ color: "white" }}
+                  aria-label="Increase width"
+                  sx={adjustmentButtonSx}
                   onClick={() => setWidthMeters((w) => Math.min(50, w + 1))}
                 >
-                  <AddIcon fontSize="small" />
+                  <AddIcon />
                 </IconButton>
-                <Typography variant="caption" sx={{ minWidth: 36, textAlign: "right" }}>
+                <Typography variant="body1" sx={{ fontSize: 20, minWidth: 64, textAlign: "right" }}>
                   {widthMeters.toFixed(1)}m
                 </Typography>
               </Stack>
@@ -344,29 +373,29 @@ export default function NavigationControls(props: NavigationControlsProps) {
               </Typography>
               <Stack direction="row" spacing={0.5} sx={{ alignItems: "center" }}>
                 <IconButton
-                  size="small"
-                  sx={{ color: "white" }}
+                  aria-label="Decrease offset"
+                  sx={adjustmentButtonSx}
                   onClick={() => setOffsetMeters((o) => Math.max(-25, o - 0.5))}
                 >
-                  <RemoveIcon fontSize="small" />
+                  <RemoveIcon />
                 </IconButton>
                 <Slider
                   value={offsetMeters}
+                  aria-label="Implement offset"
                   min={-25}
                   max={25}
                   step={0.5}
                   onChange={(_, v) => setOffsetMeters(v as number)}
-                  size="small"
-                  sx={{ color: selectedColor, flex: 1 }}
+                  sx={{ ...sliderSx, color: selectedColor }}
                 />
                 <IconButton
-                  size="small"
-                  sx={{ color: "white" }}
+                  aria-label="Increase offset"
+                  sx={adjustmentButtonSx}
                   onClick={() => setOffsetMeters((o) => Math.min(25, o + 0.5))}
                 >
-                  <AddIcon fontSize="small" />
+                  <AddIcon />
                 </IconButton>
-                <Typography variant="caption" sx={{ minWidth: 36, textAlign: "right" }}>
+                <Typography variant="body1" sx={{ fontSize: 20, minWidth: 64, textAlign: "right" }}>
                   {offsetMeters > 0 ? "+" : ""}
                   {offsetMeters.toFixed(1)}m
                 </Typography>
@@ -379,31 +408,33 @@ export default function NavigationControls(props: NavigationControlsProps) {
         <Stack direction="row" spacing={1.5} sx={{ alignItems: "center" }}>
           {/* ─ Start / Stop ─ */}
           <Fab
-            size="medium"
+            aria-label={isTracking ? "Stop tracking" : "Start tracking"}
+            aria-pressed={isTracking}
             color={isTracking ? "error" : "success"}
             onClick={() => setIsTracking((v) => !v)}
-            sx={{ flexShrink: 0 }}
+            sx={{ ...touchButtonSx, width: 72, height: 72, minHeight: 72 }}
           >
             {isTracking ? <StopIcon /> : <PlayArrowIcon />}
           </Fab>
 
           {/* ─ Reset ─ */}
           <Fab
-            size="small"
+            aria-label="Reset coverage"
             onClick={onReset}
-            sx={{ flexShrink: 0, bgcolor: "rgba(255,255,255,0.15)" }}
+            sx={{ ...touchButtonSx, color: "white", bgcolor: "rgba(0,0,0,0.75)" }}
           >
             <DeleteSweepIcon />
           </Fab>
 
           {/* ─ Settings toggle ─ */}
           <Fab
-            size="small"
+            aria-label="Navigation settings"
+            aria-expanded={settingsOpen}
             onClick={() => setSettingsOpen((o) => !o)}
             sx={{
-              flexShrink: 0,
-              bgcolor: settingsOpen ? selectedColor : "rgba(255,255,255,0.15)",
-              color: settingsOpen ? "white" : undefined,
+              ...touchButtonSx,
+              bgcolor: settingsOpen ? selectedColor : "rgba(0,0,0,0.75)",
+              color: "white",
             }}
           >
             <TuneIcon />
