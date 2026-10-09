@@ -252,8 +252,22 @@ back to fresh UBX NAV-PVT if available, otherwise reporting unknown (`null`).
 Historical `nmea` fields are retained for diagnostics; use the top-level
 `fixType` and check timestamps for current status.
 
-HDOP is dimensionless, not an accuracy estimate in metres. Accuracy fields
-remain null unless fresh UBX metadata is available. UBX is optional: if enabled,
+HDOP is dimensionless, not an accuracy estimate in metres. The reader also
+parses checksum-validated NMEA GST error statistics. When fresh GST and a
+fresh GGA quality of 1-5 are available, horizontal accuracy is the RMS error
+`sqrt(latitudeSigma^2 + longitudeSigma^2)` in metres, and vertical accuracy is
+the altitude standard deviation. This is an estimate, not a guaranteed bound
+or a 95% confidence radius. GST diagnostics appear under `gst` in the status
+file and expire after five seconds; fresh UBX accuracy takes precedence.
+
+The existing navigation accuracy display receives these estimates through the
+status API. If accuracy remains unknown, check `gst`: null means no valid GST
+has been decoded. Enable NMEA GST output on the connected receiver UART (for
+example, `CFG-MSGOUT-NMEA_ID_GST_UART1=1` for receiver UART1, or the corresponding
+UART2 setting). Keep the existing GGA/RMC outputs enabled. No estimate is
+invented from RTK quality when GST and UBX accuracy are unavailable.
+
+UBX is optional: if enabled,
 NAV-PVT `flags` bits 6-7 report carrier solution (`1` float, `2` fixed), and
 bit 0 reports a valid GNSS fix.
 

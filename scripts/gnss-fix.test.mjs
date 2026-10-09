@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { FIX_METADATA_TTL_MS, deriveUbxFixLabel, parseNmeaGga, resolveFixMetadata } from "./gnss-fix.mjs";
+import { FIX_METADATA_TTL_MS, deriveUbxFixLabel, parseNmeaGga, parseNmeaGst, resolveFixMetadata } from "./gnss-fix.mjs";
 
 const now = Date.parse("2026-10-09T11:00:00Z");
 function sentence(quality = 4, talker = "GN", satellites = "12", hdop = "0.7", age = "1.2") {
@@ -17,6 +17,50 @@ function state(nmea = null) {
     ubx: { fixType: null, flags: null, numSV: null, hAccMeters: null, vAccMeters: null },
   };
 }
+
+function gstSentence(latitude = "0.03", longitude = "0.04", altitude = "0.08", talker = "GN") {
+  const payload = `${talker}GST,110000.00,0.06,0.05,0.03,45.0,${latitude},${longitude},${altitude}`;
+  let checksum = 0;
+  for (const character of payload) checksum ^= character.charCodeAt(0);
+  return `$${payload}*${checksum.toString(16).padStart(2, "0")}`;
+}
+
+await test("GST reports horizontal RMS and vertical sigma in metres for all talkers", () => {
+  for (const talker of ["GN", "GP", "GL"]) {
+    const gst = parseNmeaGst(gstSentence("0.03", "0.04", "0.08", talker), now);
+    assert.equal(gst.horizontalAccuracyMeters, 0.05);
+    assert.equal(gst.verticalAccuracyMeters, 0.08);
+    assert.equal(gst.lastGstAt, new Date(now).toISOString());
+  }
+  assert.equal(parseNmeaGst(sentence()), null);
+  assert.equal(parseNmeaGst(gstSentence("", "0.04", ""), now).horizontalAccuracyMeters, null);
+  assert.equal(parseNmeaGst(gstSentence("", "0.04", ""), now).verticalAccuracyMeters, null);
+  assert.equal(parseNmeaGst(gstSentence("0", "0", "0"), now).horizontalAccuracyMeters, 0);
+});
+
+await test("GST rejects corrupt checksums and malformed error estimates", () => {
+  assert.throws(() => parseNmeaGst(gstSentence().split("*")[0]), /checksum/);
+  assert.throws(() => parseNmeaGst(gstSentence().replace("0.08", "0.09")), /checksum mismatch/);
+  for (const value of ["-1", "NaN", "1x"]) {
+    assert.throws(() => parseNmeaGst(gstSentence(value)), /invalid numeric/);
+  }
+});
+
+await test("fresh GST feeds accuracy without UBX, expires, and requires a valid live GGA fix", () => {
+  const current = state(parseNmeaGga(sentence(), now));
+  current.gst = parseNmeaGst(gstSentence(), now);
+  assert.equal(resolveFixMetadata(current, "serial", now).horizontalAccuracyMeters, 0.05);
+  assert.equal(resolveFixMetadata(current, "serial", now).verticalAccuracyMeters, 0.08);
+  assert.equal(resolveFixMetadata(current, "serial", now + 5000).horizontalAccuracyMeters, 0.05);
+  assert.equal(resolveFixMetadata(current, "serial", now + 5001).horizontalAccuracyMeters, null);
+  current.nmea = parseNmeaGga(sentence(0), now);
+  assert.equal(resolveFixMetadata(current, "serial", now).horizontalAccuracyMeters, null);
+  current.nmea = parseNmeaGga(sentence(4), now);
+  current.lastUbxAt = new Date(now).toISOString();
+  current.ubx.hAccMeters = 0.02;
+  assert.equal(resolveFixMetadata(current, "serial", now).horizontalAccuracyMeters, 0.02);
+  assert.equal(resolveFixMetadata(current, "serial", now).verticalAccuracyMeters, 0.08);
+});
 
 await test("maps all standard GGA quality values without requiring UBX or a position", () => {
   const labels = ["NO_FIX", "GPS", "DGPS", "PPS", "RTK_FIXED", "RTK_FLOAT", "DEAD_RECKONING", "MANUAL", "SIMULATION"];

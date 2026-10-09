@@ -45,11 +45,13 @@ mock.module("serialport", { namedExports: { SerialPort } });
 await import(${JSON.stringify(readerURL)});
 assert.equal(timers.length, 2);
 
-function gga(quality) {
-  const payload = "GNGGA,110000.00,3500.000,S,14900.000,E," + quality + ",12,0.7,600.0,M,0.0,M,1.2,0001";
+function nmeaSentence(payload) {
   let checksum = 0;
   for (const char of payload) checksum ^= char.charCodeAt(0);
   return "$" + payload + "*" + checksum.toString(16).padStart(2, "0") + "\\r\\n";
+}
+function gga(quality) {
+  return nmeaSentence("GNGGA,110000.00,3500.000,S,14900.000,E," + quality + ",12,0.7,600.0,M,0.0,M,1.2,0001");
 }
 async function tick() {
   timers.forEach(callback => callback());
@@ -69,6 +71,14 @@ assert.equal(posted.at(-1).horizontalAccuracyMeters, null);
 assert.equal(posted.at(-1).latitude, -35);
 assert.ok(status.latest);
 
+serial.write(nmeaSentence("GNGST,110000.00,0.06,0.05,0.03,45.0,0.03,0.04,0.08"));
+await tick();
+assert.equal(status.horizontalAccuracyMeters, 0.05);
+assert.equal(status.verticalAccuracyMeters, 0.08);
+assert.equal(status.gst.latitudeSigmaMeters, 0.03);
+assert.equal(posted.at(-1).horizontalAccuracyMeters, 0.05);
+assert.equal(posted.at(-1).verticalAccuracyMeters, 0.08);
+
 serial.write(gga(5));
 await tick();
 assert.equal(status.fixType, "RTK_FLOAT");
@@ -77,6 +87,7 @@ serial.write(gga(0));
 await tick();
 assert.equal(status.fixType, "NO_FIX");
 assert.equal(posted.at(-1).fixType, "NO_FIX");
+assert.equal(status.horizontalAccuracyMeters, null);
 
 serial.write(gga(4).replace("600.0", "601.0"));
 await tick();
@@ -89,6 +100,7 @@ Date.now = () => receivedAt + 5001;
 await tick();
 assert.equal(status.fixType, null);
 assert.equal(posted.at(-1).fixType, null);
+assert.equal(posted.at(-1).horizontalAccuracyMeters, null);
 assert.equal(status.nmea.quality, 0);
 console.log("READER_GGA_INTEGRATION_OK");
 process.exit(0);

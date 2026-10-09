@@ -9,7 +9,7 @@ import { dirname } from "node:path";
 import { v4 as uuidv4 } from "uuid";
 import readline from 'node:readline';
 import { createCorrectionStatus, readCorrectionConfig, startCorrectionInput } from "./gnss-corrections.mjs";
-import { parseNmeaGga, resolveFixMetadata } from "./gnss-fix.mjs";
+import { parseNmeaGga, parseNmeaGst, resolveFixMetadata } from "./gnss-fix.mjs";
 
 let correctionConfig;
 try {
@@ -83,6 +83,7 @@ if (!GNSS_INTERNAL_TOKEN) {
 const state = {
   latest: null,
   nmea: null,
+  gst: null,
   lastUbxAt: null,
   ubx: {
     fixType: null,
@@ -345,6 +346,8 @@ function startSerialReader() {
     try {
       const gga = parseNmeaGga(sentence);
       if (gga) state.nmea = gga;
+      const gst = parseNmeaGst(sentence);
+      if (gst) state.gst = gst;
     } catch (error) {
       state.status.parseErrors += 1;
       console.error(`GNSS NMEA parse error: ${error.message}`);
@@ -483,6 +486,7 @@ function buildStatusPayload(filePath) {
     latest: state.latest,
     ubx: state.ubx,
     nmea: state.nmea,
+    gst: state.gst,
     ...resolveFixMetadata(state, GNSS_SOURCE),
     statusFilePath: filePath,
     statusFileUpdatedAt: new Date().toISOString(),

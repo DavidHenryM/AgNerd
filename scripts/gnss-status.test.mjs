@@ -17,9 +17,16 @@ await test("exposes NMEA fix status and satellites without inventing accuracy", 
   assert.deepEqual(parseGnssFixStatus(payload, now), {
     fixType: "RTK_FIXED", satellites: 12, horizontalAccuracyMeters: null, stale: false,
   });
+
   for (const fixType of ["RTK_FLOAT", "GPS", "DGPS", "NO_FIX", "SIMULATION"]) {
     assert.equal(parseGnssFixStatus({ ...payload, fixType }, now).fixType, fixType);
   }
+});
+
+await test("passes receiver GST metre accuracy to navigation and removes it when stale", () => {
+  const withAccuracy = { ...payload, horizontalAccuracyMeters: 0.05 };
+  assert.equal(parseGnssFixStatus(withAccuracy, now).horizontalAccuracyMeters, 0.05);
+  assert.equal(parseGnssFixStatus(withAccuracy, now + GNSS_STATUS_TTL_MS + 1).horizontalAccuracyMeters, null);
 });
 
 await test("expires both reader heartbeat and input freshness at five seconds", () => {
