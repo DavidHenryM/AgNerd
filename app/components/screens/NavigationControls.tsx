@@ -18,7 +18,7 @@ import SpeedIcon from "@mui/icons-material/Speed";
 import TuneIcon from "@mui/icons-material/Tune";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
-import { drawerWidth, footerHeight } from "@app/settings";
+import { footerHeight } from "@app/settings";
 import { GnssFixType, formatGnssFixStatus } from "@lib/gnss-status";
 
 // ── colour palette offered to the user ──────────────────────────────
@@ -295,11 +295,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
         sx={{
           position: "fixed",
           bottom: { xs: 12, md: `calc(${footerHeight} + 12px)` },
-          left: {
-            xs: 12,
-            md: `calc(${drawerWidth.md} + 12px)`,
-            lg: `calc(${drawerWidth.lg} + 12px)`,
-          },
+          left: 12,
           zIndex: 1200,
         }}
       >
