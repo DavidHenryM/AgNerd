@@ -41,3 +41,4 @@ next-env.d.ts
 scripts/gnss.env
 gnss.env
 ntrip.env
+*.log

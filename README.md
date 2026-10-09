@@ -136,7 +136,7 @@ Copy `example.env` values into your runtime environment and set at least:
 - `GA_NTRIP_MOUNT` (static fallback when closest-station lookup is enabled)
 - `GA_NTRIP_USE_CLOSEST` (`true` to use the closest-station API)
 - `GA_NTRIP_SECURE` (defaults to `true`; set `false` only for a caster without TLS)
-- `GA_NTRIP_OUTPUT_MODE` (`serial` recommended; `tcp` is also supported)
+- `GA_NTRIP_OUTPUT_MODE` (`tcp` for a UART shared with the GNSS reader; `serial` only for a separate correction port)
 - `GA_NTRIP_OUTPUT_DEVICE` / `GA_NTRIP_OUTPUT_BAUDRATE`
 - `GA_NTRIP_OUTPUT_HOST` / `GA_NTRIP_OUTPUT_PORT` (TCP listener settings)
 - `GNSS_INTERNAL_TOKEN`
@@ -172,6 +172,64 @@ This runs [scripts/gnss-reader.mjs](scripts/gnss-reader.mjs), which:
 - Parses UBX NAV-PVT packets for fix and accuracy metadata.
 - POSTs position updates to `GNSS_INGEST_URL` (default `/api/gnss/position`).
 - Writes health/status to `GNSS_STATUS_FILE`.
+- Optionally receives TCP corrections and writes them through its existing
+  serial port, without a second process opening the UART.
+
+### Shared UART: GPS reads and RTK corrections
+
+For a receiver connected to one UART, the GNSS reader must be the only serial
+port owner. Stop GPSD and any serial console using that UART. Configure the
+NTRIP forwarder in `/etc/agnerd/ntrip.env`:
+
+```ini
+GA_NTRIP_OUTPUT_MODE=tcp
+GA_NTRIP_OUTPUT_HOST=localhost
+GA_NTRIP_OUTPUT_PORT=2101
+```
+
+Configure the reader in `/etc/agnerd/gnss.env`:
+
+```ini
+GNSS_SOURCE=serial
+GNSS_READ_DEVICE=/dev/ttyAMA0
+GNSS_READ_BAUDRATE=38400
+GNSS_CORRECTIONS_ENABLED=true
+GNSS_CORRECTION_HOST=localhost
+GNSS_CORRECTION_PORT=2101
+GNSS_CORRECTION_RECONNECT_MS=3000
+GNSS_CORRECTION_TIMEOUT_MS=30000
+```
+
+Use the actual receiver device and configured baud rate. Enable RTCM input
+on that receiver UART. `GNSS_CORRECTION_DEVICE` is not used: corrections are
+written to the already-open `GNSS_READ_DEVICE`. Corrections are opt-in and
+require serial mode; without `GNSS_CORRECTIONS_ENABLED=true`, existing reader
+behavior is unchanged. The example configuration enables this shared-UART flow.
+
+The reader reconnects if the forwarder starts later, disconnects, or sends no
+TCP activity for the configured timeout. It pauses TCP reads until each serial
+write drains, preserving binary data and limiting buffering. Correction input
+failures are logged and retried without interrupting position reads.
+
+After deploying the updated scripts (including `scripts/gnss-corrections.mjs`)
+and environment files, restart both services:
+
+```bash
+sudo systemctl restart agnerd-ntrip agnerd-gnss
+sudo journalctl -u agnerd-gnss -u agnerd-ntrip -n 60 --no-pager
+```
+
+The GNSS status file now includes `corrections.connected`, `bytesForwarded`,
+`lastForwardedAt`, and `lastError`. Increasing byte counts and a recent
+forwarded timestamp confirm TCP data was written and drained to the UART.
+A TCP connection alone does not prove corrections are arriving, and forwarded
+bytes do not prove the receiver accepted RTCM or achieved RTK.
+
+Enable UBX NAV-PVT output on the connected receiver UART to populate `ubx`.
+In NAV-PVT `flags`, bits 6-7 report carrier solution: `1` is RTK float and `2`
+is RTK fixed; bit 0 reports a valid GNSS fix. Null UBX fields mean AgNerd cannot
+determine RTK status even when NMEA positions are present. Check that status
+timestamps are recent before interpreting stored fix metadata.
 
 ### API Endpoints
 

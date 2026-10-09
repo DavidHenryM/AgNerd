@@ -137,6 +137,7 @@ fi
 echo -e "\033[35mInstalling GNSS and NTRIP helper scripts to /opt/agnerd/scripts...\033[0m"
 sudo mkdir -p /opt/agnerd/scripts
 sudo cp scripts/gnss-reader.mjs /opt/agnerd/scripts/gnss-reader.mjs
+sudo cp scripts/gnss-corrections.mjs /opt/agnerd/scripts/gnss-corrections.mjs
 sudo cp scripts/ntrip-forwarder.mjs /opt/agnerd/scripts/ntrip-forwarder.mjs
 sudo cp scripts/ntrip-client.mjs /opt/agnerd/scripts/ntrip-client.mjs
 sudo cp scripts/kiosk.sh /opt/agnerd/scripts/kiosk.sh

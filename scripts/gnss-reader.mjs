@@ -8,6 +8,15 @@ import { mkdir } from "node:fs/promises";
 import { dirname } from "node:path";
 import { v4 as uuidv4 } from "uuid";
 import readline from 'node:readline';
+import { createCorrectionStatus, readCorrectionConfig, startCorrectionInput } from "./gnss-corrections.mjs";
+
+let correctionConfig;
+try {
+  correctionConfig = readCorrectionConfig();
+} catch (error) {
+  console.error(`Invalid GNSS correction configuration: ${error.message}`);
+  process.exit(1);
+}
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -90,6 +99,7 @@ const state = {
     lastGpsdConnectAt: null,
     lastGpsdDisconnectAt: null,
     parseErrors: 0,
+    corrections: createCorrectionStatus(correctionConfig),
   },
 };
 
@@ -539,6 +549,9 @@ async function writeStatusFile() {
 
 const serialPort = GNSS_SOURCE === "serial" ? startSerialReader() : null;
 const stopGpsdReader = GNSS_SOURCE === "gpsd" ? startGpsdReader() : null;
+const stopCorrections = correctionConfig && serialPort
+  ? startCorrectionInput(serialPort, correctionConfig, state.status.corrections)
+  : null;
 
 setInterval(() => {
   postLatest().catch((error) => {
@@ -552,13 +565,23 @@ setInterval(() => {
   });
 }, GNSS_POST_INTERVAL_MS);
 
-process.on("SIGINT", async () => {
+let shuttingDown = false;
+async function shutdown() {
+  if (shuttingDown) return;
+  shuttingDown = true;
   console.log("Shutting down GNSS reader...");
+  stopCorrections?.();
   if (typeof stopGpsdReader === "function") {
     stopGpsdReader();
   }
   if (serialPort && serialPort.isOpen) {
-    await new Promise((resolve) => serialPort.close(resolve));
+    const closeError = await new Promise((resolve) => serialPort.close(resolve));
+    if (closeError) {
+      console.error(`GNSS serial shutdown failed: ${closeError.message}`);
+      process.exit(1);
+    }
   }
   process.exit(0);
-});
+}
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
