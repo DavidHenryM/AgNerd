@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { GnssFixStatus } from "../gnss-status";
 
 type PositionFix = {
   latitude: number;
@@ -33,6 +34,7 @@ type GnssPositionResponse = {
     heading: number | null;
     speedKnots?: number | null;
   } | null;
+  fixStatus?: GnssFixStatus;
 };
 
 const GNSS_POLL_INTERVAL_MS = 1000;
@@ -43,7 +45,7 @@ function asNumberOrNull(value: unknown): number | null {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
-function gnssToFix(position: NonNullable<GnssPositionResponse["latestPosition"]>): PositionFix | null {
+function gnssToFix(position: NonNullable<GnssPositionResponse["latestPosition"]>, status?: GnssFixStatus): PositionFix | null {
   const latitude = asNumberOrNull(position.latitude);
   const longitude = asNumberOrNull(position.longitude);
   if (latitude === null || longitude === null) {
@@ -58,13 +60,16 @@ function gnssToFix(position: NonNullable<GnssPositionResponse["latestPosition"]>
     locationTimestamp: Number.isNaN(timestampMs) ? Date.now() : timestampMs,
     heading: asNumberOrNull(position.heading),
     speed: asNumberOrNull(position.speedKnots),
-    accuracy: null,
+    accuracy: status?.stale === false ? asNumberOrNull(status.horizontalAccuracyMeters) : null,
   };
 }
 
 const useGeolocation = () => {
   const [backendFix, setBackendFix] = useState<PositionFix | null>(null);
   const [browserFix, setBrowserFix] = useState<PositionFix | null>(null);
+  const [backendStatus, setBackendStatus] = useState<GnssFixStatus>({
+    fixType: null, satellites: null, horizontalAccuracyMeters: null, stale: true,
+  });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [gnssDebug, setGnssDebug] = useState<GnssDebugInfo>({
@@ -81,6 +86,7 @@ const useGeolocation = () => {
         const response = await fetch("/api/gnss/status", {
           method: "GET",
           cache: "no-store",
+          signal: AbortSignal.timeout(5000),
         });
 
         if (!response.ok) {
@@ -88,9 +94,12 @@ const useGeolocation = () => {
         }
 
         const payload = (await response.json()) as GnssPositionResponse;
-        const nextFix = payload.latestPosition ? gnssToFix(payload.latestPosition) : null;
+        const nextFix = payload.latestPosition ? gnssToFix(payload.latestPosition, payload.fixStatus) : null;
 
         if (!cancelled) {
+          setBackendStatus(payload.fixStatus ?? {
+            fixType: null, satellites: null, horizontalAccuracyMeters: null, stale: true,
+          });
           setGnssDebug({
             statusFilePresent:
               typeof payload.service?.statusFilePresent === "boolean"
@@ -127,6 +136,7 @@ const useGeolocation = () => {
             resolvedStatusFile: null,
           });
           setBackendFix(null);
+          setBackendStatus({ fixType: null, satellites: null, horizontalAccuracyMeters: null, stale: true });
           backendAvailableRef.current = false;
           setError(err instanceof Error ? err.message : "Unable to fetch GNSS status");
         }
@@ -210,6 +220,9 @@ const useGeolocation = () => {
     heading: activeFix?.heading ?? null,
     speed: activeFix?.speed ?? null,
     accuracy: activeFix?.accuracy ?? null,
+    fixType: positionSource === "browser" || backendStatus.stale ? null : backendStatus.fixType,
+    satellites: positionSource === "browser" || backendStatus.stale ? null : backendStatus.satellites,
+    fixStatusStale: positionSource === "browser" ? false : backendStatus.stale,
     positionSource,
     gnssDebug,
     error,

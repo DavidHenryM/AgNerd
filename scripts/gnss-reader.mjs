@@ -9,6 +9,7 @@ import { dirname } from "node:path";
 import { v4 as uuidv4 } from "uuid";
 import readline from 'node:readline';
 import { createCorrectionStatus, readCorrectionConfig, startCorrectionInput } from "./gnss-corrections.mjs";
+import { parseNmeaGga, resolveFixMetadata } from "./gnss-fix.mjs";
 
 let correctionConfig;
 try {
@@ -81,6 +82,8 @@ if (!GNSS_INTERNAL_TOKEN) {
 
 const state = {
   latest: null,
+  nmea: null,
+  lastUbxAt: null,
   ubx: {
     fixType: null,
     flags: null,
@@ -258,40 +261,10 @@ function parseUbxFromChunk(chunk) {
       const navPvt = parseUbxNavPvt(payload);
       if (navPvt) {
         state.ubx = navPvt;
+        state.lastUbxAt = new Date().toISOString();
       }
     }
   }
-}
-
-function deriveFixLabel(fixType, flags) {
-  if (!Number.isFinite(fixType)) {
-    return null;
-  }
-
-  const rtkFixed = (flags & 0x80) === 0x80;
-  const rtkFloat = (flags & 0x40) === 0x40;
-
-  if (rtkFixed) {
-    return "RTK_FIXED";
-  }
-
-  if (rtkFloat) {
-    return "RTK_FLOAT";
-  }
-
-  if (fixType === 3) {
-    return "3D";
-  }
-
-  if (fixType === 2) {
-    return "2D";
-  }
-
-  if (fixType === 1) {
-    return "DEAD_RECKONING";
-  }
-
-  return "NO_FIX";
 }
 
 function setLatestFix(next) {
@@ -367,7 +340,16 @@ function startSerialReader() {
 
   lineParser.on("data", (line) => {
     state.status.lastReadAt = new Date().toISOString();
-    const parsed = parseNmeaRmc(line.trim());
+    // A binary UBX packet can precede the next NMEA sentence in this line buffer.
+    const sentence = line.slice(line.lastIndexOf("$")).trim();
+    try {
+      const gga = parseNmeaGga(sentence);
+      if (gga) state.nmea = gga;
+    } catch (error) {
+      state.status.parseErrors += 1;
+      console.error(`GNSS NMEA parse error: ${error.message}`);
+    }
+    const parsed = parseNmeaRmc(sentence);
     if (parsed) {
       state.latest = parsed;
     }
@@ -468,10 +450,7 @@ async function postLatest() {
     longitude: state.latest.longitude,
     heading: state.latest.heading,
     speedKnots: state.latest.speedKnots,
-    fixType: deriveFixLabel(state.ubx.fixType, state.ubx.flags),
-    satellites: state.ubx.numSV,
-    horizontalAccuracyMeters: state.ubx.hAccMeters,
-    verticalAccuracyMeters: state.ubx.vAccMeters,
+    ...resolveFixMetadata(state, GNSS_SOURCE),
   };
 
   try {
@@ -503,6 +482,8 @@ function buildStatusPayload(filePath) {
     ...state.status,
     latest: state.latest,
     ubx: state.ubx,
+    nmea: state.nmea,
+    ...resolveFixMetadata(state, GNSS_SOURCE),
     statusFilePath: filePath,
     statusFileUpdatedAt: new Date().toISOString(),
   };

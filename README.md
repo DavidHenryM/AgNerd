@@ -170,6 +170,7 @@ This runs [scripts/gnss-reader.mjs](scripts/gnss-reader.mjs), which:
 
 - Reads NMEA from the configured serial device.
 - Parses UBX NAV-PVT packets for fix and accuracy metadata.
+- Parses checksum-validated NMEA GGA quality for GPS/DGPS/RTK status and satellite count.
 - POSTs position updates to `GNSS_INGEST_URL` (default `/api/gnss/position`).
 - Writes health/status to `GNSS_STATUS_FILE`.
 - Optionally receives TCP corrections and writes them through its existing
@@ -225,11 +226,44 @@ forwarded timestamp confirm TCP data was written and drained to the UART.
 A TCP connection alone does not prove corrections are arriving, and forwarded
 bytes do not prove the receiver accepted RTCM or achieved RTK.
 
-Enable UBX NAV-PVT output on the connected receiver UART to populate `ubx`.
-In NAV-PVT `flags`, bits 6-7 report carrier solution: `1` is RTK float and `2`
-is RTK fixed; bit 0 reports a valid GNSS fix. Null UBX fields mean AgNerd cannot
-determine RTK status even when NMEA positions are present. Check that status
-timestamps are recent before interpreting stored fix metadata.
+### Checking RTK with NMEA
+
+No UBX configuration change is required if the receiver outputs NMEA GGA.
+The reader maps GGA quality `4` to `RTK_FIXED`, `5` to `RTK_FLOAT`, `1` to
+`GPS`, `2` to `DGPS`, and `0` to `NO_FIX`. GPS quality alone does not indicate
+2D versus 3D. Other standard quality values remain distinct: `PPS`,
+`DEAD_RECKONING`, `MANUAL`, and `SIMULATION`.
+
+The status file includes top-level `fixType` and `satellites`, plus `nmea`
+with the original quality, HDOP, correction age (when supplied), and
+`lastGgaAt`. The ingest request uses the same fix type and satellite count.
+RMC remains the position source. Invalid GGA checksums or fields increment
+`parseErrors` and are logged rather than being treated as a valid fix.
+
+The navigation GPS panel shows a separate fix indicator (green **RTK fixed**,
+amber **RTK float**, or the other reported quality), satellite count, and
+accuracy when available. Accuracy is not used to infer RTK. The status API
+and panel mark reader data older than five seconds as stale/unavailable;
+browser geolocation fallback is labelled **Browser location**, not RTK.
+
+In serial mode, GGA metadata takes precedence over UBX fix type and satellite
+count. After five seconds without a valid GGA sentence it expires, falling
+back to fresh UBX NAV-PVT if available, otherwise reporting unknown (`null`).
+Historical `nmea` fields are retained for diagnostics; use the top-level
+`fixType` and check timestamps for current status.
+
+HDOP is dimensionless, not an accuracy estimate in metres. Accuracy fields
+remain null unless fresh UBX metadata is available. UBX is optional: if enabled,
+NAV-PVT `flags` bits 6-7 report carrier solution (`1` float, `2` fixed), and
+bit 0 reports a valid GNSS fix.
+
+When deploying manually, copy `scripts/gnss-fix.mjs` alongside
+`scripts/gnss-reader.mjs` and `scripts/gnss-corrections.mjs`, then restart
+`agnerd-gnss`. To inspect quality without printing coordinates:
+
+```bash
+node -e 'const s=JSON.parse(require("fs").readFileSync("/tmp/agnerd-gnss-status.json","utf8")); console.log({fixType:s.fixType,satellites:s.satellites,nmea:s.nmea});'
+```
 
 ### API Endpoints
 

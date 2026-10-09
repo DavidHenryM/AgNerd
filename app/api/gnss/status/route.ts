@@ -2,6 +2,7 @@ import { access } from "node:fs/promises";
 import { readFile } from "node:fs/promises";
 import { auth } from "@lib/auth";
 import { headers } from "next/headers";
+import { parseGnssFixStatus } from "@lib/gnss-status";
 
 export const dynamic = "force-dynamic";
 
@@ -107,6 +108,7 @@ export async function GET() {
   let statusFileParseError: string | null = null;
   let latestMissingInFile: string | null = null;
   let latestPosition: LatestPosition | null = null;
+  let fixStatus = parseGnssFixStatus(null);
 
   for (const candidate of candidates) {
     try {
@@ -133,6 +135,7 @@ export async function GET() {
       }
 
       resolvedStatusFile = candidate;
+      fixStatus = parseGnssFixStatus(parsed);
       const latest = parseLatestPosition(parsed);
       if (latest) {
         latestPosition = latest;
@@ -159,6 +162,7 @@ export async function GET() {
       latestMissingInFile,
     },
     latestPosition,
+    fixStatus,
     timestamp: new Date().toISOString(),
   });
 }
