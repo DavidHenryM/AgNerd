@@ -29,8 +29,8 @@ export default function Navigation(){
       left: {
         xs: 0,
         sm: drawerWidth.sm,
-        md: drawerWidth.md,
-        lg: drawerWidth.lg
+        md: drawerWidth.sm,
+        lg: drawerWidth.sm
       },
       overflow: 'hidden',
     }}>
