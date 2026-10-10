@@ -56,6 +56,10 @@ After deploying a rebuilt application, hard-refresh the browser or restart
 
 ### Sign-in options
 
+The sign-in form uses a compact layout for 800x480 and 1024x600 displays without
+forcing page scrollbars. Longer errors, password-reset messages, or an on-screen
+keyboard may still require scrolling so the form remains accessible.
+
 The sign-in screen supports the existing emailed sign-in link and one-time
 code, as well as email/password login. The account's email address is its
 username; there is no separate username field.
@@ -136,6 +140,64 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 ## GNSS + NTRIP Pipeline
+
+### Internet and offline imagery
+
+The navigation GPS status panel reports **Internet: online**, **slow**, or **unavailable**, separately
+from **App: unreachable**. Every 15 seconds the application server checks a fixed
+HTTPS endpoint (`https://www.gstatic.com/generate_204`) with a five-second timeout.
+Checks are shared between clients for 15 seconds. A response taking at least
+1500ms is labelled slow. This measures the Pi's external reachability and latency,
+not Wi-Fi signal, download bandwidth, or whether the imagery service is working.
+A blocked probe endpoint or captive portal can report unavailable even when
+other internet services work. The tooltip includes the failure or measured latency.
+
+The navigation viewer currently uses Cesium's default online imagery; copying
+`public/cesium` installs runtime assets, not detailed map imagery. There is no
+persistent offline tile store. Slow internet, blocked imagery requests, or an
+invalid Cesium token can therefore leave a globe without imagery. Use the browser
+Network tab to distinguish pending tile requests from HTTP 401/403 or failed
+metadata requests.
+
+For offline navigation around Dalgety, NSW, the recommended approach is a bounded
+local raster tile set generated from georeferenced imagery with permission for
+offline use. Cesium's [UrlTemplateImageryProvider](https://cesium.com/learn/cesiumjs/ref-doc/UrlTemplateImageryProvider.html)
+can load local XYZ tiles without an internet connection. Choose farm boundaries
+plus a margin and the required resolution before generating tiles; storage grows
+rapidly with area and zoom. Store map data outside the replaceable deployment,
+for example `/var/lib/agnerd/maps`, and serve it locally with attribution.
+
+The [NSW Imagery catalogue](https://datasets.seed.nsw.gov.au/dataset/nsw-imagery)
+describes aerial and satellite imagery, but is primarily a web-viewing service.
+Confirm permitted offline supply, coverage, capture date, and licence with the
+provider before downloading. Do not bulk scrape hosted Cesium/third-party imagery.
+For a road/topographic alternative, use licensed OSM-derived data and generate
+or purchase offline tiles; the [public OSM tile service](https://operations.osmfoundation.org/policies/tiles/)
+explicitly prohibits bulk downloading and prefetching. Local imagery integration
+and map downloads are not yet implemented.
+
+### Saved Raspberry Pi Wi-Fi networks
+
+AgNerd does not manage Wi-Fi profiles. Raspberry Pi OS desktop networking is
+managed by NetworkManager. Check saved profiles without displaying passwords:
+
+```bash
+nmcli -f NAME,UUID,TYPE,AUTOCONNECT connection show
+nmcli -f NAME,TYPE,DEVICE connection show --active
+```
+
+Two Wi-Fi entries with `AUTOCONNECT=yes` means both are saved, even though a single
+Wi-Fi adapter normally connects to only one network at a time. To prefer one
+saved network over another, assign its UUID a higher priority:
+
+```bash
+sudo nmcli connection modify uuid YOUR_PREFERRED_UUID connection.autoconnect yes connection.autoconnect-priority 20
+sudo nmcli connection modify uuid YOUR_BACKUP_UUID connection.autoconnect yes connection.autoconnect-priority 10
+```
+
+These commands do not delete profiles or change passwords. Autoconnect priorities
+select between available profiles; they do not guarantee switching away from an
+already-active network just because a preferred network becomes visible.
 
 The `/navigation` screen hides the app sidebar and footer below 1536px wide.
 On a 1280x720 display, the map fills the 1280x656 area below the 64px top bar.

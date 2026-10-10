@@ -1,11 +1,13 @@
 "use client"
 
 import { FormEvent, useState } from "react"
-import { Alert, Button, Grid, Stack, Tab, Tabs, TextField, Typography } from "@mui/material"
+import { Alert, Box, Button, Paper, Stack, Tab, Tabs, TextField, Typography } from "@mui/material"
 import { signIn, signInWithOtp } from "@lib/session"
 import { authClient } from "@lib/auth-client"
 import { getAuthCallbackURL } from "@lib/auth-navigation"
-import Content from "@components/Content"
+import { Background } from "@components/Background"
+import { backgroundImages } from "@images/backgrounds"
+import { drawerWidth, footerHeight } from "@app/settings"
 import { useRouter } from 'next/navigation';
 
 export default function SignInPage() {
@@ -93,9 +95,19 @@ export default function SignInPage() {
   }
 
   return (
-    <Content backgroundImageIndex={1}>
-      <Grid size={12} spacing={2} sx={{ m: 2, p: 2, justifySelf: "center", width: "100%", maxWidth: 400 }}>
-      <Stack component="form" onSubmit={emailSent ? handleVerifyOtp : handleSignIn} direction="column" spacing={2} sx={{ alignItems: "center" }}>
+    <>
+      <Background image={backgroundImages[1]} />
+      <Box sx={{
+        ml: { md: drawerWidth.md, lg: drawerWidth.lg },
+        minHeight: { xs: "calc(100dvh - 56px)", sm: "calc(100dvh - 64px)", md: `calc(100dvh - 64px - ${footerHeight})` },
+        pb: { xs: 0, md: footerHeight },
+        boxSizing: "border-box",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+      }}>
+      <Paper sx={{ my: 1, p: 2, width: "calc(100% - 32px)", maxWidth: 400, boxSizing: "border-box", backgroundColor: "secondary.main" }}>
+      <Stack component="form" onSubmit={emailSent ? handleVerifyOtp : handleSignIn} direction="column" spacing={1} sx={{ alignItems: "center" }}>
         {
           emailSent ? 
 <>
@@ -198,7 +210,8 @@ export default function SignInPage() {
         </>
 }
       </Stack>
-      </Grid>
-    </Content>
+      </Paper>
+      </Box>
+    </>
   )
 }

@@ -20,6 +20,7 @@ import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import { footerHeight } from "@app/settings";
 import { GnssFixType, formatGnssFixStatus } from "@lib/gnss-status";
+import InternetStatus from "@components/InternetStatus";
 
 // ── colour palette offered to the user ──────────────────────────────
 export const MODEL_COLORS: { label: string; hex: string }[] = [
@@ -183,6 +184,9 @@ export default function NavigationControls(props: NavigationControlsProps) {
                 ? "Connected"
                 : "Searching"}
           </Typography>
+          <Box sx={{ mt: 0.5, mb: 0.5 }}>
+            <InternetStatus />
+          </Box>
           <Typography variant="caption" sx={{ display: "block" }}>
             {hasPosition
               ? `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`
