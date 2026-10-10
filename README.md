@@ -18,6 +18,20 @@ with NVM.`, rerun the updated installer. It reuses `~/.nvm` and does not require
 deleting it or reopening the terminal. Loading, installation, and activation
 failures now report which step failed, alongside NVM's error output.
 
+The installer completes dependency installation, asset generation, and the
+production build before changing deployment configuration or helper scripts.
+A failure stops installation rather than copying an old or incomplete build.
+It stages `.next` and `node_modules` under `/opt/agnerd`, then stops the app,
+kiosk, GNSS, and NTRIP services before replacing those two directories completely.
+This prevents obsolete build chunks and dependencies surviving a reinstall.
+Staging requires enough free disk space for both the old and new directories.
+Replacement/copy failures stop installation with an error; if services have
+already stopped, correct the failure and rerun the installer before using the app.
+This is not an atomic release switch or automatic rollback.
+`public` is still merged, not deleted, to preserve possible uploads and other
+local content. Environment files keep the existing installer update rules.
+The installer never deletes the application root or `/var/lib/agnerd/maps`.
+
 The production application service loads `/etc/agnerd/.env` using systemd's
 `EnvironmentFile`. Put comments on their own lines: unlike dotenv, systemd
 includes inline `#` comments in the value. For example:
@@ -152,9 +166,9 @@ not Wi-Fi signal, download bandwidth, or whether the imagery service is working.
 A blocked probe endpoint or captive portal can report unavailable even when
 other internet services work. The tooltip includes the failure or measured latency.
 
-The navigation viewer currently uses Cesium's default online imagery; copying
-`public/cesium` installs runtime assets, not detailed map imagery. There is no
-persistent offline tile store. Slow internet, blocked imagery requests, or an
+By default the navigation viewer uses Cesium's online imagery; copying
+`public/cesium` installs runtime assets, not detailed map imagery. Opt-in local
+imagery is described below. Slow internet, blocked imagery requests, or an
 invalid Cesium token can therefore leave a globe without imagery. Use the browser
 Network tab to distinguish pending tile requests from HTTP 401/403 or failed
 metadata requests.
@@ -173,8 +187,85 @@ Confirm permitted offline supply, coverage, capture date, and licence with the
 provider before downloading. Do not bulk scrape hosted Cesium/third-party imagery.
 For a road/topographic alternative, use licensed OSM-derived data and generate
 or purchase offline tiles; the [public OSM tile service](https://operations.osmfoundation.org/policies/tiles/)
-explicitly prohibits bulk downloading and prefetching. Local imagery integration
-and map downloads are not yet implemented.
+explicitly prohibits bulk downloading and prefetching.
+
+#### Built-in local imagery server
+
+No separate Cesium ion server is required for a bounded farm imagery layer.
+The Next.js app serves `/api/maps/{dataset}/{z}/{x}/{y}` from
+`/var/lib/agnerd/maps/{dataset}/{z}/{x}/{y}.png` (or JPEG). Only the dataset selected
+by `LOCAL_IMAGERY_DATASET` is exposed. Its validated `manifest.json` declares
+bounds, zoom range, format, resolution, capture date, and attribution. Routes
+require an authenticated session, reject traversal and symlink escapes, and
+return explicit errors for missing tiles or invalid configuration.
+
+Cesium selects that same-origin URL using `UrlTemplateImageryProvider`,
+with an explicit rectangle, maximum zoom, and credit. Standard XYZ/Web Mercator
+tiles use `{y}`; TMS tiles reverse the Y axis, so generating and serving schemes
+must agree. Keep a locally bundled Natural Earth base layer outside the farm
+coverage, clearly labelled as low-resolution imagery rather than a detailed map.
+Local tile mode does not initialize the default online imagery provider.
+
+Generate tiles from authorised georeferenced raster data on a desktop, then
+transfer the finished dataset to the Pi. [GDAL tile generation](https://gdal.org/en/stable/programs/gdal2tiles.html)
+supports XYZ output; select zooms appropriate to the source resolution instead
+of generating unnecessary detail. Start with one farm plus a margin around
+Dalgety, measure actual storage and load performance, and verify disconnected
+operation, missing-tile errors, attribution, and persistence across installs.
+
+The preparation command uses Digital Earth Australia's Sentinel-2 scene
+`99d374b7-24ff-45b4-8743-ce06d2f4e150`, captured 2025-01-03 (CC BY 4.0).
+It creates approximately 10x10 km centred on **-36.5601857, 148.8247819** with
+10 m/pixel RGB imagery and XYZ zooms 0-14. This is not fence-level imagery or
+a source of RTK positioning accuracy. Cloud/shadow coverage must be visually
+checked before relying on the background.
+The prepared dataset contains 72 PNG tiles (approximately 2.8 MB uncompressed).
+At navigation's close-up zoom it will look blurred: enlarging 10 m source pixels
+does not create additional detail.
+
+If using the supplied `dalgety-sentinel2-20250103-v1.tar.gz` archive, transfer it
+to the Pi, then extract it instead of running preparation:
+
+```bash
+sudo mkdir -p /var/lib/agnerd/maps
+sudo tar -xzf dalgety-sentinel2-20250103-v1.tar.gz -C /var/lib/agnerd/maps
+```
+
+On the Pi (or a desktop with GDAL tools installed), prepare while connected:
+
+```bash
+sudo apt install gdal-bin python3-gdal
+mkdir -p "$HOME/agnerd-maps"
+npm run maps:prepare -- "$HOME/agnerd-maps"
+sudo mkdir -p /var/lib/agnerd/maps
+sudo cp -R "$HOME/agnerd-maps/dalgety-sentinel2-20250103-v1" /var/lib/agnerd/maps/
+```
+
+Preparation uses GDAL HTTP range reads for the region, rescales RGB reflectance,
+reprojects to Web Mercator, and publishes the dataset only after tiling succeeds.
+It refuses to overwrite an existing dataset. `GDAL2TILES_COMMAND` can select the
+tile tool executable when it has a different name. GDAL 3.13+ also supports the
+legacy command via its compatible wrapper.
+
+Add these runtime settings to `/etc/agnerd/.env` and the installer source `.env`:
+
+```dotenv
+LOCAL_IMAGERY_DATASET=dalgety-sentinel2-20250103-v1
+LOCAL_IMAGERY_ROOT=/var/lib/agnerd/maps
+```
+
+Deploy the updated app, restart `agnerd`, and refresh the kiosk. When enabled,
+navigation defaults to local manifest/tiles instead of initializing online world
+imagery; Natural Earth uses bundled files. When local imagery is configured,
+**Navigation settings > Maps > Local / Online** switches the imagery source
+without resetting tracking, painted coverage, or the camera. Online uses the
+existing Cesium world imagery and requires internet; there is no automatic
+connectivity-based switching. Refreshing navigation returns to Local.
+The selector is hidden when `LOCAL_IMAGERY_DATASET` is unset.
+The map label identifies resolution
+and date, and tile/configuration failures are visible. Clearing
+`LOCAL_IMAGERY_DATASET` restores existing online behaviour. The internet indicator
+still performs its separate connectivity probe, but imagery does not need it.
 
 ### Saved Raspberry Pi Wi-Fi networks
 

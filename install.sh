@@ -55,6 +55,21 @@ else
     echo -e "\033[32mNode.js and npm are already available under /usr/bin; skipping NVM installation.\033[0m"
 fi
 
+(
+set -e
+echo -e "\033[35mInstalling Node.js dependencies with npm ci...\033[0m"
+npm ci
+echo -e "\033[35mCopying Cesium assets into public/cesium...\033[0m"
+npm run copy-cesium
+echo -e "\033[35mBuilding the AgNerd application without inheriting development inspector settings...\033[0m"
+NODE_OPTIONS= npm run build
+)
+BUILD_STATUS=$?
+if [ "$BUILD_STATUS" -ne 0 ]; then
+    echo -e "\033[31mDependency installation or build failed; the existing deployment has not been changed.\033[0m" >&2
+    exit 1
+fi
+
 has_env_files() {
     local directory="$1"
     local file
@@ -170,21 +185,30 @@ sed \
     -e "s|@KIOSK_HOME@|$INSTALL_HOME|g" \
     scripts/agnerd-kiosk.service | sudo tee /etc/systemd/system/agnerd-kiosk.service >/dev/null
 
-echo -e "\033[35mInstalling Node.js dependencies with npm ci...\033[0m"
-npm ci
-echo -e "\033[35mCopying Cesium assets into public/cesium...\033[0m"
-npm run copy-cesium
-echo -e "\033[35mBuilding the AgNerd application without inheriting development inspector settings...\033[0m"
-NODE_OPTIONS= npm run build
+(
+set -e
 echo -e "\033[35mInstalling the production application and dependencies to /opt/agnerd...\033[0m"
-sudo mkdir -p /opt/agnerd/.next /opt/agnerd/node_modules /opt/agnerd/public
+sudo mkdir -p /opt/agnerd/public
+# Stage complete directories before stopping the running services.
+sudo rm -rf -- /opt/agnerd/.next.incoming /opt/agnerd/node_modules.incoming
+sudo mkdir -p /opt/agnerd/.next.incoming /opt/agnerd/node_modules.incoming
+sudo cp -R .next/. /opt/agnerd/.next.incoming/
+sudo cp -R node_modules/. /opt/agnerd/node_modules.incoming/
+sudo systemctl stop agnerd-kiosk.service agnerd.service agnerd-gnss.service agnerd-ntrip.service
+sudo rm -rf -- /opt/agnerd/.next /opt/agnerd/node_modules
+sudo mv /opt/agnerd/.next.incoming /opt/agnerd/.next
+sudo mv /opt/agnerd/node_modules.incoming /opt/agnerd/node_modules
 sudo cp package.json package-lock.json next.config.ts /opt/agnerd/
-sudo cp -R .next/. /opt/agnerd/.next/
-sudo cp -R node_modules/. /opt/agnerd/node_modules/
 if [ -d public ]; then
     sudo cp -R public/. /opt/agnerd/public/
 else
-    echo -e "\033[31mNo public directory found; leaving /opt/agnerd/public empty.\033[0m"
+    echo -e "\033[31mNo public directory found; preserving existing /opt/agnerd/public files.\033[0m"
+fi
+)
+BUILD_DEPLOY_STATUS=$?
+if [ "$BUILD_DEPLOY_STATUS" -ne 0 ]; then
+    echo -e "\033[31mBuild or deployment failed; installation stopped. Check the error above before restarting services.\033[0m" >&2
+    exit 1
 fi
 
 echo -e "\033[35mReloading systemd service definitions...\033[0m"

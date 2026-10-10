@@ -12,9 +12,13 @@ import {
   ColorMaterialProperty,
   ClassificationType,
   Rectangle,
+  ImageryLayer,
+  UrlTemplateImageryProvider,
+  GeographicTilingScheme,
 } from "cesium";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Box } from "@mui/material";
+import { Alert, Box, Typography } from "@mui/material";
+import { parseMapManifest, type MapManifest } from "@lib/map-manifest";
 import { getUsersFarm } from "@lib/queries";
 import useGeolocation from "@lib/hooks/geolocation";
 import NavigationControls, {
@@ -160,6 +164,37 @@ export default function NavigationScreen() {
   const viewerRef = useRef<CesiumViewer | null>(null);
   const modelEntityRef = useRef<Entity | null>(null);
   const initialFlyDone = useRef(false);
+  const [mapConfig, setMapConfig] = useState<MapManifest | null>();
+  const [mapError, setMapError] = useState<string | null>(null);
+  const [viewerReady, setViewerReady] = useState(false);
+  const [mapSource, setMapSource] = useState<"local" | "online">("local");
+
+  useEffect(() => {
+    const controller = new AbortController();
+    async function loadMapConfig() {
+      try {
+        const response = await fetch("/api/maps/manifest", {
+          cache: "no-store",
+          signal: AbortSignal.any([controller.signal, AbortSignal.timeout(5000)]),
+        });
+        if (!response.ok) throw new Error(`Map configuration request failed: HTTP ${response.status}`);
+        const payload: unknown = await response.json();
+        if (!payload || typeof payload !== "object" || !("enabled" in payload)) {
+          throw new Error("Invalid map configuration response");
+        }
+        if (payload.enabled === false) setMapConfig(null);
+        else if (payload.enabled === true && "manifest" in payload) setMapConfig(parseMapManifest(payload.manifest));
+        else throw new Error("Invalid map configuration response");
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          console.error("Navigation map configuration failed:", error);
+          setMapError(error instanceof Error ? error.message : String(error));
+        }
+      }
+    }
+    void loadMapConfig();
+    return () => controller.abort();
+  }, []);
 
   // GPS from hook
   const {
@@ -235,7 +270,7 @@ export default function NavigationScreen() {
   // ── Create Cesium viewer ──────────────────────────────────────────
   useEffect(() => {
     const el = containerRef.current;
-    if (!el || viewerRef.current) return;
+    if (!el || viewerRef.current || mapConfig === undefined) return;
 
     const viewer = new CesiumViewer(el, {
       homeButton: false,
@@ -248,9 +283,11 @@ export default function NavigationScreen() {
       fullscreenButton: true,
       infoBox: false,
       selectionIndicator: false,
+      ...(mapConfig ? { baseLayer: false as const } : {}),
     });
     viewerRef.current = viewer;
-    viewer.camera.setView({ destination: AUSTRALIA_RECTANGLE });
+    viewer.camera.setView({ destination: mapConfig ? Rectangle.fromDegrees(...mapConfig.bounds) : AUSTRALIA_RECTANGLE });
+    setViewerReady(true);
 
     // Avoid double-zoom handling: we handle wheel zoom ourselves via state.
     viewer.scene.screenSpaceCameraController.enableZoom = false;
@@ -302,7 +339,57 @@ export default function NavigationScreen() {
       if (!viewer.isDestroyed()) viewer.destroy();
       viewerRef.current = null;
     };
-  }, []);
+  }, [mapConfig]);
+
+  // Change only imagery layers so camera, tractor and painted coverage survive.
+  useEffect(() => {
+    const viewer = viewerRef.current;
+    if (!viewer || !viewerReady || !mapConfig) return;
+    const removers: (() => void)[] = [];
+    const reportImageryError = (error: unknown) => {
+      console.error(`Navigation ${mapSource} imagery failed:`, error);
+      setMapError(mapSource === "local"
+        ? "Local imagery could not be loaded. Check tile coverage or local storage."
+        : "Online imagery could not be loaded. Check the internet connection or select Local maps.");
+    };
+    const layers = mapSource === "local" ? [
+      new ImageryLayer(new UrlTemplateImageryProvider({
+        url: "/cesium/Assets/Textures/NaturalEarthII/{z}/{x}/{reverseY}.jpg",
+        tilingScheme: new GeographicTilingScheme(),
+        maximumLevel: 2,
+        credit: "Natural Earth II (low-resolution background)",
+      })),
+      new ImageryLayer(new UrlTemplateImageryProvider({
+        url: `/api/maps/${mapConfig.id}/{z}/{x}/{y}`,
+        rectangle: Rectangle.fromDegrees(...mapConfig.bounds),
+        minimumLevel: mapConfig.minZoom,
+        maximumLevel: mapConfig.maxZoom,
+        credit: mapConfig.attribution,
+      })),
+    ] : [ImageryLayer.fromWorldImagery({})];
+    for (const layer of layers) {
+      removers.push(layer.errorEvent.addEventListener(reportImageryError));
+      if (layer.ready) {
+        removers.push(layer.imageryProvider.errorEvent.addEventListener(reportImageryError));
+      } else {
+        removers.push(layer.readyEvent.addEventListener(provider => {
+          removers.push(provider.errorEvent.addEventListener(reportImageryError));
+        }));
+      }
+      viewer.imageryLayers.add(layer);
+    }
+    return () => {
+      removers.forEach(remove => remove());
+      if (!viewer.isDestroyed()) layers.forEach(layer => viewer.imageryLayers.remove(layer, true));
+    };
+  }, [mapConfig, mapSource, viewerReady]);
+
+  const handleMapSourceChange = useCallback((source: "local" | "online") => {
+    if (source !== mapSource) {
+      setMapError(null);
+      setMapSource(source);
+    }
+  }, [mapSource]);
 
   // ── Initial camera fly to farm ────────────────────────────────────
   useEffect(() => {
@@ -315,7 +402,7 @@ export default function NavigationScreen() {
     viewer.camera.flyTo({
       destination: Cartesian3.fromDegrees(lon, lat, 500),
     });
-  }, [latitude, longitude, farmLat, farmLon]);
+  }, [latitude, longitude, farmLat, farmLon, viewerReady]);
 
   // ── 3D model entity – create once, then update position/heading ──
   useEffect(() => {
@@ -355,7 +442,7 @@ export default function NavigationScreen() {
         cameraRangeMeters // distance
       )
     );
-  }, [latitude, longitude, heading, selectedColor, cameraRangeMeters]);
+  }, [latitude, longitude, heading, selectedColor, cameraRangeMeters, viewerReady]);
 
   // ── Path painting while tracking ──────────────────────────────────
   useEffect(() => {
@@ -435,6 +522,20 @@ export default function NavigationScreen() {
         ref={containerRef}
         sx={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
       />
+      <Box sx={{ position: "absolute", top: 12, left: 12, maxWidth: "min(360px, 45vw)", zIndex: 1200 }}>
+        {mapConfig && mapSource === "local" && (
+          <Typography sx={{ bgcolor: "rgba(0,0,0,0.75)", color: "white", p: 1, borderRadius: 1 }}>
+            Local imagery · {mapConfig.resolutionMeters} m/pixel · {mapConfig.capturedAt}
+            <br />Outside coverage: low-resolution background
+          </Typography>
+        )}
+        {mapConfig && mapSource === "online" && (
+          <Typography sx={{ bgcolor: "rgba(0,0,0,0.75)", color: "white", p: 1, borderRadius: 1 }}>
+            Online imagery
+          </Typography>
+        )}
+        {mapError && <Alert severity="error" sx={{ mt: 1 }}>{mapError}</Alert>}
+      </Box>
       <NavigationControls
         latitude={latitude}
         longitude={longitude}
@@ -459,6 +560,8 @@ export default function NavigationScreen() {
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
         onReset={handleReset}
+        mapSource={mapConfig ? mapSource : undefined}
+        onMapSourceChange={mapConfig ? handleMapSourceChange : undefined}
       />
     </Box>
   );

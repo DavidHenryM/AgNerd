@@ -7,6 +7,8 @@ import {
   IconButton,
   Slider,
   Stack,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -121,6 +123,8 @@ export interface NavigationControlsProps {
   onZoomIn: () => void;
   onZoomOut: () => void;
   onReset: () => void;
+  mapSource?: "local" | "online";
+  onMapSourceChange?: (source: "local" | "online") => void;
 }
 
 export default function NavigationControls(props: NavigationControlsProps) {
@@ -148,6 +152,8 @@ export default function NavigationControls(props: NavigationControlsProps) {
     onZoomIn,
     onZoomOut,
     onReset,
+    mapSource,
+    onMapSourceChange,
   } = props;
 
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -335,6 +341,43 @@ export default function NavigationControls(props: NavigationControlsProps) {
             maxHeight: "calc(100dvh - 180px)",
             overflowY: "auto",
           }}>
+            {mapSource && onMapSourceChange && (
+              <Box sx={panelSx}>
+                <Typography variant="caption" sx={{ fontWeight: 600 }}>
+                  Maps
+                </Typography>
+                <ToggleButtonGroup
+                  exclusive
+                  value={mapSource}
+                  aria-label="Map source"
+                  onChange={(_, source: unknown) => {
+                    if (source === "local" || source === "online") onMapSourceChange(source);
+                  }}
+                  sx={{
+                    display: "flex",
+                    mt: 0.5,
+                    "& .MuiToggleButton-root": {
+                      flex: 1,
+                      minHeight: 56,
+                      fontSize: 18,
+                      color: "white",
+                      borderColor: "rgba(255,255,255,0.5)",
+                      "&.Mui-selected": {
+                        color: "white",
+                        bgcolor: selectedColor,
+                        "&:hover": { bgcolor: selectedColor },
+                      },
+                    },
+                  }}
+                >
+                  <ToggleButton value="local" aria-label="Local maps">Local</ToggleButton>
+                  <ToggleButton value="online" aria-label="Online maps">Online</ToggleButton>
+                </ToggleButtonGroup>
+                <Typography variant="caption" sx={{ display: "block", mt: 0.5 }}>
+                  {mapSource === "local" ? "Stored imagery; no internet needed" : "Online imagery requires internet"}
+                </Typography>
+              </Box>
+            )}
             {/* ─ Width control ─ */}
             <Box sx={panelSx}>
               <Typography variant="caption" sx={{ fontWeight: 600 }}>

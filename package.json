@@ -18,7 +18,8 @@
     "copy-cesium": "cpx \"node_modules/cesium/Build/Cesium/{Assets,ThirdParty,Widgets,Workers}/**\" \"public/cesium/\" --dereference",
     "gnss:ntrip": "node ./scripts/ntrip-forwarder.mjs",
     "gnss:ntrip:bash": "node ./scripts/ntrip-forwarder.mjs",
-    "gnss:reader": "node ./scripts/gnss-reader.mjs"
+    "gnss:reader": "node ./scripts/gnss-reader.mjs",
+    "maps:prepare": "node ./scripts/prepare-local-imagery.mjs"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
