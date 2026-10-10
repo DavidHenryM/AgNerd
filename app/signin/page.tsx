@@ -197,7 +197,6 @@ export default function SignInPage() {
           {loading ? (resetMode ? "Sending…" : "Signing in…") : resetMode ? "Email password reset link" : method === "password" ? "Sign in with password" : "Email sign-in link"}
           </Typography>
         </Button>
-        {(resetMode || method === "password") && (
           <Button type="button" disabled={loading} onClick={() => {
             setResetMode(!resetMode)
             setResetRequested(false)
@@ -206,7 +205,6 @@ export default function SignInPage() {
           }}>
             {resetMode ? "Back to sign in" : "Set or reset password"}
           </Button>
-        )}
         </>
 }
       </Stack>

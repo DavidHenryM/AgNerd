@@ -78,8 +78,9 @@ The sign-in screen supports the existing emailed sign-in link and one-time
 code, as well as email/password login. The account's email address is its
 username; there is no separate username field.
 
-For an existing account without a password, select **Password**, then
-**Set or reset password**. The emailed link opens a form to save an
+For an existing account without a password, select **Set or reset password**
+below the sign-in button (available on both sign-in tabs).
+The emailed link opens a form to save an
 8-128 character password and expires after one hour. This same flow resets
 forgotten passwords. Resetting a password revokes existing sessions; users
 must sign in again. Link and code sign-in remain available afterward.
