@@ -45,6 +45,15 @@ imports and can prevent the globe from rendering even when imagery metadata
 loads successfully. After updating this command, run `npm run copy-cesium`
 and hard-refresh the browser to replace cached source workers.
 
+Production builds disable Turbopack minification as a workaround for invalid
+octal escapes emitted in Cesium's embedded WebAssembly template strings.
+Without this workaround, the browser rejects a navigation chunk and both the
+map and controls disappear, although the server journal may show no error.
+`npm run build` also validates the syntax of all generated browser chunks.
+This increases bundle sizes but preserves navigation functionality.
+After deploying a rebuilt application, hard-refresh the browser or restart
+`agnerd-kiosk` to load the new chunks.
+
 ### Sign-in options
 
 The sign-in screen supports the existing emailed sign-in link and one-time

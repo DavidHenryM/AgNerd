@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    // Turbopack minification emits invalid octal escapes in Cesium's embedded WASM.
+    turbopackMinify: false,
+  },
   async redirects() {
     return [
       {
