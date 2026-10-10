@@ -18,6 +18,21 @@ with NVM.`, rerun the updated installer. It reuses `~/.nvm` and does not require
 deleting it or reopening the terminal. Loading, installation, and activation
 failures now report which step failed, alongside NVM's error output.
 
+The production application service loads `/etc/agnerd/.env` using systemd's
+`EnvironmentFile`. Put comments on their own lines: unlike dotenv, systemd
+includes inline `#` comments in the value. For example:
+
+```dotenv
+# Base URL of your app
+BETTER_AUTH_URL=http://localhost:3000
+```
+
+An `Invalid base URL` error containing `# Base URL of your app` means the inline
+comment was loaded as part of `BETTER_AUTH_URL`. Remove it from both the source
+`.env` and `/etc/agnerd/.env`, then run `sudo systemctl restart agnerd`.
+Use the deployment's canonical browser URL if it is not `http://localhost:3000`.
+No rebuild is needed for this runtime environment correction.
+
 `npm run dev` and `npm run build` automatically run `copy-cesium` first to populate
 `public/cesium`. These generated assets are not committed to Git. For an existing
 deployment, run `npm run copy-cesium` from the application directory and restart
