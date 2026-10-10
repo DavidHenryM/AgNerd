@@ -6,8 +6,9 @@ export interface MapManifest {
   maxZoom: number;
   format: "png" | "jpg";
   attribution: string;
-  capturedAt: string;
+  capturedAt: string | null;
   resolutionMeters: number;
+  notes?: string;
 }
 
 export function parseMapManifest(value: unknown): MapManifest {
@@ -16,7 +17,8 @@ export function parseMapManifest(value: unknown): MapManifest {
   if (typeof m.id !== "string" || !/^[a-z0-9][a-z0-9-]{0,63}$/.test(m.id) ||
     typeof m.title !== "string" || !m.title ||
     typeof m.attribution !== "string" || !m.attribution ||
-    typeof m.capturedAt !== "string" || Number.isNaN(Date.parse(m.capturedAt)) ||
+    (m.capturedAt !== null && (typeof m.capturedAt !== "string" || Number.isNaN(Date.parse(m.capturedAt)))) ||
+    (m.notes !== undefined && (typeof m.notes !== "string" || !m.notes)) ||
     typeof m.resolutionMeters !== "number" || !Number.isFinite(m.resolutionMeters) || m.resolutionMeters <= 0 ||
     typeof m.minZoom !== "number" || typeof m.maxZoom !== "number" ||
     !Number.isInteger(m.minZoom) || !Number.isInteger(m.maxZoom) ||

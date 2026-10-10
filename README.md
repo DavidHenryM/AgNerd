@@ -267,6 +267,43 @@ and date, and tile/configuration failures are visible. Clearing
 `LOCAL_IMAGERY_DATASET` restores existing online behaviour. The internet indicator
 still performs its separate connectivity probe, but imagery does not need it.
 
+### Higher-resolution NSW imagery (authorised downloads only)
+
+With permission for persistent offline use of the NSW Imagery service:
+
+```bash
+npm run maps:download-nsw -- "$HOME/agnerd-maps"
+```
+
+This downloads the same approximately 10x10 km Dalgety area at XYZ zooms 0-18
+(about 0.48 m ground pixel spacing at the centre). Output spacing is not a
+guarantee of native resolution. The prepared dataset has 9,080 PNG tiles,
+approximately 819 MB of tile data; the transfer archive is approximately
+820 MB. Allow at least 2 GB free while transferring and extracting it.
+The service is a mosaic: the centre catalogue
+includes NUMBLA imagery dated 2011-01-29, but capture dates and detail may differ
+elsewhere. The manifest intentionally has no single capture date. Service
+attribution and overlapping footprint records are saved in `source-metadata.json`.
+User permission is not a grant of redistribution rights.
+
+The downloader uses two workers, retries transient errors, fully decodes each
+256x256 tile, and converts the service's mixed JPEG/PNG responses to PNG.
+It retains incomplete downloads in a hidden staging directory. Rerun the same
+command to resume; the dataset is only published after every required tile
+passes validation. It never overwrites an already-published dataset.
+No GDAL installation is required for this command.
+
+Transfer the supplied `dalgety-nsw-imagery-z18-v1.tar.gz` archive to the Pi:
+
+```bash
+sudo mkdir -p /var/lib/agnerd/maps
+sudo tar -xzf dalgety-nsw-imagery-z18-v1.tar.gz -C /var/lib/agnerd/maps
+```
+
+Set `LOCAL_IMAGERY_DATASET=dalgety-nsw-imagery-z18-v1` in the runtime and installer
+source environment, retain `LOCAL_IMAGERY_ROOT=/var/lib/agnerd/maps`, restart the
+app, and refresh navigation. The Local/Online control still works as before.
+
 ### Saved Raspberry Pi Wi-Fi networks
 
 AgNerd does not manage Wi-Fi profiles. Raspberry Pi OS desktop networking is

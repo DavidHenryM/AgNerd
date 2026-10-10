@@ -19,7 +19,8 @@
     "gnss:ntrip": "node ./scripts/ntrip-forwarder.mjs",
     "gnss:ntrip:bash": "node ./scripts/ntrip-forwarder.mjs",
     "gnss:reader": "node ./scripts/gnss-reader.mjs",
-    "maps:prepare": "node ./scripts/prepare-local-imagery.mjs"
+    "maps:prepare": "node ./scripts/prepare-local-imagery.mjs",
+    "maps:download-nsw": "node ./scripts/download-nsw-imagery.mjs"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -45,6 +46,7 @@
     "react-icons": "^5.7.0",
     "resium": "^1.26.0",
     "serialport": "^13.0.0",
+    "sharp": "^0.35.4",
     "uuid": "^14.0.2"
   },
   "devDependencies": {
@@ -69,7 +71,7 @@
   "allowScripts": {
     "@serialport/bindings-cpp@13.0.0": true,
     "protobufjs@8.5.0": true,
-    "sharp@0.34.5": true,
+    "sharp@0.35.4": true,
     "unrs-resolver@1.12.2": true,
     "prisma@7.10.0": true,
     "@prisma/engines@7.10.0": true,

@@ -525,7 +525,8 @@ export default function NavigationScreen() {
       <Box sx={{ position: "absolute", top: 12, left: 12, maxWidth: "min(360px, 45vw)", zIndex: 1200 }}>
         {mapConfig && mapSource === "local" && (
           <Typography sx={{ bgcolor: "rgba(0,0,0,0.75)", color: "white", p: 1, borderRadius: 1 }}>
-            Local imagery · {mapConfig.resolutionMeters} m/pixel · {mapConfig.capturedAt}
+            Local imagery · {mapConfig.resolutionMeters} m/pixel · {mapConfig.capturedAt ?? "Mixed / unknown dates"}
+            {mapConfig.notes && <><br />{mapConfig.notes}</>}
             <br />Outside coverage: low-resolution background
           </Typography>
         )}
