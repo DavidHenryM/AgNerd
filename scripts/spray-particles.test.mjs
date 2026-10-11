@@ -19,7 +19,8 @@ await test("particles emit across the offset boom and fall toward the ground", (
     random.mock.mockImplementation(() => fraction);
     const particle = new Particle();
     emitter.emit(particle);
-    assert.ok(Cartesian3.distance(particle.position, Cartesian3.lerp(left, right, fraction, new Cartesian3())) < 1e-8);
+    const nozzle = Math.min(11, Math.floor(fraction * 12));
+    assert.ok(Cartesian3.distance(particle.position, Cartesian3.lerp(left, right, (nozzle + 0.5) / 12, new Cartesian3())) < 1e-8);
     const normal = Ellipsoid.WGS84.geodeticSurfaceNormal(particle.position);
     assert.ok(Math.abs(Cartesian3.dot(particle.velocity, normal) + 1) < 1e-8);
   }

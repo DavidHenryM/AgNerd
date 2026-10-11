@@ -624,6 +624,17 @@ After replacing the tractor asset, inspect/centre it using
 `node scripts/tractor-geometry.mjs --centre`, verify the nose is +X, and update
 the source width in `app/lib/tractor-model.ts` if the measured dimensions change.
 
+The 3D spray boom is a lightweight galvanised frame with 12 yellow underside
+nozzles. Its lowest nozzle is 0.5 m above terrain at the boom centre, and the whole
+assembly is 0.5 m tall. The nominal 6 m model has 0.5 m nozzle spacing; changing
+Width stretches only the rails and redistributes the fixed-size supports/nozzles
+evenly, without stretching nozzle shapes or changing height. Nozzle spacing
+therefore varies with width. The rigid boom remains level over uneven terrain.
+Regenerate the standalone asset with `node scripts/generate-boom-model.mjs`.
+A thin ground line continues to indicate the exact coverage footprint.
+
+Navigation starts with a 6 m boom width, zero lateral offset and a -1.5 m
+forward/rear offset (1.5 m behind the GPS coordinate).
 The visible spray boom uses the Width control in ground metres. Positive Offset
 moves it left of travel; negative Offset moves it right. The separate Forward /
 rear offset is positive ahead of the receiver and negative behind it. Both
@@ -634,7 +645,7 @@ heading, or direction of movement when heading is unavailable (initially north).
 Play paints the area between consecutive boom positions in translucent light
 rose-purple; Stop leaves a dimmed
 boom preview without painting. While playing, a Cesium particle mist emits
-downward across the boom in the same purple, following width and both offsets.
+downward from its nozzle positions in the same purple, following width and both offsets.
 The short-lived droplets remain in world space as the tractor moves; emission
 is capped at 160 particles/second for touchscreen devices. Stop, Reset and
 stale/no-fix positions remove the particle system immediately.

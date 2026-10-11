@@ -19,6 +19,8 @@ import {
   Cartographic,
   ParticleSystem,
   ClockStep,
+  ColorBlendMode,
+  PropertyBag,
 } from "cesium";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Alert, Box, Typography } from "@mui/material";
@@ -28,6 +30,7 @@ import useGeolocation from "@lib/hooks/geolocation";
 import { fetchNavigationApi } from "@lib/navigation-auth";
 import { sprayBoom, sprayStrip, type SprayBoom } from "@lib/spray-boom";
 import { TRACTOR_WORLD_SCALE, tractorOrientation } from "@lib/tractor-model";
+import { BOOM_CLEARANCE_METERS, boomNodeTransformations, boomWorldEndpoints } from "@lib/boom-model";
 import { BoomSprayEmitter, createSprayParticles, createSprayTexture, sprayEmissionRate, SPRAY_COLOR } from "@lib/spray-particles";
 import NavigationControls, {
   MODEL_COLORS,
@@ -113,7 +116,7 @@ export default function NavigationScreen() {
   const previousBoomRef = useRef<SprayBoom | null>(null);
   const boomPositionRef = useRef<GpsPoint | null>(null);
   const boomHeadingRef = useRef(0);
-  const boomSettingsRef = useRef({ width: 12, offset: 0, forwardOffset: 0 });
+  const boomSettingsRef = useRef({ width: 6, offset: 0, forwardOffset: -1.5 });
   const initialFlyDone = useRef(false);
   const [mapConfig, setMapConfig] = useState<MapManifest | null>();
   const [mapError, setMapError] = useState<string | null>(null);
@@ -167,9 +170,9 @@ export default function NavigationScreen() {
   const [historyError, setHistoryError] = useState<string | null>(null);
   const historyRequestRef = useRef(false);
   const lastRecordedTimestampRef = useRef<number | null>(null);
-  const [widthMeters, setWidthMeters] = useState(12);
+  const [widthMeters, setWidthMeters] = useState(6);
   const [offsetMeters, setOffsetMeters] = useState(0);
-  const [forwardOffsetMeters, setForwardOffsetMeters] = useState(0);
+  const [forwardOffsetMeters, setForwardOffsetMeters] = useState(-1.5);
   const [totalAreaSqMeters, setTotalAreaSqMeters] = useState(0);
   const [cameraRangeMeters, setCameraRangeMeters] = useState(100);
   const [selectedColor] = useState(MODEL_COLORS[0].hex);
@@ -484,13 +487,34 @@ export default function NavigationScreen() {
       boom.left.lon, boom.left.lat, boom.right.lon, boom.right.lat,
     ]);
     const color = Color.fromCssColorString(selectedColor).withAlpha(isTracking ? 1 : 0.65);
+    const centre = Cartographic.fromCartesian(Cartesian3.midpoint(boomPositions[0], boomPositions[1], new Cartesian3()));
+    const modelPosition = Cartesian3.fromRadians(centre.longitude, centre.latitude, BOOM_CLEARANCE_METERS);
+    const orientation = tractorOrientation(modelPosition, boomHeadingRef.current);
+    const nodeTransformations = boomNodeTransformations(widthMeters);
+    const modelColor = Color.WHITE.withAlpha(isTracking ? 1 : 0.65);
     if (!boomEntityRef.current) {
       boomEntityRef.current = viewer.entities.add({
         name: "Spray boom",
-        polyline: { positions: boomPositions, width: 6, clampToGround: true, material: color },
+        position: modelPosition,
+        orientation,
+        model: {
+          uri: "/models/Boom.glb",
+          heightReference: HeightReference.RELATIVE_TO_GROUND,
+          nodeTransformations,
+          color: modelColor,
+          colorBlendMode: ColorBlendMode.MIX,
+          colorBlendAmount: 0,
+        },
+        polyline: { positions: boomPositions, width: 2, clampToGround: true, material: color },
       });
     } else {
       boomEntityRef.current.show = true;
+      (boomEntityRef.current.position as ConstantPositionProperty).setValue(modelPosition);
+      boomEntityRef.current.orientation = new ConstantProperty(orientation);
+      if (boomEntityRef.current.model) {
+        boomEntityRef.current.model.nodeTransformations = new PropertyBag(nodeTransformations);
+        boomEntityRef.current.model.color = new ConstantProperty(modelColor);
+      }
       if (boomEntityRef.current.polyline) {
         boomEntityRef.current.polyline.positions = new ConstantProperty(boomPositions);
         boomEntityRef.current.polyline.material = new ColorMaterialProperty(color);
@@ -505,11 +529,11 @@ export default function NavigationScreen() {
       previousBoomRef.current = null;
       return;
     }
-    const particleEndpoints = [boom.left, boom.right].map(point => {
-      const cartographic = Cartographic.fromDegrees(point.lon, point.lat);
-      const groundHeight = viewer.scene.globe.getHeight(cartographic) ?? 0;
-      return Cartesian3.fromDegrees(point.lon, point.lat, groundHeight + 1.2);
-    });
+    const groundHeight = viewer.scene.globe.getHeight(centre) ?? 0;
+    const particleEndpoints = boomWorldEndpoints(
+      Cartesian3.fromRadians(centre.longitude, centre.latitude, groundHeight + BOOM_CLEARANCE_METERS),
+      boomHeadingRef.current, widthMeters,
+    );
     sprayEmitterRef.current.setEndpoints(particleEndpoints[0], particleEndpoints[1]);
     if (!sprayParticlesRef.current) {
       sprayTextureRef.current ??= createSprayTexture();

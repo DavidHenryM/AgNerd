@@ -1,19 +1,23 @@
 import { Cartesian2, Cartesian3, Color, Ellipsoid, Particle, ParticleSystem } from "cesium";
+import { boomNozzlePositions } from "./boom-model";
 
 export const SPRAY_COLOR = "#D98CCB";
 
 export class BoomSprayEmitter {
   readonly left = new Cartesian3();
   readonly right = new Cartesian3();
+  private nozzles = boomNozzlePositions(this.left, this.right);
 
   setEndpoints(left: Cartesian3, right: Cartesian3) {
     Cartesian3.clone(left, this.left);
     Cartesian3.clone(right, this.right);
+    this.nozzles = boomNozzlePositions(left, right);
   }
 
   emit(particle: Particle) {
     // World-space emission keeps already emitted droplets behind the moving boom.
-    Cartesian3.lerp(this.left, this.right, Math.random(), particle.position);
+    const index = Math.min(this.nozzles.length - 1, Math.floor(Math.random() * this.nozzles.length));
+    Cartesian3.clone(this.nozzles[index], particle.position);
     Ellipsoid.WGS84.geodeticSurfaceNormal(particle.position, particle.velocity);
     Cartesian3.negate(particle.velocity, particle.velocity);
   }
