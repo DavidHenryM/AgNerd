@@ -27,6 +27,7 @@ import { getUsersFarm } from "@lib/queries";
 import useGeolocation from "@lib/hooks/geolocation";
 import { fetchNavigationApi } from "@lib/navigation-auth";
 import { sprayBoom, sprayStrip, type SprayBoom } from "@lib/spray-boom";
+import { TRACTOR_WORLD_SCALE, tractorOrientation } from "@lib/tractor-model";
 import { BoomSprayEmitter, createSprayParticles, createSprayTexture, sprayEmissionRate, SPRAY_COLOR } from "@lib/spray-particles";
 import NavigationControls, {
   MODEL_COLORS,
@@ -34,11 +35,6 @@ import NavigationControls, {
 
 // ── Geo helpers ─────────────────────────────────────────────────────
 const EARTH_RADIUS = 6_371_000; // metres
-const TRACTOR_TARGET_WIDTH_METERS = 2;
-// Update this if the source GLB width differs; scale = targetWidth / sourceWidth.
-const TRACTOR_SOURCE_WIDTH_METERS = 2;
-const TRACTOR_WORLD_SCALE =
-  TRACTOR_TARGET_WIDTH_METERS / TRACTOR_SOURCE_WIDTH_METERS;
 const SCALE_KEY_BASE_PIXELS = 120;
 const SCALE_KEY_ZOOM_FACTOR = 1 / 3;
 const MIN_CAMERA_CLEARANCE_METERS = 2;
@@ -407,6 +403,20 @@ export default function NavigationScreen() {
     });
   }, [latitude, longitude, farmLat, farmLon, viewerReady]);
 
+  useEffect(() => {
+    if (latitude === null || longitude === null || fixStatusStale || fixType === "NO_FIX") {
+      boomPositionRef.current = null;
+      return;
+    }
+    const current = { lat: latitude, lon: longitude };
+    const previous = boomPositionRef.current;
+    if (heading !== null) boomHeadingRef.current = CesiumMath.toRadians(heading);
+    else if (previous && haversineDistance(previous.lat, previous.lon, current.lat, current.lon) >= 0.5) {
+      boomHeadingRef.current = bearing(previous.lat, previous.lon, current.lat, current.lon);
+    }
+    boomPositionRef.current = current;
+  }, [latitude, longitude, heading, fixStatusStale, fixType]);
+
   // ── 3D model entity – create once, then update position/heading ──
   useEffect(() => {
     const viewer = viewerRef.current;
@@ -417,6 +427,7 @@ export default function NavigationScreen() {
     if (!modelEntityRef.current) {
       const entity = viewer.entities.add({
         position,
+        orientation: tractorOrientation(position, boomHeadingRef.current),
         model: {
           uri: "/models/Tractor.glb",
           // World-space sizing: stays constant relative to terrain regardless of zoom.
@@ -428,15 +439,11 @@ export default function NavigationScreen() {
     } else {
       const entity = modelEntityRef.current;
       (entity.position as ConstantPositionProperty).setValue(position);
-
+      entity.orientation = new ConstantProperty(tractorOrientation(position, boomHeadingRef.current));
     }
-    
 
     // Heading-oriented camera: look from behind and above
-    const headingRad =
-      heading !== null
-        ? CesiumMath.toRadians(heading)
-        : 0;
+    const headingRad = boomHeadingRef.current;
     viewer.camera.lookAt(
       position,
       new HeadingPitchRange(
@@ -445,7 +452,7 @@ export default function NavigationScreen() {
         cameraRangeMeters // distance
       )
     );
-  }, [latitude, longitude, heading, selectedColor, cameraRangeMeters, viewerReady]);
+  }, [latitude, longitude, heading, fixStatusStale, fixType, selectedColor, cameraRangeMeters, viewerReady]);
 
   // The displayed boom and spray polygons share exactly the same endpoints.
   useEffect(() => {
@@ -464,12 +471,6 @@ export default function NavigationScreen() {
     }
 
     const cur: GpsPoint = { lat: latitude, lon: longitude };
-    const lastPosition = boomPositionRef.current;
-    if (heading !== null) boomHeadingRef.current = CesiumMath.toRadians(heading);
-    else if (lastPosition && haversineDistance(lastPosition.lat, lastPosition.lon, cur.lat, cur.lon) >= 0.5) {
-      boomHeadingRef.current = bearing(lastPosition.lat, lastPosition.lon, cur.lat, cur.lon);
-    }
-    boomPositionRef.current = cur;
     const boom = sprayBoom(cur, boomHeadingRef.current, widthMeters, offsetMeters, forwardOffsetMeters);
     const settings = boomSettingsRef.current;
     if (settings.width !== widthMeters || settings.offset !== offsetMeters ||

@@ -614,6 +614,16 @@ readouts, and enlarged width/offset sliders for 7-inch touchscreens. The action
 controls remain 12px from the bottom-left on compact navigation screens, without
 reserving space for the hidden footer; settings and status panels scroll when height
 is limited.
+The tractor GLB is anchored at the centre of its horizontal vertex bounds,
+with its lowest vertex at ground level, and scaled to a measured two-metre
+width. At zero boom offsets, the tractor footprint centre and boom centre
+coincide with the GPS coordinate. The tractor nose, camera and boom share the
+same receiver heading/movement-bearing fallback. This is a visual centre, not
+an assumption about the physical GNSS antenna's mounting position.
+After replacing the tractor asset, inspect/centre it using
+`node scripts/tractor-geometry.mjs --centre`, verify the nose is +X, and update
+the source width in `app/lib/tractor-model.ts` if the measured dimensions change.
+
 The visible spray boom uses the Width control in ground metres. Positive Offset
 moves it left of travel; negative Offset moves it right. The separate Forward /
 rear offset is positive ahead of the receiver and negative behind it. Both
