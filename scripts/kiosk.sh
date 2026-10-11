@@ -1,6 +1,6 @@
 #!/bin/bash
 
-URL="http://localhost:3000/"
+URL="http://localhost:3000/navigation"
 NETWORK_TEST_URL="http://localhost:3000/"
 
 # How long to wait between Chromium restarts
