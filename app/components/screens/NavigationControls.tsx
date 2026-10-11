@@ -271,7 +271,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
       <Box
         sx={{
           position: "fixed",
-          bottom: { xs: 12, md: `calc(${footerHeight} + 12px)` },
+          bottom: { xs: 12, xl: `calc(${footerHeight} + 12px)` },
           right: 12,
           zIndex: 1200,
         }}
@@ -328,7 +328,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
       <Box
         sx={{
           position: "fixed",
-          bottom: { xs: 12, md: `calc(${footerHeight} + 12px)` },
+          bottom: { xs: 12, xl: `calc(${footerHeight} + 12px)` },
           left: 12,
           zIndex: 1200,
         }}
