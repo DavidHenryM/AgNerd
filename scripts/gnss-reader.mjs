@@ -45,7 +45,7 @@ const GPSD_PORT = Number.parseInt(process.env.GPSD_PORT || "2947", 10);
 const GPSD_RECONNECT_MS = Number.parseInt(process.env.GPSD_RECONNECT_MS || "3000", 10);
 const GNSS_READ_DEVICE = process.env.GNSS_READ_DEVICE || process.env.GNSS_DEVICE;
 const GNSS_READ_BAUDRATE = Number.parseInt(process.env.GNSS_READ_BAUDRATE || process.env.GNSS_BAUDRATE || "460800", 10);
-const GNSS_POST_INTERVAL_MS = Number.parseInt(process.env.GNSS_POST_INTERVAL_MS || "1000", 10);
+const GNSS_POST_INTERVAL_MS = Number(process.env.GNSS_POST_INTERVAL_MS || "200");
 const GNSS_INGEST_URL = process.env.GNSS_INGEST_URL || "http://localhost:3000/api/gnss/position";
 let GNSS_INTERNAL_TOKEN = process.env.GNSS_INTERNAL_TOKEN;
 const GNSS_STATUS_FILE = process.env.GNSS_STATUS_FILE || "/tmp/agnerd-gnss-status.json";
@@ -65,6 +65,11 @@ if (GNSS_SOURCE === "serial" && !GNSS_READ_DEVICE) {
 
 if (!Number.isFinite(GPSD_PORT) || GPSD_PORT <= 0) {
   console.error(`Invalid GPSD_PORT '${process.env.GPSD_PORT}'.`);
+  process.exit(1);
+}
+
+if (!Number.isInteger(GNSS_POST_INTERVAL_MS) || GNSS_POST_INTERVAL_MS < 100 || GNSS_POST_INTERVAL_MS > 60000) {
+  console.error("GNSS_POST_INTERVAL_MS must be an integer from 100 to 60000.");
   process.exit(1);
 }
 
@@ -464,6 +469,7 @@ async function postLatest() {
         ...(GNSS_INTERNAL_TOKEN ? { "x-gnss-token": GNSS_INTERNAL_TOKEN } : {}),
       },
       body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(5000),
     });
 
     state.status.lastPostAt = new Date().toISOString();
@@ -538,16 +544,22 @@ const stopCorrections = correctionConfig && serialPort
   ? startCorrectionInput(serialPort, correctionConfig, state.status.corrections)
   : null;
 
+let postInFlight = false;
 setInterval(() => {
+  if (postInFlight) return;
+  postInFlight = true;
   postLatest().catch((error) => {
     console.error(`Unexpected post error: ${error instanceof Error ? error.message : String(error)}`);
-  });
+  }).finally(() => { postInFlight = false; });
 }, GNSS_POST_INTERVAL_MS);
 
+let statusWriteInFlight = false;
 setInterval(() => {
+  if (statusWriteInFlight) return;
+  statusWriteInFlight = true;
   writeStatusFile().catch((error) => {
     console.error(`Unexpected status write error: ${error instanceof Error ? error.message : String(error)}`);
-  });
+  }).finally(() => { statusWriteInFlight = false; });
 }, GNSS_POST_INTERVAL_MS);
 
 let shuttingDown = false;

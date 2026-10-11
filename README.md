@@ -362,8 +362,8 @@ sudo bash scripts/gps-serial-tcp.sh /dev/ttyAMA0 38400 192.168.1.50 5000
 ```
 
 In u-center 2, add a TCP receiver connection to the Pi address and port `5000`.
-Use the baud configured on the receiver (the bridge defaults to 38400, matching
-the example GNSS configuration). UBX/NMEA bytes and commands pass unchanged;
+Use the baud configured on the receiver (the bridge defaults to 38400; the
+X20P example GNSS configuration now uses 115200). UBX/NMEA bytes and commands pass unchanged;
 the receiver must support the protocols/configuration required by u-center 2.
 Default binding is loopback; explicitly supply a LAN address for remote access.
 
@@ -382,6 +382,57 @@ TCP access is unauthenticated and unencrypted: use only a trusted LAN with
 firewall access restricted to your u-center computer, or an SSH tunnel. Never
 forward this port to the internet. The script refuses an already-open device;
 run it with sudo so the ownership check can see other users' processes.
+
+### ZED-X20P rover at 5 Hz
+
+For X20P firmware exposing these configuration keys, use u-center 2 Advanced
+Configuration to set the following on the receiver UART wired to the Pi
+(UART1 shown; substitute UART2 if applicable):
+
+| Key | Value |
+|---|---|
+| `CFG-RATE-MEAS` | `200` ms |
+| `CFG-RATE-NAV` | `1` |
+| `CFG-UART1-BAUDRATE` | `115200` |
+| `CFG-UART1INPROT-UBX` | Enabled |
+| `CFG-UART1INPROT-RTCM3X` | Enabled |
+| `CFG-UART1OUTPROT-UBX` | Enabled |
+| `CFG-UART1OUTPROT-NMEA` | Enabled |
+| `CFG-MSGOUT-UBX_NAV_PVT_UART1` | `1` (every solution) |
+| `CFG-MSGOUT-NMEA_ID_RMC_UART1` | `1` |
+| `CFG-MSGOUT-NMEA_ID_GGA_UART1` | `1` |
+| `CFG-MSGOUT-NMEA_ID_GST_UART1` | Optional `1` |
+
+For a tractor/ground vehicle, `CFG-NAVSPG-DYNMODEL=AUTOMOT` (Automotive,
+value `4`) is available. Keep `CFG-TMODE-MODE` disabled for a normal moving
+rover; do not enable base-station survey-in. Keep working constellation and
+correction settings. X20P is not F9R: do not apply F9R inertial/dead-reckoning
+calibration instructions to it.
+Apply to RAM and save to persistent layers supported by your firmware.
+See the [official X20 HPG 2.10 configuration definitions](https://github.com/u-blox/u-blox-X20-interface-description-json/blob/main/HPG/ZED-X20P/u-blox-X20-HPG-2.10.json);
+use the matching interface description if your receiver firmware differs.
+
+Keep RMC enabled: the current reader uses it for position/course and NAV-PVT for
+accuracy/fix metadata. Excessive GSV/raw observation/debug message output can
+consume UART bandwidth; enable only messages needed by your applications.
+
+Set these values in your source `gnss.env` and `/etc/agnerd/gnss.env`:
+
+```dotenv
+GNSS_READ_BAUDRATE=115200
+GNSS_POST_INTERVAL_MS=200
+```
+
+Stop the temporary bridge, deploy the updated application/reader, and restart
+`agnerd-gnss` and `agnerd-ntrip`. The reader defaults to 200 ms publication,
+and embedded Navigation polls status at 200 ms with one request in flight.
+Status publication runs independently of HTTP ingest, so a slow HTTP response
+does not stall local fixes. Slow writes/requests are not overlapped or queued:
+the next operation uses the newest available fix. Actual UI and spray-history
+rates can be below 5 Hz if the Pi or database cannot keep up.
+Existing environment files are preserved on reinstall; explicitly update a
+previous `GNSS_POST_INTERVAL_MS=1000` value to enable faster publication.
+The five-second stale-fix threshold is unchanged.
 
 ### Internet and offline imagery
 
@@ -671,7 +722,7 @@ Configure the reader in `/etc/agnerd/gnss.env`:
 ```ini
 GNSS_SOURCE=serial
 GNSS_READ_DEVICE=/dev/ttyAMA0
-GNSS_READ_BAUDRATE=38400
+GNSS_READ_BAUDRATE=115200
 GNSS_CORRECTIONS_ENABLED=true
 GNSS_CORRECTION_HOST=localhost
 GNSS_CORRECTION_PORT=2101

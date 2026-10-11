@@ -13,6 +13,8 @@ await test("reader publishes NMEA RTK quality to both status files and ingest wi
       GNSS_READ_DEVICE: "mock-uart",
       GNSS_CORRECTIONS_ENABLED: "false",
       GNSS_INTERNAL_TOKEN: "test-only-token",
+      GNSS_POST_INTERVAL_MS: "200",
+      NODE_OPTIONS: "",
     },
     input: `
 import assert from "node:assert/strict";
@@ -20,15 +22,17 @@ import { mock } from "node:test";
 import { PassThrough } from "node:stream";
 
 const timers = [];
-globalThis.setInterval = (callback) => { timers.push(callback); return 0; };
+globalThis.setInterval = (callback, interval) => { assert.equal(interval, 200); timers.push(callback); return 0; };
 const posted = [];
 globalThis.fetch = async (_url, options) => {
   posted.push(JSON.parse(options.body));
   return { ok: true };
 };
 let status;
+let blockWrite = null;
+let writeCount = 0;
 mock.module("node:fs/promises", { namedExports: {
-  writeFile: async (_path, contents) => { status = JSON.parse(contents); },
+  writeFile: async (_path, contents) => { writeCount++; if (blockWrite) await blockWrite; status = JSON.parse(contents); },
   rename: async () => {},
   mkdir: async () => {},
 } });
@@ -102,6 +106,35 @@ assert.equal(status.fixType, null);
 assert.equal(posted.at(-1).fixType, null);
 assert.equal(posted.at(-1).horizontalAccuracyMeters, null);
 assert.equal(status.nmea.quality, 0);
+let releasePost;
+let postCount = 0;
+globalThis.fetch = async (_url, options) => {
+  postCount++;
+  assert.ok(options.signal instanceof AbortSignal);
+  await new Promise(resolve => { releasePost = resolve; });
+  return { ok: true };
+};
+timers[0]();
+timers[0]();
+assert.equal(postCount, 1, "slow HTTP requests must not overlap at 5 Hz");
+releasePost();
+await new Promise(resolve => setImmediate(resolve));
+timers[0]();
+assert.equal(postCount, 2);
+releasePost();
+await new Promise(resolve => setImmediate(resolve));
+let releaseWrite;
+blockWrite = new Promise(resolve => { releaseWrite = resolve; });
+const beforeWrites = writeCount;
+timers[1]();
+await new Promise(resolve => setImmediate(resolve));
+const before = status;
+timers[1]();
+assert.equal(writeCount, beforeWrites + 1, "atomic status writes must not overlap");
+releaseWrite();
+blockWrite = null;
+await new Promise(resolve => setImmediate(resolve));
+assert.notEqual(status, before);
 console.log("READER_GGA_INTEGRATION_OK");
 process.exit(0);
 `,

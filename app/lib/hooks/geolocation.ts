@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { GnssFixStatus } from "../gnss-status";
 import { fetchNavigationApi } from "../navigation-auth";
+import { startGnssPolling } from "../gnss-polling";
 
 type PositionFix = {
   latitude: number;
@@ -38,7 +39,6 @@ type GnssPositionResponse = {
   fixStatus?: GnssFixStatus;
 };
 
-const GNSS_POLL_INTERVAL_MS = 1000;
 function asNumberOrNull(value: unknown): number | null {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
@@ -96,12 +96,12 @@ const useGeolocation = () => {
     if (embedded !== true) return;
     let cancelled = false;
 
-    async function pollBackendOnce() {
+    async function pollBackendOnce(signal: AbortSignal) {
       try {
         const response = await fetchNavigationApi("/api/gnss/status", {
           method: "GET",
           cache: "no-store",
-          signal: AbortSignal.timeout(5000),
+          signal: AbortSignal.any([signal, AbortSignal.timeout(5000)]),
         });
 
         if (!response.ok) {
@@ -158,14 +158,11 @@ const useGeolocation = () => {
       }
     }
 
-    void pollBackendOnce();
-    const intervalId = window.setInterval(() => {
-      void pollBackendOnce();
-    }, GNSS_POLL_INTERVAL_MS);
+    const stopPolling = startGnssPolling(pollBackendOnce);
 
     return () => {
       cancelled = true;
-      window.clearInterval(intervalId);
+      stopPolling();
     };
   }, [embedded]);
 
