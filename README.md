@@ -362,7 +362,8 @@ This repo includes scripts and API routes to:
 
 1. Pull RTCM corrections from an NTRIP caster.
 2. Forward corrections to a hardware GNSS receiver (for example, ZED-F9R).
-3. Read receiver output (NMEA + UBX) and ingest positions into the app database.
+3. Read receiver output (NMEA + UBX) and publish live positions locally; record
+   database history only while spraying is enabled in navigation.
 
 ### Environment Setup
 
@@ -411,6 +412,17 @@ This runs [scripts/gnss-reader.mjs](scripts/gnss-reader.mjs), which:
 - Parses UBX NAV-PVT packets for fix and accuracy metadata.
 - Parses checksum-validated NMEA GGA quality for GPS/DGPS/RTK status and satellite count.
 - POSTs position updates to `GNSS_INGEST_URL` (default `/api/gnss/position`).
+  Reader updates are acknowledged with `recorded: false` without accessing the
+  database. Live GPS continues through the local status file.
+  Navigation submits fresh valid fixes with `spraying: true` only while Play is
+  active. These writes require a signed-in session (the reader token cannot
+  authorize history recording). Stop, Reset, lost/stale fixes and leaving the
+  screen stop new history submissions; an already submitted write may complete.
+  Each successful fix timestamp is submitted once, with at most one request in
+  flight. Save failures display an alert and retry on subsequent fresh fixes.
+  Existing history is retained; this does not delete rows or clear a Prisma
+  `planLimitReached` account restriction. Resolve that restriction in the Prisma
+  console before new writes can succeed.
 - Writes health/status to `GNSS_STATUS_FILE`.
 - Optionally receives TCP corrections and writes them through its existing
   serial port, without a second process opening the UART.

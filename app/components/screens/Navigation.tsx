@@ -168,6 +168,9 @@ export default function NavigationScreen() {
 
   // Tracking state
   const [isTracking, setIsTracking] = useState(false);
+  const [historyError, setHistoryError] = useState<string | null>(null);
+  const historyRequestRef = useRef(false);
+  const lastRecordedTimestampRef = useRef<number | null>(null);
   const [widthMeters, setWidthMeters] = useState(12);
   const [offsetMeters, setOffsetMeters] = useState(0);
   const [forwardOffsetMeters, setForwardOffsetMeters] = useState(0);
@@ -176,6 +179,40 @@ export default function NavigationScreen() {
   const [selectedColor] = useState(MODEL_COLORS[0].hex);
   const prevPointRef = useRef<GpsPoint | null>(null);
   const stripEntitiesRef = useRef<Entity[]>([]);
+
+  useEffect(() => {
+    if (!isTracking || latitude === null || longitude === null || locationTimestamp === null ||
+      fixStatusStale || fixType === "NO_FIX" || historyRequestRef.current ||
+      lastRecordedTimestampRef.current === locationTimestamp) return;
+    const timestamp = locationTimestamp;
+    historyRequestRef.current = true;
+    void (async () => {
+      try {
+        const response = await fetchNavigationApi("/api/gnss/position", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: AbortSignal.timeout(5000),
+          body: JSON.stringify({
+            spraying: true,
+            latitude, longitude, heading, timestamp: new Date(timestamp).toISOString(),
+            fixType, satellites, horizontalAccuracyMeters: accuracy, speedKnots: speed,
+          }),
+        });
+        if (!response.ok) throw new Error(`Spray history request failed: HTTP ${response.status}. Check database availability and account limits.`);
+        const result: unknown = await response.json();
+        if (!result || typeof result !== "object" || !("recorded" in result) || result.recorded !== true) {
+          throw new Error("Spray history was not recorded.");
+        }
+        lastRecordedTimestampRef.current = timestamp;
+        setHistoryError(null);
+      } catch (error) {
+        console.error("Spray history recording failed:", error);
+        setHistoryError(error instanceof Error ? error.message : String(error));
+      } finally {
+        historyRequestRef.current = false;
+      }
+    })();
+  }, [isTracking, latitude, longitude, locationTimestamp, heading, fixStatusStale, fixType, satellites, accuracy, speed]);
 
   const { mapScaleMeters, mapScalePixels } = useMemo(() => {
     const rawMeters = zoomLevelDistanceForPixelSpan(
@@ -566,6 +603,7 @@ export default function NavigationScreen() {
           </Typography>
         )}
         {mapError && <Alert severity="error" sx={{ mt: 1 }}>{mapError}</Alert>}
+        {historyError && <Alert severity="error" sx={{ mt: 1 }}>Spray history not saved: {historyError}</Alert>}
       </Box>
       <NavigationControls
         latitude={latitude}
