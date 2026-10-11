@@ -345,7 +345,12 @@ It follows receiver
 heading, or direction of movement when heading is unavailable (initially north).
 Play paints the area between consecutive boom positions in translucent light
 rose-purple; Stop leaves a dimmed
-boom preview without painting. Stale/no-fix positions hide the boom and break the
+boom preview without painting. While playing, a Cesium particle mist emits
+downward across the boom in the same purple, following width and both offsets.
+The short-lived droplets remain in world space as the tractor moves; emission
+is capped at 160 particles/second for touchscreen devices. Stop, Reset and
+stale/no-fix positions remove the particle system immediately.
+Stale/no-fix positions hide the boom and break the
 paint trail so a GPS outage is not joined by a sprayed strip.
 Navigation checks the session before starting map/GPS requests. An expired
 session returns to sign-in with navigation as the callback; protected API

@@ -16,6 +16,9 @@ import {
   UrlTemplateImageryProvider,
   GeographicTilingScheme,
   ConstantProperty,
+  Cartographic,
+  ParticleSystem,
+  ClockStep,
 } from "cesium";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Alert, Box, Typography } from "@mui/material";
@@ -24,6 +27,7 @@ import { getUsersFarm } from "@lib/queries";
 import useGeolocation from "@lib/hooks/geolocation";
 import { fetchNavigationApi } from "@lib/navigation-auth";
 import { sprayBoom, sprayStrip, type SprayBoom } from "@lib/spray-boom";
+import { BoomSprayEmitter, createSprayParticles, createSprayTexture, sprayEmissionRate, SPRAY_COLOR } from "@lib/spray-particles";
 import NavigationControls, {
   MODEL_COLORS,
 } from "@components/screens/NavigationControls";
@@ -102,13 +106,14 @@ interface GpsPoint {
   lon: number;
 }
 
-const SPRAY_COLOR = "#D98CCB";
-
 export default function NavigationScreen() {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<CesiumViewer | null>(null);
   const modelEntityRef = useRef<Entity | null>(null);
   const boomEntityRef = useRef<Entity | null>(null);
+  const sprayParticlesRef = useRef<ParticleSystem | null>(null);
+  const sprayEmitterRef = useRef(new BoomSprayEmitter());
+  const sprayTextureRef = useRef<HTMLCanvasElement | null>(null);
   const previousBoomRef = useRef<SprayBoom | null>(null);
   const boomPositionRef = useRef<GpsPoint | null>(null);
   const boomHeadingRef = useRef(0);
@@ -227,6 +232,7 @@ export default function NavigationScreen() {
       homeButton: false,
       animation: false,
       timeline: false,
+      shouldAnimate: true,
       sceneModePicker: false,
       baseLayerPicker: false,
       geocoder: false,
@@ -237,6 +243,7 @@ export default function NavigationScreen() {
       ...(mapConfig ? { baseLayer: false as const } : {}),
     });
     viewerRef.current = viewer;
+    viewer.clock.clockStep = ClockStep.SYSTEM_CLOCK;
     viewer.camera.setView({ destination: mapConfig ? Rectangle.fromDegrees(...mapConfig.bounds) : AUSTRALIA_RECTANGLE });
     setViewerReady(true);
 
@@ -291,6 +298,7 @@ export default function NavigationScreen() {
       viewerRef.current = null;
       modelEntityRef.current = null;
       boomEntityRef.current = null;
+      sprayParticlesRef.current = null;
       previousBoomRef.current = null;
       prevPointRef.current = null;
       boomPositionRef.current = null;
@@ -408,6 +416,10 @@ export default function NavigationScreen() {
     if (!viewer) return;
     if (latitude === null || longitude === null || fixStatusStale || fixType === "NO_FIX") {
       if (boomEntityRef.current) boomEntityRef.current.show = false;
+      if (sprayParticlesRef.current) {
+        viewer.scene.primitives.remove(sprayParticlesRef.current);
+        sprayParticlesRef.current = null;
+      }
       prevPointRef.current = null;
       previousBoomRef.current = null;
       boomPositionRef.current = null;
@@ -447,9 +459,27 @@ export default function NavigationScreen() {
       }
     }
     if (!isTracking) {
+      if (sprayParticlesRef.current) {
+        viewer.scene.primitives.remove(sprayParticlesRef.current);
+        sprayParticlesRef.current = null;
+      }
       prevPointRef.current = null;
       previousBoomRef.current = null;
       return;
+    }
+    const particleEndpoints = [boom.left, boom.right].map(point => {
+      const cartographic = Cartographic.fromDegrees(point.lon, point.lat);
+      const groundHeight = viewer.scene.globe.getHeight(cartographic) ?? 0;
+      return Cartesian3.fromDegrees(point.lon, point.lat, groundHeight + 1.2);
+    });
+    sprayEmitterRef.current.setEndpoints(particleEndpoints[0], particleEndpoints[1]);
+    if (!sprayParticlesRef.current) {
+      sprayTextureRef.current ??= createSprayTexture();
+      const system = createSprayParticles(sprayEmitterRef.current, sprayTextureRef.current, widthMeters);
+      viewer.scene.primitives.add(system);
+      sprayParticlesRef.current = system;
+    } else {
+      sprayParticlesRef.current.emissionRate = sprayEmissionRate(widthMeters);
     }
     const prev = prevPointRef.current;
 
@@ -493,6 +523,10 @@ export default function NavigationScreen() {
   const handleReset = useCallback(() => {
     const viewer = viewerRef.current;
     if (viewer) {
+      if (sprayParticlesRef.current) {
+        viewer.scene.primitives.remove(sprayParticlesRef.current);
+        sprayParticlesRef.current = null;
+      }
       for (const e of stripEntitiesRef.current) {
         viewer.entities.remove(e);
       }
