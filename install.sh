@@ -172,6 +172,8 @@ sudo cat /etc/agnerd/database.env |
 sudo cat /etc/agnerd/database.env |
     sudo node scripts/configure-embedded-env.mjs /etc/agnerd/.env
 echo -e "\033[32mEmbedded mode and LOCAL_DATABASE_URL configured in $SCRIPT_DIR/.env and /etc/agnerd/.env.\033[0m"
+sudo cat /etc/agnerd/database.env |
+    sudo node scripts/bootstrap-embedded-database.mjs /etc/agnerd/.env
 
 echo -e "\033[35mInstalling GNSS and NTRIP helper scripts to /opt/agnerd/scripts...\033[0m"
 sudo mkdir -p /opt/agnerd/scripts

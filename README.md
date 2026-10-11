@@ -194,8 +194,30 @@ prisma/schema.prisma --script --output prisma/embedded-schema.sql`.
 
 #### Initial farm data and offline password login
 
-The installer does not automatically copy data from the cloud or send database
-credentials to another deployment. Export business data from the online
+Embedded installs automatically import an initial business snapshot when the
+local business database is empty and a configured cloud PostgreSQL database is
+reachable. Keep the cloud connection in the source `.env` (copied to
+`/etc/agnerd/.env`), using `PRISMA_DATABASE_POSTGRES_URL`, `DATABASE_URL`, or
+`PRISMA_DATABASE_URL` in that precedence order. The provisioned
+`LOCAL_DATABASE_URL` remains the application's runtime database.
+
+The installer checks reachability, captures a read-only cloud snapshot and
+restores it transactionally into the local database. It never writes cloud
+records or overwrites populated local business tables. Reinstalls skip the
+import once local business records exist. Missing cloud configuration or a
+failed cloud connection produces an explicit skip message and allows offline
+installation to continue; rerun the installer while the local database is still
+empty to retry. Capture/restore failures (including incompatible schemas or
+oversized data) stop installation rather than reporting a successful import.
+No snapshot file or cloud credentials are uploaded to another service.
+Table mismatches report tables missing from the snapshot and from the local
+database. Align the business schemas using reviewed database patches and export
+a fresh snapshot; do not remove the checks or reset a database to bypass them.
+
+Passwords, sessions and radio keys are excluded. After an automatic import,
+run the `user` command below to set a local password for your imported email.
+
+For a manual transfer instead, export business data from the online
 deployment's source checkout, using its online database environment:
 
 ```bash

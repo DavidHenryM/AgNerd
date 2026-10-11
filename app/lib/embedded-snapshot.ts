@@ -26,6 +26,13 @@ export interface BusinessSnapshot {
   tables: Record<string, Record<string, unknown>[]>;
 }
 
+export class SnapshotCompatibilityError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "SnapshotCompatibilityError";
+  }
+}
+
 const secretFields = new Set(["password", "token", "accessToken", "refreshToken", "idToken", "appKey"]);
 function allowedTable(name: string) {
   if (BUSINESS_TABLES.includes(name)) return true;
@@ -60,6 +67,19 @@ async function snapshotTables(client: PoolClient) {
     `SELECT tablename AS name FROM pg_tables WHERE schemaname = 'public' ORDER BY tablename`,
   );
   return result.rows.map(row => row.name).filter(allowedTable);
+}
+
+export async function businessDatabaseIsEmpty(pool: Pool) {
+  const client = await pool.connect();
+  try {
+    for (const name of await snapshotTables(client)) {
+      const result = await client.query(`SELECT 1 FROM public.${identifier(name)} LIMIT 1`);
+      if (result.rowCount) return false;
+    }
+    return true;
+  } finally {
+    client.release();
+  }
 }
 
 export async function captureSnapshot(pool: Pool): Promise<Buffer> {
@@ -116,9 +136,13 @@ export async function restoreSnapshot(pool: Pool, payload: Uint8Array) {
       const result = await client.query(`SELECT 1 FROM public.${identifier(name)} LIMIT 1`);
       if (result.rowCount) throw new Error("Restore requires an empty business database; existing data will not be overwritten.");
     }
-    if (Object.keys(snapshot.tables).length !== tables.length ||
-      tables.some(name => !Object.hasOwn(snapshot.tables, name))) {
-      throw new Error("Snapshot schema does not match this database.");
+    const missing = tables.filter(name => !Object.hasOwn(snapshot.tables, name));
+    const extra = Object.keys(snapshot.tables).filter(name => !tables.includes(name));
+    if (missing.length || extra.length) {
+      throw new SnapshotCompatibilityError(
+        `Snapshot schema does not match this database. Missing from snapshot: ${missing.join(", ") || "none"}. ` +
+        `Missing from local database: ${extra.join(", ") || "none"}. Align the business schemas and export a fresh snapshot; no data was restored.`,
+      );
     }
     const columns = await client.query<{ table: string; column: string }>(
       `SELECT table_name AS "table", column_name AS "column" FROM information_schema.columns
@@ -128,7 +152,10 @@ export async function restoreSnapshot(pool: Pool, payload: Uint8Array) {
       const expected = columns.rows.filter(column => column.table === name).map(column => column.column);
       if (rows.some(row => Object.keys(row).length !== expected.length ||
         expected.some(column => !Object.hasOwn(row, column)))) {
-        throw new Error("Snapshot columns do not match this database.");
+        throw new SnapshotCompatibilityError(
+          `Snapshot columns do not match this database for table ${name}. Expected columns: ${expected.join(", ")}. ` +
+          "Align the business schemas and export a fresh snapshot; no data was restored.",
+        );
       }
     }
     const constraints = await client.query<{ table: string; name: string; deferrable: boolean; deferred: boolean }>(
