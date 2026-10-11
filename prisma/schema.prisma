@@ -12,6 +12,30 @@ datasource db {
   provider = "postgresql"
 }
 
+model EmbeddedBackup {
+  id         String   @id
+  deviceId   String
+  capturedAt DateTime
+  createdAt  DateTime @default(now())
+  checksum   String
+  payload    Bytes
+
+  @@index([deviceId, createdAt])
+}
+
+model EmbeddedSyncState {
+  id           String    @id
+  deviceId     String?
+  pendingId    String?
+  pendingData  Bytes?
+  checksum     String?
+  capturedAt   DateTime?
+  leaseUntil   DateTime?
+  leaseId      String?
+  lastSyncedAt DateTime?
+  lastError    String?
+}
+
 model Farm {
   id                 String        @id @default(cuid())
   name               String

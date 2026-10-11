@@ -2,6 +2,19 @@
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR" || exit 1
+export AGNERD_DEPLOYMENT_MODE="${AGNERD_DEPLOYMENT_MODE:-embedded}"
+case "$AGNERD_DEPLOYMENT_MODE" in
+    online)
+        echo "Building online deployment; no PostgreSQL, GNSS, kiosk or offline files will be installed."
+        npm ci && NODE_OPTIONS= npm run build || exit 1
+        echo "Online build ready. Run npm start using your cloud database environment."
+        exit 0
+        ;;
+    embedded) ;;
+    *) echo "AGNERD_DEPLOYMENT_MODE must be embedded or online." >&2; exit 1 ;;
+esac
+# Only needed for client generation/build. The runtime URL is provisioned after a successful build.
+export LOCAL_DATABASE_URL="${LOCAL_DATABASE_URL:-postgresql://build-only@127.0.0.1:5432/agnerd}"
 echo -e "\033[35mStarting AgNerd installation from $SCRIPT_DIR\033[0m"
 echo -e "\033[35mUpdating package lists...\033[0m"
 sudo apt update
@@ -112,6 +125,8 @@ fi
 
 set -e
 
+bash scripts/setup-embedded-database.sh
+
 if [ -f gnss.env ]; then
     echo -e "\033[35mUpdating /etc/agnerd/gnss.env from gnss.env\033[0m"
     sudo cp gnss.env /etc/agnerd/gnss.env
@@ -199,6 +214,12 @@ sudo rm -rf -- /opt/agnerd/.next /opt/agnerd/node_modules
 sudo mv /opt/agnerd/.next.incoming /opt/agnerd/.next
 sudo mv /opt/agnerd/node_modules.incoming /opt/agnerd/node_modules
 sudo cp package.json package-lock.json next.config.ts /opt/agnerd/
+sudo cp prisma.config.ts /opt/agnerd/
+sudo mkdir -p /opt/agnerd/prisma /opt/agnerd/app/lib /opt/agnerd/app/generated
+sudo cp -R prisma/. /opt/agnerd/prisma/
+sudo cp -R app/generated/prisma /opt/agnerd/app/generated/
+sudo cp app/lib/deployment.ts app/lib/embedded-snapshot.ts app/lib/password-policy.ts /opt/agnerd/app/lib/
+sudo cp scripts/embedded-database.mjs /opt/agnerd/scripts/
 if [ -d public ]; then
     sudo cp -R public/. /opt/agnerd/public/
 else

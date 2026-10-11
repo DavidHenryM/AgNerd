@@ -8,6 +8,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ### Linux installer
 
+The installer is for an embedded Pi by default. It exports
+`AGNERD_DEPLOYMENT_MODE=embedded`, provisions local PostgreSQL and installs
+GNSS/NTRIP/kiosk services. For a web deployment, use
+`AGNERD_DEPLOYMENT_MODE=online bash install.sh`: this runs dependency installation
+and the production build only, without apt, systemd, PostgreSQL, GNSS or kiosk
+installation. Deploy/run that build using your normal hosting platform.
+
 Run `bash install.sh` on the deployment machine. If `/usr/bin/node` or
 `/usr/bin/npm` is missing, the installer loads NVM without automatically
 selecting a version, installs and activates the latest stable Node.js, and
@@ -32,8 +39,10 @@ This is not an atomic release switch or automatic rollback.
 local content. Environment files keep the existing installer update rules.
 The installer never deletes the application root or `/var/lib/agnerd/maps`.
 
-The production application service loads `/etc/agnerd/.env` using systemd's
-`EnvironmentFile`. Put comments on their own lines: unlike dotenv, systemd
+The embedded application service loads `/etc/agnerd/.env`, then the
+installer-managed `/etc/agnerd/database.env` using systemd's `EnvironmentFile`.
+The latter pins embedded mode and the local database URL, overriding cloud
+database settings in the former. Put comments on their own lines: unlike dotenv, systemd
 includes inline `#` comments in the value. For example:
 
 ```dotenv
@@ -111,15 +120,164 @@ PRISMA_DATABASE_URL="${PRISMA_DATABASE_POSTGRES_URL:-$DATABASE_URL}" \
   npx prisma db execute --file prisma/patches/add-geopoint-boundary-fields.sql
 ```
 
-The application uses `PRISMA_DATABASE_POSTGRES_URL`, falling back to
-`DATABASE_URL`; the Prisma CLI reads `PRISMA_DATABASE_URL` from
-[prisma.config.ts](prisma.config.ts). Ensure these target the same database.
+Application queries and the Prisma CLI now share the deployment-aware URL
+selection in [app/lib/deployment.ts](app/lib/deployment.ts). Online mode uses
+`PRISMA_DATABASE_POSTGRES_URL`, then `DATABASE_URL`, then `PRISMA_DATABASE_URL`.
+Embedded mode uses **only** `LOCAL_DATABASE_URL`, which must point to loopback
+PostgreSQL. It never falls back to a cloud URL.
 The repair is transactional and safe to reapply: it adds the missing columns
 and farm-boundary foreign key without deleting existing rows. Existing points
 receive `sortOrder = 0`; their boundary order is not reconstructed.
 This is a targeted patch for existing databases, not a full migration baseline.
 Avoid a blanket `prisma db push` against a populated database without reviewing
 all proposed schema changes.
+
+### Embedded versus online deployment
+
+`AGNERD_DEPLOYMENT_MODE` accepts `online` (the application default) or `embedded`.
+Invalid values fail explicitly. This is a **server-side runtime variable**;
+restart the application after changing it. Browser GPS selection reads the mode
+from the authenticated `/api/deployment` endpoint, so one build supports either
+deployment.
+
+| Feature | Online | Embedded |
+|---|---|---|
+| Main Prisma/Better Auth database | Configured cloud PostgreSQL | PostgreSQL on the device |
+| GPS | Browser location | Local GNSS reader, optional browser fallback |
+| Local imagery | Disabled, even if dataset env is set | Available when dataset env is set |
+| GNSS status-file/CORS autodetection | No local filesystem reads | Uses local status files |
+| Manual cloud backup | Receives/list/downloads backups | Creates/uploads backups |
+| PostgreSQL/GNSS/NTRIP/kiosk installer | Not installed | Installed by `install.sh` |
+
+For hosted deployment:
+
+```dotenv
+AGNERD_DEPLOYMENT_MODE=online
+DATABASE_URL=postgresql://user:password@your-postgres-host/database
+```
+
+For embedded development without the installer:
+
+```dotenv
+AGNERD_DEPLOYMENT_MODE=embedded
+LOCAL_DATABASE_URL=postgresql://user:password@127.0.0.1:5432/agnerd
+```
+
+The Pi installer creates an `agnerd` database/login with a random password,
+stores its URL in root-readable `/etc/agnerd/database.env` and preserves that
+file on reinstall. PostgreSQL stores data in its normal persistent distribution
+directory (typically `/var/lib/postgresql`), outside `/opt/agnerd`. Protect the
+Pi and use an SSD/reliable power; do not expose its PostgreSQL port externally.
+If an existing `agnerd` role uses different credentials, setup fails rather
+than replacing its password: provision a correct `database.env` before retrying.
+
+A **new, empty** local database is initialised from
+[prisma/embedded-schema.sql](prisma/embedded-schema.sql), generated from the
+active Prisma schema. Existing databases are not reset; the installer applies
+only [the backup-table patch](prisma/patches/add-embedded-backups.sql).
+Before deploying the online receiver, back up the online database and apply
+that same additive patch using the online environment:
+
+```bash
+npx prisma db execute --file prisma/patches/add-embedded-backups.sql
+```
+
+Client generation does not apply this patch. Future business-schema changes
+need reviewed patches on both deployments; regenerate the empty-database
+bootstrap with `npx prisma migrate diff --from-empty --to-schema
+prisma/schema.prisma --script --output prisma/embedded-schema.sql`.
+
+#### Initial farm data and offline password login
+
+The installer does not automatically copy data from the cloud or send database
+credentials to another deployment. Export business data from the online
+deployment's source checkout, using its online database environment:
+
+```bash
+node scripts/embedded-database.mjs export farm-bootstrap.json.gz
+```
+
+Transfer the file to the Pi through a trusted channel. Stop the application
+before restoring. On an **empty business database**:
+
+```bash
+sudo systemctl stop agnerd
+sudo bash -c 'set -a; source /etc/agnerd/database.env; set +a; cd /opt/agnerd; node scripts/embedded-database.mjs restore /path/to/farm-bootstrap.json.gz'
+sudo bash -c 'set -a; source /etc/agnerd/database.env; set +a; cd /opt/agnerd; node scripts/embedded-database.mjs user'
+sudo systemctl start agnerd
+```
+
+Restore keeps record IDs, PostgreSQL arrays/enums and join-table relationships,
+is transactional and refuses to overwrite existing business records. It does
+not merge online edits into a populated Pi database.
+The interactive `user` command provisions/resets a **local** password for an
+imported user, or creates a user and farm for a fresh installation. Passwords
+are entered without echo, hashed with Better Auth, and changing a local password
+revokes local sessions. Cloud credentials are unaffected.
+
+Email/password login works without internet after provisioning. Email links,
+OTP emails and emailed resets still require connectivity and mail configuration.
+Snapshots exclude `account`, `session`, `verification`, `invitation`, sync state
+and `LoraDevice` (contains radio keys). Reprovision local credentials and radio
+keys after recovery. Snapshots include user profiles and contact details:
+handle them as private farm data.
+
+#### Manual cloud backup (Sync now)
+
+This is **one-way, versioned snapshot backup**, not replication or a merge into
+the online app's live farm/livestock tables. No scheduled upload is started.
+The local database is authoritative for the Pi; cloud-hosted business records
+remain independent.
+
+Configure the Pi's `/etc/agnerd/.env`:
+
+```dotenv
+EMBEDDED_DEVICE_ID=dalgety-pi
+EMBEDDED_SYNC_URL=https://your-online-app.example/api/embedded/backups
+EMBEDDED_SYNC_TOKEN=replace-with-a-random-secret-at-least-32-characters
+EMBEDDED_SYNC_ADMIN_EMAILS=your-operator@example.com
+```
+
+Configure the online app:
+
+```dotenv
+AGNERD_DEPLOYMENT_MODE=online
+EMBEDDED_ALLOWED_DEVICE_IDS=dalgety-pi
+EMBEDDED_SYNC_TOKEN=the-same-random-secret-as-the-pi
+EMBEDDED_SYNC_ADMIN_EMAILS=your-online-backup-operator@example.com
+```
+
+Use a fresh secret such as the output of `openssl rand -hex 32`; keep it only
+in server environment files, never a `NEXT_PUBLIC_*` variable. HTTPS is required.
+The shared token is for a trusted device fleet; allowed device IDs limit
+ingestion. Operator emails are an explicit allowlist with access to the
+**entire** deployment's business snapshots, not just one farm.
+
+On the Pi, open **Settings -> Sync now**. The app:
+
+1. Captures a consistent local PostgreSQL snapshot.
+2. Stores the compressed payload and ID locally before uploading.
+3. Sends it to the online backup endpoint.
+4. Clears the pending payload only after a matching ID/checksum acknowledgement.
+
+Only one job runs per Pi. A failed upload stays pending; retry sends the same
+bytes/ID, so a lost acknowledgement does not duplicate cloud storage. A retry
+uploads the previous pending snapshot first; click again after success to
+capture newer changes. Closing the browser does not cancel server processing.
+After a process restart, the lease expires within three minutes; use Refresh
+status, then Sync now. There is no automatic background retry.
+Local edits during an upload remain local and are included in the next snapshot.
+
+Online backup operators can list/download snapshots from Settings. Recover a
+download with the same `restore` command into a fresh matching embedded database.
+Limits are 16 MiB compressed, 64 MiB uncompressed and 250,000 rows per table;
+oversized snapshots fail explicitly. Backup versions are **not automatically
+pruned**: monitor cloud storage and remove old `EmbeddedBackup` versions through
+an authorised database administration workflow when appropriate.
+
+Keep separate regular local PostgreSQL backups (including credentials) and test
+restoration. Manual cloud business snapshots do not back up authentication,
+environment files, imagery tiles or GNSS/NTRIP configuration.
 
 First, run the development server:
 

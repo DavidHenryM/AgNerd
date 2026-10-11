@@ -3,6 +3,7 @@ import { prisma } from "@lib/prisma";
 import { auth } from "@lib/auth";
 import { headers } from "next/headers";
 import { Resource } from "cesium";
+import { deploymentMode } from "@lib/deployment";
 
 export const dynamic = "force-dynamic";
 
@@ -152,6 +153,7 @@ function buildNtripPath(stationCode: string): string | null {
 const GNSS_STATUS_FILE = process.env.GNSS_STATUS_FILE ?? "/tmp/agnerd-gnss-status.json";
 
 async function readPositionFromStatusFile(): Promise<{ latitude: number; longitude: number } | null> {
+  if (deploymentMode() !== "embedded") return null;
   const candidates = [
     GNSS_STATUS_FILE,
     "/tmp/agnerd-gnss-status.json",

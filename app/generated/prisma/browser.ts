@@ -18,6 +18,16 @@ export { Prisma }
 export * as $Enums from './enums'
 export * from './enums';
 /**
+ * Model EmbeddedBackup
+ * 
+ */
+export type EmbeddedBackup = Prisma.EmbeddedBackupModel
+/**
+ * Model EmbeddedSyncState
+ * 
+ */
+export type EmbeddedSyncState = Prisma.EmbeddedSyncStateModel
+/**
  * Model Farm
  * 
  */

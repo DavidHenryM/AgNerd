@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { auth } from "@lib/auth";
 import { headers } from "next/headers";
 import { parseGnssFixStatus } from "@lib/gnss-status";
+import { deploymentMode } from "@lib/deployment";
 
 export const dynamic = "force-dynamic";
 
@@ -85,6 +86,9 @@ async function readStatusFilePathFromEnvFile(): Promise<string | null> {
 }
 
 export async function GET() {
+  if (deploymentMode() !== "embedded") {
+    return Response.json({ ok: true, latestPosition: null, embedded: false });
+  }
   const session = await auth.api.getSession({ headers: await headers() })
   if (!session) {
     return Response.json({ ok: false, error: "Unauthorized" }, { status: 401 })

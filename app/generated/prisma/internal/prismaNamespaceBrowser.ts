@@ -51,6 +51,8 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  EmbeddedBackup: 'EmbeddedBackup',
+  EmbeddedSyncState: 'EmbeddedSyncState',
   Farm: 'Farm',
   User: 'User',
   Address: 'Address',
@@ -107,6 +109,42 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const EmbeddedBackupScalarFieldEnum = {
+  id: 'id',
+  deviceId: 'deviceId',
+  capturedAt: 'capturedAt',
+  createdAt: 'createdAt',
+  checksum: 'checksum',
+  payload: 'payload'
+} as const
+
+export type EmbeddedBackupScalarFieldEnum = (typeof EmbeddedBackupScalarFieldEnum)[keyof typeof EmbeddedBackupScalarFieldEnum]
+
+
+export const RelationLoadStrategy = {
+  query: 'query',
+  join: 'join'
+} as const
+
+export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof RelationLoadStrategy]
+
+
+export const EmbeddedSyncStateScalarFieldEnum = {
+  id: 'id',
+  deviceId: 'deviceId',
+  pendingId: 'pendingId',
+  pendingData: 'pendingData',
+  checksum: 'checksum',
+  capturedAt: 'capturedAt',
+  leaseUntil: 'leaseUntil',
+  leaseId: 'leaseId',
+  lastSyncedAt: 'lastSyncedAt',
+  lastError: 'lastError'
+} as const
+
+export type EmbeddedSyncStateScalarFieldEnum = (typeof EmbeddedSyncStateScalarFieldEnum)[keyof typeof EmbeddedSyncStateScalarFieldEnum]
+
+
 export const FarmScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -124,14 +162,6 @@ export const FarmScalarFieldEnum = {
 } as const
 
 export type FarmScalarFieldEnum = (typeof FarmScalarFieldEnum)[keyof typeof FarmScalarFieldEnum]
-
-
-export const RelationLoadStrategy = {
-  query: 'query',
-  join: 'join'
-} as const
-
-export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof RelationLoadStrategy]
 
 
 export const UserScalarFieldEnum = {

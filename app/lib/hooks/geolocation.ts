@@ -39,9 +39,6 @@ type GnssPositionResponse = {
 };
 
 const GNSS_POLL_INTERVAL_MS = 1000;
-const ENABLE_BROWSER_GEO_FALLBACK =
-  process.env.NEXT_PUBLIC_ENABLE_BROWSER_GEO_FALLBACK === "true";
-
 function asNumberOrNull(value: unknown): number | null {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
@@ -66,6 +63,7 @@ function gnssToFix(position: NonNullable<GnssPositionResponse["latestPosition"]>
 }
 
 const useGeolocation = () => {
+  const [embedded, setEmbedded] = useState<boolean | null>(null);
   const [backendFix, setBackendFix] = useState<PositionFix | null>(null);
   const [browserFix, setBrowserFix] = useState<PositionFix | null>(null);
   const [backendStatus, setBackendStatus] = useState<GnssFixStatus>({
@@ -80,6 +78,22 @@ const useGeolocation = () => {
   const backendAvailableRef = useRef(false);
 
   useEffect(() => {
+    const controller = new AbortController();
+    void fetchNavigationApi("/api/deployment", { signal: controller.signal, cache: "no-store" })
+      .then(async response => {
+        if (!response.ok) throw new Error(`Deployment request failed: HTTP ${response.status}`);
+        const result: unknown = await response.json();
+        if (!result || typeof result !== "object" || !("mode" in result) ||
+          (result.mode !== "embedded" && result.mode !== "online")) throw new Error("Invalid deployment configuration.");
+        setEmbedded(result.mode === "embedded");
+      }).catch(reason => {
+        if (!controller.signal.aborted) setError(reason instanceof Error ? reason.message : String(reason));
+      });
+    return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
+    if (embedded !== true) return;
     let cancelled = false;
 
     async function pollBackendOnce() {
@@ -153,10 +167,10 @@ const useGeolocation = () => {
       cancelled = true;
       window.clearInterval(intervalId);
     };
-  }, []);
+  }, [embedded]);
 
   useEffect(() => {
-    if (!ENABLE_BROWSER_GEO_FALLBACK) {
+    if (embedded === null || (embedded && process.env.NEXT_PUBLIC_ENABLE_BROWSER_GEO_FALLBACK !== "true")) {
       return;
     }
 
@@ -205,7 +219,7 @@ const useGeolocation = () => {
     return () => {
       navigator.geolocation.clearWatch(watchId);
     };
-  }, []);
+  }, [embedded]);
 
   const activeFix = useMemo(() => backendFix ?? browserFix, [backendFix, browserFix]);
   const positionSource: PositionSource = backendFix

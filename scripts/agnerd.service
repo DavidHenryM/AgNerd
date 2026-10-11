@@ -1,12 +1,13 @@
 [Unit]
 Description=AgNerd Service
-After=network-online.target
-Wants=network-online.target
+After=postgresql.service network.target
+Wants=postgresql.service
 
 [Service]
 Type=simple
 WorkingDirectory=/opt/agnerd
 EnvironmentFile=/etc/agnerd/.env
+EnvironmentFile=/etc/agnerd/database.env
 ExecStart=/usr/bin/npm start
 Restart=on-failure
 RestartSec=5

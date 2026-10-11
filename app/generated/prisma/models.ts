@@ -8,6 +8,8 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/EmbeddedBackup'
+export type * from './models/EmbeddedSyncState'
 export type * from './models/Farm'
 export type * from './models/User'
 export type * from './models/Address'

@@ -1,14 +1,13 @@
 import { PrismaClient } from '@app/generated/prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
+import { databaseURL } from './deployment'
 
 const globalForPrisma = global as unknown as {
     prisma: PrismaClient
 }
 
 const adapter = new PrismaPg({
-  connectionString:
-    process.env.PRISMA_DATABASE_POSTGRES_URL ||
-    process.env.DATABASE_URL,
+  connectionString: databaseURL(),
 })
 
 const prisma = globalForPrisma.prisma || new PrismaClient({

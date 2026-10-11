@@ -7,7 +7,7 @@ const PUBLIC_PATH_PREFIXES = ["/signin", "/signin-error", "/reset-password", "/a
 const SESSION_COOKIE = "better-auth.session_token"
 
 function isPublicGnssRequest(request: NextRequest) {
-  return request.nextUrl.pathname === "/api/gnss/position" && request.method === "POST";
+  return ["/api/gnss/position", "/api/embedded/backups"].includes(request.nextUrl.pathname) && request.method === "POST";
 }
 
 export function proxy(request: NextRequest) {

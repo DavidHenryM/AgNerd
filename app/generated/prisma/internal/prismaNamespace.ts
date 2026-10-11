@@ -397,6 +397,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  EmbeddedBackup: 'EmbeddedBackup',
+  EmbeddedSyncState: 'EmbeddedSyncState',
   Farm: 'Farm',
   User: 'User',
   Address: 'Address',
@@ -450,10 +452,158 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "farm" | "user" | "address" | "graze" | "breed" | "mob" | "grazeMob" | "livestockUnit" | "onFarm" | "ownership" | "stud" | "studSocietyRegistration" | "studSociety" | "pregnancy" | "livestockUnitPregnancy" | "pregnancyTest" | "chemicalTreatment" | "chemicalProduct" | "activeIngredient" | "estimatedBreedingValueDefinition" | "estimatedBreedingValueResult" | "paddock" | "livestockUnitPosition" | "geoPoint" | "gate" | "gateStateChange" | "mobMembership" | "mobMovement" | "paddockFeedRecord" | "paddockWorkEvent" | "weightRecord" | "loraDevice" | "session" | "account" | "verification" | "organization" | "member" | "invitation"
+    modelProps: "embeddedBackup" | "embeddedSyncState" | "farm" | "user" | "address" | "graze" | "breed" | "mob" | "grazeMob" | "livestockUnit" | "onFarm" | "ownership" | "stud" | "studSocietyRegistration" | "studSociety" | "pregnancy" | "livestockUnitPregnancy" | "pregnancyTest" | "chemicalTreatment" | "chemicalProduct" | "activeIngredient" | "estimatedBreedingValueDefinition" | "estimatedBreedingValueResult" | "paddock" | "livestockUnitPosition" | "geoPoint" | "gate" | "gateStateChange" | "mobMembership" | "mobMovement" | "paddockFeedRecord" | "paddockWorkEvent" | "weightRecord" | "loraDevice" | "session" | "account" | "verification" | "organization" | "member" | "invitation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    EmbeddedBackup: {
+      payload: Prisma.$EmbeddedBackupPayload<ExtArgs>
+      fields: Prisma.EmbeddedBackupFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EmbeddedBackupFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedBackupPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EmbeddedBackupFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedBackupPayload>
+        }
+        findFirst: {
+          args: Prisma.EmbeddedBackupFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedBackupPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EmbeddedBackupFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedBackupPayload>
+        }
+        findMany: {
+          args: Prisma.EmbeddedBackupFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedBackupPayload>[]
+        }
+        create: {
+          args: Prisma.EmbeddedBackupCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedBackupPayload>
+        }
+        createMany: {
+          args: Prisma.EmbeddedBackupCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EmbeddedBackupCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedBackupPayload>[]
+        }
+        delete: {
+          args: Prisma.EmbeddedBackupDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedBackupPayload>
+        }
+        update: {
+          args: Prisma.EmbeddedBackupUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedBackupPayload>
+        }
+        deleteMany: {
+          args: Prisma.EmbeddedBackupDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EmbeddedBackupUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EmbeddedBackupUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedBackupPayload>[]
+        }
+        upsert: {
+          args: Prisma.EmbeddedBackupUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedBackupPayload>
+        }
+        aggregate: {
+          args: Prisma.EmbeddedBackupAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEmbeddedBackup>
+        }
+        groupBy: {
+          args: Prisma.EmbeddedBackupGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmbeddedBackupGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EmbeddedBackupCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmbeddedBackupCountAggregateOutputType> | number
+        }
+      }
+    }
+    EmbeddedSyncState: {
+      payload: Prisma.$EmbeddedSyncStatePayload<ExtArgs>
+      fields: Prisma.EmbeddedSyncStateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EmbeddedSyncStateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedSyncStatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EmbeddedSyncStateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedSyncStatePayload>
+        }
+        findFirst: {
+          args: Prisma.EmbeddedSyncStateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedSyncStatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EmbeddedSyncStateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedSyncStatePayload>
+        }
+        findMany: {
+          args: Prisma.EmbeddedSyncStateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedSyncStatePayload>[]
+        }
+        create: {
+          args: Prisma.EmbeddedSyncStateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedSyncStatePayload>
+        }
+        createMany: {
+          args: Prisma.EmbeddedSyncStateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EmbeddedSyncStateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedSyncStatePayload>[]
+        }
+        delete: {
+          args: Prisma.EmbeddedSyncStateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedSyncStatePayload>
+        }
+        update: {
+          args: Prisma.EmbeddedSyncStateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedSyncStatePayload>
+        }
+        deleteMany: {
+          args: Prisma.EmbeddedSyncStateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EmbeddedSyncStateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EmbeddedSyncStateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedSyncStatePayload>[]
+        }
+        upsert: {
+          args: Prisma.EmbeddedSyncStateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddedSyncStatePayload>
+        }
+        aggregate: {
+          args: Prisma.EmbeddedSyncStateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEmbeddedSyncState>
+        }
+        groupBy: {
+          args: Prisma.EmbeddedSyncStateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmbeddedSyncStateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EmbeddedSyncStateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmbeddedSyncStateCountAggregateOutputType> | number
+        }
+      }
+    }
     Farm: {
       payload: Prisma.$FarmPayload<ExtArgs>
       fields: Prisma.FarmFieldRefs
@@ -3305,6 +3455,42 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const EmbeddedBackupScalarFieldEnum = {
+  id: 'id',
+  deviceId: 'deviceId',
+  capturedAt: 'capturedAt',
+  createdAt: 'createdAt',
+  checksum: 'checksum',
+  payload: 'payload'
+} as const
+
+export type EmbeddedBackupScalarFieldEnum = (typeof EmbeddedBackupScalarFieldEnum)[keyof typeof EmbeddedBackupScalarFieldEnum]
+
+
+export const RelationLoadStrategy = {
+  query: 'query',
+  join: 'join'
+} as const
+
+export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof RelationLoadStrategy]
+
+
+export const EmbeddedSyncStateScalarFieldEnum = {
+  id: 'id',
+  deviceId: 'deviceId',
+  pendingId: 'pendingId',
+  pendingData: 'pendingData',
+  checksum: 'checksum',
+  capturedAt: 'capturedAt',
+  leaseUntil: 'leaseUntil',
+  leaseId: 'leaseId',
+  lastSyncedAt: 'lastSyncedAt',
+  lastError: 'lastError'
+} as const
+
+export type EmbeddedSyncStateScalarFieldEnum = (typeof EmbeddedSyncStateScalarFieldEnum)[keyof typeof EmbeddedSyncStateScalarFieldEnum]
+
+
 export const FarmScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -3322,14 +3508,6 @@ export const FarmScalarFieldEnum = {
 } as const
 
 export type FarmScalarFieldEnum = (typeof FarmScalarFieldEnum)[keyof typeof FarmScalarFieldEnum]
-
-
-export const RelationLoadStrategy = {
-  query: 'query',
-  join: 'join'
-} as const
-
-export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof RelationLoadStrategy]
 
 
 export const UserScalarFieldEnum = {
@@ -3873,20 +4051,6 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-/**
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -3897,6 +4061,34 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Bytes'
+ */
+export type BytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes'>
+    
+
+
+/**
+ * Reference to a field of type 'Bytes[]'
+ */
+export type ListBytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 
@@ -4351,6 +4543,8 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
  */
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
+  embeddedBackup?: Prisma.EmbeddedBackupOmit
+  embeddedSyncState?: Prisma.EmbeddedSyncStateOmit
   farm?: Prisma.FarmOmit
   user?: Prisma.UserOmit
   address?: Prisma.AddressOmit
