@@ -89,7 +89,9 @@ has_env_files() {
 
     [ -f "$directory/.env" ] && return 0
     for file in "$directory"/*.env; do
-        [ -f "$file" ] && return 0
+        [ -f "$file" ] || continue
+        [ "$(basename "$file")" = "database.env" ] && continue
+        return 0
     done
     return 1
 }
@@ -124,8 +126,6 @@ else
 fi
 
 set -e
-
-bash scripts/setup-embedded-database.sh
 
 if [ -f gnss.env ]; then
     echo -e "\033[35mUpdating /etc/agnerd/gnss.env from gnss.env\033[0m"
@@ -163,6 +163,15 @@ else
         fi
     done
 fi
+
+echo -e "\033[35mProvisioning local PostgreSQL and configuring embedded application environment files...\033[0m"
+bash scripts/setup-embedded-database.sh
+set -o pipefail
+sudo cat /etc/agnerd/database.env |
+    sudo -u "$INSTALL_USER" node scripts/configure-embedded-env.mjs "$SCRIPT_DIR/.env"
+sudo cat /etc/agnerd/database.env |
+    sudo node scripts/configure-embedded-env.mjs /etc/agnerd/.env
+echo -e "\033[32mEmbedded mode and LOCAL_DATABASE_URL configured in $SCRIPT_DIR/.env and /etc/agnerd/.env.\033[0m"
 
 echo -e "\033[35mInstalling GNSS and NTRIP helper scripts to /opt/agnerd/scripts...\033[0m"
 sudo mkdir -p /opt/agnerd/scripts

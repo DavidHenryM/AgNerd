@@ -165,7 +165,12 @@ LOCAL_DATABASE_URL=postgresql://user:password@127.0.0.1:5432/agnerd
 
 The Pi installer creates an `agnerd` database/login with a random password,
 stores its URL in root-readable `/etc/agnerd/database.env` and preserves that
-file on reinstall. PostgreSQL stores data in its normal persistent distribution
+file on reinstall. After provisioning, the installer writes the same
+`LOCAL_DATABASE_URL` and `AGNERD_DEPLOYMENT_MODE=embedded` to the checkout's
+`.env` and `/etc/agnerd/.env`, preserving other settings and restricting both
+files to owner read/write. This also supports `npm start` from the checkout;
+the build-only placeholder is never saved as the runtime URL.
+PostgreSQL stores data in its normal persistent distribution
 directory (typically `/var/lib/postgresql`), outside `/opt/agnerd`. Protect the
 Pi and use an SSD/reliable power; do not expose its PostgreSQL port externally.
 If an existing `agnerd` role uses different credentials, setup fails rather

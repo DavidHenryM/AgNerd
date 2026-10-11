@@ -40,6 +40,8 @@ await test("online installer returns before embedded provisioning and runtime fi
   const installer = readFileSync(new URL("../install.sh", import.meta.url), "utf8");
   assert.match(installer, /online\)[\s\S]*exit 0[\s\S]*sudo apt update/);
   assert.match(installer, /BUILD_STATUS[\s\S]*bash scripts\/setup-embedded-database.sh/);
+  assert.match(installer, /Installing \$example_file[\s\S]*bash scripts\/setup-embedded-database.sh[\s\S]*configure-embedded-env.mjs "\$SCRIPT_DIR\/.env"[\s\S]*configure-embedded-env.mjs \/etc\/agnerd\/.env/);
+  assert.match(installer, /basename "\$file"\)" = "database.env" \] && continue/);
   const service = readFileSync(new URL("agnerd.service", import.meta.url), "utf8");
   assert.match(service, /EnvironmentFile=\/etc\/agnerd\/.env\s+EnvironmentFile=\/etc\/agnerd\/database.env/);
 });
