@@ -341,6 +341,48 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## GNSS + NTRIP Pipeline
 
+### Temporary u-center 2 TCP access
+
+[scripts/gps-serial-tcp.sh](scripts/gps-serial-tcp.sh) is a standalone Linux
+raw, bidirectional serial-to-TCP bridge for receiver monitoring/configuration.
+It does not use GPSD or modify/install AgNerd services.
+
+Install its dependencies and stop processes that own the receiver UART:
+
+```bash
+sudo apt install socat psmisc
+sudo systemctl stop agnerd-gnss agnerd-ntrip
+# Also stop GPSD/socket or the serial console if they use this UART.
+```
+
+Run the bridge with the receiver's actual device/baud and the Pi's LAN address:
+
+```bash
+sudo bash scripts/gps-serial-tcp.sh /dev/ttyAMA0 38400 192.168.1.50 5000
+```
+
+In u-center 2, add a TCP receiver connection to the Pi address and port `5000`.
+Use the baud configured on the receiver (the bridge defaults to 38400, matching
+the example GNSS configuration). UBX/NMEA bytes and commands pass unchanged;
+the receiver must support the protocols/configuration required by u-center 2.
+Default binding is loopback; explicitly supply a LAN address for remote access.
+
+The bridge allows one client and exits on disconnect; rerun to reconnect.
+Press Ctrl+C to stop, then restore the normal pipeline:
+
+```bash
+sudo systemctl start agnerd-ntrip agnerd-gnss
+```
+
+Keep all other serial users stopped throughout the bridge session. Navigation
+has no fresh receiver data and AgNerd supplies no NTRIP corrections during this
+maintenance window. If u-center changes the receiver baud, update
+`GNSS_READ_BAUDRATE` before restarting the GNSS reader.
+TCP access is unauthenticated and unencrypted: use only a trusted LAN with
+firewall access restricted to your u-center computer, or an SSH tunnel. Never
+forward this port to the internet. The script refuses an already-open device;
+run it with sudo so the ownership check can see other users' processes.
+
 ### Internet and offline imagery
 
 The navigation GPS status panel reports **Internet: online**, **slow**, or **unavailable**, separately
