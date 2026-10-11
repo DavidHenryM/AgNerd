@@ -15,12 +15,15 @@ import {
   ImageryLayer,
   UrlTemplateImageryProvider,
   GeographicTilingScheme,
+  ConstantProperty,
 } from "cesium";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Alert, Box, Typography } from "@mui/material";
 import { parseMapManifest, type MapManifest } from "@lib/map-manifest";
 import { getUsersFarm } from "@lib/queries";
 import useGeolocation from "@lib/hooks/geolocation";
+import { fetchNavigationApi } from "@lib/navigation-auth";
+import { sprayBoom, sprayStrip, type SprayBoom } from "@lib/spray-boom";
 import NavigationControls, {
   MODEL_COLORS,
 } from "@components/screens/NavigationControls";
@@ -93,76 +96,23 @@ function bearing(
   return Math.atan2(y, x);
 }
 
-/** Destination point given start, bearing (radians) and distance (metres). */
-function destinationPoint(
-  lat: number,
-  lon: number,
-  brng: number,
-  dist: number
-): [number, number] {
-  const toRad = (d: number) => (d * Math.PI) / 180;
-  const toDeg = (r: number) => (r * 180) / Math.PI;
-  const angDist = dist / EARTH_RADIUS;
-  const lat1 = toRad(lat);
-  const lon1 = toRad(lon);
-  const lat2 = Math.asin(
-    Math.sin(lat1) * Math.cos(angDist) +
-      Math.cos(lat1) * Math.sin(angDist) * Math.cos(brng)
-  );
-  const lon2 =
-    lon1 +
-    Math.atan2(
-      Math.sin(brng) * Math.sin(angDist) * Math.cos(lat1),
-      Math.cos(angDist) - Math.sin(lat1) * Math.sin(lat2)
-    );
-  return [toDeg(lat2), toDeg(lon2)];
-}
-
-/**
- * Build a quad (4-corner polygon) representing the painted strip
- * between two consecutive GPS points with the given width and lateral offset.
- *
- * Returns an array of Cartesian3 positions for the polygon.
- */
-function buildStripQuad(
-  prevLat: number,
-  prevLon: number,
-  curLat: number,
-  curLon: number,
-  widthMeters: number,
-  offsetMeters: number
-): Cartesian3[] {
-  const brng = bearing(prevLat, prevLon, curLat, curLon);
-  const perpLeft = brng - Math.PI / 2;
-  const perpRight = brng + Math.PI / 2;
-
-  const halfWidth = widthMeters / 2;
-  const leftDist = halfWidth + offsetMeters;
-  const rightDist = halfWidth - offsetMeters;
-
-  const [p1Lat, p1Lon] = destinationPoint(prevLat, prevLon, perpLeft, leftDist);
-  const [p2Lat, p2Lon] = destinationPoint(prevLat, prevLon, perpRight, rightDist);
-  const [p3Lat, p3Lon] = destinationPoint(curLat, curLon, perpRight, rightDist);
-  const [p4Lat, p4Lon] = destinationPoint(curLat, curLon, perpLeft, leftDist);
-
-  return Cartesian3.fromDegreesArray([
-    p1Lon, p1Lat,
-    p2Lon, p2Lat,
-    p3Lon, p3Lat,
-    p4Lon, p4Lat,
-  ]);
-}
-
 // ── Component ───────────────────────────────────────────────────────
 interface GpsPoint {
   lat: number;
   lon: number;
 }
 
+const SPRAY_COLOR = "#D98CCB";
+
 export default function NavigationScreen() {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<CesiumViewer | null>(null);
   const modelEntityRef = useRef<Entity | null>(null);
+  const boomEntityRef = useRef<Entity | null>(null);
+  const previousBoomRef = useRef<SprayBoom | null>(null);
+  const boomPositionRef = useRef<GpsPoint | null>(null);
+  const boomHeadingRef = useRef(0);
+  const boomSettingsRef = useRef({ width: 12, offset: 0, forwardOffset: 0 });
   const initialFlyDone = useRef(false);
   const [mapConfig, setMapConfig] = useState<MapManifest | null>();
   const [mapError, setMapError] = useState<string | null>(null);
@@ -173,7 +123,7 @@ export default function NavigationScreen() {
     const controller = new AbortController();
     async function loadMapConfig() {
       try {
-        const response = await fetch("/api/maps/manifest", {
+        const response = await fetchNavigationApi("/api/maps/manifest", {
           cache: "no-store",
           signal: AbortSignal.any([controller.signal, AbortSignal.timeout(5000)]),
         });
@@ -215,6 +165,7 @@ export default function NavigationScreen() {
   const [isTracking, setIsTracking] = useState(false);
   const [widthMeters, setWidthMeters] = useState(12);
   const [offsetMeters, setOffsetMeters] = useState(0);
+  const [forwardOffsetMeters, setForwardOffsetMeters] = useState(0);
   const [totalAreaSqMeters, setTotalAreaSqMeters] = useState(0);
   const [cameraRangeMeters, setCameraRangeMeters] = useState(100);
   const [selectedColor] = useState(MODEL_COLORS[0].hex);
@@ -338,6 +289,13 @@ export default function NavigationScreen() {
       removeClampCameraListener();
       if (!viewer.isDestroyed()) viewer.destroy();
       viewerRef.current = null;
+      modelEntityRef.current = null;
+      boomEntityRef.current = null;
+      previousBoomRef.current = null;
+      prevPointRef.current = null;
+      boomPositionRef.current = null;
+      stripEntitiesRef.current = [];
+      initialFlyDone.current = false;
     };
   }, [mapConfig]);
 
@@ -444,33 +402,68 @@ export default function NavigationScreen() {
     );
   }, [latitude, longitude, heading, selectedColor, cameraRangeMeters, viewerReady]);
 
-  // ── Path painting while tracking ──────────────────────────────────
+  // The displayed boom and spray polygons share exactly the same endpoints.
   useEffect(() => {
-    if (!isTracking || latitude === null || longitude === null) return;
     const viewer = viewerRef.current;
     if (!viewer) return;
+    if (latitude === null || longitude === null || fixStatusStale || fixType === "NO_FIX") {
+      if (boomEntityRef.current) boomEntityRef.current.show = false;
+      prevPointRef.current = null;
+      previousBoomRef.current = null;
+      boomPositionRef.current = null;
+      return;
+    }
 
     const cur: GpsPoint = { lat: latitude, lon: longitude };
+    const lastPosition = boomPositionRef.current;
+    if (heading !== null) boomHeadingRef.current = CesiumMath.toRadians(heading);
+    else if (lastPosition && haversineDistance(lastPosition.lat, lastPosition.lon, cur.lat, cur.lon) >= 0.5) {
+      boomHeadingRef.current = bearing(lastPosition.lat, lastPosition.lon, cur.lat, cur.lon);
+    }
+    boomPositionRef.current = cur;
+    const boom = sprayBoom(cur, boomHeadingRef.current, widthMeters, offsetMeters, forwardOffsetMeters);
+    const settings = boomSettingsRef.current;
+    if (settings.width !== widthMeters || settings.offset !== offsetMeters ||
+      settings.forwardOffset !== forwardOffsetMeters) {
+      // Configuration edits move the preview, not a spraying vehicle.
+      prevPointRef.current = null;
+      previousBoomRef.current = null;
+      boomSettingsRef.current = { width: widthMeters, offset: offsetMeters, forwardOffset: forwardOffsetMeters };
+    }
+    const boomPositions = Cartesian3.fromDegreesArray([
+      boom.left.lon, boom.left.lat, boom.right.lon, boom.right.lat,
+    ]);
+    const color = Color.fromCssColorString(selectedColor).withAlpha(isTracking ? 1 : 0.65);
+    if (!boomEntityRef.current) {
+      boomEntityRef.current = viewer.entities.add({
+        name: "Spray boom",
+        polyline: { positions: boomPositions, width: 6, clampToGround: true, material: color },
+      });
+    } else {
+      boomEntityRef.current.show = true;
+      if (boomEntityRef.current.polyline) {
+        boomEntityRef.current.polyline.positions = new ConstantProperty(boomPositions);
+        boomEntityRef.current.polyline.material = new ColorMaterialProperty(color);
+      }
+    }
+    if (!isTracking) {
+      prevPointRef.current = null;
+      previousBoomRef.current = null;
+      return;
+    }
     const prev = prevPointRef.current;
 
-    if (prev) {
+    if (prev && previousBoomRef.current) {
       const dist = haversineDistance(prev.lat, prev.lon, cur.lat, cur.lon);
       // Only paint if moved at least 0.5 m to avoid stacking at standstill
       if (dist >= 0.5) {
-        const positions = buildStripQuad(
-          prev.lat,
-          prev.lon,
-          cur.lat,
-          cur.lon,
-          widthMeters,
-          offsetMeters
-        );
+        const positions = Cartesian3.fromDegreesArray(sprayStrip(previousBoomRef.current, boom));
 
         const stripEntity = viewer.entities.add({
           polygon: {
             hierarchy: positions,
             material: new ColorMaterialProperty(
-              Color.fromCssColorString(selectedColor).withAlpha(0.45)
+              Color.fromCssColorString(SPRAY_COLOR).withAlpha(0.45)
             ),
             classificationType: ClassificationType.BOTH,
           },
@@ -485,12 +478,14 @@ export default function NavigationScreen() {
     }
 
     prevPointRef.current = cur;
-  }, [latitude, longitude, isTracking, widthMeters, offsetMeters, selectedColor]);
+    previousBoomRef.current = boom;
+  }, [latitude, longitude, heading, fixStatusStale, fixType, isTracking, widthMeters, offsetMeters, forwardOffsetMeters, selectedColor, viewerReady]);
 
   // Reset prev point when tracking stops
   useEffect(() => {
     if (!isTracking) {
       prevPointRef.current = null;
+      previousBoomRef.current = null;
     }
   }, [isTracking]);
 
@@ -505,6 +500,7 @@ export default function NavigationScreen() {
     stripEntitiesRef.current = [];
     setTotalAreaSqMeters(0);
     prevPointRef.current = null;
+    previousBoomRef.current = null;
     setIsTracking(false);
   }, []);
 
@@ -554,6 +550,8 @@ export default function NavigationScreen() {
         setWidthMeters={setWidthMeters}
         offsetMeters={offsetMeters}
         setOffsetMeters={setOffsetMeters}
+        forwardOffsetMeters={forwardOffsetMeters}
+        setForwardOffsetMeters={setForwardOffsetMeters}
         totalAreaSqMeters={totalAreaSqMeters}
         selectedColor={selectedColor}
         mapScaleMeters={mapScaleMeters}

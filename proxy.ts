@@ -21,11 +21,18 @@ export function proxy(request: NextRequest) {
     return NextResponse.next()
   }
 
-  const hasSession = request.cookies.has(SESSION_COOKIE)
+  const hasSession = Boolean(request.cookies.get(SESSION_COOKIE)?.value ||
+    request.cookies.get(`__Secure-${SESSION_COOKIE}`)?.value)
 
   if (!hasSession) {
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.json({ error: "Unauthorized" }, {
+        status: 401,
+        headers: { "Cache-Control": "no-store" },
+      })
+    }
     const signInUrl = new URL("/signin", request.url)
-    signInUrl.searchParams.set("callbackUrl", pathname)
+    signInUrl.searchParams.set("callbackUrl", pathname + request.nextUrl.search)
     return NextResponse.redirect(signInUrl)
   }
 

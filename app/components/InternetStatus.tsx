@@ -5,6 +5,7 @@ import { Chip, Tooltip } from "@mui/material";
 import WifiIcon from "@mui/icons-material/Wifi";
 import WifiOffIcon from "@mui/icons-material/WifiOff";
 import type { InternetStatus as Status } from "@lib/internet-status";
+import { fetchNavigationApi } from "@lib/navigation-auth";
 
 type DisplayStatus = Status["state"] | "checking" | "app-unreachable";
 
@@ -20,7 +21,7 @@ export default function InternetStatus() {
       if (active) return;
       active = true;
       try {
-        const response = await fetch("/api/internet-status", {
+        const response = await fetchNavigationApi("/api/internet-status", {
           cache: "no-store",
           signal: AbortSignal.any([controller.signal, AbortSignal.timeout(7000)]),
         });

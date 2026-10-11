@@ -116,6 +116,8 @@ export interface NavigationControlsProps {
   setWidthMeters: Dispatch<SetStateAction<number>>;
   offsetMeters: number;
   setOffsetMeters: Dispatch<SetStateAction<number>>;
+  forwardOffsetMeters: number;
+  setForwardOffsetMeters: Dispatch<SetStateAction<number>>;
   totalAreaSqMeters: number;
   selectedColor: string;
   mapScaleMeters: number | null;
@@ -145,6 +147,8 @@ export default function NavigationControls(props: NavigationControlsProps) {
     setWidthMeters,
     offsetMeters,
     setOffsetMeters,
+    forwardOffsetMeters,
+    setForwardOffsetMeters,
     totalAreaSqMeters,
     selectedColor,
     mapScaleMeters,
@@ -416,11 +420,11 @@ export default function NavigationControls(props: NavigationControlsProps) {
             {/* ─ Offset control ─ */}
             <Box sx={panelSx}>
               <Typography variant="caption" sx={{ fontWeight: 600 }}>
-                Offset
+                Left / right offset
               </Typography>
               <Stack direction="row" spacing={0.5} sx={{ alignItems: "center" }}>
                 <IconButton
-                  aria-label="Decrease offset"
+                  aria-label="Move boom right"
                   sx={adjustmentButtonSx}
                   onClick={() => setOffsetMeters((o) => Math.max(-25, o - 0.5))}
                 >
@@ -428,15 +432,15 @@ export default function NavigationControls(props: NavigationControlsProps) {
                 </IconButton>
                 <Slider
                   value={offsetMeters}
-                  aria-label="Implement offset"
+                  aria-label="Left / right boom offset"
                   min={-25}
                   max={25}
                   step={0.5}
-                  onChange={(_, v) => setOffsetMeters(v as number)}
+                  onChange={(_, v) => { if (typeof v === "number") setOffsetMeters(v); }}
                   sx={{ ...sliderSx, color: selectedColor }}
                 />
                 <IconButton
-                  aria-label="Increase offset"
+                  aria-label="Move boom left"
                   sx={adjustmentButtonSx}
                   onClick={() => setOffsetMeters((o) => Math.min(25, o + 0.5))}
                 >
@@ -445,6 +449,39 @@ export default function NavigationControls(props: NavigationControlsProps) {
                 <Typography variant="body1" sx={{ fontSize: 20, minWidth: 64, textAlign: "right" }}>
                   {offsetMeters > 0 ? "+" : ""}
                   {offsetMeters.toFixed(1)}m
+                </Typography>
+              </Stack>
+            </Box>
+            <Box sx={panelSx}>
+              <Typography variant="caption" sx={{ fontWeight: 600 }}>
+                Forward / rear offset
+              </Typography>
+              <Stack direction="row" spacing={0.5} sx={{ alignItems: "center" }}>
+                <IconButton
+                  aria-label="Move boom rearward"
+                  sx={adjustmentButtonSx}
+                  onClick={() => setForwardOffsetMeters((o) => Math.max(-25, o - 0.5))}
+                >
+                  <RemoveIcon />
+                </IconButton>
+                <Slider
+                  value={forwardOffsetMeters}
+                  aria-label="Forward / rear boom offset"
+                  min={-25}
+                  max={25}
+                  step={0.5}
+                  onChange={(_, v) => { if (typeof v === "number") setForwardOffsetMeters(v); }}
+                  sx={{ ...sliderSx, color: selectedColor }}
+                />
+                <IconButton
+                  aria-label="Move boom forward"
+                  sx={adjustmentButtonSx}
+                  onClick={() => setForwardOffsetMeters((o) => Math.min(25, o + 0.5))}
+                >
+                  <AddIcon />
+                </IconButton>
+                <Typography variant="body1" sx={{ fontSize: 20, minWidth: 64, textAlign: "right" }}>
+                  {forwardOffsetMeters > 0 ? "+" : ""}{forwardOffsetMeters.toFixed(1)}m
                 </Typography>
               </Stack>
             </Box>

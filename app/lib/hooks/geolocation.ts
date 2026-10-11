@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { GnssFixStatus } from "../gnss-status";
+import { fetchNavigationApi } from "../navigation-auth";
 
 type PositionFix = {
   latitude: number;
@@ -83,7 +84,7 @@ const useGeolocation = () => {
 
     async function pollBackendOnce() {
       try {
-        const response = await fetch("/api/gnss/status", {
+        const response = await fetchNavigationApi("/api/gnss/status", {
           method: "GET",
           cache: "no-store",
           signal: AbortSignal.timeout(5000),

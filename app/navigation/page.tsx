@@ -1,7 +1,10 @@
 "use client"
 
 import dynamic from 'next/dynamic'
-import { Box } from '@mui/material'
+import { Alert, Box, CircularProgress } from '@mui/material'
+import { useEffect } from 'react'
+import { authClient } from '@lib/auth-client'
+import { redirectNavigationToSignIn } from '@lib/navigation-auth'
 import { drawerWidth, footerHeight } from '@app/settings'
 import { Ion } from 'cesium';
 
@@ -20,6 +23,10 @@ const NavigationScreen = dynamic(
 
 
 export default function Navigation(){
+  const { data: session, isPending, error } = authClient.useSession()
+  useEffect(() => {
+    if (!isPending && !error && !session) redirectNavigationToSignIn()
+  }, [session, isPending, error])
   return (
     <Box sx={{
       position: 'fixed',
@@ -29,7 +36,9 @@ export default function Navigation(){
       left: { xs: 0, xl: drawerWidth.lg },
       overflow: 'hidden',
     }}>
-      <NavigationScreen/>
+      {error ? <Alert severity="error">Unable to check your session. Reload to try again.</Alert>
+        : isPending ? <CircularProgress aria-label="Checking session" />
+        : session ? <NavigationScreen/> : null}
     </Box>
   )
 }

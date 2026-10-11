@@ -336,6 +336,20 @@ readouts, and enlarged width/offset sliders for 7-inch touchscreens. The action
 controls remain 12px from the bottom-left on compact navigation screens, without
 reserving space for the hidden footer; settings and status panels scroll when height
 is limited.
+The visible spray boom uses the Width control in ground metres. Positive Offset
+moves it left of travel; negative Offset moves it right. The separate Forward /
+rear offset is positive ahead of the receiver and negative behind it. Both
+offsets range from -25 to +25 metres and rotate with the direction of travel.
+Changing width or either offset updates the preview without painting a strip.
+It follows receiver
+heading, or direction of movement when heading is unavailable (initially north).
+Play paints the area between consecutive boom positions in translucent light
+rose-purple; Stop leaves a dimmed
+boom preview without painting. Stale/no-fix positions hide the boom and break the
+paint trail so a GPS outage is not joined by a sprayed strip.
+Navigation checks the session before starting map/GPS requests. An expired
+session returns to sign-in with navigation as the callback; protected API
+requests return JSON 401 rather than redirecting to a sign-in HTML page.
 At 1536px and wider, the sidebar and footer return and the map resizes to fit
 between them. Other pages keep their usual sidebar and footer.
 
