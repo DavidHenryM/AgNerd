@@ -149,7 +149,7 @@ export class ChunkedDecoder {
   }
 }
 
-export function connectAndStream(endpoint, onData, { signal, timeoutMs = 15_000 } = {}) {
+export function connectAndStream(endpoint, onData, { signal, timeoutMs = 15_000, streamTimeoutMs = 15_000 } = {}) {
   if (signal?.aborted) return Promise.resolve();
 
   return new Promise((resolve, reject) => {
@@ -166,12 +166,14 @@ export function connectAndStream(endpoint, onData, { signal, timeoutMs = 15_000 
     let responseAccepted = false;
     let responseBuffer = Buffer.alloc(0);
     let decoder;
+    let streamTimeout;
     const connectEvent = endpoint.secure ? "secureConnect" : "connect";
 
     const finish = (error) => {
       if (settled) return;
       settled = true;
       clearTimeout(timeout);
+      clearTimeout(streamTimeout);
       signal?.removeEventListener("abort", onAbort);
       if (error) reject(error);
       else resolve();
@@ -184,6 +186,13 @@ export function connectAndStream(endpoint, onData, { signal, timeoutMs = 15_000 
       socket.destroy(new Error(`Timed out connecting to NTRIP caster ${endpoint.host}:${endpoint.port}`));
     }, timeoutMs);
     timeout.unref?.();
+    const resetStreamTimeout = () => {
+      clearTimeout(streamTimeout);
+      streamTimeout = setTimeout(() => {
+        socket.destroy(new Error("NTRIP correction stream timed out waiting for data"));
+      }, streamTimeoutMs);
+      streamTimeout.unref?.();
+    };
 
     signal?.addEventListener("abort", onAbort, { once: true });
     socket.once(connectEvent, () => {
@@ -195,6 +204,7 @@ export function connectAndStream(endpoint, onData, { signal, timeoutMs = 15_000 
       else finish(new Error("NTRIP caster closed the connection before accepting the request"));
     });
     socket.on("data", async (data) => {
+      if (settled) return;
       socket.pause();
       try {
         let body = data;
@@ -207,6 +217,7 @@ export function connectAndStream(endpoint, onData, { signal, timeoutMs = 15_000 
           }
           responseAccepted = true;
           clearTimeout(timeout);
+          resetStreamTimeout();
           responseBuffer = Buffer.alloc(0);
           if (response.chunked) decoder = new ChunkedDecoder();
           body = response.remainder;
@@ -214,7 +225,10 @@ export function connectAndStream(endpoint, onData, { signal, timeoutMs = 15_000 
 
         const chunks = decoder ? decoder.push(body) : [body];
         for (const chunk of chunks) {
-          if (chunk.length > 0) await onData(chunk);
+          if (chunk.length > 0) {
+            resetStreamTimeout();
+            await onData(chunk);
+          }
         }
         if (!settled && !socket.destroyed) socket.resume();
       } catch (error) {

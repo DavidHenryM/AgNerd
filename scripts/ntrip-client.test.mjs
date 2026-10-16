@@ -83,6 +83,68 @@ void test("decodes chunked HTTP response bodies without changing binary data", (
   assert.deepEqual(Buffer.concat(output), frame);
 });
 
+for (const sendInitialCorrection of [false, true]) {
+  void test(`reconnects after a silent stream (${sendInitialCorrection ? "after corrections" : "headers only"})`, async (t) => {
+    const clients = new Set();
+    let connections = 0;
+    const frame = Buffer.from([0xd3, 0x00, 0x01, 0x42]);
+    const server = net.createServer((client) => {
+      clients.add(client);
+      client.on("close", () => clients.delete(client));
+      const attempt = ++connections;
+      client.once("data", () => {
+        client.write("ICY 200 OK\r\n");
+        if (attempt > 1) client.end(frame);
+        else if (sendInitialCorrection) client.write(frame);
+      });
+    });
+    server.listen(0, "127.0.0.1");
+    await once(server, "listening");
+    t.after(() => {
+      for (const client of clients) client.destroy();
+      return new Promise(resolve => server.close(resolve));
+    });
+    const endpoint = {
+      host: "127.0.0.1", port: server.address().port,
+      username: "receiver", password: "secret", mount: "TEST", secure: false,
+    };
+    await assert.rejects(connectAndStream(endpoint, async () => {}, {
+      streamTimeoutMs: 50,
+    }), /correction stream timed out/);
+    const chunks = [];
+    await connectAndStream(endpoint, async chunk => chunks.push(chunk));
+    assert.equal(connections, 2);
+    assert.deepEqual(Buffer.concat(chunks), frame);
+  });
+}
+
+void test("live corrections refresh the stream deadline and abort closes the socket", async (t) => {
+  let interval;
+  const server = net.createServer(client => {
+    client.once("data", () => {
+      client.write("ICY 200 OK\r\n");
+      interval = setInterval(() => client.write(Buffer.from([0xd3])), 10);
+    });
+    client.on("close", () => clearInterval(interval));
+  });
+  server.listen(0, "127.0.0.1");
+  await once(server, "listening");
+  t.after(() => {
+    clearInterval(interval);
+    return new Promise(resolve => server.close(resolve));
+  });
+  const controller = new AbortController();
+  t.after(() => controller.abort());
+  let received = 0;
+  await connectAndStream({
+    host: "127.0.0.1", port: server.address().port,
+    username: "receiver", password: "secret", mount: "TEST", secure: false,
+  }, async () => {
+    if (++received === 12) controller.abort();
+  }, { signal: controller.signal, streamTimeoutMs: 100 });
+  assert.equal(received, 12);
+});
+
 void test("rejects non-success caster responses", async (t) => {
   const server = net.createServer((client) => {
     client.once("data", () => client.end("HTTP/1.1 401 Unauthorized\r\n\r\n"));
@@ -114,6 +176,17 @@ void test("validates NTRIP configuration and defaults to the configured static m
   assert.equal(config.secure, true);
   assert.equal(config.port, 443);
   assert.equal(config.outputMode, "serial");
+  assert.equal(config.streamTimeoutMs, 15_000);
+  assert.equal(readConfig({
+    GA_NTRIP_USER: "receiver", GA_NTRIP_PASSWORD: "secret",
+    GA_NTRIP_HOST: "caster.example", GA_NTRIP_MOUNT: "TEST",
+    NTRIP_STREAM_TIMEOUT_MS: "30000",
+  }).streamTimeoutMs, 30_000);
+  assert.throws(() => readConfig({
+    GA_NTRIP_USER: "receiver", GA_NTRIP_PASSWORD: "secret",
+    GA_NTRIP_HOST: "caster.example", GA_NTRIP_MOUNT: "TEST",
+    NTRIP_STREAM_TIMEOUT_MS: "0",
+  }), /NTRIP_STREAM_TIMEOUT_MS/);
   assert.throws(() => readConfig({
     GA_NTRIP_USER: "receiver",
     GA_NTRIP_PASSWORD: "secret",

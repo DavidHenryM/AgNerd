@@ -49,6 +49,7 @@ export function readConfig(env = process.env) {
     outputPort: parseInteger("GA_NTRIP_OUTPUT_PORT", env.GA_NTRIP_OUTPUT_PORT, 2101, 1, 65535),
     apiBaseUrl: (env.API_BASE_URL || "http://localhost:3000/api").replace(/\/+$/, ""),
     connectTimeoutMs: parseInteger("NTRIP_CONNECT_TIMEOUT_MS", env.NTRIP_CONNECT_TIMEOUT_MS, 15_000, 1, 300_000),
+    streamTimeoutMs: parseInteger("NTRIP_STREAM_TIMEOUT_MS", env.NTRIP_STREAM_TIMEOUT_MS, 15_000, 1, 300_000),
   };
 
   if (net.isIP(config.host) === 0 && !/^(?=.{1,253}$)(?:[a-z\d](?:[a-z\d-]{0,61}[a-z\d])?)(?:\.(?:[a-z\d](?:[a-z\d-]{0,61}[a-z\d])?))*\.?$/i.test(config.host)) {
@@ -248,6 +249,7 @@ export async function runForwarder({ env = process.env, logger = console } = {})
         await connectAndStream(endpoint, (chunk) => output.write(chunk), {
           signal: controller.signal,
           timeoutMs: config.connectTimeoutMs,
+          streamTimeoutMs: config.streamTimeoutMs,
         });
         if (!controller.signal.aborted) logger.warn("NTRIP caster disconnected");
       } catch (error) {
