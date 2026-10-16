@@ -28,7 +28,7 @@ import { parseMapManifest, type MapManifest } from "@lib/map-manifest";
 import { getUsersFarm } from "@lib/queries";
 import useGeolocation from "@lib/hooks/geolocation";
 import { fetchNavigationApi } from "@lib/navigation-auth";
-import { sprayBoom, sprayStrip, type SprayBoom } from "@lib/spray-boom";
+import { haversineDistance, sprayBoom, SprayTrail } from "@lib/spray-boom";
 import { TRACTOR_WORLD_SCALE, tractorOrientation } from "@lib/tractor-model";
 import { BOOM_CLEARANCE_METERS, boomNodeTransformations, boomWorldEndpoints } from "@lib/boom-model";
 import { BoomSprayEmitter, createSprayParticles, createSprayTexture, sprayEmissionRate, SPRAY_COLOR } from "@lib/spray-particles";
@@ -37,7 +37,6 @@ import NavigationControls, {
 } from "@components/screens/NavigationControls";
 
 // ── Geo helpers ─────────────────────────────────────────────────────
-const EARTH_RADIUS = 6_371_000; // metres
 const SCALE_KEY_BASE_PIXELS = 120;
 const SCALE_KEY_ZOOM_FACTOR = 1 / 3;
 const MIN_CAMERA_CLEARANCE_METERS = 2;
@@ -65,22 +64,6 @@ function zoomLevelDistanceForPixelSpan(
 
   if (!Number.isFinite(distance) || distance <= 0) return null;
   return distance;
-}
-
-/** Haversine distance in metres between two lat/lng points. */
-function haversineDistance(
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number
-): number {
-  const toRad = (d: number) => (d * Math.PI) / 180;
-  const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lon2 - lon1);
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
-  return EARTH_RADIUS * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
 /** Bearing in radians from (lat1,lon1) to (lat2,lon2). 0 = north, clockwise. */
@@ -113,7 +96,7 @@ export default function NavigationScreen() {
   const sprayParticlesRef = useRef<ParticleSystem | null>(null);
   const sprayEmitterRef = useRef(new BoomSprayEmitter());
   const sprayTextureRef = useRef<HTMLCanvasElement | null>(null);
-  const previousBoomRef = useRef<SprayBoom | null>(null);
+  const sprayTrailRef = useRef(new SprayTrail());
   const boomPositionRef = useRef<GpsPoint | null>(null);
   const boomHeadingRef = useRef(0);
   const boomSettingsRef = useRef({ width: 6, offset: 0, forwardOffset: -1.5 });
@@ -167,6 +150,8 @@ export default function NavigationScreen() {
 
   // Tracking state
   const [isTracking, setIsTracking] = useState(false);
+  const [isSprayPaused, setIsSprayPaused] = useState(false);
+  const isSpraying = isTracking && !isSprayPaused;
   const [historyError, setHistoryError] = useState<string | null>(null);
   const historyRequestRef = useRef(false);
   const lastRecordedTimestampRef = useRef<number | null>(null);
@@ -176,11 +161,10 @@ export default function NavigationScreen() {
   const [totalAreaSqMeters, setTotalAreaSqMeters] = useState(0);
   const [cameraRangeMeters, setCameraRangeMeters] = useState(100);
   const [selectedColor] = useState(MODEL_COLORS[0].hex);
-  const prevPointRef = useRef<GpsPoint | null>(null);
   const stripEntitiesRef = useRef<Entity[]>([]);
 
   useEffect(() => {
-    if (!isTracking || latitude === null || longitude === null || locationTimestamp === null ||
+    if (!isSpraying || latitude === null || longitude === null || locationTimestamp === null ||
       fixStatusStale || fixType === "NO_FIX" || historyRequestRef.current ||
       lastRecordedTimestampRef.current === locationTimestamp) return;
     const timestamp = locationTimestamp;
@@ -211,7 +195,7 @@ export default function NavigationScreen() {
         historyRequestRef.current = false;
       }
     })();
-  }, [isTracking, latitude, longitude, locationTimestamp, heading, fixStatusStale, fixType, satellites, accuracy, speed]);
+  }, [isSpraying, latitude, longitude, locationTimestamp, heading, fixStatusStale, fixType, satellites, accuracy, speed]);
 
   const { mapScaleMeters, mapScalePixels } = useMemo(() => {
     const rawMeters = zoomLevelDistanceForPixelSpan(
@@ -278,6 +262,7 @@ export default function NavigationScreen() {
       selectionIndicator: false,
       ...(mapConfig ? { baseLayer: false as const } : {}),
     });
+    const sprayTrail = sprayTrailRef.current;
     viewerRef.current = viewer;
     viewer.clock.clockStep = ClockStep.SYSTEM_CLOCK;
     viewer.camera.setView({ destination: mapConfig ? Rectangle.fromDegrees(...mapConfig.bounds) : AUSTRALIA_RECTANGLE });
@@ -335,8 +320,7 @@ export default function NavigationScreen() {
       modelEntityRef.current = null;
       boomEntityRef.current = null;
       sprayParticlesRef.current = null;
-      previousBoomRef.current = null;
-      prevPointRef.current = null;
+      sprayTrail.reset();
       boomPositionRef.current = null;
       stripEntitiesRef.current = [];
       initialFlyDone.current = false;
@@ -467,8 +451,7 @@ export default function NavigationScreen() {
         viewer.scene.primitives.remove(sprayParticlesRef.current);
         sprayParticlesRef.current = null;
       }
-      prevPointRef.current = null;
-      previousBoomRef.current = null;
+      sprayTrailRef.current.reset();
       boomPositionRef.current = null;
       return;
     }
@@ -479,19 +462,18 @@ export default function NavigationScreen() {
     if (settings.width !== widthMeters || settings.offset !== offsetMeters ||
       settings.forwardOffset !== forwardOffsetMeters) {
       // Configuration edits move the preview, not a spraying vehicle.
-      prevPointRef.current = null;
-      previousBoomRef.current = null;
+      sprayTrailRef.current.reset();
       boomSettingsRef.current = { width: widthMeters, offset: offsetMeters, forwardOffset: forwardOffsetMeters };
     }
     const boomPositions = Cartesian3.fromDegreesArray([
       boom.left.lon, boom.left.lat, boom.right.lon, boom.right.lat,
     ]);
-    const color = Color.fromCssColorString(selectedColor).withAlpha(isTracking ? 1 : 0.65);
+    const color = Color.fromCssColorString(selectedColor).withAlpha(isSpraying ? 1 : 0.65);
     const centre = Cartographic.fromCartesian(Cartesian3.midpoint(boomPositions[0], boomPositions[1], new Cartesian3()));
     const modelPosition = Cartesian3.fromRadians(centre.longitude, centre.latitude, BOOM_CLEARANCE_METERS);
     const orientation = tractorOrientation(modelPosition, boomHeadingRef.current);
     const nodeTransformations = boomNodeTransformations(widthMeters);
-    const modelColor = Color.WHITE.withAlpha(isTracking ? 1 : 0.65);
+    const modelColor = Color.WHITE.withAlpha(isSpraying ? 1 : 0.65);
     if (!boomEntityRef.current) {
       boomEntityRef.current = viewer.entities.add({
         name: "Spray boom",
@@ -520,13 +502,12 @@ export default function NavigationScreen() {
         boomEntityRef.current.polyline.material = new ColorMaterialProperty(color);
       }
     }
-    if (!isTracking) {
+    if (!isSpraying) {
       if (sprayParticlesRef.current) {
         viewer.scene.primitives.remove(sprayParticlesRef.current);
         sprayParticlesRef.current = null;
       }
-      prevPointRef.current = null;
-      previousBoomRef.current = null;
+      sprayTrailRef.current.reset();
       return;
     }
     const groundHeight = viewer.scene.globe.getHeight(centre) ?? 0;
@@ -543,43 +524,37 @@ export default function NavigationScreen() {
     } else {
       sprayParticlesRef.current.emissionRate = sprayEmissionRate(widthMeters);
     }
-    const prev = prevPointRef.current;
+    const strip = sprayTrailRef.current.update(cur, boom);
+    if (strip) {
+      const positions = Cartesian3.fromDegreesArray(strip.coordinates);
 
-    if (prev && previousBoomRef.current) {
-      const dist = haversineDistance(prev.lat, prev.lon, cur.lat, cur.lon);
-      // Only paint if moved at least 0.5 m to avoid stacking at standstill
-      if (dist >= 0.5) {
-        const positions = Cartesian3.fromDegreesArray(sprayStrip(previousBoomRef.current, boom));
+      const stripEntity = viewer.entities.add({
+        polygon: {
+          hierarchy: positions,
+          material: new ColorMaterialProperty(
+            Color.fromCssColorString(SPRAY_COLOR).withAlpha(0.45)
+          ),
+          classificationType: ClassificationType.BOTH,
+        },
+      });
 
-        const stripEntity = viewer.entities.add({
-          polygon: {
-            hierarchy: positions,
-            material: new ColorMaterialProperty(
-              Color.fromCssColorString(SPRAY_COLOR).withAlpha(0.45)
-            ),
-            classificationType: ClassificationType.BOTH,
-          },
-        });
+      stripEntitiesRef.current.push(stripEntity);
 
-        stripEntitiesRef.current.push(stripEntity);
-
-        // Accumulate area (rectangle approximation: distance × width)
-        const stripArea = dist * widthMeters;
-        setTotalAreaSqMeters((a) => a + stripArea);
-      }
+      // Accumulate area (rectangle approximation: distance × width)
+      const stripArea = strip.distance * widthMeters;
+      setTotalAreaSqMeters((a) => a + stripArea);
     }
+  }, [latitude, longitude, heading, fixStatusStale, fixType, isSpraying, widthMeters, offsetMeters, forwardOffsetMeters, selectedColor, viewerReady]);
 
-    prevPointRef.current = cur;
-    previousBoomRef.current = boom;
-  }, [latitude, longitude, heading, fixStatusStale, fixType, isTracking, widthMeters, offsetMeters, forwardOffsetMeters, selectedColor, viewerReady]);
-
-  // Reset prev point when tracking stops
+  // Break coverage across stopped or paused travel, without clearing existing paint.
   useEffect(() => {
-    if (!isTracking) {
-      prevPointRef.current = null;
-      previousBoomRef.current = null;
-    }
-  }, [isTracking]);
+    if (!isSpraying) sprayTrailRef.current.reset();
+  }, [isSpraying]);
+
+  const handleTrackingToggle = useCallback(() => {
+    setIsTracking(value => !value);
+    setIsSprayPaused(false);
+  }, []);
 
   // ── Reset function ────────────────────────────────────────────────
   const handleReset = useCallback(() => {
@@ -595,9 +570,9 @@ export default function NavigationScreen() {
     }
     stripEntitiesRef.current = [];
     setTotalAreaSqMeters(0);
-    prevPointRef.current = null;
-    previousBoomRef.current = null;
+    sprayTrailRef.current.reset();
     setIsTracking(false);
+    setIsSprayPaused(false);
   }, []);
 
   const handleZoomIn = useCallback(() => {
@@ -642,7 +617,9 @@ export default function NavigationScreen() {
         speed={speed}
         gpsConnected={gnssDebug.statusFilePresent === true}
         isTracking={isTracking}
-        setIsTracking={setIsTracking}
+        onTrackingToggle={handleTrackingToggle}
+        isSprayPaused={isSprayPaused}
+        onSprayPauseToggle={() => setIsSprayPaused(value => !value)}
         widthMeters={widthMeters}
         setWidthMeters={setWidthMeters}
         offsetMeters={offsetMeters}

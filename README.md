@@ -643,11 +643,16 @@ Changing width or either offset updates the preview without painting a strip.
 It follows receiver
 heading, or direction of movement when heading is unavailable (initially north).
 Play paints the area between consecutive boom positions in translucent light
-rose-purple; Stop leaves a dimmed
-boom preview without painting. While playing, a Cesium particle mist emits
+rose-purple. Small GPS movements accumulate until 0.5 m has been travelled,
+then paint from the last painted endpoints so the trail stays continuous.
+Stop leaves a dimmed boom preview without painting. Pause spraying keeps
+navigation active but suspends coverage painting, area accumulation, spray
+particles and new history submissions until Resume spraying is pressed.
+Existing coverage is retained and paused travel is never joined by a painted strip.
+Stop or Reset clears the pause state. While spraying, a Cesium particle mist emits
 downward from its nozzle positions in the same purple, following width and both offsets.
 The short-lived droplets remain in world space as the tractor moves; emission
-is capped at 160 particles/second for touchscreen devices. Stop, Reset and
+is capped at 160 particles/second for touchscreen devices. Pause, Stop, Reset and
 stale/no-fix positions remove the particle system immediately.
 Stale/no-fix positions hide the boom and break the
 paint trail so a GPS outage is not joined by a sprayed strip.
@@ -694,6 +699,10 @@ This runs [scripts/ntrip-forwarder.mjs](scripts/ntrip-forwarder.mjs), a JavaScri
 - `GA_NTRIP_OUTPUT_MODE=tcp`: expose RTCM as a TCP server stream.
 - Closest-station lookup with a configured static mount as fallback.
 - Direct TLS with normal Node certificate validation, and automatic reconnect with bounded backoff.
+- Silent correction streams are closed after `NTRIP_STREAM_TIMEOUT_MS` (default
+  15000 ms) without correction data, allowing reconnection after internet loss
+  even when the old TCP connection stays open. `NTRIP_CONNECT_TIMEOUT_MS`
+  separately limits connection/response setup.
 
 The TCP output listener defaults to `localhost`; it has no client authentication, so only bind it to a trusted network interface.
 
@@ -714,8 +723,8 @@ This runs [scripts/gnss-reader.mjs](scripts/gnss-reader.mjs), which:
   Reader updates are acknowledged with `recorded: false` without accessing the
   database. Live GPS continues through the local status file.
   Navigation submits fresh valid fixes with `spraying: true` only while Play is
-  active. These writes require a signed-in session (the reader token cannot
-  authorize history recording). Stop, Reset, lost/stale fixes and leaving the
+  active and spraying is not paused. These writes require a signed-in session (the reader token cannot
+  authorize history recording). Pause, Stop, Reset, lost/stale fixes and leaving the
   screen stop new history submissions; an already submitted write may complete.
   Each successful fix timestamp is submitted once, with at most one request in
   flight. Save failures display an alert and retry on subsequent fresh fixes.

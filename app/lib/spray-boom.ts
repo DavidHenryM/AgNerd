@@ -8,6 +8,37 @@ export interface SprayBoom {
   right: SprayPoint;
 }
 
+/** Haversine distance in metres between two lat/lng points. */
+export function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const toRad = (d: number) => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+  return 6_371_000 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+export class SprayTrail {
+  private previous: { point: SprayPoint; boom: SprayBoom } | null = null;
+
+  reset() {
+    this.previous = null;
+  }
+
+  update(point: SprayPoint, boom: SprayBoom): { coordinates: number[]; distance: number } | null {
+    const previous = this.previous;
+    if (!previous) {
+      this.previous = { point, boom };
+      return null;
+    }
+    const distance = haversineDistance(previous.point.lat, previous.point.lon, point.lat, point.lon);
+    // Keep the last painted endpoints until enough movement accumulates.
+    if (distance < 0.5) return null;
+    this.previous = { point, boom };
+    return { coordinates: sprayStrip(previous.boom, boom), distance };
+  }
+}
+
 function destination(point: SprayPoint, bearing: number, distance: number): SprayPoint {
   const lat = point.lat * Math.PI / 180;
   const lon = point.lon * Math.PI / 180;
