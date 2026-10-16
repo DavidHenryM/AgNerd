@@ -225,6 +225,7 @@ export function connectAndStream(endpoint, onData, { signal, timeoutMs = 15_000,
 
         const chunks = decoder ? decoder.push(body) : [body];
         for (const chunk of chunks) {
+          if (settled || socket.destroyed) return;
           if (chunk.length > 0) {
             resetStreamTimeout();
             await onData(chunk);

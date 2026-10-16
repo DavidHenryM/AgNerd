@@ -145,6 +145,38 @@ void test("live corrections refresh the stream deadline and abort closes the soc
   assert.equal(received, 12);
 });
 
+void test("timed-out streams discard buffered chunks after a blocked output write", async (t) => {
+  const clients = new Set();
+  const server = net.createServer(client => {
+    clients.add(client);
+    client.on("close", () => clients.delete(client));
+    client.once("data", () => client.write(
+      "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n1\r\nA\r\n1\r\nB\r\n",
+    ));
+  });
+  server.listen(0, "127.0.0.1");
+  await once(server, "listening");
+  let releaseWrite;
+  const blockedWrite = new Promise(resolve => { releaseWrite = resolve; });
+  t.after(() => {
+    releaseWrite();
+    for (const client of clients) client.destroy();
+    return new Promise(resolve => server.close(resolve));
+  });
+  const chunks = [];
+  await assert.rejects(connectAndStream({
+    host: "127.0.0.1", port: server.address().port,
+    username: "receiver", password: "secret", mount: "TEST", secure: false,
+  }, async chunk => {
+    chunks.push(chunk.toString());
+    await blockedWrite;
+  }, { streamTimeoutMs: 50 }), /correction stream timed out/);
+  assert.deepEqual(chunks, ["A"]);
+  releaseWrite();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.deepEqual(chunks, ["A"]);
+});
+
 void test("rejects non-success caster responses", async (t) => {
   const server = net.createServer((client) => {
     client.once("data", () => client.end("HTTP/1.1 401 Unauthorized\r\n\r\n"));
