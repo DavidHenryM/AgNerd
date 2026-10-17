@@ -35,12 +35,18 @@ await test("PostgreSQL snapshot captures business relationships, excludes creden
       ["account-1", "user-1", "credential", "user-1", "do-not-export"]);
     await source.query('INSERT INTO "Stud" (id,name) VALUES ($1,$2)', ["stud-1", "Test"]);
     await source.query('INSERT INTO "_FarmToStud" ("A","B") VALUES ($1,$2)', ["farm-1", "stud-1"]);
+    await source.query('INSERT INTO "SprayTrack" (id,"userId","updatedAt","widthMeters","offsetMeters","forwardOffsetMeters","totalAreaSqMeters") VALUES ($1,$2,NOW(),6,0,-1.5,6)',
+      ["track-1", "user-1"]);
+    await source.query('INSERT INTO "SprayTrackStrip" ("trackId",sequence,coordinates,"areaSqMeters") VALUES ($1,0,$2,6)',
+      ["track-1", [148, -36, 148.0001, -36, 148.0001, -35.9999, 148, -35.9999]]);
     assert.equal(await businessDatabaseIsEmpty(source), false);
     const snapshot = await captureSnapshot(source);
     const decoded = await decodeSnapshot(snapshot);
     assert.equal(decoded.tables.Farm[0].id, "farm-1");
     assert.equal(decoded.tables.user[0].id, "user-1");
     assert.equal(decoded.tables._FarmToStud.length, 1);
+    assert.equal(decoded.tables.SprayTrack[0].totalAreaSqMeters, 6);
+    assert.equal(decoded.tables.SprayTrackStrip[0].coordinates.length, 8);
     assert.equal(decoded.tables.account, undefined);
     assert.ok(!JSON.stringify(decoded).includes("do-not-export"));
     const incomplete = structuredClone(decoded);
@@ -74,6 +80,7 @@ await test("PostgreSQL snapshot captures business relationships, excludes creden
       await rm(temporary, { recursive: true, force: true });
     }
     assert.equal((await destination.query('SELECT * FROM "_FarmToStud"')).rowCount, 1);
+    assert.equal((await destination.query('SELECT * FROM "SprayTrackStrip" WHERE "trackId"=$1', ["track-1"])).rowCount, 1);
     assert.equal((await destination.query("SELECT * FROM account")).rowCount, 0);
     await assert.rejects(restoreSnapshot(destination, snapshot), /empty business database/);
     assert.equal((await destination.query('SELECT * FROM "Farm"')).rowCount, 1);

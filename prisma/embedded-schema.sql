@@ -809,6 +809,30 @@ ALTER TABLE "PaddockFeedRecord" ADD CONSTRAINT "PaddockFeedRecord_paddockId_fkey
 -- AddForeignKey
 ALTER TABLE "PaddockWorkEvent" ADD CONSTRAINT "PaddockWorkEvent_paddockId_fkey" FOREIGN KEY ("paddockId") REFERENCES "Paddock"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
+CREATE TABLE "SprayTrack" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "userId" TEXT NOT NULL REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    "startedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "totalAreaSqMeters" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "widthMeters" DOUBLE PRECISION NOT NULL,
+    "offsetMeters" DOUBLE PRECISION NOT NULL,
+    "forwardOffsetMeters" DOUBLE PRECISION NOT NULL,
+    "revision" INTEGER NOT NULL DEFAULT 0,
+    "lastSaveId" TEXT,
+    "lastSaveHash" TEXT
+);
+
+CREATE INDEX "SprayTrack_userId_startedAt_id_idx" ON "SprayTrack"("userId", "startedAt", "id");
+
+CREATE TABLE "SprayTrackStrip" (
+    "trackId" TEXT NOT NULL REFERENCES "SprayTrack"("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    "sequence" INTEGER NOT NULL,
+    "coordinates" DOUBLE PRECISION[],
+    "areaSqMeters" DOUBLE PRECISION NOT NULL,
+    PRIMARY KEY ("trackId", "sequence")
+);
+
 -- AddForeignKey
 ALTER TABLE "WeightRecord" ADD CONSTRAINT "WeightRecord_livestockUnitId_fkey" FOREIGN KEY ("livestockUnitId") REFERENCES "LivestockUnit"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 

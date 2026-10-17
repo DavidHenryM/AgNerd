@@ -55,6 +55,8 @@ export const ModelName = {
   EmbeddedSyncState: 'EmbeddedSyncState',
   Farm: 'Farm',
   User: 'User',
+  SprayTrack: 'SprayTrack',
+  SprayTrackStrip: 'SprayTrackStrip',
   Address: 'Address',
   Graze: 'Graze',
   Breed: 'Breed',
@@ -181,6 +183,33 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const SprayTrackScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  startedAt: 'startedAt',
+  updatedAt: 'updatedAt',
+  totalAreaSqMeters: 'totalAreaSqMeters',
+  widthMeters: 'widthMeters',
+  offsetMeters: 'offsetMeters',
+  forwardOffsetMeters: 'forwardOffsetMeters',
+  revision: 'revision',
+  lastSaveId: 'lastSaveId',
+  lastSaveHash: 'lastSaveHash'
+} as const
+
+export type SprayTrackScalarFieldEnum = (typeof SprayTrackScalarFieldEnum)[keyof typeof SprayTrackScalarFieldEnum]
+
+
+export const SprayTrackStripScalarFieldEnum = {
+  trackId: 'trackId',
+  sequence: 'sequence',
+  coordinates: 'coordinates',
+  areaSqMeters: 'areaSqMeters'
+} as const
+
+export type SprayTrackStripScalarFieldEnum = (typeof SprayTrackStripScalarFieldEnum)[keyof typeof SprayTrackStripScalarFieldEnum]
 
 
 export const AddressScalarFieldEnum = {

@@ -401,6 +401,8 @@ export const ModelName = {
   EmbeddedSyncState: 'EmbeddedSyncState',
   Farm: 'Farm',
   User: 'User',
+  SprayTrack: 'SprayTrack',
+  SprayTrackStrip: 'SprayTrackStrip',
   Address: 'Address',
   Graze: 'Graze',
   Breed: 'Breed',
@@ -452,7 +454,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "embeddedBackup" | "embeddedSyncState" | "farm" | "user" | "address" | "graze" | "breed" | "mob" | "grazeMob" | "livestockUnit" | "onFarm" | "ownership" | "stud" | "studSocietyRegistration" | "studSociety" | "pregnancy" | "livestockUnitPregnancy" | "pregnancyTest" | "chemicalTreatment" | "chemicalProduct" | "activeIngredient" | "estimatedBreedingValueDefinition" | "estimatedBreedingValueResult" | "paddock" | "livestockUnitPosition" | "geoPoint" | "gate" | "gateStateChange" | "mobMembership" | "mobMovement" | "paddockFeedRecord" | "paddockWorkEvent" | "weightRecord" | "loraDevice" | "session" | "account" | "verification" | "organization" | "member" | "invitation"
+    modelProps: "embeddedBackup" | "embeddedSyncState" | "farm" | "user" | "sprayTrack" | "sprayTrackStrip" | "address" | "graze" | "breed" | "mob" | "grazeMob" | "livestockUnit" | "onFarm" | "ownership" | "stud" | "studSocietyRegistration" | "studSociety" | "pregnancy" | "livestockUnitPregnancy" | "pregnancyTest" | "chemicalTreatment" | "chemicalProduct" | "activeIngredient" | "estimatedBreedingValueDefinition" | "estimatedBreedingValueResult" | "paddock" | "livestockUnitPosition" | "geoPoint" | "gate" | "gateStateChange" | "mobMembership" | "mobMovement" | "paddockFeedRecord" | "paddockWorkEvent" | "weightRecord" | "loraDevice" | "session" | "account" | "verification" | "organization" | "member" | "invitation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -749,6 +751,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    SprayTrack: {
+      payload: Prisma.$SprayTrackPayload<ExtArgs>
+      fields: Prisma.SprayTrackFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SprayTrackFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SprayTrackFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackPayload>
+        }
+        findFirst: {
+          args: Prisma.SprayTrackFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SprayTrackFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackPayload>
+        }
+        findMany: {
+          args: Prisma.SprayTrackFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackPayload>[]
+        }
+        create: {
+          args: Prisma.SprayTrackCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackPayload>
+        }
+        createMany: {
+          args: Prisma.SprayTrackCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SprayTrackCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackPayload>[]
+        }
+        delete: {
+          args: Prisma.SprayTrackDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackPayload>
+        }
+        update: {
+          args: Prisma.SprayTrackUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackPayload>
+        }
+        deleteMany: {
+          args: Prisma.SprayTrackDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SprayTrackUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SprayTrackUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackPayload>[]
+        }
+        upsert: {
+          args: Prisma.SprayTrackUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackPayload>
+        }
+        aggregate: {
+          args: Prisma.SprayTrackAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSprayTrack>
+        }
+        groupBy: {
+          args: Prisma.SprayTrackGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SprayTrackGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SprayTrackCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SprayTrackCountAggregateOutputType> | number
+        }
+      }
+    }
+    SprayTrackStrip: {
+      payload: Prisma.$SprayTrackStripPayload<ExtArgs>
+      fields: Prisma.SprayTrackStripFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SprayTrackStripFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackStripPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SprayTrackStripFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackStripPayload>
+        }
+        findFirst: {
+          args: Prisma.SprayTrackStripFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackStripPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SprayTrackStripFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackStripPayload>
+        }
+        findMany: {
+          args: Prisma.SprayTrackStripFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackStripPayload>[]
+        }
+        create: {
+          args: Prisma.SprayTrackStripCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackStripPayload>
+        }
+        createMany: {
+          args: Prisma.SprayTrackStripCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SprayTrackStripCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackStripPayload>[]
+        }
+        delete: {
+          args: Prisma.SprayTrackStripDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackStripPayload>
+        }
+        update: {
+          args: Prisma.SprayTrackStripUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackStripPayload>
+        }
+        deleteMany: {
+          args: Prisma.SprayTrackStripDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SprayTrackStripUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SprayTrackStripUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackStripPayload>[]
+        }
+        upsert: {
+          args: Prisma.SprayTrackStripUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SprayTrackStripPayload>
+        }
+        aggregate: {
+          args: Prisma.SprayTrackStripAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSprayTrackStrip>
+        }
+        groupBy: {
+          args: Prisma.SprayTrackStripGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SprayTrackStripGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SprayTrackStripCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SprayTrackStripCountAggregateOutputType> | number
         }
       }
     }
@@ -3529,6 +3679,33 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const SprayTrackScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  startedAt: 'startedAt',
+  updatedAt: 'updatedAt',
+  totalAreaSqMeters: 'totalAreaSqMeters',
+  widthMeters: 'widthMeters',
+  offsetMeters: 'offsetMeters',
+  forwardOffsetMeters: 'forwardOffsetMeters',
+  revision: 'revision',
+  lastSaveId: 'lastSaveId',
+  lastSaveHash: 'lastSaveHash'
+} as const
+
+export type SprayTrackScalarFieldEnum = (typeof SprayTrackScalarFieldEnum)[keyof typeof SprayTrackScalarFieldEnum]
+
+
+export const SprayTrackStripScalarFieldEnum = {
+  trackId: 'trackId',
+  sequence: 'sequence',
+  coordinates: 'coordinates',
+  areaSqMeters: 'areaSqMeters'
+} as const
+
+export type SprayTrackStripScalarFieldEnum = (typeof SprayTrackStripScalarFieldEnum)[keyof typeof SprayTrackStripScalarFieldEnum]
+
+
 export const AddressScalarFieldEnum = {
   id: 'id',
   unit: 'unit',
@@ -4547,6 +4724,8 @@ export type GlobalOmitConfig = {
   embeddedSyncState?: Prisma.EmbeddedSyncStateOmit
   farm?: Prisma.FarmOmit
   user?: Prisma.UserOmit
+  sprayTrack?: Prisma.SprayTrackOmit
+  sprayTrackStrip?: Prisma.SprayTrackStripOmit
   address?: Prisma.AddressOmit
   graze?: Prisma.GrazeOmit
   breed?: Prisma.BreedOmit

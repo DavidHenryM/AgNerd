@@ -609,11 +609,15 @@ already-active network just because a preferred network becomes visible.
 The `/navigation` screen hides the app sidebar and footer below 1536px wide.
 On a 1280x720 display, the map fills the 1280x656 area below the 64px top bar.
 Use the top bar's **Back to home** button to leave navigation on smaller screens.
-Navigation overlays use 56px touch targets (72px for start/stop), larger status
-readouts, and enlarged width/offset sliders for 7-inch touchscreens. The action
+Navigation is primarily designed for touchscreen use in embedded mode.
+Overlays use a single 96px Play/Pause control with a 48px icon, 80px zoom
+buttons with 40px icons and 12px spacing, and 56px targets for other controls.
+These larger controls apply in online mode too. Larger status
+readouts and enlarged width/offset sliders suit 7-inch touchscreens. The action
 controls remain 12px from the bottom-left on compact navigation screens, without
 reserving space for the hidden footer; settings and status panels scroll when height
-is limited.
+is limited. On narrow phones, the distance key sits above the main controls;
+opening the menu temporarily replaces the status/distance overlays to avoid overlap.
 The tractor GLB is anchored at the centre of its horizontal vertex bounds,
 with its lowest vertex at ground level, and scaled to a measured two-metre
 width. At zero boom offsets, the tractor footprint centre and boom centre
@@ -645,17 +649,67 @@ heading, or direction of movement when heading is unavailable (initially north).
 Play paints the area between consecutive boom positions in translucent light
 rose-purple. Small GPS movements accumulate until 0.5 m has been travelled,
 then paint from the last painted endpoints so the trail stays continuous.
-Stop leaves a dimmed boom preview without painting. Pause spraying keeps
+Pause leaves a dimmed boom preview without painting and keeps
 navigation active but suspends coverage painting, area accumulation, spray
 particles and new history submissions until Resume spraying is pressed.
 Existing coverage is retained and paused travel is never joined by a painted strip.
-Stop or Reset clears the pause state. While spraying, a Cesium particle mist emits
+While spraying, a Cesium particle mist emits
 downward from its nozzle positions in the same purple, following width and both offsets.
 The short-lived droplets remain in world space as the tractor moves; emission
-is capped at 160 particles/second for touchscreen devices. Pause, Stop, Reset and
+is capped at 160 particles/second for touchscreen devices. Pause, track changes and
 stale/no-fix positions remove the particle system immediately.
 Stale/no-fix positions hide the boom and break the
 paint trail so a GPS outage is not joined by a sprayed strip.
+
+**Spray tracks:** open **Navigation menu** for **New spray track**,
+**Resume saved track**, and **Delete current spray track**. New saves the
+current track before clearing the map; it does not delete the previous track.
+Recording creates a track on first Play and automatically saves incremental
+coverage batches while spraying, on Pause, and before switching tracks.
+The GPS panel distinguishes saving, saved, unsaved changes and storage errors.
+Errors pause spraying; use **Retry save** before continuing. Do not close the
+browser or power down until the track is saved. Unsaved navigation-away actions
+are guarded, but abrupt power loss cannot guarantee a final write; there is no
+durable offline write queue.
+
+Saved tracks belong to the signed-in user and are listed newest-first by
+original start date/time, with sprayed area in hectares/acres. Load more to see
+older tracks. Resume restores the actual painted polygons, area and latest boom
+settings; it stays paused until Play and never joins old coverage to the current
+vehicle position. Area uses the existing accumulated distance-times-width
+estimate, not overlap-deduplicated area. Concurrent edits from another tab/device
+are rejected rather than overwritten: **Reload saved version** offers a
+confirmation before discarding local unsaved coverage. Delete is inside the menu
+and requires confirmation; only the current track and its coverage are removed,
+not other tracks, farm geometry or the separate GPS history.
+
+Tracks are available across devices connected to the same account database.
+Embedded mode uses its local PostgreSQL database and includes tracks in business
+snapshots/backups; this does not add live track synchronization with a separate
+cloud database. Existing historical GPS points cannot be converted reliably into
+tracks because they do not retain dates, track boundaries or boom geometry.
+
+**Database upgrade for saved tracks:** before running this version against an
+existing database, apply `prisma/patches/add-spray-tracks.sql` to that intended
+database with `psql -v ON_ERROR_STOP=1 -f prisma/patches/add-spray-tracks.sql`
+(provide the connection through your normal PostgreSQL environment/connection
+configuration). The additive patch can be applied repeatedly; do not reset the
+database. New embedded installs use the updated `prisma/embedded-schema.sql`.
+Regenerate the client with `npm run generate` and rebuild. Cloud and embedded
+business schemas must match before snapshot import; older snapshots without the
+new tables require a fresh export from an upgraded source.
+
+Track APIs are session-authenticated `/api/spray-tracks` (list/create) and
+`/api/spray-tracks/[id]` (paginated coverage load, incremental save, delete).
+Writes validate boom settings/geometry and use revision checks and retry
+identities to prevent duplicate area or silent cross-device overwrites.
+The focused PostgreSQL API regression test uses
+`AGNERD_SPRAY_TEST_DATABASE_URL`, which must explicitly point to a loopback
+database whose name ends in `_test`; run it with
+`node --test scripts/spray-tracks.integration.test.mjs`. It creates the embedded
+schema in an empty test database, exercises real authenticated handlers, and
+removes its test records afterward.
+
 Navigation checks the session before starting map/GPS requests. An expired
 session returns to sign-in with navigation as the callback; protected API
 requests return JSON 401 rather than redirecting to a sign-in HTML page.

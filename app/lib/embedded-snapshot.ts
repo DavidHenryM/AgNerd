@@ -17,7 +17,7 @@ export const BUSINESS_TABLES = [
   "ActiveIngredient", "EstimatedBreedingValueDefinition", "EstimatedBreedingValueResult",
   "Paddock", "LivestockUnitPosition", "GeoPoint", "Gate", "GateStateChange",
   "MobMembership", "MobMovement", "PaddockFeedRecord", "PaddockWorkEvent", "WeightRecord",
-  "Organization", "member",
+  "Organization", "member", "SprayTrack", "SprayTrackStrip",
 ];
 
 export interface BusinessSnapshot {

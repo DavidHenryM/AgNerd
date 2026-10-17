@@ -38,6 +38,16 @@ export type Farm = Prisma.FarmModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model SprayTrack
+ * 
+ */
+export type SprayTrack = Prisma.SprayTrackModel
+/**
+ * Model SprayTrackStrip
+ * 
+ */
+export type SprayTrackStrip = Prisma.SprayTrackStripModel
+/**
  * Model Address
  * 
  */

@@ -2,6 +2,8 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import {
   Box,
+  Alert,
+  Button,
   Collapse,
   Fab,
   IconButton,
@@ -13,17 +15,16 @@ import {
 } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
-import StopIcon from "@mui/icons-material/Stop";
-import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import SpeedIcon from "@mui/icons-material/Speed";
 import TuneIcon from "@mui/icons-material/Tune";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
-import { footerHeight } from "@app/settings";
+import { drawerWidth, footerHeight } from "@app/settings";
 import { GnssFixType, formatGnssFixStatus } from "@lib/gnss-status";
 import InternetStatus from "@components/InternetStatus";
+import NavigationTrackActions, { type NavigationTrackProps } from "./NavigationTrackActions";
 
 // ── colour palette offered to the user ──────────────────────────────
 export const MODEL_COLORS: { label: string; hex: string }[] = [
@@ -70,6 +71,7 @@ function formatDistance(meters: number): string {
 
 // ── overlay panel styling ───────────────────────────────────────────
 const panelSx = {
+  boxSizing: "border-box",
   background: "rgba(0,0,0,0.75)",
   color: "white",
   borderRadius: 2,
@@ -92,6 +94,16 @@ const adjustmentButtonSx = {
   color: "white",
 };
 
+const zoomButtonSx = {
+  ...touchButtonSx,
+  width: 80,
+  height: 80,
+  minHeight: 80,
+  "& .MuiSvgIcon-root": { fontSize: 40 },
+  color: "white",
+  bgcolor: "rgba(255,255,255,0.15)",
+};
+
 const sliderSx = {
   flex: 1,
   mx: 1,
@@ -100,7 +112,7 @@ const sliderSx = {
 };
 
 // ── props ───────────────────────────────────────────────────────────
-export interface NavigationControlsProps {
+export interface NavigationControlsProps extends NavigationTrackProps {
   latitude: number | null;
   longitude: number | null;
   locationTimestamp: number | null;
@@ -111,10 +123,8 @@ export interface NavigationControlsProps {
   satellites: number | null;
   fixStatusStale: boolean;
   browserLocation: boolean;
-  isTracking: boolean;
-  onTrackingToggle: () => void;
-  isSprayPaused: boolean;
-  onSprayPauseToggle: () => void;
+  isSpraying: boolean;
+  onSprayingToggle: () => void;
   widthMeters: number;
   setWidthMeters: Dispatch<SetStateAction<number>>;
   offsetMeters: number;
@@ -127,7 +137,6 @@ export interface NavigationControlsProps {
   mapScalePixels: number;
   onZoomIn: () => void;
   onZoomOut: () => void;
-  onReset: () => void;
   mapSource?: "local" | "online";
   onMapSourceChange?: (source: "local" | "online") => void;
 }
@@ -144,10 +153,9 @@ export default function NavigationControls(props: NavigationControlsProps) {
     satellites,
     fixStatusStale,
     browserLocation,
-    isTracking,
-    onTrackingToggle,
-    isSprayPaused,
-    onSprayPauseToggle,
+    isSpraying,
+    onSprayingToggle,
+    trackState,
     widthMeters,
     setWidthMeters,
     offsetMeters,
@@ -160,7 +168,6 @@ export default function NavigationControls(props: NavigationControlsProps) {
     mapScalePixels,
     onZoomIn,
     onZoomOut,
-    onReset,
     mapSource,
     onMapSourceChange,
   } = props;
@@ -181,12 +188,13 @@ export default function NavigationControls(props: NavigationControlsProps) {
           top: { xs: "calc(56px + 12px)", sm: "calc(64px + 12px)" },
           right: 12,
           zIndex: 1200,
+          display: settingsOpen ? { xs: "none", sm: "block" } : "block",
         }}
       >
         <Box sx={{
           ...panelSx,
           maxWidth: "calc(100vw - 24px)",
-          maxHeight: "calc(100dvh - 180px)",
+          maxHeight: { xs: "calc(100dvh - 276px)", sm: "calc(100dvh - 180px)" },
           overflowY: "auto",
         }}>
           {/* GPS status */}
@@ -248,33 +256,31 @@ export default function NavigationControls(props: NavigationControlsProps) {
             <Typography variant="body1" sx={{ fontSize: 20 }}>{area.ha} ha / {area.acres} ac</Typography>
           </Stack>
 
-          {isTracking && isSprayPaused && (
-            <Typography component="output" aria-live="polite" sx={{ display: "block", color: "#FFC107", mt: 0.5 }}>
-              Spray paused
-            </Typography>
-          )}
+          <Typography component="output" aria-live="polite" sx={{ display: "block", color: isSpraying ? "#00E676" : "#FFC107", mt: 0.5 }}>
+            {isSpraying ? "Spraying" : "Spray paused"}
+          </Typography>
+          <Typography component="output" aria-live="polite" variant="caption" sx={{ display: "block" }}>
+            {trackState.saving ? "Saving track..." : trackState.dirty ? "Unsaved changes" : trackState.track ? "Track saved" : "No active track"}
+          </Typography>
+          {trackState.error && <Alert severity="error" sx={{ mt: 1, maxWidth: 280 }}>
+            {trackState.error}
+            {!trackState.conflict && <Button disabled={trackState.busy || trackState.saving} onClick={props.onRetrySave}>Retry save</Button>}
+            {trackState.conflict && <Typography>Use Reload saved version in the menu.</Typography>}
+          </Alert>}
 
           {/* Zoom controls */}
           <Stack direction="row" spacing={1.5} sx={{ mt: 1 }}>
             <Fab
               aria-label="Zoom out"
               onClick={onZoomOut}
-              sx={{
-                ...touchButtonSx,
-                color: "white",
-                bgcolor: "rgba(255,255,255,0.15)",
-              }}
+              sx={zoomButtonSx}
             >
               <ZoomOutIcon />
             </Fab>
             <Fab
               aria-label="Zoom in"
               onClick={onZoomIn}
-              sx={{
-                ...touchButtonSx,
-                color: "white",
-                bgcolor: "rgba(255,255,255,0.15)",
-              }}
+              sx={zoomButtonSx}
             >
               <ZoomInIcon />
             </Fab>
@@ -286,9 +292,10 @@ export default function NavigationControls(props: NavigationControlsProps) {
       <Box
         sx={{
           position: "fixed",
-          bottom: { xs: 12, xl: `calc(${footerHeight} + 12px)` },
+          bottom: { xs: 120, sm: 12, xl: `calc(${footerHeight} + 12px)` },
           right: 12,
           zIndex: 1200,
+          display: settingsOpen ? { xs: "none", sm: "block" } : "block",
         }}
       >
         <Box sx={panelSx}>
@@ -344,7 +351,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
         sx={{
           position: "fixed",
           bottom: { xs: 12, xl: `calc(${footerHeight} + 12px)` },
-          left: 12,
+          left: { xs: 12, xl: `calc(${drawerWidth.lg} + 12px)` },
           zIndex: 1200,
         }}
       >
@@ -353,9 +360,10 @@ export default function NavigationControls(props: NavigationControlsProps) {
           <Stack spacing={1} sx={{
             width: 360,
             maxWidth: "calc(100vw - 24px)",
-            maxHeight: "calc(100dvh - 180px)",
+            maxHeight: { xs: "calc(100dvh - 220px)", xl: "calc(100dvh - 320px)" },
             overflowY: "auto",
           }}>
+            <Box sx={panelSx}><NavigationTrackActions {...props} /></Box>
             {mapSource && onMapSourceChange && (
               <Box sx={panelSx}>
                 <Typography variant="caption" sx={{ fontWeight: 600 }}>
@@ -501,44 +509,20 @@ export default function NavigationControls(props: NavigationControlsProps) {
 
         {/* Action buttons row */}
         <Stack direction="row" spacing={1.5} sx={{ alignItems: "center" }}>
-          {/* ─ Start / Stop ─ */}
           <Fab
-            aria-label={isTracking ? "Stop tracking" : "Start tracking"}
-            aria-pressed={isTracking}
-            color={isTracking ? "error" : "success"}
-            onClick={onTrackingToggle}
-            sx={{ ...touchButtonSx, width: 72, height: 72, minHeight: 72 }}
+            aria-label={isSpraying ? "Pause spraying" : trackState.track ? "Resume spraying" : "Start spraying"}
+            aria-pressed={isSpraying}
+            disabled={trackState.busy || !!trackState.error}
+            color={isSpraying ? "warning" : "success"}
+            onClick={onSprayingToggle}
+            sx={{ ...touchButtonSx, width: 96, height: 96, minHeight: 96, "& .MuiSvgIcon-root": { fontSize: 48 } }}
           >
-            {isTracking ? <StopIcon /> : <PlayArrowIcon />}
-          </Fab>
-
-          <Fab
-            aria-label={isSprayPaused ? "Resume spraying" : "Pause spraying"}
-            aria-pressed={isSprayPaused}
-            disabled={!isTracking}
-            onClick={onSprayPauseToggle}
-            sx={{
-              ...touchButtonSx,
-              color: "white",
-              bgcolor: isSprayPaused ? "#9C6500" : "rgba(0,0,0,0.75)",
-              "&.Mui-disabled": { color: "#888", bgcolor: "rgba(0,0,0,0.75)" },
-            }}
-          >
-            {isSprayPaused ? <PlayArrowIcon /> : <PauseIcon />}
-          </Fab>
-
-          {/* ─ Reset ─ */}
-          <Fab
-            aria-label="Reset coverage"
-            onClick={onReset}
-            sx={{ ...touchButtonSx, color: "white", bgcolor: "rgba(0,0,0,0.75)" }}
-          >
-            <DeleteSweepIcon />
+            {isSpraying ? <PauseIcon /> : <PlayArrowIcon />}
           </Fab>
 
           {/* ─ Settings toggle ─ */}
           <Fab
-            aria-label="Navigation settings"
+            aria-label="Navigation menu"
             aria-expanded={settingsOpen}
             onClick={() => setSettingsOpen((o) => !o)}
             sx={{

@@ -83,9 +83,38 @@ model User {
   billingAddresses  Address[]      @relation(name: "UserBillingAddress")
   shippingAddresses Address[]      @relation(name: "UserShippingAddress")
   organizations     Organization[]
+  sprayTracks       SprayTrack[]
 
   @@unique([email])
   @@map("user")
+}
+
+model SprayTrack {
+  id                  String   @id
+  userId              String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startedAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  totalAreaSqMeters   Float    @default(0)
+  widthMeters         Float
+  offsetMeters        Float
+  forwardOffsetMeters Float
+  revision            Int      @default(0)
+  lastSaveId          String?
+  lastSaveHash        String?
+  strips              SprayTrackStrip[]
+
+  @@index([userId, startedAt, id])
+}
+
+model SprayTrackStrip {
+  trackId     String
+  sequence    Int
+  coordinates Float[]
+  areaSqMeters Float
+  track       SprayTrack @relation(fields: [trackId], references: [id], onDelete: Cascade)
+
+  @@id([trackId, sequence])
 }
 
 model Address {

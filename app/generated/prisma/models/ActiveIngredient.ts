@@ -385,14 +385,6 @@ export type EnumIngredientFieldUpdateOperationsInput = {
   set?: $Enums.Ingredient
 }
 
-export type FloatFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type ActiveIngredientCreateWithoutProductInput = {
   id?: string
   ingredient: $Enums.Ingredient

@@ -35,6 +35,8 @@ import { BoomSprayEmitter, createSprayParticles, createSprayTexture, sprayEmissi
 import NavigationControls, {
   MODEL_COLORS,
 } from "@components/screens/NavigationControls";
+import { useSprayTracks } from "@lib/hooks/spray-tracks";
+import { navigationZoomIn, navigationZoomOut } from "@lib/navigation-zoom";
 
 // ── Geo helpers ─────────────────────────────────────────────────────
 const SCALE_KEY_BASE_PIXELS = 120;
@@ -149,19 +151,39 @@ export default function NavigationScreen() {
   } = useGeolocation();
 
   // Tracking state
-  const [isTracking, setIsTracking] = useState(false);
-  const [isSprayPaused, setIsSprayPaused] = useState(false);
-  const isSpraying = isTracking && !isSprayPaused;
+  const [sprayingEnabled, setSprayingEnabled] = useState(false);
+  const { session: trackSession, state: trackState } = useSprayTracks(setSprayingEnabled);
+  const isSpraying = sprayingEnabled && !trackState.busy && !trackState.error;
   const [historyError, setHistoryError] = useState<string | null>(null);
   const historyRequestRef = useRef(false);
   const lastRecordedTimestampRef = useRef<number | null>(null);
   const [widthMeters, setWidthMeters] = useState(6);
   const [offsetMeters, setOffsetMeters] = useState(0);
   const [forwardOffsetMeters, setForwardOffsetMeters] = useState(-1.5);
-  const [totalAreaSqMeters, setTotalAreaSqMeters] = useState(0);
+  const totalAreaSqMeters = trackState.totalAreaSqMeters;
   const [cameraRangeMeters, setCameraRangeMeters] = useState(100);
   const [selectedColor] = useState(MODEL_COLORS[0].hex);
   const stripEntitiesRef = useRef<Entity[]>([]);
+
+  useEffect(() => {
+    trackSession.setSettings({ widthMeters, offsetMeters, forwardOffsetMeters });
+  }, [trackSession, widthMeters, offsetMeters, forwardOffsetMeters]);
+
+  useEffect(() => trackSession.subscribe(() => {
+    if (trackSession.getSnapshot().error) setSprayingEnabled(false);
+  }), [trackSession]);
+
+  const paintStrip = useCallback((coordinates: number[]) => {
+    const viewer = viewerRef.current;
+    if (!viewer) return;
+    stripEntitiesRef.current.push(viewer.entities.add({
+      polygon: {
+        hierarchy: Cartesian3.fromDegreesArray(coordinates),
+        material: new ColorMaterialProperty(Color.fromCssColorString(SPRAY_COLOR).withAlpha(0.45)),
+        classificationType: ClassificationType.BOTH,
+      },
+    }));
+  }, []);
 
   useEffect(() => {
     if (!isSpraying || latitude === null || longitude === null || locationTimestamp === null ||
@@ -526,38 +548,31 @@ export default function NavigationScreen() {
     }
     const strip = sprayTrailRef.current.update(cur, boom);
     if (strip) {
-      const positions = Cartesian3.fromDegreesArray(strip.coordinates);
-
-      const stripEntity = viewer.entities.add({
-        polygon: {
-          hierarchy: positions,
-          material: new ColorMaterialProperty(
-            Color.fromCssColorString(SPRAY_COLOR).withAlpha(0.45)
-          ),
-          classificationType: ClassificationType.BOTH,
-        },
-      });
-
-      stripEntitiesRef.current.push(stripEntity);
-
-      // Accumulate area (rectangle approximation: distance × width)
-      const stripArea = strip.distance * widthMeters;
-      setTotalAreaSqMeters((a) => a + stripArea);
+      trackSession.append(strip.coordinates, strip.distance * widthMeters);
+      paintStrip(strip.coordinates);
     }
-  }, [latitude, longitude, heading, fixStatusStale, fixType, isSpraying, widthMeters, offsetMeters, forwardOffsetMeters, selectedColor, viewerReady]);
+  }, [latitude, longitude, heading, fixStatusStale, fixType, isSpraying, widthMeters, offsetMeters, forwardOffsetMeters, selectedColor, viewerReady, trackSession, paintStrip]);
 
   // Break coverage across stopped or paused travel, without clearing existing paint.
   useEffect(() => {
     if (!isSpraying) sprayTrailRef.current.reset();
   }, [isSpraying]);
 
-  const handleTrackingToggle = useCallback(() => {
-    setIsTracking(value => !value);
-    setIsSprayPaused(false);
-  }, []);
+  const handlePause = useCallback(() => {
+    setSprayingEnabled(false);
+    sprayTrailRef.current.reset();
+    void trackSession.flush();
+  }, [trackSession]);
 
-  // ── Reset function ────────────────────────────────────────────────
-  const handleReset = useCallback(() => {
+  const handleSprayingToggle = useCallback(async () => {
+    if (isSpraying) handlePause();
+    else if (await trackSession.start()) {
+      sprayTrailRef.current.reset();
+      setSprayingEnabled(true);
+    }
+  }, [isSpraying, handlePause, trackSession]);
+
+  const clearCoverage = useCallback(() => {
     const viewer = viewerRef.current;
     if (viewer) {
       if (sprayParticlesRef.current) {
@@ -569,18 +584,41 @@ export default function NavigationScreen() {
       }
     }
     stripEntitiesRef.current = [];
-    setTotalAreaSqMeters(0);
     sprayTrailRef.current.reset();
-    setIsTracking(false);
-    setIsSprayPaused(false);
   }, []);
 
+  const handleNewTrack = useCallback(async () => {
+    handlePause();
+    if (await trackSession.newTrack()) { clearCoverage(); return true; }
+    return false;
+  }, [handlePause, trackSession, clearCoverage]);
+
+  const handleResumeTrack = useCallback(async (id: string, discard = false) => {
+    handlePause();
+    if (!await trackSession.resume(id, discard)) return false;
+    clearCoverage();
+    for (const strip of trackSession.strips) paintStrip(strip.coordinates);
+    const track = trackSession.getSnapshot().track;
+    if (track) {
+      setWidthMeters(track.widthMeters);
+      setOffsetMeters(track.offsetMeters);
+      setForwardOffsetMeters(track.forwardOffsetMeters);
+    }
+    return true;
+  }, [handlePause, trackSession, clearCoverage, paintStrip]);
+
+  const handleDeleteTrack = useCallback(async () => {
+    handlePause();
+    if (await trackSession.deleteCurrent()) { clearCoverage(); return true; }
+    return false;
+  }, [handlePause, trackSession, clearCoverage]);
+
   const handleZoomIn = useCallback(() => {
-    setCameraRangeMeters((r) => Math.max(20, r * 0.75));
+    setCameraRangeMeters(navigationZoomIn);
   }, []);
 
   const handleZoomOut = useCallback(() => {
-    setCameraRangeMeters((r) => Math.min(10_000, r * 1.33));
+    setCameraRangeMeters(navigationZoomOut);
   }, []);
 
   return (
@@ -616,10 +654,14 @@ export default function NavigationScreen() {
         browserLocation={positionSource === "browser"}
         speed={speed}
         gpsConnected={gnssDebug.statusFilePresent === true}
-        isTracking={isTracking}
-        onTrackingToggle={handleTrackingToggle}
-        isSprayPaused={isSprayPaused}
-        onSprayPauseToggle={() => setIsSprayPaused(value => !value)}
+        isSpraying={isSpraying}
+        onSprayingToggle={() => { void handleSprayingToggle(); }}
+        trackState={{ ...trackState, busy: trackState.busy || !viewerReady }}
+        onPause={handlePause}
+        onNewTrack={handleNewTrack}
+        onResumeTrack={handleResumeTrack}
+        onDeleteTrack={handleDeleteTrack}
+        onRetrySave={() => { void trackSession.flush(); }}
         widthMeters={widthMeters}
         setWidthMeters={setWidthMeters}
         offsetMeters={offsetMeters}
@@ -632,7 +674,6 @@ export default function NavigationScreen() {
         mapScalePixels={mapScalePixels}
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
-        onReset={handleReset}
         mapSource={mapConfig ? mapSource : undefined}
         onMapSourceChange={mapConfig ? handleMapSourceChange : undefined}
       />

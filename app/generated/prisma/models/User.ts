@@ -254,6 +254,7 @@ export type UserWhereInput = {
   billingAddresses?: Prisma.AddressListRelationFilter
   shippingAddresses?: Prisma.AddressListRelationFilter
   organizations?: Prisma.OrganizationListRelationFilter
+  sprayTracks?: Prisma.SprayTrackListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -278,6 +279,7 @@ export type UserOrderByWithRelationInput = {
   billingAddresses?: Prisma.AddressOrderByRelationAggregateInput
   shippingAddresses?: Prisma.AddressOrderByRelationAggregateInput
   organizations?: Prisma.OrganizationOrderByRelationAggregateInput
+  sprayTracks?: Prisma.SprayTrackOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -305,6 +307,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   billingAddresses?: Prisma.AddressListRelationFilter
   shippingAddresses?: Prisma.AddressListRelationFilter
   organizations?: Prisma.OrganizationListRelationFilter
+  sprayTracks?: Prisma.SprayTrackListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -366,6 +369,7 @@ export type UserCreateInput = {
   billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingUserInput
   shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingUserInput
   organizations?: Prisma.OrganizationCreateNestedManyWithoutContactPersonInput
+  sprayTracks?: Prisma.SprayTrackCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -389,6 +393,7 @@ export type UserUncheckedCreateInput = {
   billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingUserInput
   shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingUserInput
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutContactPersonInput
+  sprayTracks?: Prisma.SprayTrackUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -412,6 +417,7 @@ export type UserUpdateInput = {
   billingAddresses?: Prisma.AddressUpdateManyWithoutBillingUserNestedInput
   shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingUserNestedInput
   organizations?: Prisma.OrganizationUpdateManyWithoutContactPersonNestedInput
+  sprayTracks?: Prisma.SprayTrackUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -435,6 +441,7 @@ export type UserUncheckedUpdateInput = {
   billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingUserNestedInput
   shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingUserNestedInput
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutContactPersonNestedInput
+  sprayTracks?: Prisma.SprayTrackUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -542,14 +549,14 @@ export type UserMinOrderByAggregateInput = {
   landlineNumber?: Prisma.SortOrder
 }
 
-export type UserNullableScalarRelationFilter = {
-  is?: Prisma.UserWhereInput | null
-  isNot?: Prisma.UserWhereInput | null
-}
-
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
+}
+
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
 }
 
 export type UserCreateNestedManyWithoutFarmInput = {
@@ -596,6 +603,20 @@ export type UserUncheckedUpdateManyWithoutFarmNestedInput = {
 
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
+}
+
+export type UserCreateNestedOneWithoutSprayTracksInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSprayTracksInput, Prisma.UserUncheckedCreateWithoutSprayTracksInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSprayTracksInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSprayTracksNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSprayTracksInput, Prisma.UserUncheckedCreateWithoutSprayTracksInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSprayTracksInput
+  upsert?: Prisma.UserUpsertWithoutSprayTracksInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSprayTracksInput, Prisma.UserUpdateWithoutSprayTracksInput>, Prisma.UserUncheckedUpdateWithoutSprayTracksInput>
 }
 
 export type UserCreateNestedOneWithoutBillingAddressesInput = {
@@ -720,6 +741,7 @@ export type UserCreateWithoutFarmInput = {
   billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingUserInput
   shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingUserInput
   organizations?: Prisma.OrganizationCreateNestedManyWithoutContactPersonInput
+  sprayTracks?: Prisma.SprayTrackCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFarmInput = {
@@ -742,6 +764,7 @@ export type UserUncheckedCreateWithoutFarmInput = {
   billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingUserInput
   shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingUserInput
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutContactPersonInput
+  sprayTracks?: Prisma.SprayTrackUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFarmInput = {
@@ -789,6 +812,114 @@ export type UserScalarWhereInput = {
   landlineNumber?: Prisma.StringNullableFilter<"User"> | string | null
 }
 
+export type UserCreateWithoutSprayTracksInput = {
+  id?: string
+  firstName: string
+  preferredName?: string | null
+  lastName: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mobileNumber?: string | null
+  landlineNumber?: string | null
+  farm: Prisma.FarmCreateNestedOneWithoutUsersInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  members?: Prisma.MemberCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
+  billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingUserInput
+  shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingUserInput
+  organizations?: Prisma.OrganizationCreateNestedManyWithoutContactPersonInput
+}
+
+export type UserUncheckedCreateWithoutSprayTracksInput = {
+  id?: string
+  firstName: string
+  preferredName?: string | null
+  lastName: string
+  farmId: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  mobileNumber?: string | null
+  landlineNumber?: string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  members?: Prisma.MemberUncheckedCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
+  billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingUserInput
+  shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingUserInput
+  organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutContactPersonInput
+}
+
+export type UserCreateOrConnectWithoutSprayTracksInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSprayTracksInput, Prisma.UserUncheckedCreateWithoutSprayTracksInput>
+}
+
+export type UserUpsertWithoutSprayTracksInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSprayTracksInput, Prisma.UserUncheckedUpdateWithoutSprayTracksInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSprayTracksInput, Prisma.UserUncheckedCreateWithoutSprayTracksInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSprayTracksInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSprayTracksInput, Prisma.UserUncheckedUpdateWithoutSprayTracksInput>
+}
+
+export type UserUpdateWithoutSprayTracksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mobileNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landlineNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  farm?: Prisma.FarmUpdateOneRequiredWithoutUsersNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  members?: Prisma.MemberUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
+  billingAddresses?: Prisma.AddressUpdateManyWithoutBillingUserNestedInput
+  shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingUserNestedInput
+  organizations?: Prisma.OrganizationUpdateManyWithoutContactPersonNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSprayTracksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  farmId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mobileNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  landlineNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  members?: Prisma.MemberUncheckedUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
+  billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingUserNestedInput
+  shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingUserNestedInput
+  organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutContactPersonNestedInput
+}
+
 export type UserCreateWithoutBillingAddressesInput = {
   id?: string
   firstName: string
@@ -809,6 +940,7 @@ export type UserCreateWithoutBillingAddressesInput = {
   invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
   shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingUserInput
   organizations?: Prisma.OrganizationCreateNestedManyWithoutContactPersonInput
+  sprayTracks?: Prisma.SprayTrackCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBillingAddressesInput = {
@@ -831,6 +963,7 @@ export type UserUncheckedCreateWithoutBillingAddressesInput = {
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
   shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingUserInput
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutContactPersonInput
+  sprayTracks?: Prisma.SprayTrackUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBillingAddressesInput = {
@@ -858,6 +991,7 @@ export type UserCreateWithoutShippingAddressesInput = {
   invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
   billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingUserInput
   organizations?: Prisma.OrganizationCreateNestedManyWithoutContactPersonInput
+  sprayTracks?: Prisma.SprayTrackCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutShippingAddressesInput = {
@@ -880,6 +1014,7 @@ export type UserUncheckedCreateWithoutShippingAddressesInput = {
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
   billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingUserInput
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutContactPersonInput
+  sprayTracks?: Prisma.SprayTrackUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutShippingAddressesInput = {
@@ -918,6 +1053,7 @@ export type UserUpdateWithoutBillingAddressesInput = {
   invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
   shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingUserNestedInput
   organizations?: Prisma.OrganizationUpdateManyWithoutContactPersonNestedInput
+  sprayTracks?: Prisma.SprayTrackUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBillingAddressesInput = {
@@ -940,6 +1076,7 @@ export type UserUncheckedUpdateWithoutBillingAddressesInput = {
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
   shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingUserNestedInput
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutContactPersonNestedInput
+  sprayTracks?: Prisma.SprayTrackUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutShippingAddressesInput = {
@@ -973,6 +1110,7 @@ export type UserUpdateWithoutShippingAddressesInput = {
   invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
   billingAddresses?: Prisma.AddressUpdateManyWithoutBillingUserNestedInput
   organizations?: Prisma.OrganizationUpdateManyWithoutContactPersonNestedInput
+  sprayTracks?: Prisma.SprayTrackUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutShippingAddressesInput = {
@@ -995,6 +1133,7 @@ export type UserUncheckedUpdateWithoutShippingAddressesInput = {
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
   billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingUserNestedInput
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutContactPersonNestedInput
+  sprayTracks?: Prisma.SprayTrackUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -1017,6 +1156,7 @@ export type UserCreateWithoutSessionsInput = {
   billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingUserInput
   shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingUserInput
   organizations?: Prisma.OrganizationCreateNestedManyWithoutContactPersonInput
+  sprayTracks?: Prisma.SprayTrackCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1039,6 +1179,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingUserInput
   shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingUserInput
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutContactPersonInput
+  sprayTracks?: Prisma.SprayTrackUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1077,6 +1218,7 @@ export type UserUpdateWithoutSessionsInput = {
   billingAddresses?: Prisma.AddressUpdateManyWithoutBillingUserNestedInput
   shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingUserNestedInput
   organizations?: Prisma.OrganizationUpdateManyWithoutContactPersonNestedInput
+  sprayTracks?: Prisma.SprayTrackUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1099,6 +1241,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingUserNestedInput
   shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingUserNestedInput
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutContactPersonNestedInput
+  sprayTracks?: Prisma.SprayTrackUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -1121,6 +1264,7 @@ export type UserCreateWithoutAccountsInput = {
   billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingUserInput
   shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingUserInput
   organizations?: Prisma.OrganizationCreateNestedManyWithoutContactPersonInput
+  sprayTracks?: Prisma.SprayTrackCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -1143,6 +1287,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingUserInput
   shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingUserInput
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutContactPersonInput
+  sprayTracks?: Prisma.SprayTrackUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1181,6 +1326,7 @@ export type UserUpdateWithoutAccountsInput = {
   billingAddresses?: Prisma.AddressUpdateManyWithoutBillingUserNestedInput
   shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingUserNestedInput
   organizations?: Prisma.OrganizationUpdateManyWithoutContactPersonNestedInput
+  sprayTracks?: Prisma.SprayTrackUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1203,6 +1349,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingUserNestedInput
   shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingUserNestedInput
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutContactPersonNestedInput
+  sprayTracks?: Prisma.SprayTrackUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutOrganizationsInput = {
@@ -1225,6 +1372,7 @@ export type UserCreateWithoutOrganizationsInput = {
   invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
   billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingUserInput
   shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingUserInput
+  sprayTracks?: Prisma.SprayTrackCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOrganizationsInput = {
@@ -1247,6 +1395,7 @@ export type UserUncheckedCreateWithoutOrganizationsInput = {
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
   billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingUserInput
   shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingUserInput
+  sprayTracks?: Prisma.SprayTrackUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOrganizationsInput = {
@@ -1285,6 +1434,7 @@ export type UserUpdateWithoutOrganizationsInput = {
   invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
   billingAddresses?: Prisma.AddressUpdateManyWithoutBillingUserNestedInput
   shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingUserNestedInput
+  sprayTracks?: Prisma.SprayTrackUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrganizationsInput = {
@@ -1307,6 +1457,7 @@ export type UserUncheckedUpdateWithoutOrganizationsInput = {
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
   billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingUserNestedInput
   shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingUserNestedInput
+  sprayTracks?: Prisma.SprayTrackUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMembersInput = {
@@ -1329,6 +1480,7 @@ export type UserCreateWithoutMembersInput = {
   billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingUserInput
   shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingUserInput
   organizations?: Prisma.OrganizationCreateNestedManyWithoutContactPersonInput
+  sprayTracks?: Prisma.SprayTrackCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMembersInput = {
@@ -1351,6 +1503,7 @@ export type UserUncheckedCreateWithoutMembersInput = {
   billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingUserInput
   shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingUserInput
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutContactPersonInput
+  sprayTracks?: Prisma.SprayTrackUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMembersInput = {
@@ -1389,6 +1542,7 @@ export type UserUpdateWithoutMembersInput = {
   billingAddresses?: Prisma.AddressUpdateManyWithoutBillingUserNestedInput
   shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingUserNestedInput
   organizations?: Prisma.OrganizationUpdateManyWithoutContactPersonNestedInput
+  sprayTracks?: Prisma.SprayTrackUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMembersInput = {
@@ -1411,6 +1565,7 @@ export type UserUncheckedUpdateWithoutMembersInput = {
   billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingUserNestedInput
   shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingUserNestedInput
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutContactPersonNestedInput
+  sprayTracks?: Prisma.SprayTrackUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutInvitationsInput = {
@@ -1433,6 +1588,7 @@ export type UserCreateWithoutInvitationsInput = {
   billingAddresses?: Prisma.AddressCreateNestedManyWithoutBillingUserInput
   shippingAddresses?: Prisma.AddressCreateNestedManyWithoutShippingUserInput
   organizations?: Prisma.OrganizationCreateNestedManyWithoutContactPersonInput
+  sprayTracks?: Prisma.SprayTrackCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutInvitationsInput = {
@@ -1455,6 +1611,7 @@ export type UserUncheckedCreateWithoutInvitationsInput = {
   billingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutBillingUserInput
   shippingAddresses?: Prisma.AddressUncheckedCreateNestedManyWithoutShippingUserInput
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutContactPersonInput
+  sprayTracks?: Prisma.SprayTrackUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutInvitationsInput = {
@@ -1493,6 +1650,7 @@ export type UserUpdateWithoutInvitationsInput = {
   billingAddresses?: Prisma.AddressUpdateManyWithoutBillingUserNestedInput
   shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingUserNestedInput
   organizations?: Prisma.OrganizationUpdateManyWithoutContactPersonNestedInput
+  sprayTracks?: Prisma.SprayTrackUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInvitationsInput = {
@@ -1515,6 +1673,7 @@ export type UserUncheckedUpdateWithoutInvitationsInput = {
   billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingUserNestedInput
   shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingUserNestedInput
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutContactPersonNestedInput
+  sprayTracks?: Prisma.SprayTrackUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyFarmInput = {
@@ -1552,6 +1711,7 @@ export type UserUpdateWithoutFarmInput = {
   billingAddresses?: Prisma.AddressUpdateManyWithoutBillingUserNestedInput
   shippingAddresses?: Prisma.AddressUpdateManyWithoutShippingUserNestedInput
   organizations?: Prisma.OrganizationUpdateManyWithoutContactPersonNestedInput
+  sprayTracks?: Prisma.SprayTrackUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFarmInput = {
@@ -1574,6 +1734,7 @@ export type UserUncheckedUpdateWithoutFarmInput = {
   billingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutBillingUserNestedInput
   shippingAddresses?: Prisma.AddressUncheckedUpdateManyWithoutShippingUserNestedInput
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutContactPersonNestedInput
+  sprayTracks?: Prisma.SprayTrackUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutFarmInput = {
@@ -1604,6 +1765,7 @@ export type UserCountOutputType = {
   billingAddresses: number
   shippingAddresses: number
   organizations: number
+  sprayTracks: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1614,6 +1776,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   billingAddresses?: boolean | UserCountOutputTypeCountBillingAddressesArgs
   shippingAddresses?: boolean | UserCountOutputTypeCountShippingAddressesArgs
   organizations?: boolean | UserCountOutputTypeCountOrganizationsArgs
+  sprayTracks?: boolean | UserCountOutputTypeCountSprayTracksArgs
 }
 
 /**
@@ -1675,6 +1838,13 @@ export type UserCountOutputTypeCountOrganizationsArgs<ExtArgs extends runtime.Ty
   where?: Prisma.OrganizationWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSprayTracksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SprayTrackWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1698,6 +1868,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   billingAddresses?: boolean | Prisma.User$billingAddressesArgs<ExtArgs>
   shippingAddresses?: boolean | Prisma.User$shippingAddressesArgs<ExtArgs>
   organizations?: boolean | Prisma.User$organizationsArgs<ExtArgs>
+  sprayTracks?: boolean | Prisma.User$sprayTracksArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1761,6 +1932,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   billingAddresses?: boolean | Prisma.User$billingAddressesArgs<ExtArgs>
   shippingAddresses?: boolean | Prisma.User$shippingAddressesArgs<ExtArgs>
   organizations?: boolean | Prisma.User$organizationsArgs<ExtArgs>
+  sprayTracks?: boolean | Prisma.User$sprayTracksArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1781,6 +1953,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     billingAddresses: Prisma.$AddressPayload<ExtArgs>[]
     shippingAddresses: Prisma.$AddressPayload<ExtArgs>[]
     organizations: Prisma.$OrganizationPayload<ExtArgs>[]
+    sprayTracks: Prisma.$SprayTrackPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2198,6 +2371,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   billingAddresses<T extends Prisma.User$billingAddressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$billingAddressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   shippingAddresses<T extends Prisma.User$shippingAddressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$shippingAddressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   organizations<T extends Prisma.User$organizationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$organizationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sprayTracks<T extends Prisma.User$sprayTracksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sprayTracksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SprayTrackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2815,6 +2989,30 @@ export type User$organizationsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.OrganizationScalarFieldEnum | Prisma.OrganizationScalarFieldEnum[]
+}
+
+/**
+ * User.sprayTracks
+ */
+export type User$sprayTracksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SprayTrack
+   */
+  select?: Prisma.SprayTrackSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SprayTrack
+   */
+  omit?: Prisma.SprayTrackOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SprayTrackInclude<ExtArgs> | null
+  where?: Prisma.SprayTrackWhereInput
+  orderBy?: Prisma.SprayTrackOrderByWithRelationInput | Prisma.SprayTrackOrderByWithRelationInput[]
+  cursor?: Prisma.SprayTrackWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SprayTrackScalarFieldEnum | Prisma.SprayTrackScalarFieldEnum[]
 }
 
 /**

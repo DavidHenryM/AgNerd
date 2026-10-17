@@ -22,6 +22,7 @@ await test("online stays cloud-backed; embedded cannot silently fall back to clo
 
 await test("snapshot format is versioned, checksum-protected and excludes credentials", async () => {
   assert.deepEqual(validateSnapshot(data), data);
+  assert.doesNotThrow(() => validateSnapshot({ ...data, tables: { SprayTrack: [], SprayTrackStrip: [] } }));
   const encoded = gzipSync(JSON.stringify(data));
   assert.deepEqual(await decodeSnapshot(encoded), data);
   assert.equal(snapshotChecksum(encoded).length, 64);
