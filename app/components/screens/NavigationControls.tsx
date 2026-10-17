@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/Pause";
 import StopIcon from "@mui/icons-material/Stop";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import AddIcon from "@mui/icons-material/Add";
@@ -111,7 +112,9 @@ export interface NavigationControlsProps {
   fixStatusStale: boolean;
   browserLocation: boolean;
   isTracking: boolean;
-  setIsTracking: Dispatch<SetStateAction<boolean>>;
+  onTrackingToggle: () => void;
+  isSprayPaused: boolean;
+  onSprayPauseToggle: () => void;
   widthMeters: number;
   setWidthMeters: Dispatch<SetStateAction<number>>;
   offsetMeters: number;
@@ -142,7 +145,9 @@ export default function NavigationControls(props: NavigationControlsProps) {
     fixStatusStale,
     browserLocation,
     isTracking,
-    setIsTracking,
+    onTrackingToggle,
+    isSprayPaused,
+    onSprayPauseToggle,
     widthMeters,
     setWidthMeters,
     offsetMeters,
@@ -242,6 +247,12 @@ export default function NavigationControls(props: NavigationControlsProps) {
             </Typography>
             <Typography variant="body1" sx={{ fontSize: 20 }}>{area.ha} ha / {area.acres} ac</Typography>
           </Stack>
+
+          {isTracking && isSprayPaused && (
+            <Typography component="output" aria-live="polite" sx={{ display: "block", color: "#FFC107", mt: 0.5 }}>
+              Spray paused
+            </Typography>
+          )}
 
           {/* Zoom controls */}
           <Stack direction="row" spacing={1.5} sx={{ mt: 1 }}>
@@ -495,10 +506,25 @@ export default function NavigationControls(props: NavigationControlsProps) {
             aria-label={isTracking ? "Stop tracking" : "Start tracking"}
             aria-pressed={isTracking}
             color={isTracking ? "error" : "success"}
-            onClick={() => setIsTracking((v) => !v)}
+            onClick={onTrackingToggle}
             sx={{ ...touchButtonSx, width: 72, height: 72, minHeight: 72 }}
           >
             {isTracking ? <StopIcon /> : <PlayArrowIcon />}
+          </Fab>
+
+          <Fab
+            aria-label={isSprayPaused ? "Resume spraying" : "Pause spraying"}
+            aria-pressed={isSprayPaused}
+            disabled={!isTracking}
+            onClick={onSprayPauseToggle}
+            sx={{
+              ...touchButtonSx,
+              color: "white",
+              bgcolor: isSprayPaused ? "#9C6500" : "rgba(0,0,0,0.75)",
+              "&.Mui-disabled": { color: "#888", bgcolor: "rgba(0,0,0,0.75)" },
+            }}
+          >
+            {isSprayPaused ? <PlayArrowIcon /> : <PauseIcon />}
           </Fab>
 
           {/* ─ Reset ─ */}
