@@ -212,7 +212,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
           </Box>
           <Typography variant="caption" sx={{ display: "block" }}>
             {hasPosition
-              ? `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`
+              ? `${latitude.toFixed(7)}, ${longitude.toFixed(7)}`
               : "—"}
           </Typography>
           <Stack component="output" direction="row" spacing={1} sx={{ alignItems: "center", mt: 0.5 }} aria-live="polite">
@@ -224,7 +224,12 @@ export default function NavigationControls(props: NavigationControlsProps) {
           )}
           <Typography variant="caption" sx={{ display: "block" }}>
             {locationTimestamp
-              ? new Date(locationTimestamp).toLocaleTimeString()
+              ? new Date(locationTimestamp).toLocaleTimeString(undefined, {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                  fractionalSecondDigits: 3,
+                })
               : ""}
           </Typography>
           <Stack direction="row" spacing={1} sx={{ alignItems: "center", mt: 0.5 }}>
