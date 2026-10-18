@@ -10,7 +10,6 @@ import {
   ConstantPositionProperty,
   HeightReference,
   ColorMaterialProperty,
-  ClassificationType,
   Rectangle,
   ImageryLayer,
   UrlTemplateImageryProvider,
@@ -31,12 +30,13 @@ import { fetchNavigationApi } from "@lib/navigation-auth";
 import { haversineDistance, sprayBoom, SprayTrail } from "@lib/spray-boom";
 import { TRACTOR_WORLD_SCALE, tractorOrientation } from "@lib/tractor-model";
 import { BOOM_CLEARANCE_METERS, boomNodeTransformations, boomWorldEndpoints } from "@lib/boom-model";
-import { BoomSprayEmitter, createSprayParticles, createSprayTexture, sprayEmissionRate, SPRAY_COLOR } from "@lib/spray-particles";
+import { BoomSprayEmitter, createSprayParticles, createSprayTexture, sprayEmissionRate } from "@lib/spray-particles";
 import NavigationControls, {
   MODEL_COLORS,
 } from "@components/screens/NavigationControls";
 import { useSprayTracks } from "@lib/hooks/spray-tracks";
 import { navigationZoomIn, navigationZoomOut } from "@lib/navigation-zoom";
+import { SprayCoverage } from "@lib/spray-coverage";
 
 // ── Geo helpers ─────────────────────────────────────────────────────
 const SCALE_KEY_BASE_PIXELS = 120;
@@ -163,7 +163,7 @@ export default function NavigationScreen() {
   const totalAreaSqMeters = trackState.totalAreaSqMeters;
   const [cameraRangeMeters, setCameraRangeMeters] = useState(100);
   const [selectedColor] = useState(MODEL_COLORS[0].hex);
-  const stripEntitiesRef = useRef<Entity[]>([]);
+  const coverageRef = useRef<SprayCoverage | null>(null);
 
   useEffect(() => {
     trackSession.setSettings({ widthMeters, offsetMeters, forwardOffsetMeters });
@@ -174,15 +174,7 @@ export default function NavigationScreen() {
   }), [trackSession]);
 
   const paintStrip = useCallback((coordinates: number[]) => {
-    const viewer = viewerRef.current;
-    if (!viewer) return;
-    stripEntitiesRef.current.push(viewer.entities.add({
-      polygon: {
-        hierarchy: Cartesian3.fromDegreesArray(coordinates),
-        material: new ColorMaterialProperty(Color.fromCssColorString(SPRAY_COLOR).withAlpha(0.45)),
-        classificationType: ClassificationType.BOTH,
-      },
-    }));
+    coverageRef.current?.append(coordinates);
   }, []);
 
   useEffect(() => {
@@ -286,6 +278,10 @@ export default function NavigationScreen() {
     });
     const sprayTrail = sprayTrailRef.current;
     viewerRef.current = viewer;
+    const coverage = new SprayCoverage();
+    coverageRef.current = coverage;
+    viewer.scene.groundPrimitives.add(coverage.primitives);
+    const removeCoverageListener = viewer.scene.preRender.addEventListener(() => coverage.update());
     viewer.clock.clockStep = ClockStep.SYSTEM_CLOCK;
     viewer.camera.setView({ destination: mapConfig ? Rectangle.fromDegrees(...mapConfig.bounds) : AUSTRALIA_RECTANGLE });
     setViewerReady(true);
@@ -337,6 +333,7 @@ export default function NavigationScreen() {
       observer.disconnect();
       viewer.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.WHEEL);
       removeClampCameraListener();
+      removeCoverageListener();
       if (!viewer.isDestroyed()) viewer.destroy();
       viewerRef.current = null;
       modelEntityRef.current = null;
@@ -344,7 +341,7 @@ export default function NavigationScreen() {
       sprayParticlesRef.current = null;
       sprayTrail.reset();
       boomPositionRef.current = null;
-      stripEntitiesRef.current = [];
+      coverageRef.current = null;
       initialFlyDone.current = false;
     };
   }, [mapConfig]);
@@ -579,11 +576,8 @@ export default function NavigationScreen() {
         viewer.scene.primitives.remove(sprayParticlesRef.current);
         sprayParticlesRef.current = null;
       }
-      for (const e of stripEntitiesRef.current) {
-        viewer.entities.remove(e);
-      }
     }
-    stripEntitiesRef.current = [];
+    coverageRef.current?.clear();
     sprayTrailRef.current.reset();
   }, []);
 
