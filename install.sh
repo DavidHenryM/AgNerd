@@ -18,8 +18,28 @@ export LOCAL_DATABASE_URL="${LOCAL_DATABASE_URL:-postgresql://build-only@127.0.0
 echo -e "\033[35mStarting AgNerd installation from $SCRIPT_DIR\033[0m"
 echo -e "\033[35mUpdating package lists...\033[0m"
 sudo apt update
-echo -e "\033[35mInstalling system prerequisites (curl, gpsd, git and Chromium)...\033[0m"
-sudo apt install curl gpsd chromium git -y
+echo -e "\033[35mInstalling system prerequisites (curl, gpsd, git, Chromium, I2C tools and native build tools)...\033[0m"
+sudo apt install curl gpsd chromium git i2c-tools build-essential python3 -y
+
+# The Qwiic IMU on the GNSS pHAT is on the Raspberry Pi I2C bus (/dev/i2c-1).
+echo -e "\033[35mEnabling the I2C bus for the IMU...\033[0m"
+if command -v raspi-config >/dev/null 2>&1; then
+    sudo raspi-config nonint do_i2c 0 || echo -e "\033[33mraspi-config could not enable I2C; enable it manually.\033[0m"
+else
+    for boot_config in /boot/firmware/config.txt /boot/config.txt; do
+        if [ -f "$boot_config" ]; then
+            if ! grep -Eq '^dtparam=i2c_arm=on' "$boot_config"; then
+                echo "dtparam=i2c_arm=on" | sudo tee -a "$boot_config" >/dev/null
+                echo -e "\033[33mI2C enabled in $boot_config; reboot before using the IMU.\033[0m"
+            fi
+            break
+        fi
+    done
+fi
+sudo modprobe i2c-dev 2>/dev/null || true
+if [ -d /etc/modules-load.d ] && [ ! -f /etc/modules-load.d/agnerd-i2c.conf ]; then
+    echo "i2c-dev" | sudo tee /etc/modules-load.d/agnerd-i2c.conf >/dev/null
+fi
 
 INSTALL_USER="${SUDO_USER:-$(id -un)}"
 INSTALL_HOME="$(getent passwd "$INSTALL_USER" | cut -d: -f6)"
@@ -175,11 +195,14 @@ echo -e "\033[32mEmbedded mode and LOCAL_DATABASE_URL configured in $SCRIPT_DIR/
 sudo cat /etc/agnerd/database.env |
     sudo node scripts/bootstrap-embedded-database.mjs /etc/agnerd/.env
 
-echo -e "\033[35mInstalling GNSS and NTRIP helper scripts to /opt/agnerd/scripts...\033[0m"
-sudo mkdir -p /opt/agnerd/scripts
+echo -e "\033[35mInstalling GNSS, IMU and NTRIP helper scripts to /opt/agnerd/scripts...\033[0m"
+sudo mkdir -p /opt/agnerd/scripts /var/lib/agnerd
 sudo cp scripts/gnss-reader.mjs /opt/agnerd/scripts/gnss-reader.mjs
 sudo cp scripts/gnss-corrections.mjs /opt/agnerd/scripts/gnss-corrections.mjs
 sudo cp scripts/gnss-fix.mjs /opt/agnerd/scripts/gnss-fix.mjs
+sudo cp scripts/heading-fusion.mjs /opt/agnerd/scripts/heading-fusion.mjs
+sudo cp scripts/imu-reader.mjs scripts/imu-fusion.mjs scripts/imu-sensors.mjs /opt/agnerd/scripts/
+sudo cp scripts/imu-calibrate.mjs scripts/imu-calibration.mjs /opt/agnerd/scripts/
 sudo cp scripts/ntrip-forwarder.mjs /opt/agnerd/scripts/ntrip-forwarder.mjs
 sudo cp scripts/ntrip-client.mjs /opt/agnerd/scripts/ntrip-client.mjs
 sudo cp scripts/kiosk.sh /opt/agnerd/scripts/kiosk.sh
@@ -204,6 +227,7 @@ fi
 
 echo -e "\033[35mInstalling systemd service definitions...\033[0m"
 sudo cp scripts/agnerd-gnss.service /etc/systemd/system/agnerd-gnss.service
+sudo cp scripts/agnerd-imu.service /etc/systemd/system/agnerd-imu.service
 sudo cp scripts/agnerd-ntrip.service /etc/systemd/system/agnerd-ntrip.service
 sudo cp scripts/agnerd.service /etc/systemd/system/agnerd.service
 sed \
@@ -220,7 +244,7 @@ sudo rm -rf -- /opt/agnerd/.next.incoming /opt/agnerd/node_modules.incoming
 sudo mkdir -p /opt/agnerd/.next.incoming /opt/agnerd/node_modules.incoming
 sudo cp -R .next/. /opt/agnerd/.next.incoming/
 sudo cp -R node_modules/. /opt/agnerd/node_modules.incoming/
-sudo systemctl stop agnerd-kiosk.service agnerd.service agnerd-gnss.service agnerd-ntrip.service
+sudo systemctl stop agnerd-kiosk.service agnerd.service agnerd-gnss.service agnerd-imu.service agnerd-ntrip.service
 sudo rm -rf -- /opt/agnerd/.next /opt/agnerd/node_modules
 sudo mv /opt/agnerd/.next.incoming /opt/agnerd/.next
 sudo mv /opt/agnerd/node_modules.incoming /opt/agnerd/node_modules
@@ -246,6 +270,10 @@ fi
 echo -e "\033[35mReloading systemd service definitions...\033[0m"
 sudo systemctl daemon-reload
 
+echo -e "\033[35mEnabling and restarting the IMU reader service...\033[0m"
+sudo systemctl enable agnerd-imu.service
+sudo systemctl restart agnerd-imu.service
+
 echo -e "\033[35mEnabling and restarting the GNSS reader service...\033[0m"
 sudo systemctl enable agnerd-gnss.service
 sudo systemctl restart agnerd-gnss.service
@@ -264,7 +292,7 @@ sudo systemctl restart agnerd-kiosk.service
 
 echo -e "\033[35mChecking that all AgNerd services are active...\033[0m"
 failed_services=()
-for service in agnerd-gnss.service agnerd-ntrip.service agnerd.service agnerd-kiosk.service; do
+for service in agnerd-imu.service agnerd-gnss.service agnerd-ntrip.service agnerd.service agnerd-kiosk.service; do
     echo -e "\033[35mChecking $service...\033[0m"
     service_active=false
     for attempt in {1..10}; do

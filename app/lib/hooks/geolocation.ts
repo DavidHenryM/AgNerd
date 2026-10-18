@@ -1,7 +1,28 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GnssFixStatus } from "../gnss-status";
-import { fetchNavigationApi } from "../navigation-auth";
+import { fetchNavigationApi, redirectNavigationToSignIn } from "../navigation-auth";
 import { startGnssPolling } from "../gnss-polling";
+import { DisplayPosePredictor, parseGnssDisplay, type GnssDisplay } from "../gnss-display";
+
+export type FusionStatus = Pick<GnssDisplay,
+  "headingDeg" | "headingStdDeg" | "headingSource" | "rollDeg" | "pitchDeg" | "imuState" | "magUsed" | "magDisturbance" | "direction">;
+
+const FUSION_STATUS_INTERVAL_MS = 200;
+const roundOrNull = (value: number | null, digits: number) => value === null ? null : Number(value.toFixed(digits));
+
+function toFusionStatus(display: GnssDisplay): FusionStatus {
+  return {
+    headingDeg: roundOrNull(display.headingDeg, 1),
+    headingStdDeg: roundOrNull(display.headingStdDeg, 1),
+    headingSource: display.headingSource,
+    rollDeg: roundOrNull(display.rollDeg, 1),
+    pitchDeg: roundOrNull(display.pitchDeg, 1),
+    imuState: display.imuState,
+    magUsed: display.magUsed,
+    magDisturbance: roundOrNull(display.magDisturbance, 1),
+    direction: display.direction,
+  };
+}
 
 type PositionFix = {
   latitude: number;
@@ -37,6 +58,7 @@ type GnssPositionResponse = {
     speedKnots?: number | null;
   } | null;
   fixStatus?: GnssFixStatus;
+  display?: unknown;
 };
 
 function asNumberOrNull(value: unknown): number | null {
@@ -76,6 +98,22 @@ const useGeolocation = () => {
     resolvedStatusFile: null,
   });
   const backendAvailableRef = useRef(false);
+  const [displayPredictor] = useState(() => new DisplayPosePredictor());
+  const [fusionStatus, setFusionStatus] = useState<FusionStatus | null>(null);
+  const fusionStatusRef = useRef<{ atMs: number; key: string }>({ atMs: -Infinity, key: "" });
+
+  const ingestDisplay = useCallback((payload: unknown) => {
+    const display = parseGnssDisplay(payload);
+    if (!display) return;
+    const nowMs = performance.now();
+    displayPredictor.ingest(display, nowMs);
+    if (nowMs - fusionStatusRef.current.atMs < FUSION_STATUS_INTERVAL_MS) return;
+    const next = toFusionStatus(display);
+    const key = JSON.stringify(next);
+    const changed = key !== fusionStatusRef.current.key;
+    fusionStatusRef.current = { atMs: nowMs, key };
+    if (changed) setFusionStatus(next);
+  }, [displayPredictor]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -112,6 +150,7 @@ const useGeolocation = () => {
         const nextFix = payload.latestPosition ? gnssToFix(payload.latestPosition, payload.fixStatus) : null;
 
         if (!cancelled) {
+          ingestDisplay(payload.display);
           setBackendStatus(payload.fixStatus ?? {
             fixType: null, satellites: null, horizontalAccuracyMeters: null, stale: true,
           });
@@ -164,7 +203,24 @@ const useGeolocation = () => {
       cancelled = true;
       stopPolling();
     };
-  }, [embedded]);
+  }, [embedded, ingestDisplay]);
+
+  useEffect(() => {
+    if (embedded !== true || typeof EventSource === "undefined") return;
+    const source = new EventSource("/api/gnss/stream");
+    source.addEventListener("display", event => {
+      try {
+        ingestDisplay(JSON.parse((event as MessageEvent<string>).data));
+      } catch {
+        // Ignore a malformed packet; the next one arrives within 50 ms.
+      }
+    });
+    source.addEventListener("unauthorized", () => {
+      source.close();
+      redirectNavigationToSignIn();
+    });
+    return () => source.close();
+  }, [embedded, ingestDisplay]);
 
   useEffect(() => {
     if (embedded === null || (embedded && process.env.NEXT_PUBLIC_ENABLE_BROWSER_GEO_FALLBACK !== "true")) {
@@ -236,6 +292,8 @@ const useGeolocation = () => {
     satellites: positionSource === "browser" || backendStatus.stale ? null : backendStatus.satellites,
     fixStatusStale: positionSource === "browser" ? false : backendStatus.stale,
     positionSource,
+    displayPredictor,
+    fusionStatus: positionSource === "gnss-status" ? fusionStatus : null,
     gnssDebug,
     error,
     loading,

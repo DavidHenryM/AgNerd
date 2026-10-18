@@ -3,6 +3,7 @@ import { createConnection } from "node:net";
 import { SerialPort } from "serialport";
 import { ReadlineParser } from "@serialport/parser-readline";
 import { writeFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { rename } from "node:fs/promises";
 import { mkdir } from "node:fs/promises";
 import { dirname } from "node:path";
@@ -10,6 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 import readline from 'node:readline';
 import { createCorrectionStatus, readCorrectionConfig, startCorrectionInput } from "./gnss-corrections.mjs";
 import { parseNmeaGga, parseNmeaGst, resolveFixMetadata } from "./gnss-fix.mjs";
+import { buildGnssDisplay, HeadingFusion } from "./heading-fusion.mjs";
 
 let correctionConfig;
 try {
@@ -51,7 +53,33 @@ let GNSS_INTERNAL_TOKEN = process.env.GNSS_INTERNAL_TOKEN;
 const GNSS_STATUS_FILE = process.env.GNSS_STATUS_FILE || "/tmp/agnerd-gnss-status.json";
 const GNSS_STATUS_FALLBACK_FILE = process.env.GNSS_STATUS_FALLBACK_FILE || "/var/tmp/agnerd-gnss-status.json";
 
+// 20 Hz display publication with optional IMU heading fusion; 0 disables it.
+const GNSS_DISPLAY_INTERVAL_MS = Number(process.env.GNSS_DISPLAY_INTERVAL_MS ?? "50");
+const GNSS_DISPLAY_FILE = process.env.GNSS_DISPLAY_FILE || "/tmp/agnerd-gnss-display.json";
+const GNSS_DISPLAY_FALLBACK_FILE = process.env.GNSS_DISPLAY_FALLBACK_FILE || "/var/tmp/agnerd-gnss-display.json";
+const GNSS_IMU_ENABLED = (process.env.GNSS_IMU_ENABLED || "true").toLowerCase() !== "false";
+const GNSS_IMU_STATUS_FILE = process.env.IMU_STATUS_FILE || "/tmp/agnerd-imu-status.json";
+const GNSS_FUSION_STATE_FILE = process.env.GNSS_FUSION_STATE_FILE || "/var/lib/agnerd/heading-fusion.json";
+const GNSS_FUSION_MIN_COURSE_SPEED_MPS = Number(process.env.GNSS_FUSION_MIN_COURSE_SPEED_MPS || "0.8");
+const GNSS_FUSION_MAG_ENABLED = (process.env.GNSS_FUSION_MAG_ENABLED || "true").toLowerCase() !== "false";
+const GNSS_FUSION_MAG_DECLINATION_DEG = Number(process.env.GNSS_FUSION_MAG_DECLINATION_DEG || "0");
+
 let statusFilePathInUse = GNSS_STATUS_FILE;
+let displayFilePathInUse = GNSS_DISPLAY_FILE;
+
+if (!Number.isInteger(GNSS_DISPLAY_INTERVAL_MS) || (GNSS_DISPLAY_INTERVAL_MS !== 0 &&
+  (GNSS_DISPLAY_INTERVAL_MS < 20 || GNSS_DISPLAY_INTERVAL_MS > 1000))) {
+  console.error("GNSS_DISPLAY_INTERVAL_MS must be 0 (disabled) or an integer from 20 to 1000.");
+  process.exit(1);
+}
+if (!Number.isFinite(GNSS_FUSION_MIN_COURSE_SPEED_MPS) || GNSS_FUSION_MIN_COURSE_SPEED_MPS <= 0) {
+  console.error("GNSS_FUSION_MIN_COURSE_SPEED_MPS must be a positive number.");
+  process.exit(1);
+}
+if (!Number.isFinite(GNSS_FUSION_MAG_DECLINATION_DEG) || Math.abs(GNSS_FUSION_MAG_DECLINATION_DEG) > 180) {
+  console.error("GNSS_FUSION_MAG_DECLINATION_DEG must be a number from -180 to 180.");
+  process.exit(1);
+}
 
 if (GNSS_SOURCE !== "gpsd" && GNSS_SOURCE !== "serial") {
   console.error(`Unsupported GNSS_SOURCE '${GNSS_SOURCE}'. Use 'gpsd' or 'serial'.`);
@@ -87,6 +115,14 @@ if (!GNSS_INTERNAL_TOKEN) {
 
 const state = {
   latest: null,
+  latestReceivedAtMs: null,
+  display: null,
+  displaySeq: 0,
+  fusion: new HeadingFusion({
+    minCourseSpeedMps: GNSS_FUSION_MIN_COURSE_SPEED_MPS,
+    magEnabled: GNSS_FUSION_MAG_ENABLED,
+    initialMagOffsetDeg: GNSS_FUSION_MAG_DECLINATION_DEG,
+  }),
   nmea: null,
   gst: null,
   lastUbxAt: null,
@@ -211,6 +247,8 @@ function parseUbxNavPvt(frame) {
     numSV,
     hAccMeters: hAccMillimeters / 1000,
     vAccMeters: vAccMillimeters / 1000,
+    speedAccMetersPerSecond: frame.readUInt32LE(68) / 1000,
+    headingAccDegrees: frame.readUInt32LE(72) / 1e5,
   };
 }
 
@@ -273,15 +311,27 @@ function parseUbxFromChunk(chunk) {
   }
 }
 
+function acceptFix(fix) {
+  const now = Date.now();
+  state.latest = fix;
+  state.latestReceivedAtMs = now;
+  const ubxFresh = state.lastUbxAt !== null && now - Date.parse(state.lastUbxAt) < 1500;
+  state.fusion.updateGnss({
+    courseDeg: fix.heading,
+    speedMps: Number.isFinite(fix.speedKnots) ? fix.speedKnots * 0.514444 : null,
+    courseAccDeg: ubxFresh ? state.ubx.headingAccDegrees : null,
+  }, now);
+}
+
 function setLatestFix(next) {
   state.status.lastReadAt = new Date().toISOString();
-  state.latest = {
+  acceptFix({
     timestamp: next.timestamp,
     latitude: next.latitude,
     longitude: next.longitude,
     heading: next.heading,
     speedKnots: next.speedKnots,
-  };
+  });
 }
 
 function parseGpsdMessage(line) {
@@ -359,7 +409,7 @@ function startSerialReader() {
     }
     const parsed = parseNmeaRmc(sentence);
     if (parsed) {
-      state.latest = parsed;
+      acceptFix(parsed);
     }
   });
 
@@ -494,6 +544,7 @@ function buildStatusPayload(filePath) {
     nmea: state.nmea,
     gst: state.gst,
     ...resolveFixMetadata(state, GNSS_SOURCE),
+    display: state.display,
     statusFilePath: filePath,
     statusFileUpdatedAt: new Date().toISOString(),
   };
@@ -538,6 +589,75 @@ async function writeStatusFile() {
   }
 }
 
+async function writeAtomic(filePath, contents) {
+  const tempPath = `${filePath}.tmp`;
+  await mkdir(dirname(filePath), { recursive: true });
+  await writeFile(tempPath, contents, "utf8");
+  await rename(tempPath, filePath);
+}
+
+let lastImuReadError = null;
+async function readImuStatus() {
+  try {
+    const status = JSON.parse(await readFile(GNSS_IMU_STATUS_FILE, "utf8"));
+    lastImuReadError = null;
+    return status;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const missing = error && typeof error === "object" && "code" in error && error.code === "ENOENT";
+    if (!missing && message !== lastImuReadError) console.error(`IMU status read failed: ${message}`);
+    lastImuReadError = message;
+    return null;
+  }
+}
+
+let fusionStateSavedAt = Date.now();
+async function persistFusionState(now) {
+  const exported = state.fusion.exportState();
+  // Only keep a magnetometer offset that GNSS has actually constrained.
+  if (now - fusionStateSavedAt < 60000 || !(exported.magOffsetSigmaDeg < 5)) return;
+  fusionStateSavedAt = now;
+  try {
+    await writeAtomic(GNSS_FUSION_STATE_FILE, `${JSON.stringify({ ...exported, savedAt: new Date(now).toISOString() })}\n`);
+  } catch (error) {
+    console.error(`Heading fusion state save failed: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
+async function publishDisplay() {
+  if (GNSS_IMU_ENABLED) state.fusion.updateImu(await readImuStatus(), Date.now());
+  const now = Date.now();
+  state.displaySeq += 1;
+  state.display = buildGnssDisplay({
+    seq: state.displaySeq,
+    nowMs: now,
+    latest: state.latest,
+    latestReceivedAtMs: state.latestReceivedAtMs,
+    fixType: resolveFixMetadata(state, GNSS_SOURCE).fixType,
+    fusion: state.fusion,
+  });
+  const contents = JSON.stringify(state.display);
+  try {
+    await writeAtomic(displayFilePathInUse, contents);
+  } catch (error) {
+    if (displayFilePathInUse === GNSS_DISPLAY_FALLBACK_FILE) throw error;
+    displayFilePathInUse = GNSS_DISPLAY_FALLBACK_FILE;
+    console.error(`Display file write failed at '${GNSS_DISPLAY_FILE}': ${error instanceof Error ? error.message : String(error)}. Falling back to '${GNSS_DISPLAY_FALLBACK_FILE}'.`);
+    await writeAtomic(displayFilePathInUse, contents);
+  }
+  await persistFusionState(now);
+}
+
+async function loadFusionState() {
+  try {
+    state.fusion.importState(JSON.parse(await readFile(GNSS_FUSION_STATE_FILE, "utf8")));
+  } catch (error) {
+    if (!error || typeof error !== "object" || !("code" in error) || error.code !== "ENOENT") {
+      console.error(`Heading fusion state ignored: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+}
+
 const serialPort = GNSS_SOURCE === "serial" ? startSerialReader() : null;
 const stopGpsdReader = GNSS_SOURCE === "gpsd" ? startGpsdReader() : null;
 const stopCorrections = correctionConfig && serialPort
@@ -561,6 +681,18 @@ setInterval(() => {
     console.error(`Unexpected status write error: ${error instanceof Error ? error.message : String(error)}`);
   }).finally(() => { statusWriteInFlight = false; });
 }, GNSS_POST_INTERVAL_MS);
+
+if (GNSS_DISPLAY_INTERVAL_MS > 0) {
+  await loadFusionState();
+  let displayInFlight = false;
+  setInterval(() => {
+    if (displayInFlight) return;
+    displayInFlight = true;
+    publishDisplay().catch((error) => {
+      console.error(`Display publish error: ${error instanceof Error ? error.message : String(error)}`);
+    }).finally(() => { displayInFlight = false; });
+  }, GNSS_DISPLAY_INTERVAL_MS);
+}
 
 let shuttingDown = false;
 async function shutdown() {

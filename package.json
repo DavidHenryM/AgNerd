@@ -19,6 +19,8 @@
     "gnss:ntrip": "node ./scripts/ntrip-forwarder.mjs",
     "gnss:ntrip:bash": "node ./scripts/ntrip-forwarder.mjs",
     "gnss:reader": "node ./scripts/gnss-reader.mjs",
+    "imu:reader": "node ./scripts/imu-reader.mjs",
+    "imu:calibrate": "node ./scripts/imu-calibrate.mjs",
     "maps:prepare": "node ./scripts/prepare-local-imagery.mjs",
     "maps:download-nsw": "node ./scripts/download-nsw-imagery.mjs"
   },
@@ -75,6 +77,7 @@
     "unrs-resolver@1.12.2": true,
     "prisma@7.10.0": true,
     "@prisma/engines@7.10.0": true,
-    "esbuild@0.28.2": true
+    "esbuild@0.28.2": true,
+    "i2c-bus@5.2.3": true
   }
 }

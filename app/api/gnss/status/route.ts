@@ -4,6 +4,7 @@ import { auth } from "@lib/auth";
 import { headers } from "next/headers";
 import { parseGnssFixStatus } from "@lib/gnss-status";
 import { deploymentMode } from "@lib/deployment";
+import { gnssDisplayFileCandidates, readGnssDisplay } from "@lib/gnss-display-file";
 
 export const dynamic = "force-dynamic";
 
@@ -152,6 +153,8 @@ export async function GET() {
     }
   }
 
+  const display = await readGnssDisplay(await gnssDisplayFileCandidates());
+
   return Response.json({
     ok: true,
     service: {
@@ -167,6 +170,7 @@ export async function GET() {
     },
     latestPosition,
     fixStatus,
+    display,
     timestamp: new Date().toISOString(),
   });
 }

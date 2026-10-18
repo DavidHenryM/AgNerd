@@ -1,0 +1,18 @@
+[Unit]
+Description=AgNerd IMU Reader Service (LSM6DSOX + LIS3MDL on I2C)
+After=local-fs.target
+Before=agnerd-gnss.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/agnerd
+EnvironmentFile=/etc/agnerd/gnss.env
+ExecStartPre=-/sbin/modprobe i2c-dev
+ExecStart=/usr/bin/node /opt/agnerd/scripts/imu-reader.mjs
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

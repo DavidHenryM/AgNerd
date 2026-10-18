@@ -23,6 +23,8 @@ import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import { drawerWidth, footerHeight } from "@app/settings";
 import { GnssFixType, formatGnssFixStatus } from "@lib/gnss-status";
+import { formatHeading, formatTilt } from "@lib/gnss-display";
+import type { FusionStatus } from "@lib/hooks/geolocation";
 import InternetStatus from "@components/InternetStatus";
 import NavigationTrackActions, { type NavigationTrackProps } from "./NavigationTrackActions";
 
@@ -118,6 +120,7 @@ export interface NavigationControlsProps extends NavigationTrackProps {
   locationTimestamp: number | null;
   accuracy: number | null;
   speed: number | null;
+  fusionStatus?: FusionStatus | null;
   gpsConnected: boolean;
   fixType: GnssFixType | null;
   satellites: number | null;
@@ -149,6 +152,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
     locationTimestamp,
     accuracy,
     speed,
+    fusionStatus,
     gpsConnected,
     fixType,
     satellites,
@@ -180,6 +184,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
   const area = formatArea(totalAreaSqMeters);
   const fix = formatGnssFixStatus(fixType, fixStatusStale, browserLocation);
   const hasPosition = latitude !== null && longitude !== null;
+  const tilt = fusionStatus ? formatTilt(fusionStatus.rollDeg, fusionStatus.pitchDeg) : null;
 
   return (
     <>
@@ -254,6 +259,25 @@ export default function NavigationControls(props: NavigationControlsProps) {
               {formatSpeed(speed)}
             </Typography>
           </Stack>
+
+          {fusionStatus && (
+            <Box sx={{ mt: 0.5 }}>
+              <Typography variant="caption" sx={{ display: "block" }}>
+                Heading: {formatHeading(fusionStatus.headingDeg, fusionStatus.headingStdDeg, fusionStatus.headingSource)}
+                {fusionStatus.direction === "reverse" ? " · reversing" : ""}
+              </Typography>
+              {tilt && (
+                <Typography component="output" aria-live="polite" variant="caption" sx={{ display: "block", color: tilt.color }}>
+                  {tilt.text}
+                </Typography>
+              )}
+              {fusionStatus.imuState === "stale" && (
+                <Typography variant="caption" sx={{ display: "block", color: "#FFC107" }}>
+                  IMU not responding
+                </Typography>
+              )}
+            </Box>
+          )}
 
           {/* Area counter */}
           <Stack direction="row" spacing={1} sx={{ mt: 0.5, alignItems: "center" }}>

@@ -127,6 +127,8 @@ export default function NavigationScreen() {
     satellites,
     fixStatusStale,
     positionSource,
+    displayPredictor,
+    fusionStatus,
     gnssDebug,
   } = useGeolocation();
 
@@ -523,6 +525,50 @@ export default function NavigationScreen() {
     }
   }, [latitude, longitude, heading, fixStatusStale, fixType, isSpraying, widthMeters, offsetMeters, forwardOffsetMeters, selectedColor, viewerReady, trackSession, paintStrip]);
 
+  // Display-only pose: the 20 Hz fused/predicted pose moves the models and camera every frame.
+  // Coverage, tracks, history and the boom paint line stay on raw GNSS fixes.
+  const liveDisplayRef = useRef({ rawValid: false, cameraRangeMeters, widthMeters, offsetMeters, forwardOffsetMeters, isSpraying });
+  useEffect(() => {
+    liveDisplayRef.current = {
+      rawValid: latitude !== null && longitude !== null && !fixStatusStale && fixType !== "NO_FIX",
+      cameraRangeMeters, widthMeters, offsetMeters, forwardOffsetMeters, isSpraying,
+    };
+  });
+  useEffect(() => {
+    const viewer = viewerRef.current;
+    if (!viewer || !viewerReady) return;
+    return viewer.scene.preRender.addEventListener(() => {
+      const live = liveDisplayRef.current;
+      const tractor = modelEntityRef.current;
+      if (!live.rawValid || !tractor) return;
+      const pose = displayPredictor.pose(performance.now());
+      if (!pose) return;
+      const headingRad = pose.headingDeg === null ? boomHeadingRef.current : CesiumMath.toRadians(pose.headingDeg);
+      const position = Cartesian3.fromDegrees(pose.longitude, pose.latitude, 0);
+      (tractor.position as ConstantPositionProperty).setValue(position);
+      (tractor.orientation as ConstantProperty).setValue(tractorOrientation(position, headingRad));
+      viewer.camera.lookAt(position, new HeadingPitchRange(headingRad, CesiumMath.toRadians(-35), live.cameraRangeMeters));
+
+      const boomEntity = boomEntityRef.current;
+      if (!boomEntity?.show) return;
+      const boom = sprayBoom({ lat: pose.latitude, lon: pose.longitude }, headingRad, live.widthMeters, live.offsetMeters, live.forwardOffsetMeters);
+      const ends = Cartesian3.fromDegreesArray([boom.left.lon, boom.left.lat, boom.right.lon, boom.right.lat]);
+      const centre = Cartographic.fromCartesian(Cartesian3.midpoint(ends[0], ends[1], new Cartesian3()));
+      const modelPosition = Cartesian3.fromRadians(centre.longitude, centre.latitude, BOOM_CLEARANCE_METERS);
+      (boomEntity.position as ConstantPositionProperty).setValue(modelPosition);
+      (boomEntity.orientation as ConstantProperty).setValue(tractorOrientation(modelPosition, headingRad));
+      const emitter = sprayEmitterRef.current;
+      if (SPRAY_PARTICLES_ENABLED && live.isSpraying && emitter && sprayParticlesRef.current) {
+        const groundHeight = viewer.scene.globe.getHeight(centre) ?? 0;
+        const particleEndpoints = boomWorldEndpoints(
+          Cartesian3.fromRadians(centre.longitude, centre.latitude, groundHeight + BOOM_CLEARANCE_METERS),
+          headingRad, live.widthMeters,
+        );
+        emitter.setEndpoints(particleEndpoints[0], particleEndpoints[1]);
+      }
+    });
+  }, [viewerReady, displayPredictor]);
+
   // Break coverage across stopped or paused travel, without clearing existing paint.
   useEffect(() => {
     if (!isSpraying) sprayTrailRef.current.reset();
@@ -620,6 +666,7 @@ export default function NavigationScreen() {
         fixStatusStale={fixStatusStale}
         browserLocation={positionSource === "browser"}
         speed={speed}
+        fusionStatus={fusionStatus}
         gpsConnected={gnssDebug.statusFilePresent === true}
         isSpraying={isSpraying}
         onSprayingToggle={() => { void handleSprayingToggle(); }}

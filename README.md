@@ -434,6 +434,85 @@ Existing environment files are preserved on reinstall; explicitly update a
 previous `GNSS_POST_INTERVAL_MS=1000` value to enable faster publication.
 The five-second stale-fix threshold is unchanged.
 
+### IMU sensor fusion (Adafruit 4517 on the Qwiic port)
+
+An [Adafruit LSM6DSOX + LIS3MDL 9-DoF IMU](https://www.adafruit.com/product/4517)
+on the GNSS pHAT Qwiic connector steadies the displayed heading, animates the
+vehicle smoothly between 5 Hz fixes, and shows roll/pitch in the GPS panel.
+The ZED-X20P has no dead reckoning, so the fusion runs on the Pi:
+
+- `agnerd-imu` (`scripts/imu-reader.mjs`) reads the accelerometer/gyro FIFO at
+  208 Hz and the magnetometer at 80 Hz over `/dev/i2c-1`. It levels the
+  attitude from gravity, learns gyro bias while parked, measures magnetic
+  disturbance, and writes `/tmp/agnerd-imu-status.json` at 20 Hz.
+- `agnerd-gnss` fuses gyro yaw with GNSS course (and, with low weight, the
+  compass) in a small Kalman filter. It learns the compass offset (declination
+  plus mount yaw) while driving, detects reversing, and writes
+  `/tmp/agnerd-gnss-display.json` at 20 Hz.
+- Navigation receives the display packets via `/api/gnss/stream` and
+  predicts the pose each frame for the tractor, boom model, spray particles and
+  camera.
+
+**Display only:** spray coverage, the boom paint line, tracks, area and
+history use raw GNSS fixes. With no IMU, the reader still publishes a
+GNSS-course display stream and Navigation works as before.
+
+#### Hardware checklist
+
+1. Plug the board into the pHAT Qwiic port; the installer enables I2C
+   (reboot once if it asks you to).
+2. Check that `sudo i2cdetect -y 1` shows `1c` (magnetometer) and `6a`
+   (accelerometer/gyro) alongside the GNSS device.
+3. The default `IMU_AXIS_MAP="+z,+x,+y"` matches the board mounted with sensor
+   y up, x toward the vehicle's left and z forward. The map lists the sensor
+   axes that point forward, left and up; for example, if x points right
+   instead, use `"+z,-x,+y"`. Small mount tilt and yaw are removed by
+   calibration.
+
+#### Calibration
+
+Stop the service and run the interactive calibration with the GNSS environment loaded:
+
+```bash
+sudo systemctl stop agnerd-imu
+sudo bash -c 'set -a; . /etc/agnerd/gnss.env; node /opt/agnerd/scripts/imu-calibrate.mjs'
+sudo systemctl start agnerd-imu
+```
+
+1. Park on firm ground for 20 s. This measures gyro bias and mount tilt.
+2. Turn around and park on the same spot facing the opposite way. Averaging
+   the two parks cancels ground slope; use `--skip-reverse` on level ground.
+3. In an open area away from sheds, fences and other vehicles, drive two slow
+   full circles. The calibration fits hard and soft iron and checks that
+   compass and gyro turn the same way. If they turn opposite ways, fix
+   `IMU_MAG_AXIS_MAP`.
+
+The calibration is saved to `/var/lib/agnerd/imu-calibration.json` (the previous
+file is kept as `.bak`). Recalibrate after moving the board or adding steel
+near it. Mount yaw does not need measuring; the heading filter learns it.
+
+#### Checking fusion
+
+```bash
+sudo journalctl -u agnerd-imu -f
+node -e 'const s=JSON.parse(require("fs").readFileSync("/tmp/agnerd-imu-status.json","utf8")); console.log({healthy:s.healthy,rate:s.sampleRateHz,attitude:s.attitude,mag:s.mag,stationary:s.stationary});'
+node -e 'const d=JSON.parse(require("fs").readFileSync("/tmp/agnerd-gnss-display.json","utf8")); console.log({heading:d.headingDeg,std:d.headingStdDeg,source:d.headingSource,direction:d.direction,imu:d.imu,mag:d.mag});'
+```
+
+The GPS panel shows the heading source:
+
+| Source | Meaning |
+|---|---|
+| GNSS course | No IMU data |
+| GNSS + gyro | Normal driving |
+| Gyro + compass | Stopped, compass undisturbed |
+| Gyro only | Stopped near steel |
+
+Tilt turns amber at 12° and red at 20°. If the IMU stops responding, the panel
+warns and the display falls back to GNSS course. Set `GNSS_IMU_ENABLED=false`
+or `GNSS_FUSION_MAG_ENABLED=false` in `gnss.env` to disable the IMU or compass;
+`GNSS_DISPLAY_INTERVAL_MS=0` turns off the 20 Hz display stream.
+
 ### Internet and offline imagery
 
 The navigation GPS status panel reports **Internet: online**, **slow**, or **unavailable**, separately
@@ -922,6 +1001,10 @@ node -e 'const s=JSON.parse(require("fs").readFileSync("/tmp/agnerd-gnss-status.
 	- Persists a `GeoPoint` and returns GNSS metadata.
 - `GET /api/gnss/status`
 	- Reports status file availability and timestamp.
+	- Includes the latest fused `display` block (heading, tilt, IMU state) when the reader publishes one.
+- `GET /api/gnss/stream` (embedded only)
+	- Server-sent events: one `display` event per new 20 Hz fused display packet, keepalive comments,
+	  and an `unauthorized` event when the session expires. Requires a signed-in session.
 - `GET /api/gnss/cors?country=AU`
 	- Retrieves CORS stations from Geoscience Australia (`https://metadata.gnss.ga.gov.au/api/corsSites`).
 	- Query options:
