@@ -23,7 +23,8 @@ import {
   PropertyBag,
 } from "cesium";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Alert, Box, Typography } from "@mui/material";
+import { Alert, Box } from "@mui/material";
+import NavigationMapInfo from "./NavigationMapInfo";
 import { parseMapManifest, type MapManifest } from "@lib/map-manifest";
 import { getUsersFarm } from "@lib/queries";
 import useGeolocation from "@lib/hooks/geolocation";
@@ -611,18 +612,7 @@ export default function NavigationScreen() {
         sx={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
       />
       <Box sx={{ position: "absolute", top: 12, left: 12, maxWidth: "min(360px, 45vw)", zIndex: 1200 }}>
-        {mapConfig && mapSource === "local" && (
-          <Typography sx={{ bgcolor: "rgba(0,0,0,0.75)", color: "white", p: 1, borderRadius: 1 }}>
-            Local imagery · {mapConfig.resolutionMeters} m/pixel · {mapConfig.capturedAt ?? "Mixed / unknown dates"}
-            {mapConfig.notes && <><br />{mapConfig.notes}</>}
-            <br />Outside coverage: low-resolution background
-          </Typography>
-        )}
-        {mapConfig && mapSource === "online" && (
-          <Typography sx={{ bgcolor: "rgba(0,0,0,0.75)", color: "white", p: 1, borderRadius: 1 }}>
-            Online imagery
-          </Typography>
-        )}
+        {mapConfig && <NavigationMapInfo manifest={mapConfig} source={mapSource} />}
         {mapError && <Alert severity="error" sx={{ mt: 1 }}>{mapError}</Alert>}
         {historyError && <Alert severity="error" sx={{ mt: 1 }}>Spray history not saved: {historyError}</Alert>}
       </Box>

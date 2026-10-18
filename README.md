@@ -786,6 +786,12 @@ attributes and can make the effect invisible.
 Stale/no-fix positions hide the boom and break the
 paint trail so a GPS outage is not joined by a sprayed strip.
 
+Map imagery details are collapsed behind the **Map information** icon in the
+top-left corner. Tap it to expand or collapse the current source, local imagery
+resolution, capture date, notes and background-coverage notice. Keyboard users
+can focus the icon and press Enter or Space. Map and spray-history errors remain
+visible even while the details are collapsed.
+
 **Spray tracks:** open **Navigation menu** for **New spray track**,
 **Resume saved track**, and **Delete current spray track**. New saves the
 current track before clearing the map; it does not delete the previous track.
