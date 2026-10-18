@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, type Ref, useState } from "react";
 import {
   Box,
   Alert,
@@ -135,6 +135,7 @@ export interface NavigationControlsProps extends NavigationTrackProps {
   selectedColor: string;
   mapScaleMeters: number | null;
   mapScalePixels: number;
+  mapScaleRef?: Ref<HTMLDivElement>;
   onZoomIn: () => void;
   onZoomOut: () => void;
   mapSource?: "local" | "online";
@@ -166,6 +167,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
     selectedColor,
     mapScaleMeters,
     mapScalePixels,
+    mapScaleRef,
     onZoomIn,
     onZoomOut,
     mapSource,
@@ -309,6 +311,7 @@ export default function NavigationControls(props: NavigationControlsProps) {
           </Typography>
           <Stack direction="row" spacing={0.75} sx={{ alignItems: "center", mt: 0.25 }}>
             <Box
+              ref={mapScaleRef}
               sx={{
                 position: "relative",
                 width: mapScalePixels,

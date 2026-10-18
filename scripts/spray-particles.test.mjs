@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { register } from "tsx/esm/api";
-import { Cartesian3, Color, Ellipsoid, Particle } from "cesium";
+import { Cartesian3, CesiumWidget, Clock, Color, Ellipsoid, Particle } from "cesium";
 
 register();
 const { BoomSprayEmitter, createSprayParticles, sprayEmissionRate, SPRAY_COLOR } =
@@ -43,9 +45,55 @@ await test("purple mist has short lifetime, metre sizing and bounded emission", 
   assert.equal(system.minimumParticleLife, 0.8);
   assert.equal(system.maximumParticleLife, 0.8);
   assert.equal(system.sizeInMeters, true);
+  assert.equal(system.minimumImageSize.x, 1);
+  assert.equal(system.minimumImageSize.y, 1);
+  assert.equal(system.maximumImageSize.x, 1);
+  assert.equal(system.maximumImageSize.y, 1);
+  assert.equal(system.startScale, 0.25);
+  assert.equal(system.endScale, 1);
   assert.ok(Color.equals(system.startColor, Color.fromCssColorString(SPRAY_COLOR).withAlpha(0.75)));
   assert.equal(system.endColor.alpha, 0);
   assert.equal(sprayEmissionRate(1), 12);
   assert.equal(sprayEmissionRate(50), 160);
   system.destroy();
+});
+
+await test("particle effects are off unless the public build setting is exactly true", () => {
+  for (const value of [undefined, "", "false", "1", "TRUE", "true"]) {
+    const env = { ...process.env };
+    delete env.NEXT_PUBLIC_ENABLE_SPRAY_PARTICLES;
+    if (value !== undefined) env.NEXT_PUBLIC_ENABLE_SPRAY_PARTICLES = value;
+    const output = execFileSync(process.execPath, ["--import", "tsx", "--input-type=module", "-e",
+      'import { SPRAY_PARTICLES_ENABLED } from "./app/lib/spray-particles.ts"; console.log(SPRAY_PARTICLES_ENABLED);',
+    ], { cwd: new URL("..", import.meta.url), env, encoding: "utf8" });
+    assert.equal(output.trim(), String(value === "true"));
+  }
+});
+
+await test("unready geometry must not suspend navigation's live animation clock", () => {
+  const clock = new Clock({ shouldAnimate: true });
+  const widget = Object.create(CesiumWidget.prototype);
+  widget._dataSourceDisplay = { update: () => false };
+  widget._canAnimateUpdateCallback = ready => { clock.canAnimate = ready; };
+  widget.allowDataSourcesToSuspendAnimation = false;
+  widget._onTick(clock);
+  assert.equal(clock.canAnimate, true);
+  widget.allowDataSourcesToSuspendAnimation = true;
+  widget._onTick(clock);
+  assert.equal(clock.canAnimate, false, "default Cesium policy freezes particles while ground geometry builds");
+  const source = readFileSync(new URL("../app/components/screens/Navigation.tsx", import.meta.url), "utf8");
+  assert.match(source, /viewer\.allowDataSourcesToSuspendAnimation = false/);
+});
+
+await test("particle gate wraps visual setup only, leaving coverage recording outside it", () => {
+  const source = readFileSync(new URL("../app/components/screens/Navigation.tsx", import.meta.url), "utf8");
+  const start = source.indexOf("if (SPRAY_PARTICLES_ENABLED)");
+  const end = source.indexOf("const strip = sprayTrailRef.current.update", start);
+  const block = source.slice(start, end);
+  assert.ok(start > 0 && end > start);
+  assert.match(block, /new BoomSprayEmitter/);
+  assert.match(block, /createSprayTexture/);
+  assert.match(block, /createSprayParticles/);
+  assert.match(block, /\n    \}\s*$/);
+  assert.match(source.slice(end), /trackSession\.append\(strip\.coordinates/);
 });

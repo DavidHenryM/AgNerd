@@ -2,6 +2,7 @@ import { Cartesian2, Cartesian3, Color, Ellipsoid, Particle, ParticleSystem } fr
 import { boomNozzlePositions } from "./boom-model";
 
 export const SPRAY_COLOR = "#D98CCB";
+export const SPRAY_PARTICLES_ENABLED = process.env.NEXT_PUBLIC_ENABLE_SPRAY_PARTICLES === "true";
 
 export class BoomSprayEmitter {
   readonly left = new Cartesian3();
@@ -34,10 +35,11 @@ export function createSprayParticles(emitter: BoomSprayEmitter, image: HTMLCanva
     emissionRate: sprayEmissionRate(widthMeters),
     startColor: Color.fromCssColorString(SPRAY_COLOR).withAlpha(0.75),
     endColor: Color.fromCssColorString(SPRAY_COLOR).withAlpha(0),
-    imageSize: new Cartesian2(0.5, 0.5),
+    // Cesium packs billboard dimensions as integers; use scale for sub-metre droplets.
+    imageSize: new Cartesian2(1, 1),
     sizeInMeters: true,
-    startScale: 0.5,
-    endScale: 2,
+    startScale: 0.25,
+    endScale: 1,
     minimumSpeed: 0.8,
     maximumSpeed: 1.2,
     particleLife: 0.8,

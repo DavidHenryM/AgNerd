@@ -1,5 +1,6 @@
 "use client";
 import {
+  Cartesian2,
   Cartesian3,
   Viewer as CesiumViewer,
   Color,
@@ -21,7 +22,7 @@ import {
   ColorBlendMode,
   PropertyBag,
 } from "cesium";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Alert, Box, Typography } from "@mui/material";
 import { parseMapManifest, type MapManifest } from "@lib/map-manifest";
 import { getUsersFarm } from "@lib/queries";
@@ -30,43 +31,18 @@ import { fetchNavigationApi } from "@lib/navigation-auth";
 import { haversineDistance, sprayBoom, SprayTrail } from "@lib/spray-boom";
 import { TRACTOR_WORLD_SCALE, tractorOrientation } from "@lib/tractor-model";
 import { BOOM_CLEARANCE_METERS, boomNodeTransformations, boomWorldEndpoints } from "@lib/boom-model";
-import { BoomSprayEmitter, createSprayParticles, createSprayTexture, sprayEmissionRate } from "@lib/spray-particles";
+import { BoomSprayEmitter, createSprayParticles, createSprayTexture, sprayEmissionRate, SPRAY_PARTICLES_ENABLED } from "@lib/spray-particles";
 import NavigationControls, {
   MODEL_COLORS,
 } from "@components/screens/NavigationControls";
 import { useSprayTracks } from "@lib/hooks/spray-tracks";
 import { navigationZoomIn, navigationZoomOut } from "@lib/navigation-zoom";
 import { SprayCoverage } from "@lib/spray-coverage";
+import { navigationMapScale, SCALE_KEY_MAX_PIXELS, type NavigationMapScale } from "@lib/navigation-scale";
 
 // ── Geo helpers ─────────────────────────────────────────────────────
-const SCALE_KEY_BASE_PIXELS = 120;
-const SCALE_KEY_ZOOM_FACTOR = 1 / 3;
 const MIN_CAMERA_CLEARANCE_METERS = 2;
 const AUSTRALIA_RECTANGLE = Rectangle.fromDegrees(112, -44, 154, -10);
-
-function roundNiceDistance(meters: number): number {
-  const power = 10 ** Math.floor(Math.log10(meters));
-  const normalized = meters / power;
-
-  if (normalized < 1.5) return 1 * power;
-  if (normalized < 3) return 2 * power;
-  if (normalized < 7) return 5 * power;
-  return 10 * power;
-}
-
-function zoomLevelDistanceForPixelSpan(
-  cameraRangeMeters: number,
-  pixelSpan: number
-): number | null {
-  if (!Number.isFinite(cameraRangeMeters) || cameraRangeMeters <= 0) return null;
-  if (!Number.isFinite(pixelSpan) || pixelSpan <= 0) return null;
-
-  const normalizedSpan = pixelSpan / SCALE_KEY_BASE_PIXELS;
-  const distance = cameraRangeMeters * SCALE_KEY_ZOOM_FACTOR * normalizedSpan;
-
-  if (!Number.isFinite(distance) || distance <= 0) return null;
-  return distance;
-}
 
 /** Bearing in radians from (lat1,lon1) to (lat2,lon2). 0 = north, clockwise. */
 function bearing(
@@ -96,7 +72,7 @@ export default function NavigationScreen() {
   const modelEntityRef = useRef<Entity | null>(null);
   const boomEntityRef = useRef<Entity | null>(null);
   const sprayParticlesRef = useRef<ParticleSystem | null>(null);
-  const sprayEmitterRef = useRef(new BoomSprayEmitter());
+  const sprayEmitterRef = useRef<BoomSprayEmitter | null>(null);
   const sprayTextureRef = useRef<HTMLCanvasElement | null>(null);
   const sprayTrailRef = useRef(new SprayTrail());
   const boomPositionRef = useRef<GpsPoint | null>(null);
@@ -107,6 +83,10 @@ export default function NavigationScreen() {
   const [mapError, setMapError] = useState<string | null>(null);
   const [viewerReady, setViewerReady] = useState(false);
   const [mapSource, setMapSource] = useState<"local" | "online">("local");
+  const mapScaleRef = useRef<HTMLDivElement>(null);
+  const [{ mapScaleMeters, mapScalePixels }, setMapScale] = useState<NavigationMapScale>({
+    mapScaleMeters: null, mapScalePixels: SCALE_KEY_MAX_PIXELS,
+  });
 
   useEffect(() => {
     const controller = new AbortController();
@@ -211,34 +191,6 @@ export default function NavigationScreen() {
     })();
   }, [isSpraying, latitude, longitude, locationTimestamp, heading, fixStatusStale, fixType, satellites, accuracy, speed]);
 
-  const { mapScaleMeters, mapScalePixels } = useMemo(() => {
-    const rawMeters = zoomLevelDistanceForPixelSpan(
-      cameraRangeMeters,
-      SCALE_KEY_BASE_PIXELS
-    );
-
-    if (rawMeters === null) {
-      return {
-        mapScaleMeters: null,
-        mapScalePixels: SCALE_KEY_BASE_PIXELS,
-      };
-    }
-
-    const roundedMeters = roundNiceDistance(rawMeters);
-    const pixelWidth = Math.max(
-      40,
-      Math.min(
-        SCALE_KEY_BASE_PIXELS,
-        (roundedMeters / rawMeters) * SCALE_KEY_BASE_PIXELS
-      )
-    );
-
-    return {
-      mapScaleMeters: roundedMeters,
-      mapScalePixels: pixelWidth,
-    };
-  }, [cameraRangeMeters]);
-
   // Fetch farm location for initial camera position
   const userId = "current";
   const [farmLat, setFarmLat] = useState<number | null>(null);
@@ -282,6 +234,8 @@ export default function NavigationScreen() {
     coverageRef.current = coverage;
     viewer.scene.groundPrimitives.add(coverage.primitives);
     const removeCoverageListener = viewer.scene.preRender.addEventListener(() => coverage.update());
+    // Live GNSS and particle time must not wait for asynchronous ground geometry.
+    viewer.allowDataSourcesToSuspendAnimation = false;
     viewer.clock.clockStep = ClockStep.SYSTEM_CLOCK;
     viewer.camera.setView({ destination: mapConfig ? Rectangle.fromDegrees(...mapConfig.bounds) : AUSTRALIA_RECTANGLE });
     setViewerReady(true);
@@ -313,6 +267,21 @@ export default function NavigationScreen() {
         });
       }
     });
+    let lastScaleUpdate = -Infinity;
+    const removeScaleListener = viewer.scene.postRender.addEventListener(() => {
+      const now = performance.now();
+      if (now - lastScaleUpdate < 200) return;
+      lastScaleUpdate = now;
+      const bar = mapScaleRef.current?.getBoundingClientRect();
+      const canvas = viewer.canvas.getBoundingClientRect();
+      const next = bar && bar.width > 0 && bar.height > 0
+        ? navigationMapScale(viewer.scene, new Cartesian2(
+          bar.right - canvas.left, bar.top + bar.height / 2 - canvas.top,
+        ))
+        : { mapScaleMeters: null, mapScalePixels: SCALE_KEY_MAX_PIXELS };
+      setMapScale(previous => previous.mapScaleMeters === next.mapScaleMeters &&
+        Math.abs(previous.mapScalePixels - next.mapScalePixels) < 0.1 ? previous : next);
+    });
 
     // Keep app zoom state in sync when user zooms with the mouse wheel.
     viewer.screenSpaceEventHandler.setInputAction(
@@ -334,6 +303,7 @@ export default function NavigationScreen() {
       viewer.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.WHEEL);
       removeClampCameraListener();
       removeCoverageListener();
+      removeScaleListener();
       if (!viewer.isDestroyed()) viewer.destroy();
       viewerRef.current = null;
       modelEntityRef.current = null;
@@ -529,19 +499,22 @@ export default function NavigationScreen() {
       sprayTrailRef.current.reset();
       return;
     }
-    const groundHeight = viewer.scene.globe.getHeight(centre) ?? 0;
-    const particleEndpoints = boomWorldEndpoints(
-      Cartesian3.fromRadians(centre.longitude, centre.latitude, groundHeight + BOOM_CLEARANCE_METERS),
-      boomHeadingRef.current, widthMeters,
-    );
-    sprayEmitterRef.current.setEndpoints(particleEndpoints[0], particleEndpoints[1]);
-    if (!sprayParticlesRef.current) {
-      sprayTextureRef.current ??= createSprayTexture();
-      const system = createSprayParticles(sprayEmitterRef.current, sprayTextureRef.current, widthMeters);
-      viewer.scene.primitives.add(system);
-      sprayParticlesRef.current = system;
-    } else {
-      sprayParticlesRef.current.emissionRate = sprayEmissionRate(widthMeters);
+    if (SPRAY_PARTICLES_ENABLED) {
+      const groundHeight = viewer.scene.globe.getHeight(centre) ?? 0;
+      const particleEndpoints = boomWorldEndpoints(
+        Cartesian3.fromRadians(centre.longitude, centre.latitude, groundHeight + BOOM_CLEARANCE_METERS),
+        boomHeadingRef.current, widthMeters,
+      );
+      const emitter = sprayEmitterRef.current ??= new BoomSprayEmitter();
+      emitter.setEndpoints(particleEndpoints[0], particleEndpoints[1]);
+      if (!sprayParticlesRef.current) {
+        sprayTextureRef.current ??= createSprayTexture();
+        const system = createSprayParticles(emitter, sprayTextureRef.current, widthMeters);
+        viewer.scene.primitives.add(system);
+        sprayParticlesRef.current = system;
+      } else {
+        sprayParticlesRef.current.emissionRate = sprayEmissionRate(widthMeters);
+      }
     }
     const strip = sprayTrailRef.current.update(cur, boom);
     if (strip) {
@@ -666,6 +639,7 @@ export default function NavigationScreen() {
         selectedColor={selectedColor}
         mapScaleMeters={mapScaleMeters}
         mapScalePixels={mapScalePixels}
+        mapScaleRef={mapScaleRef}
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
         mapSource={mapConfig ? mapSource : undefined}

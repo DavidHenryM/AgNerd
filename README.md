@@ -618,6 +618,10 @@ controls remain 12px from the bottom-left on compact navigation screens, without
 reserving space for the hidden footer; settings and status panels scroll when height
 is limited. On narrow phones, the distance key sits above the main controls;
 opening the menu temporarily replaces the status/distance overlays to avoid overlap.
+The distance key measures the map's ellipsoid surface beneath its screen position
+using Cesium camera rays and geodesic distance, rather than estimating from camera range.
+It follows zoom, camera tilt and viewport resizing; the label and bar width
+represent the same distance. If the bar points off the globe, it shows no distance.
 The tractor GLB is anchored at the centre of its horizontal vertex bounds,
 with its lowest vertex at ground level, and scaled to a measured two-metre
 width. At zero boom offsets, the tractor footprint centre and boom centre
@@ -660,11 +664,23 @@ Pause leaves a dimmed boom preview without painting and keeps
 navigation active but suspends coverage painting, area accumulation, spray
 particles and new history submissions until Resume spraying is pressed.
 Existing coverage is retained and paused travel is never joined by a painted strip.
-While spraying, a Cesium particle mist emits
+The optional Cesium particle mist is **off by default**. Set
+`NEXT_PUBLIC_ENABLE_SPRAY_PARTICLES=true` in the build environment to enable it;
+unset, empty, `false` and other values leave it disabled. This is a public,
+build-time setting: rebuild and redeploy (or rerun the embedded installer),
+then refresh/restart the kiosk. Changing only the runtime service environment
+does not change an already-built browser bundle. Disabling particles does not
+disable coverage painting, area calculation or saving.
+When enabled while spraying, the mist emits
 downward from its nozzle positions in the same purple, following width and both offsets.
 The short-lived droplets remain in world space as the tractor moves; emission
 is capped at 160 particles/second for touchscreen devices. Pause, track changes and
 stale/no-fix positions remove the particle system immediately.
+The live animation clock continues while ground geometry is loading, so
+frequent boom/coverage updates cannot suspend particle emission.
+Droplet sizes use a one-metre billboard with scale factors for their 0.25-1 m
+diameter; fractional billboard dimensions are rounded away by Cesium's rendering
+attributes and can make the effect invisible.
 Stale/no-fix positions hide the boom and break the
 paint trail so a GPS outage is not joined by a sprayed strip.
 
