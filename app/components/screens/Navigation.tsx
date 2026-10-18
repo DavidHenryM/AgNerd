@@ -28,7 +28,8 @@ import { parseMapManifest, type MapManifest } from "@lib/map-manifest";
 import { getUsersFarm } from "@lib/queries";
 import useGeolocation from "@lib/hooks/geolocation";
 import { fetchNavigationApi } from "@lib/navigation-auth";
-import { haversineDistance, sprayBoom, SprayTrail } from "@lib/spray-boom";
+import { sprayBoom, SprayTrail } from "@lib/spray-boom";
+import { navigationHeading } from "@lib/navigation-heading";
 import { TRACTOR_WORLD_SCALE, tractorOrientation } from "@lib/tractor-model";
 import { BOOM_CLEARANCE_METERS, boomNodeTransformations, boomWorldEndpoints } from "@lib/boom-model";
 import { BoomSprayEmitter, createSprayParticles, createSprayTexture, sprayEmissionRate, SPRAY_PARTICLES_ENABLED } from "@lib/spray-particles";
@@ -43,22 +44,6 @@ import { navigationMapScale, SCALE_KEY_MAX_PIXELS, type NavigationMapScale } fro
 // ── Geo helpers ─────────────────────────────────────────────────────
 const MIN_CAMERA_CLEARANCE_METERS = 2;
 const AUSTRALIA_RECTANGLE = Rectangle.fromDegrees(112, -44, 154, -10);
-
-/** Bearing in radians from (lat1,lon1) to (lat2,lon2). 0 = north, clockwise. */
-function bearing(
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number
-): number {
-  const toRad = (d: number) => (d * Math.PI) / 180;
-  const dLon = toRad(lon2 - lon1);
-  const y = Math.sin(dLon) * Math.cos(toRad(lat2));
-  const x =
-    Math.cos(toRad(lat1)) * Math.sin(toRad(lat2)) -
-    Math.sin(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.cos(dLon);
-  return Math.atan2(y, x);
-}
 
 // ── Component ───────────────────────────────────────────────────────
 interface GpsPoint {
@@ -388,12 +373,10 @@ export default function NavigationScreen() {
     }
     const current = { lat: latitude, lon: longitude };
     const previous = boomPositionRef.current;
-    if (heading !== null) boomHeadingRef.current = CesiumMath.toRadians(heading);
-    else if (previous && haversineDistance(previous.lat, previous.lon, current.lat, current.lon) >= 0.5) {
-      boomHeadingRef.current = bearing(previous.lat, previous.lon, current.lat, current.lon);
-    }
+    const speedMps = speed === null ? null : positionSource === "gnss-status" ? speed * 0.514444 : speed;
+    boomHeadingRef.current = navigationHeading(boomHeadingRef.current, previous, current, heading, speedMps);
     boomPositionRef.current = current;
-  }, [latitude, longitude, heading, fixStatusStale, fixType]);
+  }, [latitude, longitude, heading, speed, positionSource, fixStatusStale, fixType]);
 
   // ── 3D model entity – create once, then update position/heading ──
   useEffect(() => {
@@ -430,7 +413,7 @@ export default function NavigationScreen() {
         cameraRangeMeters // distance
       )
     );
-  }, [latitude, longitude, heading, fixStatusStale, fixType, selectedColor, cameraRangeMeters, viewerReady]);
+  }, [latitude, longitude, heading, speed, positionSource, fixStatusStale, fixType, selectedColor, cameraRangeMeters, viewerReady]);
 
   // The displayed boom and spray polygons share exactly the same endpoints.
   useEffect(() => {
@@ -524,7 +507,7 @@ export default function NavigationScreen() {
       trackSession.append(strip.coordinates, strip.distance * widthMeters);
       paintStrip(strip.coordinates);
     }
-  }, [latitude, longitude, heading, fixStatusStale, fixType, isSpraying, widthMeters, offsetMeters, forwardOffsetMeters, selectedColor, viewerReady, trackSession, paintStrip]);
+  }, [latitude, longitude, heading, speed, positionSource, fixStatusStale, fixType, isSpraying, widthMeters, offsetMeters, forwardOffsetMeters, selectedColor, viewerReady, trackSession, paintStrip]);
 
   // Display-only pose: the 20 Hz fused/predicted pose moves the models and camera every frame.
   // Coverage, tracks, history and the boom paint line stay on raw GNSS fixes.

@@ -465,8 +465,12 @@ GNSS-course display stream and Navigation works as before.
    (accelerometer/gyro) alongside the GNSS device.
 3. The default `IMU_AXIS_MAP="+z,+x,+y"` matches the board mounted with sensor
    y up, x toward the vehicle's left and z forward. The map lists the sensor
-   axes that point forward, left and up; for example, if x points right
-   instead, use `"+z,-x,+y"`. Small mount tilt and yaw are removed by
+   axes that point forward, left and up; for example, if x points right,
+   y up and z backward, use `"-z,-x,+y"`. The mapping must remain a
+   right-handed rotation; do not invert one axis alone. With the default
+   mounting, sensor Y is the yaw axis and sensor Z is the forward axis.
+   A left turn decreases compass heading; a right turn increases it.
+   Small mount tilt and yaw are removed by
    calibration.
 
 #### Calibration
@@ -710,7 +714,12 @@ The tractor GLB is anchored at the centre of its horizontal vertex bounds,
 with its lowest vertex at ground level, and scaled to a measured two-metre
 width. At zero boom offsets, the tractor footprint centre and boom centre
 coincide with the GPS coordinate. The tractor nose, camera and boom share the
-same receiver heading/movement-bearing fallback. This is a visual centre, not
+same receiver heading/movement-bearing fallback. Raw receiver course is used
+only at speeds of at least 0.8 m/s; below that speed the last heading is held
+so an unreliable stopped GNSS course cannot turn the graphic around. When speed
+is unknown, heading falls back to measured displacement rather than raw course.
+Fused IMU heading still drives the live display when available.
+This is a visual centre, not
 an assumption about the physical GNSS antenna's mounting position.
 After replacing the tractor asset, inspect/centre it using
 `node scripts/tractor-geometry.mjs --centre`, verify the nose is +X, and update

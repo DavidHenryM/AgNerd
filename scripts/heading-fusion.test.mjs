@@ -76,6 +76,20 @@ await test("reversing is detected and sustained fast reversing flips a backwards
   angleClose(snapshot.headingDeg, 270, 0.5);
 });
 
+await test("a stopped receiver's opposite course does not reverse fused heading, with or without an IMU", () => {
+  for (const useImu of [false, true]) {
+    const fusion = new HeadingFusion({ magEnabled: false });
+    if (useImu) fusion.updateImu(imuStatus(0, 0), 0);
+    fusion.updateGnss({ courseDeg: 90, speedMps: 2 }, 0);
+    for (let t = 100; t <= 3000; t += 100) {
+      if (useImu) fusion.updateImu({ ...imuStatus(t, 0), stationary: true }, t);
+      fusion.updateGnss({ courseDeg: 270, speedMps: t < 500 ? 0.5 : 0 }, t);
+      angleClose(fusion.snapshot(t).headingDeg, 90, 0.01);
+    }
+    assert.equal(fusion.snapshot(3000).direction, "stationary");
+  }
+});
+
 await test("magnetometer initialises heading, learns its offset and is gated when disturbed", () => {
   const fusion = new HeadingFusion({ initialMagOffsetDeg: 0 });
   const mag = (headingDeg, disturbance = 0) => ({ headingDeg, disturbance, fieldUt: 55, dipDeg: -65, calibrated: true });

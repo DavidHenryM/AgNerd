@@ -27,6 +27,19 @@ await test("default axis map turns x-left, y-up, z-forward sensor axes into forw
   assert.throws(() => axisMatrix("+z,+x"), /forward,left,up/);
 });
 
+await test("default mounting uses sensor Y for yaw: left decreases compass heading and right increases it", () => {
+  for (const [sensorYawRate, expected] of [[10, -30], [-10, 30]]) {
+    const processor = new ImuProcessor();
+    processor.setSpeed(2, 0);
+    processor.addImuSamples([{ gyroDps: [0, 0, 0], accelG: [0, 1, 0] }], 0);
+    for (let i = 1; i <= 624; i++) {
+      processor.addImuSamples([{ gyroDps: [0, sensorYawRate, 0], accelG: [0, 1, 0] }], i * 1000 / 208);
+    }
+    close(processor.attitude.yawDeg, expected, 0.05);
+  }
+  assert.deepEqual(matVec(axisMatrix(), [0, 0, 10]), [10, 0, 0], "sensor Z is forward/roll, not vertical/yaw");
+});
+
 await test("tilt converges on gravity and parked gyro bias is learned", () => {
   const filter = new AttitudeFilter({ tiltTimeConstantS: 0.5, biasTimeConstantS: 2 });
   filter.speedMps = 0;
