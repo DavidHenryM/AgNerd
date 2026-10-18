@@ -18,6 +18,10 @@ npm() {
     echo "NPM $*"
     [ "$*" != "${failure}" ]
 }
+node() {
+    echo "NODE $*"
+    [ "${failure}" != "i2c-bus" ]
+}
 sudo() {
     echo "SUDO $*"
     [ "$*" != "${failure}" ]
@@ -33,12 +37,20 @@ echo COMPLETED
 }
 
 await test("dependency, asset and build failures never modify the deployment", () => {
-  for (const failure of ["ci", "run copy-cesium", "run build"]) {
+  for (const failure of ["ci --include=optional", "i2c-bus", "run copy-cesium", "run build"]) {
     const result = run(failure);
     assert.equal(result.status, 1);
     assert.doesNotMatch(result.stdout, /SUDO|COMPLETED/);
     assert.match(result.stderr, /existing deployment has not been changed/);
   }
+});
+
+await test("declares and checks the optional IMU dependency before deployment", () => {
+  const manifest = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
+  assert.equal(manifest.optionalDependencies["i2c-bus"], "^5.2.3");
+  const result = run();
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /NPM ci --include=optional[\s\S]*NODE --input-type=module -e await import\('i2c-bus'\)[\s\S]*NPM run build/);
 });
 
 await test("stages new directories before stopping services and replaces only managed directories", () => {

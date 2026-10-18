@@ -91,7 +91,12 @@ fi
 (
 set -e
 echo -e "\033[35mInstalling Node.js dependencies with npm ci...\033[0m"
-npm ci
+npm ci --include=optional
+echo -e "\033[35mChecking the native IMU dependency...\033[0m"
+node --input-type=module -e "await import('i2c-bus')" || {
+    echo -e "\033[31mi2c-bus could not load. Check the npm install output for native build errors and ensure build-essential and python3 are installed.\033[0m" >&2
+    exit 1
+}
 echo -e "\033[35mCopying Cesium assets into public/cesium...\033[0m"
 npm run copy-cesium
 echo -e "\033[35mBuilding the AgNerd application without inheriting development inspector settings...\033[0m"

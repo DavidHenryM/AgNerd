@@ -471,6 +471,11 @@ GNSS-course display stream and Navigation works as before.
 
 #### Calibration
 
+The installer includes and checks the native `i2c-bus` dependency before
+deploying. If an older installation reports that the package cannot be found,
+update the checkout and rerun the installer. Running `npm ci` in the checkout
+alone does not update the dependencies used by the scripts under `/opt/agnerd`.
+
 Stop the service and run the interactive calibration with the GNSS environment loaded:
 
 ```bash
