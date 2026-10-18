@@ -378,7 +378,7 @@ export default function NavigationScreen() {
     boomPositionRef.current = current;
   }, [latitude, longitude, heading, speed, positionSource, fixStatusStale, fixType]);
 
-  // ── 3D model entity – create once, then update position/heading ──
+  // Create the tractor here; the frame listener owns all live pose/camera updates.
   useEffect(() => {
     const viewer = viewerRef.current;
     if (!viewer || latitude === null || longitude === null) return;
@@ -397,23 +397,8 @@ export default function NavigationScreen() {
         },
       });
       modelEntityRef.current = entity;
-    } else {
-      const entity = modelEntityRef.current;
-      (entity.position as ConstantPositionProperty).setValue(position);
-      entity.orientation = new ConstantProperty(tractorOrientation(position, boomHeadingRef.current));
     }
-
-    // Heading-oriented camera: look from behind and above
-    const headingRad = boomHeadingRef.current;
-    viewer.camera.lookAt(
-      position,
-      new HeadingPitchRange(
-        headingRad,
-        CesiumMath.toRadians(-35), // pitched forward
-        cameraRangeMeters // distance
-      )
-    );
-  }, [latitude, longitude, heading, speed, positionSource, fixStatusStale, fixType, selectedColor, cameraRangeMeters, viewerReady]);
+  }, [latitude, longitude, viewerReady]);
 
   // The displayed boom and spray polygons share exactly the same endpoints.
   useEffect(() => {
@@ -511,10 +496,10 @@ export default function NavigationScreen() {
 
   // Display-only pose: the 20 Hz fused/predicted pose moves the models and camera every frame.
   // Coverage, tracks, history and the boom paint line stay on raw GNSS fixes.
-  const liveDisplayRef = useRef({ rawValid: false, cameraRangeMeters, widthMeters, offsetMeters, forwardOffsetMeters, isSpraying });
+  const liveDisplayRef = useRef({ latitude, longitude, rawValid: false, cameraRangeMeters, widthMeters, offsetMeters, forwardOffsetMeters, isSpraying });
   useEffect(() => {
     liveDisplayRef.current = {
-      rawValid: latitude !== null && longitude !== null && !fixStatusStale && fixType !== "NO_FIX",
+      latitude, longitude, rawValid: latitude !== null && longitude !== null && !fixStatusStale && fixType !== "NO_FIX",
       cameraRangeMeters, widthMeters, offsetMeters, forwardOffsetMeters, isSpraying,
     };
   });
@@ -524,9 +509,10 @@ export default function NavigationScreen() {
     return viewer.scene.preRender.addEventListener(() => {
       const live = liveDisplayRef.current;
       const tractor = modelEntityRef.current;
-      if (!live.rawValid || !tractor) return;
-      const pose = displayPredictor.pose(performance.now());
-      if (!pose) return;
+      if (!live.rawValid || live.latitude === null || live.longitude === null || !tractor) return;
+      const pose = displayPredictor.pose(performance.now()) ?? {
+        latitude: live.latitude, longitude: live.longitude, headingDeg: null,
+      };
       const headingRad = pose.headingDeg === null ? boomHeadingRef.current : CesiumMath.toRadians(pose.headingDeg);
       const position = Cartesian3.fromDegrees(pose.longitude, pose.latitude, 0);
       (tractor.position as ConstantPositionProperty).setValue(position);

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { register } from "tsx/esm/api";
+import { readFileSync } from "node:fs";
 
 register();
 const { DisplayPosePredictor, formatHeading, formatTilt, parseGnssDisplay } = await import("../app/lib/gnss-display.ts");
@@ -94,6 +95,50 @@ await test("new packets blend small corrections, snap large ones and ignore dupl
   assert.equal(predictor.ingest(packet({ seq: 3, publishedAtMs: 900 }), 70), false, "older packet from slower polling path");
   predictor.ingest(packet({ seq: 4, publishedAtMs: 1100, speedMps: 0, direction: "stationary", fix: { latitude: 10 / M_PER_DEG, longitude: 0, ageMs: 0 } }), 100);
   close(predictor.pose(100).latitude * M_PER_DEG, 10, 1e-6, "large jumps snap");
+});
+
+await test("small alternating heading corrections are attenuated without packet-boundary jumps", () => {
+  function jitter(headingBlendTimeConstantMs) {
+    const predictor = new DisplayPosePredictor({ headingBlendTimeConstantMs });
+    predictor.ingest(packet({ headingDeg: 90, speedMps: 0, direction: "stationary" }), 0);
+    let maximumError = 0;
+    for (let t = 200; t <= 10000; t += 200) {
+      const before = predictor.pose(t).headingDeg;
+      predictor.ingest(packet({
+        seq: t, publishedAtMs: 1000 + t, headingDeg: 90 + (t % 400 === 0 ? -2 : 2),
+        speedMps: 0, direction: "stationary",
+      }), t);
+      close(predictor.pose(t).headingDeg, before, 1e-9, "new packet does not jump");
+      for (let dt = 0; dt < 200; dt += 20) {
+        if (t >= 4000) maximumError = Math.max(maximumError, Math.abs(predictor.pose(t + dt).headingDeg - 90));
+      }
+    }
+    return maximumError;
+  }
+  const previous = jitter(250);
+  const smoothed = jitter(750);
+  assert.ok(smoothed < 0.3, `two-degree input jitter reduced below 0.3 degrees, got ${smoothed}`);
+  assert.ok(smoothed < previous / 2, `jitter more than halved: ${previous} -> ${smoothed}`);
+});
+
+await test("gentler absolute-heading corrections do not delay gyro-reported turns, including north wrap", () => {
+  const predictor = new DisplayPosePredictor();
+  for (let t = 0; t <= 2000; t += 50) {
+    predictor.ingest(packet({
+      seq: t, publishedAtMs: 1000 + t, headingDeg: (350 + t * 0.02) % 360,
+      yawRateDps: 20, speedMps: 0, direction: "stationary",
+    }), t);
+    close(predictor.pose(t + 25).headingDeg, (350 + (t + 25) * 0.02) % 360, 1e-9);
+  }
+});
+
+await test("only the frame renderer updates tractor and camera, with raw fixes as a stream-outage fallback", () => {
+  const source = readFileSync(new URL("../app/components/screens/Navigation.tsx", import.meta.url), "utf8");
+  const creation = source.slice(source.indexOf("// Create the tractor here"), source.indexOf("// The displayed boom"));
+  assert.doesNotMatch(creation, /camera\.lookAt|\.setValue\(|entity\.orientation =/);
+  assert.equal((source.match(/viewer\.camera\.lookAt\(/g) ?? []).length, 1);
+  assert.match(source, /displayPredictor\.pose\(performance\.now\(\)\) \?\? \{/);
+  assert.match(source, /latitude: live\.latitude, longitude: live\.longitude, headingDeg: null/);
 });
 
 async function readEvents(stream, count) {

@@ -719,6 +719,12 @@ only at speeds of at least 0.8 m/s; below that speed the last heading is held
 so an unreliable stopped GNSS course cannot turn the graphic around. When speed
 is unknown, heading falls back to measured displacement rather than raw course.
 Fused IMU heading still drives the live display when available.
+The frame renderer is the sole owner of tractor/camera motion, rather than
+alternating raw-course and fused-pose updates. Display heading corrections blend
+over a 750 ms time constant (position corrections remain 250 ms); gyro yaw-rate
+prediction still responds immediately to a turn. This reduces small GNSS/compass
+correction jitter without increasing compass weighting. If the fused display
+stream is unavailable, navigation uses the speed-gated raw fix fallback.
 This is a visual centre, not
 an assumption about the physical GNSS antenna's mounting position.
 After replacing the tractor asset, inspect/centre it using

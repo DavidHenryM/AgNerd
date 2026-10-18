@@ -92,6 +92,7 @@ export type PredictorOptions = {
   maxPredictionMs?: number;
   staleAfterMs?: number;
   blendTimeConstantMs?: number;
+  headingBlendTimeConstantMs?: number;
   snapDistanceM?: number;
   snapHeadingDeg?: number;
   maxHeadingStdDeg?: number;
@@ -114,6 +115,7 @@ export class DisplayPosePredictor {
       maxPredictionMs: 500,
       staleAfterMs: 1000,
       blendTimeConstantMs: 250,
+      headingBlendTimeConstantMs: 750,
       snapDistanceM: 5,
       snapHeadingDeg: 45,
       maxHeadingStdDeg: 40,
@@ -160,13 +162,14 @@ export class DisplayPosePredictor {
     const raw = this.rawPose(nowMs);
     if (!raw) return null;
     const weight = Math.exp(-Math.max(0, nowMs - this.correction.atMs) / this.options.blendTimeConstantMs);
-    if (weight < 1e-3) return raw;
+    const headingWeight = Math.exp(-Math.max(0, nowMs - this.correction.atMs) / this.options.headingBlendTimeConstantMs);
+    if (weight < 1e-3 && headingWeight < 1e-3) return raw;
     const latitude = raw.latitude + (this.correction.northM * weight) / EARTH_RADIUS_M / RAD;
     const longitude = raw.longitude + (this.correction.eastM * weight) / (EARTH_RADIUS_M * Math.cos(raw.latitude * RAD)) / RAD;
     return {
       latitude,
       longitude,
-      headingDeg: raw.headingDeg === null ? null : wrap360(raw.headingDeg + this.correction.headingDeg * weight),
+      headingDeg: raw.headingDeg === null ? null : wrap360(raw.headingDeg + this.correction.headingDeg * headingWeight),
     };
   }
 
