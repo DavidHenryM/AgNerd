@@ -37,7 +37,7 @@ import NavigationControls, {
 } from "@components/screens/NavigationControls";
 import { useSprayTracks } from "@lib/hooks/spray-tracks";
 import { navigationZoomIn, navigationZoomOut } from "@lib/navigation-zoom";
-import { SprayCoverage } from "@lib/spray-coverage";
+import { SprayCoverage, SPRAY_SURFACE_HEIGHT_METERS } from "@lib/spray-coverage";
 import { navigationMapScale, SCALE_KEY_MAX_PIXELS, type NavigationMapScale } from "@lib/navigation-scale";
 
 // ── Geo helpers ─────────────────────────────────────────────────────
@@ -234,7 +234,7 @@ export default function NavigationScreen() {
     viewerRef.current = viewer;
     const coverage = new SprayCoverage();
     coverageRef.current = coverage;
-    viewer.scene.groundPrimitives.add(coverage.primitives);
+    viewer.scene.primitives.add(coverage.primitives);
     const removeCoverageListener = viewer.scene.preRender.addEventListener(() => coverage.update());
     // Live GNSS and particle time must not wait for asynchronous ground geometry.
     viewer.allowDataSourcesToSuspendAnimation = false;
@@ -456,9 +456,10 @@ export default function NavigationScreen() {
       sprayTrailRef.current.reset();
       boomSettingsRef.current = { width: widthMeters, offset: offsetMeters, forwardOffset: forwardOffsetMeters };
     }
-    const boomPositions = Cartesian3.fromDegreesArray([
-      boom.left.lon, boom.left.lat, boom.right.lon, boom.right.lat,
-    ]);
+    const boomPositions = [
+      Cartesian3.fromDegrees(boom.left.lon, boom.left.lat, SPRAY_SURFACE_HEIGHT_METERS),
+      Cartesian3.fromDegrees(boom.right.lon, boom.right.lat, SPRAY_SURFACE_HEIGHT_METERS),
+    ];
     const color = Color.fromCssColorString(selectedColor).withAlpha(isSpraying ? 1 : 0.65);
     const centre = Cartographic.fromCartesian(Cartesian3.midpoint(boomPositions[0], boomPositions[1], new Cartesian3()));
     const modelPosition = Cartesian3.fromRadians(centre.longitude, centre.latitude, BOOM_CLEARANCE_METERS);
@@ -478,7 +479,7 @@ export default function NavigationScreen() {
           colorBlendMode: ColorBlendMode.MIX,
           colorBlendAmount: 0,
         },
-        polyline: { positions: boomPositions, width: 2, clampToGround: true, material: color },
+        polyline: { positions: boomPositions, width: 2, clampToGround: false, material: color },
       });
     } else {
       boomEntityRef.current.show = true;

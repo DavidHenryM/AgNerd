@@ -737,13 +737,16 @@ heading, or direction of movement when heading is unavailable (initially north).
 Play paints the area between consecutive boom positions in translucent light
 rose-purple. Small GPS movements accumulate until 0.5 m has been travelled,
 then paint from the last painted endpoints so the trail stays continuous.
-Coverage is rendered separately from the live tractor and boom in batches of at
-most 64 strips. Completed batches are not rebuilt when new strips arrive, and
-only one asynchronous coverage batch builds at a time. Overlapping footprints
-remain separate to retain the darker overlap paint. This avoids repeatedly
-rebuilding a growing ground-polygon entity batch while spraying on embedded
-devices. Saved polygons, area calculations and the 200 ms GNSS polling interval
-are unchanged; coverage can finish rendering after a new position is displayed.
+Coverage uses a simple, unlit mesh: four corners and two triangles per strip,
+in batches of at most 64 strips. It does not build ground-classification volumes,
+tessellate polygons, or start geometry workers. Only the current batch changes;
+completed batches are not rebuilt when new strips arrive. Overlapping strips
+retain translucent darker overlap paint without needing separate ground
+primitives. The coverage and boom paint line sit 10 cm above Navigation's flat
+ellipsoid surface to avoid flicker against the imagery. This is not a
+terrain-draped mesh: adding a real elevation/3D terrain provider in future would
+require adapting the renderer. Raw saved polygons, area calculations, pause/fix
+breaks and the 200 ms GNSS polling interval are unchanged.
 Pause leaves a dimmed boom preview without painting and keeps
 navigation active but suspends coverage painting, area accumulation, spray
 particles and new history submissions until Resume spraying is pressed.
